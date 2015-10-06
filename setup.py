@@ -41,19 +41,11 @@ def package_path(path, filters=()):
 
 rule_suffixes = ('.rules', '.rule')
                     
-package_path(join(ROOT, 'snakemakelib_rules', 'rules'), rule_suffixes)
+package_path(join(ROOT, 'snakemakelib_rules'), rule_suffixes)
 scripts = []
 
 REQUIRES = [
-    'biopython>=1.64',
-    'pyyaml>=3.11',
     'snakemake>=3.4.2',
-    'sphinx>=1.3',
-    'pandas>=0.16.0',
-    'mock>=1.0.1',
-    'pysam>=0.8.3',
-    'pytest',
-    'pytest-cov>=1.8.1',
 ]
 
 try:
