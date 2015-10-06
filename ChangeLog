@@ -1,0 +1,17 @@
+Changelog
+=========
+
+0.1-alpha.1 (2015-10-06)
+------------------------
+
+- Add documentation configuration. [Per Unneberg]
+
+- Update setup to remove nosetests. [Per Unneberg]
+
+- Initial commit. [Per Unneberg]
+
+- Add some rules and conda build. [Per Unneberg]
+
+- Initial commit. [Per Unneberg]
+
+
