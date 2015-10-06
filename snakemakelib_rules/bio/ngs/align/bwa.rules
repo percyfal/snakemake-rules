@@ -1,0 +1,21 @@
+# -*- snakemake -*-
+include: '../settings.rules'
+
+DEFAULT_RULES = ['bwa_index', 'bwa_mem']
+
+config_default = {
+    'bio.ngs.align.bwa' : {
+        'cmd' : "bwa",
+        'ref' : config['bio.ngs.settings']['db']['ref'],
+        'index' : "",
+        'index_ext' : ['.amb', '.ann', '.bwt', '.pac', '.sa'],
+        'threads' : config['bio.ngs.settings']['threads'],
+        'rules' : DEFAULT_RULES,
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.align.bwa']['rules']:
+    include: os.path.join("_bwa", rule + ".rule")

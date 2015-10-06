@@ -1,0 +1,25 @@
+package:
+  name: snakemakelib-rules
+  version: "0.1a.1"
+source:
+  git_rev: 0.1-alpha.1
+  git_url: https://github.com/percyfal/snakemakelib-rules.git
+requirements:
+  build:
+    - python ==3.4.3 # As with snakemake
+    - setuptools
+    - snakemake >=3.4.2
+  run:
+    - python >=3.3
+    - snakemake
+
+test:
+  imports:
+    - snakemake
+    
+about:
+  home: https://github.com/percyfal/snakemakelib-rules.git
+  license: MIT License
+
+  summary: 'Library of snakemake rules. The rules can be used as-is without installing snakemakelib itself.'
+  

@@ -1,0 +1,21 @@
+# -*- snakemake -*- 
+"""Main settings for snakemakelib-rules. Defines top-level configuration
+settings for all rules.
+"""
+import os
+from snakemake.utils import update_config
+
+config_default = {
+    'settings' : {
+        'email' : os.getenv("USER_EMAIL", None),
+        'java' : {
+            'java_mem' : "8g",
+            'java_tmpdir' : "/tmp",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+config['_version'] = get_versions()
