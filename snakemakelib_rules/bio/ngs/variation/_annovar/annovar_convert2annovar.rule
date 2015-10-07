@@ -1,0 +1,22 @@
+# -*- snakemake -*-
+config_default = {
+    'bio.ngs.variation.annovar' : {
+        'convert2annovar' : {
+            'options' : "--includeinfo",
+            'vcf_format' : "vcf4",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule annovar_convert2annovar:
+    """Convert data to annovar format"""
+    params: cmd='convert2annovar.pl',
+            options=config['bio.ngs.variation.annovar']['convert2annovar']['options'],
+            vcf_format = config['bio.ngs.variation.annovar']['convert2annovar']['vcf_format']
+    input: "{prefix}.vcf"
+    output: "{prefix}.avinput"
+    shell: "{params.cmd} {params.options} -format {params.vcf_format} {input} > {output}"

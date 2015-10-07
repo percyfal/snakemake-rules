@@ -1,0 +1,27 @@
+# -*- snakemake -*-
+include: '../settings.rules'
+
+DEFAULT_RULES = [
+    'vcftools_dump_stats',
+    'vcftools_vcf2ped',
+    'vcftools_vcf_freq',
+    'vcftools_vcf_freq2'
+    ]
+
+config_default = {
+    'bio.ngs.variation.vcftools' : {
+        'rules' : DEFAULT_RULES,
+        'cmd' : 'vcftools',
+        'options' : {
+            'main' : "",
+            'stats' : "",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+for rule in config['bio.ngs.variation.vcftools']['rules']:
+    include: os.path.join("_vcftools", rule + ".rule")

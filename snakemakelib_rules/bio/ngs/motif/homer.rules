@@ -1,0 +1,18 @@
+# -*- snakemake -*-
+#
+# HOMER: Software for motif discovery and next-gen sequencing analysis
+#
+# http://homer.salk.edu/homer/motif/
+#
+include: '../settings.rules'
+
+config_default = {
+    'bio.ngs.motif.homer' : {
+        'options' : '',
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+

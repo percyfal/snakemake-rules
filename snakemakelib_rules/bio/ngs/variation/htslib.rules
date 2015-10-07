@@ -1,0 +1,17 @@
+# -*- snakemake -*-
+include: '../settings.rules'
+
+DEFAULT_RULES = ['htslib_plot_vcfcheck']
+
+config_default = {
+    'bio.ngs.variation.htslib' : {
+        'rules' : DEFAULT_RULES,
+        'cmd' : "vcf",
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.variation.htslib']['rules']:
+    include: os.path.join("_htslib", rule + ".rule")

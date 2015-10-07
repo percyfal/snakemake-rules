@@ -1,0 +1,17 @@
+# -*- snakemake -*-
+include: '../settings.rules'
+
+DEFAULT_RULES = ['vcf_check']
+
+config_default = {
+    'bio.ngs.variation.vcf' : {
+        'rules' : DEFAULT_RULES,
+        'cmd' : 'vcf',
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.variation.vcf']['rules']:
+    include: os.path.join("_vcf", rule + ".rule")
