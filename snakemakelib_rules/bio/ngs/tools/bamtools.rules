@@ -1,0 +1,28 @@
+# -*- snakemake -*-
+import os
+include: '../settings.rules'
+
+DEFAULT_RULES = ['bamtools_filter_unique',
+                 'bamtools_filter_script',
+                 'bamtools_create_filter_script']
+
+config_default = { 
+    'bio.ngs.tools.bamtools' : {
+        'rules' : DEFAULT_RULES,
+        'ref' : config['bio.ngs.settings']['db']['ref'],
+        'cmd' : "bamtools",
+        'home' : "",
+        'threads' : config['settings']['threads'],
+        'options' : "",
+        'filter' : {
+            'options' : {'mapQuality' : ">=255"},
+            'regions' : config['bio.ngs.settings']['regions'],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.tools.bamtools']['rules']:
+    include: os.path.join("_bamtools", rule + ".rule")

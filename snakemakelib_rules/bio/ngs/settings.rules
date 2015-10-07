@@ -9,7 +9,7 @@ config_default = {
         },
         'db' : {
             'dbsnp' : "",
-            'ref' : None,
+            'ref' : "",
             'extra_ref' : [],
             'build' : '',
             'build_config' : None,
@@ -20,6 +20,11 @@ config_default = {
         'read1_suffix' : ".fastq.gz",
         'read2_suffix' : ".fastq.gz",
         'read_length' : 100,
+        'regions': [],
+        'sequence_capture': {
+            'bait_regions' : "",
+            'target_regions': "",
+        },
     },
 }
 
