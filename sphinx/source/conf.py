@@ -15,12 +15,13 @@
 
 import sys
 import os
+import re
 import sphinx_bootstrap_theme
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 # -- General configuration ------------------------------------------------
 
@@ -54,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'snakemakelib-rules'
+project = 'snakemakelib_rules'
 copyright = '2015, Per Unneberg'
 author = 'Per Unneberg'
 
@@ -62,7 +63,7 @@ author = 'Per Unneberg'
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 
-from snakemakelib-rules import __version__
+from snakemakelib_rules import __version__
 #
 # The short X.Y version.
 version = __version__
@@ -218,7 +219,7 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-standard_sidebars = ['sidebartoc.html', 'navbar.html']
+standard_sidebars = ['sidebartoc.html', 'sourcelink.html', 'searchbox.html']
 html_sidebars = {
     '*': standard_sidebars,
     'docs/*': standard_sidebars,
@@ -256,7 +257,7 @@ html_sidebars = {
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'snakemakelib-rulesdoc'
+htmlhelp_basename = 'snakemakelib_rulesdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -276,7 +277,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'snakemakelib-rules.tex', 'snakemakelib-rules Documentation',
+  ('index', 'snakemakelib_rules.tex', 'snakemakelib_rules Documentation',
    'Per Unneberg', 'manual'),
 ]
 
@@ -306,7 +307,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'snakemakelib-rules', 'snakemakelib-rules Documentation',
+    ('index', 'snakemakelib_rules', 'snakemakelib_rules Documentation',
      ['Per Unneberg'], 1)
 ]
 
@@ -320,8 +321,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'snakemakelib-rules', 'snakemakelib-rules Documentation',
-   'Per Unneberg', 'snakemakelib-rules', 'One line description of project.',
+  ('index', 'snakemakelib_rules', 'snakemakelib_rules Documentation',
+   'Per Unneberg', 'snakemakelib_rules', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -340,6 +341,6 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'http://docs.python.org/3.4': None
+    'http://docs.python.org/3.4': None,
     'http://python.readthedocs.org/en/latest/' : None,
 }
