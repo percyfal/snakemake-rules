@@ -9,7 +9,7 @@ config_default = {
         'ref' : config['bio.ngs.settings']['db']['ref'],
         'index' : "",
         'index_ext' : ['.amb', '.ann', '.bwt', '.pac', '.sa'],
-        'threads' : config['bio.ngs.settings']['threads'],
+        'threads' : config['settings']['threads'],
         'rules' : DEFAULT_RULES,
     },
 }
