@@ -1,0 +1,22 @@
+# -*- snakemake -*-
+#
+include: "../settings.rules"
+smllogger = logging.getLogger('bio.ngs.db.ucsc')
+
+DEFAULT_RULES = ['ucsc_wigToBigWig', 'ucsc_bedGraphToBigWig']
+
+config_default = {
+    'bio.ngs.db.ucsc' : { 
+        'ref' : config['bio.ngs.settings']['db']['ref'],
+        'index' : "",
+        'rules': DEFAULT_RULES,
+        'urldownload' : 'http://hgdownload.cse.ucsc.edu/goldenPath/',
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+for rule in config['bio.ngs.db.ucsc']['rules']:
+    include: os.path.join("_ucsc", rule + ".rule")

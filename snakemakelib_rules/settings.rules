@@ -7,7 +7,10 @@ from snakemake.utils import update_config
 
 try:
     from snakemakelib_rules._version import get_versions
+    # Fix snakemakelib logging
+    import logging
 except:
+    import logging
     get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
 
 config_default = {
