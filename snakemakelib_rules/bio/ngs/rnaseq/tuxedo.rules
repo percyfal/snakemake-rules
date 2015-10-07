@@ -1,0 +1,41 @@
+# -*- snakemake -*-
+include: '../settings.rules'
+include: '../tools/samtools.rules'
+
+DEFAULT_RULES = ['tuxedo_bowtie2_build',
+                 'tuxedo_bowtie_align',
+                 'tuxedo_bowtie_build',
+                 'tuxedo_cufflinks_from_bam',
+                 'tuxedo_cufflinks_from_tophat',
+                 'tuxedo_cufflinks_quant',
+                 'tuxedo_tophat']
+
+
+config_default = { 
+    "bio.ngs.rnaseq.tuxedo" : {
+        'rules' : DEFAULT_RULES,
+        'ref' : config['bio.ngs.settings']['db']['ref'],
+        'rg_fn' : None,
+        'version2' : True, # Run version 2 by default
+        'index' : "",
+        'cufflinks' : {
+            'cmd' : 'cufflinks', 
+            'options' : '',
+            'transcript_annot_gtf' : config['bio.ngs.settings']['annotation']['transcript_annot_gtf'],
+            'annot_label' : config['bio.ngs.settings']['db']['build'],
+            'output_dir' : os.curdir,
+        },
+        'build' : {
+            'ext_v1' : [".1.ebwt", ".2.ebwt", ".3.ebwt", ".4.ebwt", ".rev.1.ebwt", ".rev.2.ebwt"],
+            'ext_v2' : [".1.bt2", ".2.bt2", ".3.bt2", ".4.bt2", ".rev.1.bt2", ".rev.2.bt2"],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+bowtie = 'bowtie2' if config['bio.ngs.rnaseq.tuxedo']['version2'] else 'bowtie'
+
+for rule in config['bio.ngs.rnaseq.tuxedo']['rules']:
+    include: os.path.join("_tuxedo", rule + ".rule")
