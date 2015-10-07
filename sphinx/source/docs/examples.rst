@@ -16,16 +16,16 @@ with the following content:
 
    # -*- snakemake -*-
    import os
-   from snakemakelib-rules import SNAKEMAKELIB_PATH
+   from snakemakelib_rules import SNAKEMAKELIB_RULES_PATH
    
    config = {
        'bio.ngs.align.bwa' : {
-	   'index' : os.path.join(SNAKEMAKELIB_PATH, "data/genomes/Hsapiens/hg19/bwa/chr11.fa"),
+	   'index' : os.path.join(SNAKEMAKELIB_RULES_PATH, "data/genomes/Hsapiens/hg19/bwa/chr11.fa"),
        },
    }
 
-   workdir: os.path.join(SNAKEMAKELIB_PATH, "data/projects/J.Doe_00_01")
-   include: os.path.join(SNAKEMAKELIB_PATH, "rules/bio/ngs/align/bwa.rules")
+   workdir: os.path.join(SNAKEMAKELIB_RULES_PATH, "data/projects/J.Doe_00_01")
+   include: os.path.join(SNAKEMAKELIB_RULES_PATH, "rules/bio/ngs/align/bwa.rules")
 
 Briefly, in this file we:
 
