@@ -5,8 +5,10 @@ settings for all rules.
 import os
 from snakemake.utils import update_config
 
-# Set rule path
-SNAKEMAKELIB_PATH = os.path.dirname(__file__)
+try:
+    from snakemakelib_rules._version import get_versions
+except:
+    get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
 
 config_default = {
     'settings' : {
@@ -15,6 +17,7 @@ config_default = {
             'java_mem' : "8g",
             'java_tmpdir' : "/tmp",
         },
+        'threads' : 8,
     },
 }
 

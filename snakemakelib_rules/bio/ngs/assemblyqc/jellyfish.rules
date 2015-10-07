@@ -1,0 +1,18 @@
+# -*- snakemake -*-
+include: "../settings.rules"
+
+DEFAULT_RULES = ['jellyfish_count', 'jellyfish_histo']
+
+config_default = {
+    'bio.ngs.assemblyqc.jellyfish' : {
+        'cmd': 'jellyfish',
+        'rules': DEFAULT_RULES,
+        'threads': config['settings']['threads']
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.assemblyqc.jellyfish']['rules']:
+    include: os.path.join("_jellyfish", rule + ".rule")

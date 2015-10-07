@@ -1,0 +1,26 @@
+# -*- snakemake -*-
+config_default = {
+    'bio.ngs.assemblyqc.jellyfish': {
+        'count': {
+            'options': "-m 21 -s 100M -C",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+re_ext = "(.fq|.fq.gz|.fa|.fa.gz|.fasta|.fastq|.fasta.gz|.fastq.gz|.txt)"
+re_ext_fastq = "(.fa$|.fasta$|.fq$|.fastq$)"
+
+rule jellyfish_count:
+    params: cmd = config['bio.ngs.assemblyqc.jellyfish']['cmd'] + " count",
+            options = config['bio.ngs.assemblyqc.jellyfish']['count']['options']
+    input: seq = "{prefix}{suffix}"
+    output: jf = "{prefix}{suffix," + re_ext + "}.mer_counts.jf"
+    threads: config['bio.ngs.assemblyqc.jellyfish']['threads']
+    shell:
+        "if mimetype -b {input.seq} | grep -q gzip; then zcat {input.seq} | {params.cmd} {params.options} -t {threads} /dev/fd/0 -o {output.jf}; "
+        "else "
+        "if [[ {input.seq} =~ " + re_ext_fastq + " ]]; then {params.cmd} {params.options} -t {threads} {input.seq} -o {output.jf}; "
+        "else zcat $( cat {input.seq} | xargs ) | {params.cmd} {params.options} -t {threads} /dev/fd/0 -o {output.jf}; fi; fi"
