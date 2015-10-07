@@ -1,0 +1,30 @@
+# -*- snakemake -*-
+include: '../settings.rules'
+include: '../tools/conversion.rules'
+include: '../../../comp/settings.rules'
+
+DEFAULT_RULES = ['rseqc_clipping_profile',
+                 'rseqc_geneBody_coverage',
+                 'rseqc_junction_annotation',
+                 'rseqc_read_GC',
+                 'rseqc_read_NVC',
+                 'rseqc_read_distribution',
+                 'rseqc_read_duplication',
+                 'rseqc_read_quality',
+                 'rseqc_qc_8']
+
+config_default = {
+    'bio.ngs.qc.rseqc' : {
+        'rules' : DEFAULT_RULES,
+        'refgene' : config['bio.ngs.settings']["annotation"]["transcript_annot_gtf"],
+        'home' : os.getenv("RSEQC_HOME", ""),
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+python2 = config['comp.settings']['python2']['activate_cmd']
+
+for rule in config['bio.ngs.qc.rseqc']['rules']:
+    include: os.path.join("_rseqc", rule + ".rule")

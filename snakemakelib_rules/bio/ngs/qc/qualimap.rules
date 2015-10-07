@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+# Qualimap: http://qualimap.bioinfo.cipf.es/
+#
+include: '../settings.rules'
+
+DEFAULT_RULES = ['qualimap_bamqc',
+                 'qualimap_collect_results',
+                 'qualimap_plot_summary']
+
+config_default = {
+    'bio.ngs.qc.qualimap' : {
+        'rules' : DEFAULT_RULES,
+        'cmd' : 'qualimap',
+        'threads' : config['settings']['threads'],
+        'java_mem' : config['settings']['java']['java_mem'],
+    },
+}
+
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.qc.qualimap']['rules']:
+    include: os.path.join("_qualimap", rule + ".rule")

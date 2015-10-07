@@ -1,0 +1,22 @@
+# -*- snakemake -*-
+include: '../settings.rules'
+
+DEFAULT_RULES = ['cutadapt_cut_paired_end']
+
+config_default = { 
+    'bio.ngs.qc.cutadapt' : {
+        'rules' : DEFAULT_RULES,
+        'cmd' : "cutadapt",
+        'threeprime': "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+        'fiveprime' : "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT",
+        'options' : "",
+        'fastq_suffix' : config['bio.ngs.settings']['fastq_suffix'],
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+for rule in config['bio.ngs.qc.cutadapt']['rules']:
+    include: os.path.join("_cutadapt", rule + ".rule")
