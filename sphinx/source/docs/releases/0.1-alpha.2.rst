@@ -1,0 +1,4 @@
+0.1-alpha.2 (Oct 7 2015)
+=========================
+
+- add lots of application rules

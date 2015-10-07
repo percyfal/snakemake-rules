@@ -1,8 +1,58 @@
 Changelog
 =========
 
+0.1-alpha.2 (2015-10-07)
+------------------------
+
+- Add plink and utils. [Per Unneberg]
+
+- Add macs and variation rules. [Per Unneberg]
+
+- Add rnaseq rules. [Per Unneberg]
+
+  - rsem
+  - rpkmforgenes
+  - tuxedo
+  - rnaseqc
+
+- Add db rules. [Per Unneberg]
+
+  - ucsc
+  - cloudbiolinux
+  - ercc
+
+- Add qc rules. [Per Unneberg]
+
+  - cutadapt
+  - fastqc
+  - qualimap
+  - rseqc
+
+- Add tools. [Per Unneberg]
+
+  - gatk
+  - bamtools
+  - bedtools
+  - conversion
+
+  and dependency
+
+  - qc/picard
+
+- Update and fix bugs in align rules. [Per Unneberg]
+
+- Add alignment and comp rules. [Per Unneberg]
+
+- Add bwa and samtools. [Per Unneberg]
+
+- Add initial support for jellyfish. [Per Unneberg]
+
+- Update build config and add snakemakelib path. [Per Unneberg]
+
 0.1-alpha.1 (2015-10-06)
 ------------------------
+
+- Initial commits and pre-release. [Per Unneberg]
 
 - Add documentation configuration. [Per Unneberg]
 
