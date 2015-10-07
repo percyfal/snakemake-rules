@@ -1,0 +1,30 @@
+# -*- snakemake -*-
+"""
+`bowtie2 <http://bowtie-bio.sourceforge.net/bowtie2/index.shtml>`_
+--------------------------------------------------------------------
+
+Bowtie 2 - Fast and sensitive read alignment
+"""
+include: '../settings.rules'
+include: '../tools/samtools.rules'
+
+DEFAULT_RULES = ['bowtie2_align_pe', 'bowtie2_build']
+
+config_default = {
+    'bio.ngs.align.bowtie2' : {
+        'build_ext': [".1.bt2", ".2.bt2", ".3.bt2", ".4.bt2", ".rev.1.bt2", ".rev.2.bt2"],
+        'cmd' : 'bowtie2',
+        'index' : "",
+        'ref' : config['bio.ngs.settings']['db']['ref'],
+        'rg_fn' : None,
+        'rules': DEFAULT_RULES,
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.align.bowtie2']['rules']:
+    include: os.path.join("_bowtie2", rule + ".rule")
+
+

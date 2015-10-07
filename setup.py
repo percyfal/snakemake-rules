@@ -26,7 +26,6 @@ ROOT = dirname(realpath(__file__))
 
 package_data = []
 
-
 def package_path(path, filters=()):
     if not os.path.exists(path):
         raise RuntimeError("packaging non-existent path: %s" % path)
@@ -98,7 +97,5 @@ setup(
     #     'snakemakelib.rules',
     # ],
     package_data={'snakemakelib_rules': package_data},
-    #setup_requires=SETUP_REQUIRES,
     install_requires=REQUIRES,
-    #dependency_links=DEPENDENCY_LINKS,
 )

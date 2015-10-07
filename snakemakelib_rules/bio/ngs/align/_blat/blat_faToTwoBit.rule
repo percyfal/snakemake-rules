@@ -1,0 +1,26 @@
+# -*- snakemake -*-
+config_default = {
+    'bio.ngs.align.blat': {
+        'faToTwoBit' : {
+            'cmd' : 'faToTwoBit',
+            'options' : "",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule blat_faToTwoBit:
+    """Run blat faToTwoBit.
+
+    Convert fasta format sequence files to the dense, randomly
+    accessible .2bit format that gfClient can use
+
+    """
+    params: cmd = config['bio.ngs.align.blat']['faToTwoBit']['cmd'],
+            options = config['bio.ngs.align.blat']['faToTwoBit']['options']
+    input: fa = "{prefix}.fa"
+    output: twobit = "{prefix}.2bit"
+    shell: "{params.cmd} {params.options} {input.fa} {output.twobit}"

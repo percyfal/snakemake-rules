@@ -1,0 +1,30 @@
+# -*- snakemake -*-
+"""
+`bowtie <http://bowtie-bio.sourceforge.net/index.shtml>`_
+------------------------------------------------------------
+
+Bowtie - An ultrafast memory-efficient short read aligner
+
+"""
+include: '../settings.rules'
+include: '../tools/samtools.rules'
+
+DEFAULT_RULES = ['bowtie_align_pe', 'bowtie_build']
+
+config_default = {
+    'bio.ngs.align.bowtie' : {
+        'build_ext': [".1.ebwt", ".2.ebwt", ".3.ebwt",
+                      ".4.ebwt", ".rev.1.ebwt", ".rev.2.ebwt"],
+        'cmd': 'bowtie',
+        'index' : "",
+        'ref' : config['bio.ngs.settings']['db']['ref'],
+        'rg_fn' : None,
+        'rules': DEFAULT_RULES,
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.align.bowtie']['rules']:
+    include: os.path.join("_bowtie", rule + ".rule")

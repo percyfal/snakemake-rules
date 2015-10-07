@@ -1,4 +1,11 @@
 # -*- snakemake -*-
+"""
+`bwa <http://bio-bwa.sourceforge.net/>_`
+-----------------------------------------
+
+Burrows-Wheeler aligner
+
+"""
 include: '../settings.rules'
 
 DEFAULT_RULES = ['bwa_index', 'bwa_mem']

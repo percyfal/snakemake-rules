@@ -1,0 +1,23 @@
+# -*- snakemake -*-
+"""
+`GEM <http://algorithms.cnag.cat/wiki/The_GEM_library>`_
+----------------------------------------------------------
+
+The GEM library
+"""
+include: "../settings.rules"
+
+DEFAULT_RULES = ['gem_indexer', 'gem_mappability']
+
+config_default = {
+    'bio.ngs.align.gem' : {
+        'rules' : DEFAULT_RULES,
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+for rule in config['bio.ngs.align.gem']['rules']:
+    include: os.path.join("_gem", rule + ".rule")
