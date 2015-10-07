@@ -9,7 +9,7 @@ config_default = {
         'cmd' : "STAR",
         'ref' : config['bio.ngs.settings']['db']['ref'],
         'extra_ref' : config['bio.ngs.settings']['db']['extra_ref'],
-        'index' : "",
+        'index' : None,
         'rules' : DEFAULT_RULES,
         'star_index': {
             'genome' : "Genome",

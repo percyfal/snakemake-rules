@@ -9,7 +9,7 @@ config_default = {
         },
         'db' : {
             'dbsnp' : "",
-            'ref' : "",
+            'ref' : None,
             'extra_ref' : [],
             'build' : '',
             'build_config' : None,

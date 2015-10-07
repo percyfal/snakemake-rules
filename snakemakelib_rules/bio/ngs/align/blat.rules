@@ -23,4 +23,4 @@ update_config(config_default, config)
 config = config_default
 
 for rule in config['bio.ngs.align.blat']['rules']:
-    include: os.path.join("blat", rule + ".rule")
+    include: os.path.join("_blat", rule + ".rule")

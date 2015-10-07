@@ -14,7 +14,7 @@ config_default = {
     'bio.ngs.align.bowtie2' : {
         'build_ext': [".1.bt2", ".2.bt2", ".3.bt2", ".4.bt2", ".rev.1.bt2", ".rev.2.bt2"],
         'cmd' : 'bowtie2',
-        'index' : "",
+        'index' : None,
         'ref' : config['bio.ngs.settings']['db']['ref'],
         'rg_fn' : None,
         'rules': DEFAULT_RULES,
