@@ -21,6 +21,10 @@ config_default = {
         'read2_suffix' : ".fastq.gz",
         'read_length' : 100,
         'regions': [],
+        'rnaseq': {
+            '_quantification' : [],
+            '_transcriptome_quantification' : False,
+        },
         'sequence_capture': {
             'bait_regions' : "",
             'target_regions': "",
