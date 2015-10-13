@@ -1,8 +1,15 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Update conda recipe. [Per Unneberg]
+
 0.1-alpha.2 (2015-10-07)
 ------------------------
+
+- Update ChangeLog. [Per Unneberg]
 
 - Update docs. [Per Unneberg]
 
