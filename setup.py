@@ -30,17 +30,17 @@ def package_path(path, filters=()):
     if not os.path.exists(path):
         raise RuntimeError("packaging non-existent path: %s" % path)
     elif os.path.isfile(path):
-        package_data.append(relpath(path, 'snakemakelib_rules'))
+        package_data.append(relpath(path, 'snakemake_rules'))
     else:
         for path, dirs, files in os.walk(path):
-            path = relpath(path, 'snakemakelib_rules')
+            path = relpath(path, 'snakemake_rules')
             for f in files:
                 if not filters or f.endswith(filters):
                     package_data.append(join(path, f))
 
 rule_suffixes = ('.rules', '.rule')
                     
-package_path(join(ROOT, 'snakemakelib_rules'), rule_suffixes)
+package_path(join(ROOT, 'snakemake_rules'), rule_suffixes)
 scripts = []
 
 REQUIRES = [
@@ -80,22 +80,22 @@ _version = versioneer.get_version()
 _cmdclass = versioneer.get_cmdclass()
 _cmdclass.update({'test': PyTest})
 setup(
-    name="snakemakelib-rules",
+    name="snakemake-rules",
     version=_version,
     cmdclass=_cmdclass,
     author="Per Unneberg",
     author_email="per.unneberg@scilifelab.se",
     description="Snakemake rule library",
     license="MIT",
-    url="http://github.com/percyfal/snakemakelib-rules",
+    url="http://github.com/percyfal/snakemake-rules",
     scripts=scripts,
     packages=[
-        'snakemakelib_rules',
+        'snakemake_rules',
     ],
     # namespace_packages = [
-    #     'snakemakelib',
-    #     'snakemakelib.rules',
+    #     'snakemake',
+    #     'snakemake.rules',
     # ],
-    package_data={'snakemakelib_rules': package_data},
+    package_data={'snakemake_rules': package_data},
     install_requires=REQUIRES,
 )
