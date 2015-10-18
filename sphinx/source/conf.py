@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# snakemakelib-rules documentation build configuration file, created by
+# snakemake-rules documentation build configuration file, created by
 # sphinx-quickstart on Tue Oct  6 15:00:15 2015.
 #
 # This file is execfile()d with the current directory set to its
@@ -55,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'snakemakelib_rules'
+project = 'snakemake_rules'
 copyright = '2015, Per Unneberg'
 author = 'Per Unneberg'
 
@@ -63,7 +63,7 @@ author = 'Per Unneberg'
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 
-from snakemakelib_rules import __version__
+from snakemake_rules import __version__
 #
 # The short X.Y version.
 version = __version__
@@ -257,7 +257,7 @@ html_sidebars = {
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'snakemakelib_rulesdoc'
+htmlhelp_basename = 'snakemake_rulesdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -277,7 +277,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'snakemakelib_rules.tex', 'snakemakelib_rules Documentation',
+  ('index', 'snakemake_rules.tex', 'snakemake_rules Documentation',
    'Per Unneberg', 'manual'),
 ]
 
@@ -307,7 +307,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'snakemakelib_rules', 'snakemakelib_rules Documentation',
+    ('index', 'snakemake_rules', 'snakemake_rules Documentation',
      ['Per Unneberg'], 1)
 ]
 
@@ -321,8 +321,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'snakemakelib_rules', 'snakemakelib_rules Documentation',
-   'Per Unneberg', 'snakemakelib_rules', 'One line description of project.',
+  ('index', 'snakemake_rules', 'snakemake_rules Documentation',
+   'Per Unneberg', 'snakemake_rules', 'One line description of project.',
    'Miscellaneous'),
 ]
 
