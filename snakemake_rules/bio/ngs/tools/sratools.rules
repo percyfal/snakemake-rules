@@ -2,12 +2,8 @@
 import os
 import re
 import csv
-try:
-    from snakemakelib.log import LoggerManager
-    smllogger = LoggerManager().getLogger('bio/ngs/tools/sratools.rules')
-except:
-    import logging
-    smllogger.getLogger('bio.ngs.tools.sratools')
+import logging
+logger = logging.getLogger('bio.ngs.tools.sratools')
 
 include: '../settings.rules'
 include: '../../../settings.rules'
@@ -73,24 +69,24 @@ rule sratools_download_srastudy_biosample:
             reader = csv.DictReader(fh)
             bioproject = list(set([x["BioProject"] for x in reader]))
         if len(bioproject) > 1:
-            smllogger.warn("More than one bioproject defined! This may or may not be ok, depending on what you're doing")
+            logger.warn("More than one bioproject defined! This may or may not be ok, depending on what you're doing")
         if config['bio.ngs.tools.sratools']['email'] is None:
             s = "bio.ngs.tools.sratools: No email set; must tell NCBI mail address! Either set USER_EMAIL environment variable or configuration variable bio.ngs.tools.sratools.email"
-            smllogger.warn(s)
+            logger.warn(s)
         else:
             with open(output.csv, "w") as fh:
                 from Bio import Entrez
                 import xml.etree.ElementTree as ET
                 Entrez.email = config['bio.ngs.tools.sratools']['email']
-                smllogger.info("Connecting to Entrez; querying for bioproject {bioprj}".format(bioprj=bioproject[0]))
+                logger.info("Connecting to Entrez; querying for bioproject {bioprj}".format(bioprj=bioproject[0]))
                 handle = Entrez.esearch(db="sra", term=bioproject[0], retmax=config['bio.ngs.tools.sratools']['retmax'])
                 record = Entrez.read(handle)
                 handle.close()
-                smllogger.info("Retrieved biosample id list for bioproject {bioprj}; fetching biosamples".format(bioprj=bioproject[0]))
+                logger.info("Retrieved biosample id list for bioproject {bioprj}; fetching biosamples".format(bioprj=bioproject[0]))
                 handle = Entrez.efetch(db="sra", id=record['IdList'])
                 record = handle.read()
                 handle.close()
-                smllogger.info("Retrieved biosample info; parsing xml")
+                logger.info("Retrieved biosample info; parsing xml")
                 tree = ET.fromstring(record)
                 record_list = []
                 fieldnames = []

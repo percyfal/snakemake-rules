@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 #
 import os
-smllogger = logging.getLogger('bio.ngs.db.cloudbiolinux')
+logger = logging.getLogger('bio.ngs.db.cloudbiolinux')
 
 include: "../settings.rules"
 

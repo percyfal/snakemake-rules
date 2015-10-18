@@ -13,7 +13,6 @@ DEFAULT_RULES = [
     'picard_create_sequence_dictionary_awk',
     'picard_create_sequence_dictionary_region_awk',
     'picard_do_qc',
-    'picard_do_summary',
     'picard_mark_duplicates',
     'picard_merge_sam',
     'picard_reorder_sam',

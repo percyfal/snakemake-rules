@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 #
 include: "../settings.rules"
-smllogger = logging.getLogger('bio.ngs.db.ucsc')
+logger = logging.getLogger('bio.ngs.db.ucsc')
 
 DEFAULT_RULES = ['ucsc_wigToBigWig', 'ucsc_bedGraphToBigWig']
 

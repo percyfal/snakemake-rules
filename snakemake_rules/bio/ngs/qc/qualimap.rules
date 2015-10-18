@@ -4,7 +4,6 @@
 include: '../settings.rules'
 
 DEFAULT_RULES = ['qualimap_bamqc',
-                 'qualimap_collect_results',
                  'qualimap_plot_summary']
 
 config_default = {

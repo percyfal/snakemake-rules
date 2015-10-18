@@ -37,8 +37,8 @@ def get_config():
     cfg.VCS = "git"
     cfg.style = ""
     cfg.tag_prefix = ""
-    cfg.parentdir_prefix = "snakemakelib_rules-  # dirname like 'myproject-1.2.0'"
-    cfg.versionfile_source = "snakemakelib_rules/_version.py"
+    cfg.parentdir_prefix = "snakemake_rules-  # dirname like 'myproject-1.2.0'"
+    cfg.versionfile_source = "snakemake_rules/_version.py"
     cfg.verbose = False
     return cfg
 

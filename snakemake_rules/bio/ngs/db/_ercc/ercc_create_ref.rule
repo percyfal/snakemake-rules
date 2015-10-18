@@ -24,11 +24,11 @@ rule ercc_create_ref:
             gb2ercc = {row['GenBank']:row['ERCC_ID'] for row in reader}
             if config['settings']['email'] is None:
                 s = "bio.ngs.db.ercc: No email set; must tell NCBI mail address! Either set USER_EMAIL environment variable or configuration variable settings.email"
-                smllogger.warn(s)
+                logger.warn(s)
             else:
                 from Bio import Entrez, SeqIO
                 Entrez.email = config['settings']['email']
-                smllogger.info("connecting to Entrez; querying for genbank accessions")
+                logger.info("connecting to Entrez; querying for genbank accessions")
                 handle = Entrez.efetch(db="nuccore", id=",".join(list(gb2ercc.keys())), rettype="gb", retmode="text")
                 records = SeqIO.parse(handle, "gb")
                 outrecords = []

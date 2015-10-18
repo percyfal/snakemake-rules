@@ -11,6 +11,6 @@ rule ucsc_write_chromosome:
         for seq in seqs:
             name = output.chrfa
             if seq.id == wildcards.chr or seq.id == "chr" + wildcards.chr:
-                smllogger.info("Generating chromosome file {}".format(name))
+                logger.info("Generating chromosome file {}".format(name))
                 SeqIO.write(seq, open(name, 'w'), format='fasta')
                 break

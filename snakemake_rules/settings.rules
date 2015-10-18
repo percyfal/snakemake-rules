@@ -1,17 +1,15 @@
 # -*- snakemake -*- 
-"""Main settings for snakemakelib-rules. Defines top-level configuration
+"""Main settings for snakemake-rules. Defines top-level configuration
 settings for all rules.
 """
 import os
 from snakemake.utils import update_config
+from snakemake_rules._version import get_versions
 
-try:
-    from snakemakelib_rules._version import get_versions
-    # Fix snakemakelib logging
-    import logging
-except:
-    import logging
-    get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
+# Main logger
+import logging
+
+get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
 
 config_default = {
     'settings' : {
