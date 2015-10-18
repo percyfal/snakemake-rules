@@ -1,9 +1,9 @@
 package:
-  name: snakemakelib-rules
-  version: "0.1a.2"
+  name: snakemake-rules
+  version: "0.1a.3"
 source:
-  git_rev: 0.1-alpha.2
-  git_url: https://github.com/percyfal/snakemakelib-rules
+  git_rev: 0.1-alpha.3
+  git_url: https://github.com/percyfal/snakemake-rules
 requirements:
   build:
     - python ==3.4.3 # As with snakemake
@@ -19,7 +19,7 @@ test:
   requires:
     # docs
     - sphinx >=1.3.1
-    - sphinx-bootstrap-theme
+    - sphinx-bootstrap-theme >= 0.4.7
 
     # tests
     - coverage
@@ -31,7 +31,7 @@ test:
     - snakemake
     
 about:
-  home: https://github.com/percyfal/snakemakelib-rules.git
+  home: https://github.com/percyfal/snakemake-rules.git
   license: MIT License
 
   summary: 'Library of snakemake rules. The rules can be used as-is without installing snakemakelib itself.'

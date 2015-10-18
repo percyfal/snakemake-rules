@@ -1,9 +1,9 @@
-.. snakemakelib-rules documentation master file, created by
+.. snakemake-rules documentation master file, created by
    sphinx-quickstart on Tue Oct  6 15:00:15 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-snakemakelib-rules - a library of snakemake rules
+snakemake-rules - a library of snakemake rules
 ==================================================
 
 .. _about:
@@ -29,7 +29,7 @@ be of general interest.
 Features
 ^^^^^^^^
 
-1. **Rule library**. snakemakelib-rules is just a library of snakemake
+1. **Rule library**. snakemake-rules is just a library of snakemake
    rules. At the very least, if rules need to be tweaked, the rule
    library serves as a cut-and-paste resource of template rules
 2. **Atomic rules**. As much as is possible, every rule lives in an
@@ -45,7 +45,7 @@ Features
 
    .. code-block:: python
 
-      include: "https://raw.githubusercontent.com/percyfal/snakemakelib-rules/master/snakemakelib_rules/bio/ngs/align/bwa.rules"
+      include: "https://raw.githubusercontent.com/percyfal/snakemake-rules/master/snakemake_rules/bio/ngs/align/bwa.rules"
 
 
 

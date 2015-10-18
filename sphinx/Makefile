@@ -85,17 +85,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/snakemakelib-rules.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/snakemake-rules.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/snakemakelib-rules.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/snakemake-rules.qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/snakemakelib-rules"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/snakemakelib-rules"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/snakemake-rules"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/snakemake-rules"
 	@echo "# devhelp"
 
 epub:

@@ -16,16 +16,16 @@ with the following content:
 
    # -*- snakemake -*-
    import os
-   from snakemakelib_rules import SNAKEMAKELIB_RULES_PATH
+   from snakemake_rules import SNAKEMAKE_RULES_PATH
    
    config = {
        'bio.ngs.align.bwa' : {
-	   'index' : os.path.join(SNAKEMAKELIB_RULES_PATH, "data/genomes/Hsapiens/hg19/bwa/chr11.fa"),
+	   'index' : os.path.join(SNAKEMAKE_RULES_PATH, "data/genomes/Hsapiens/hg19/bwa/chr11.fa"),
        },
    }
 
-   workdir: os.path.join(SNAKEMAKELIB_RULES_PATH, "data/projects/J.Doe_00_01")
-   include: os.path.join(SNAKEMAKELIB_RULES_PATH, "rules/bio/ngs/align/bwa.rules")
+   workdir: os.path.join(SNAKEMAKE_RULES_PATH, "data/projects/J.Doe_00_01")
+   include: os.path.join(SNAKEMAKE_RULES_PATH, "rules/bio/ngs/align/bwa.rules")
 
 Briefly, in this file we:
 
@@ -34,8 +34,8 @@ Briefly, in this file we:
 2. set a **working directory**
 3. **include** rules for bwa
 
-In this minimal example, we make use of the internal snakemakelib
-variable ``SNAKEMAKELIB_PATH`` to locate the rules, but could as well
+In this minimal example, we make use of the internal snakemake
+variable ``SNAKEMAKE_RULES_PATH`` to locate the rules, but could as well
 have included the rules by supplying the full path.
 
 Now, to see which rules are included, you can type:
