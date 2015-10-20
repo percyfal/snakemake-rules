@@ -15,6 +15,7 @@ config_default = {
             'build_config' : None,
         },
         'fastq_suffix' : ".fastq.gz",
+        'filter_suffix': "_1.fastq.gz",
         'read1_label' : "_1",
         'read2_label' : "_2",
         'read1_suffix' : ".fastq.gz",
