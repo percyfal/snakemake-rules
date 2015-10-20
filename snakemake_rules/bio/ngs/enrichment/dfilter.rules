@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+#
+# http://collaborations.gis.a-star.edu.sg/~cmb6/kumarv1/dfilter/
+#
+# Requires manual install
+#
+include: '../settings.rules'
+
+DEFAULT_RULES = ['dfilter_run_dfilter_bam']
+
+config_default = {
+    'bio.ngs.enrichment.dfilter' : {
+        'ref' : config['bio.ngs.settings']['db']['ref'],
+        'options' : "-lpval=2 -ks=50 -bs=100 -wig",
+        'cmd' : 'run_dfilter.sh',
+        'rules': DEFAULT_RULES,
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+for rule in config['bio.ngs.enrichment.dfilter']['rules']:
+    include: os.path.join("_dfilter", rule + ".rule")
