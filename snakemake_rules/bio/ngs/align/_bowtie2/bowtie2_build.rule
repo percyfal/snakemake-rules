@@ -13,6 +13,6 @@ config = config_default
 rule bowtie2_build:
     """Bowtie build index"""
     params: cmd = config['bio.ngs.align.bowtie2']['bowtie2_build']['cmd']
-    input: config['bio.ngs.align.bowtie2f']['ref'] if config['bio.ngs.align.bowtie2']['ref'] else "{prefix}"
+    input: config['bio.ngs.align.bowtie2']['ref'] if config['bio.ngs.align.bowtie2']['ref'] else "{prefix}"
     output: expand("{{prefix}}{ext}", ext=config['bio.ngs.align.bowtie2']['build_ext'])
     shell: "{params.cmd} {input} {wildcards.prefix}"

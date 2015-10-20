@@ -3,8 +3,7 @@
 #
 include: '../settings.rules'
 
-DEFAULT_RULES = ['qualimap_bamqc',
-                 'qualimap_plot_summary']
+DEFAULT_RULES = ['qualimap_bamqc']
 
 config_default = {
     'bio.ngs.qc.qualimap' : {
