@@ -19,6 +19,8 @@ config_default = {
             'java_tmpdir' : "/tmp",
         },
         'threads' : 8,
+        'temporary_rules': [],
+        'protected_rules': [],
     },
 }
 

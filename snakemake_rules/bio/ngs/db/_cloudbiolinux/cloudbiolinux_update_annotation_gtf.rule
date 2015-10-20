@@ -33,7 +33,7 @@ rule cloudbiolinux_update_annotation_gtf:
                 if os.path.exists(gb):
                     seqs = SeqIO.parse(open(gb), format = "gb")
                 else:
-                    logger.warn("No genbank file {} for {}; skipping inclusion in {}".format(gb, f, output.gtf))
+                    smllogger.warn("No genbank file {} for {}; skipping inclusion in {}".format(gb, f, output.gtf))
                 for seq in seqs:
                     d = {
                         'name' : seq.name,

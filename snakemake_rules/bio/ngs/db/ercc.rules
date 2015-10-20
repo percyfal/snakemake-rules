@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 import os
-logger = logging.getLogger('bio.ngs.db.ercc')
+smllogger = logging.getLogger('bio.ngs.db.ercc')
 
 include: "../settings.rules"
 

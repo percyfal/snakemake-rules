@@ -21,6 +21,6 @@ rule ucsc_no_alt_analysis_set_reference:
         with open(output.ref, "w") as fh:
             for seq in seqs:
                 if r.match(seq.id):
-                    logger.info("Writing chromosome {}".format(seq.id))
+                    smllogger.info("Writing chromosome {}".format(seq.id))
                     SeqIO.write(seq, fh, format='fasta')
 
