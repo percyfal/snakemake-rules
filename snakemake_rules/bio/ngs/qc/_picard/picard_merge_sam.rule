@@ -3,7 +3,10 @@ import shutil
 from snakemake.exceptions import RuleException
 
 def _picard_merge_sam_input_fn(wildcards):
-    raise RuleException("Implement function for generating source files and set the configuration parameter config['bio.ngs.qc.picard']['merge_sam']['inputfun'] to the name of the function. The function should return a list of bam files to be merged")
+    raise RuleException("""Implement function for generating source files and apply
+    workflow.rules.picard_merge_sam.set_input(function) to set the
+    input function for the picard_merge_sam rule. The function should
+    return a list of bam files to be merged""")
 
 
 config_default = {
@@ -12,7 +15,6 @@ config_default = {
             'label' : "merge", # target label
             'options' : "CREATE_INDEX=true",
             'output' : [],
-            'inputfun': _picard_merge_sam_input_fn,
         },
     },
 }
@@ -29,7 +31,7 @@ rule picard_merge_sam:
     params: cmd = config['bio.ngs.qc.picard']['cmd'] + MERGE_SAM_FILES,
             options = " ".join([config['bio.ngs.qc.picard']['options'],
                                 config['bio.ngs.qc.picard']['merge_sam']['options']])
-    input: config['bio.ngs.qc.picard']['merge_sam']['inputfun']
+    input: _picard_merge_sam_input_fn
     output: merge="{prefix}." + config['bio.ngs.qc.picard']['merge_sam']['label'] + ".bam"
     run: 
       if (len(input) > 1):
