@@ -1,5 +1,4 @@
 # -*- snakemake -*-
-
 config_default = {
     'bio.ngs.align.star' : {
         'star_index' : {
@@ -31,7 +30,7 @@ rule star_index:
                                 "--sjdbOverhang {}".format(config['bio.ngs.align.star']['star_index']['sjdbOverhang']) if config['bio.ngs.align.star']['star_index']['sjdbGTFfile'] else ""\
                                 ]),
             genomedir = os.path.dirname(config['bio.ngs.align.star']['index'])
-    input: ref = [config['bio.ngs.align.star']['ref']] + [ref(x, config['bio.ngs.settings']['db']) for x in config['bio.ngs.align.star']['extra_ref']],
+    input: ref = [config['bio.ngs.align.star']['ref']] + [config['bio.ngs.align.star']['extra_ref']] if config['bio.ngs.align.star']['extra_ref'] else [],
            gtf = config['bio.ngs.align.star']['star_index']['sjdbGTFfile'] if config['bio.ngs.align.star']['star_index']['sjdbGTFfile'] else ""
     output: Genome = config['bio.ngs.align.star']['index'], SA=os.path.join(os.path.dirname(config['bio.ngs.align.star']['index']), "SA")
     log: config['bio.ngs.align.star']['index'] + ".log"
