@@ -1,0 +1,12 @@
+# -*- snakemake -*-
+rule star_align_log:
+    input: bam = "{prefix}.Aligned.out.bam"
+    output: log = "{prefix}.Log.final.out"
+    run:
+        pass
+
+rule star_align_log_sorted:
+    input: bam = "{prefix}.Aligned.sortedByCoord.out.bam"
+    output: log = "{prefix}.Log.final.out"
+    run:
+        pass

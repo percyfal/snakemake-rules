@@ -31,8 +31,6 @@ rule star_align_se:
     input: read1 = "{prefix}" + config['bio.ngs.settings']['read1_label'] + config['bio.ngs.settings']['fastq_suffix'],
            index = config['bio.ngs.align.star']['index']
     output: bam = (["{prefix}" + _star_suffix()] + ["{prefix}" + ".Aligned.toTranscriptome.out.bam"] if config['bio.ngs.settings']['rnaseq']['_transcriptome_quantification'] else [])
-    # STAR log placed in {prefix}.Log.final.out; if we list as output it will be removed on temporary rule termination
-    # log = ["{prefix}" + ".Log.final.out"]
     log: "{prefix}.log"
     threads: config['bio.ngs.align.star']['align']['threads']
     shell: "{params.cmd} --runThreadN {threads} --genomeDir {params.genomedir} --readFilesIn {input.read1} {params.options} --outFileNamePrefix {wildcards.prefix}."
