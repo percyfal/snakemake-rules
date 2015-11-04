@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 import os
+import logging
 smllogger = logging.getLogger('bio.ngs.db.ercc')
 
 include: "../settings.rules"
@@ -16,7 +17,6 @@ config_default = {
 
 update_config(config_default, config)
 config = config_default
-
 
 for rule in config['bio.ngs.db.ercc']['rules']:
     include: os.path.join("_ercc", rule + ".rule")

@@ -16,7 +16,7 @@ DEFAULT_RULES = ['rseqc_clipping_profile',
 config_default = {
     'bio.ngs.qc.rseqc' : {
         'rules' : DEFAULT_RULES,
-        'refgene' : config['bio.ngs.settings']["annotation"]["transcript_annot_gtf"],
+        'refgene' : config['bio.ngs.settings']["annotation"]["transcript_annot_gtf"].replace(".gtf", ".bed12"),
         'home' : os.getenv("RSEQC_HOME", ""),
     },
 }
