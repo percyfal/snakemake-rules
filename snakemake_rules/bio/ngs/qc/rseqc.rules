@@ -11,7 +11,7 @@ DEFAULT_RULES = ['rseqc_clipping_profile',
                  'rseqc_read_distribution',
                  'rseqc_read_duplication',
                  'rseqc_read_quality',
-                 'rseqc_qc_8']
+                 'rseqc_qc']
 
 config_default = {
     'bio.ngs.qc.rseqc' : {
