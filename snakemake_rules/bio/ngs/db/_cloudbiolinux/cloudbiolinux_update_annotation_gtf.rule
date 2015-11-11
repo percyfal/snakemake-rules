@@ -4,10 +4,7 @@ import os
 config_default = {
     'bio.ngs.db.cloudbiolinux' : { 
         'annotation' : {
-            'transcript_annot_gtf' : annotation(
-                annotation="ref-transcripts-" + "-".join([
-                    os.path.splitext(os.path.basename(x))[0] for x in config['bio.ngs.settings']['db']['extra_ref']]) + ".gtf",\
-                db_config=config['bio.ngs.settings']['db'])
+            'transcript_annot_gtf' : None,
         },
     },
 }
@@ -15,11 +12,10 @@ config_default = {
 update_config(config_default, config)
 config = config_default
 
-# FIXME: input should be genbank file
+# FIXME: rule in general is wrong
 rule cloudbiolinux_update_annotation_gtf:
-    input: gtf = annotation(annotation='ref-transcripts.gtf',\
-                            db_config=config['bio.ngs.settings']['db'], ignore_extra_ref=True),
-           ref = [ref(x, config['bio.ngs.settings']['db']) for x in config['bio.ngs.settings']['db']['extra_ref']]
+    input: gtf = [],
+           ref = [config['bio.ngs.settings']['db']['ref']] + [x for x in config['bio.ngs.settings']['db']['extra_ref']]
     output: gtf = protected(config['bio.ngs.db.cloudbiolinux']['annotation']['transcript_annot_gtf'])
     run:
         from Bio import SeqIO
