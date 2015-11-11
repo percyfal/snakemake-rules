@@ -11,6 +11,7 @@ config_default = {
         'ref' : config['bio.ngs.settings']['db']['ref'],
         'ref_sfx' : '.transcripts.fa',
         'index' : "",
+        'index_is_transcriptome': False, # Set to true if mapping directly to transcriptome
         'calculate-expression' : {
             'cmd' : 'rsem-calculate-expression',
             'options' : '--no-bam-output',
@@ -25,7 +26,8 @@ config = config_default
 # Add rsem to rnaseq section
 config['bio.ngs.settings']['rnaseq']['_quantification'].append('rsem')
 # Set transcriptome based quantification true (for STAR etc)
-config['bio.ngs.settings']['rnaseq']['_transcriptome_quantification'] = True
+if not config['bio.ngs.rnaseq.rsem']['index_is_transcriptome']:
+    config['bio.ngs.settings']['rnaseq']['_transcriptome_quantification'] = True
 
 for rule in config['bio.ngs.rnaseq.rsem']['rules']:
     include: os.path.join("_rsem", rule + ".rule")

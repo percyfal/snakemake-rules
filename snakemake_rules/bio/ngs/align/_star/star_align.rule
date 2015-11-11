@@ -30,7 +30,8 @@ rule star_align:
     input: read1 = "{prefix}" + config['bio.ngs.settings']['read1_label'] + config['bio.ngs.settings']['fastq_suffix'],
            read2 = "{prefix}" + config['bio.ngs.settings']['read2_label'] + config['bio.ngs.settings']['fastq_suffix'],
            index = config['bio.ngs.align.star']['index']
-    output: bam = (["{prefix}" + _star_suffix()] + ["{prefix}" + ".Aligned.toTranscriptome.out.bam"] if config['bio.ngs.settings']['rnaseq']['_transcriptome_quantification'] else []),
+    output: bam = ["{prefix}" + _star_suffix()],
+            txbam = ["{prefix}" + ".Aligned.toTranscriptome.out.bam"] if config['bio.ngs.settings']['rnaseq']['_transcriptome_quantification'] else []
     threads: config['bio.ngs.align.star']['align']['threads']
     shell: "{params.cmd} --runThreadN {threads} --genomeDir {params.genomedir} --readFilesIn {input.read1} {input.read2} {params.options} --outFileNamePrefix {wildcards.prefix}."
 
