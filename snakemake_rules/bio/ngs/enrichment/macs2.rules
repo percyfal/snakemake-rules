@@ -4,7 +4,7 @@
 #
 include: "../settings.rules"
 
-DEFAULT_RULES = ['macs2_callpeak_treatment_only_bam_pe']
+DEFAULT_RULES = ['macs2_callpeak_treatment_only_bam_pe', 'macs2_xls_to_bed']
 
 config_default = {
     'bio.ngs.enrichment.macs2' : {
