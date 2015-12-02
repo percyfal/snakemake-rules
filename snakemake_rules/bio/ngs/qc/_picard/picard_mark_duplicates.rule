@@ -18,5 +18,14 @@ rule picard_mark_duplicates:
             options = config['bio.ngs.qc.picard']['mark_duplicates']['options'],
             suffix = ".dup_metrics"
     input: bam = "{prefix}.bam", bai = "{prefix}.bai"
-    output: bam = "{prefix}.dup.bam", metrics = "{prefix}.dup.dup_metrics"
-    shell: "{params.cmd} I={input.bam} O={output.bam} {params.options} M={output.metrics}"
+    output: bam = "{prefix}.dup.bam"
+    shell: "{params.cmd} I={input.bam} O={output.bam} {params.options} M={wildcards.prefix}.dup.dup_metrics"
+
+
+
+rule picard_mark_duplicates_log:
+    """Picard: mark duplicates, log output"""
+    input: bam = "{prefix}.dup.bam"
+    output: metrics = "{prefix}.dup.dup_metrics"
+    run:
+        pass
