@@ -23,6 +23,7 @@ config_default = {
         'read_length' : 100,
         'regions': [],
         'rnaseq': {
+            'ref_is_transcriptome': False,
             '_quantification' : [],
             '_transcriptome_quantification' : False,
         },
