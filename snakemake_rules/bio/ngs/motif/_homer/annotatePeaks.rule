@@ -1,0 +1,32 @@
+# -*- snakemake -*-
+import os
+
+config_default = {
+    'bio.ngs.motif.homer' : {
+        'annotatePeaks' : {
+            'options': "",
+            'gtf': None, # gtf annotation file
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+options =  " ".join([
+    config['bio.ngs.motif.homer']['annotatePeaks']['options'],
+    "-gtf {}".format(config['bio.ngs.motif.homer']['annotatePeaks']['gtf']) if config['bio.ngs.motif.homer']['annotatePeaks']['gtf'] else ""])
+
+gtf = [config['bio.ngs.motif.homer']['annotatePeaks']['gtf']] if config['bio.ngs.motif.homer']['annotatePeaks']['gtf'] else []
+
+rule annotatePeaks:
+    """homer: run annotatePeaks.pl for annotating peaks."""
+    params: cmd = "annotatePeaks.pl",
+            build = config['bio.ngs.motif.homer']['genome_build'],
+            options = options
+    input: bed = "{prefix}.bed",
+           gtf = gtf
+    log: "{prefix}.annotatePeaks.log"
+    output: tsv = "{prefix}.annotatePeaks.tsv",
+            stats = "{prefix}.annotatePeaks.stats.tsv"
+    shell: "{params.cmd} {input.bed} {params.build} -annStats {output.stats} {params.options} > {output.tsv} 2> {log}"
