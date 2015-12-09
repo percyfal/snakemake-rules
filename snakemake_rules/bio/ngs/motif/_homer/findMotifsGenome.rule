@@ -1,0 +1,26 @@
+# -*- snakemake -*-
+import os
+
+config_default = {
+    'bio.ngs.motif.homer' : {
+        'findMotifsGenome' : {
+            'options': "",
+            'size': 10,
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule findMotifsGenome:
+    """homer: run findMotifsGenome.pl for finding enriched motifs in
+    genomic regions"""
+    params: cmd = "findMotifsGenome.pl",
+            build = config['bio.ngs.motif.homer']['genome_build'],
+            size = config['bio.ngs.motif.homer']['findMotifsGenome']['size'],
+            options = " ".join([config['bio.ngs.motif.homer']['findMotifsGenome']['options']])
+    input: bed = "{prefix}.bed"
+    output: homermotifs = "{prefix}.findMotifsGenome/homerMotifs.all.motifs"
+    log: "{prefix}.findMotifsGenome.log"
+    shell: "{params.cmd} {input.bed} {params.build} $(dirname {output.homermotifs}) -size {params.size} {params.options} 2> {log}"

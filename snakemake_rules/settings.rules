@@ -4,12 +4,13 @@ settings for all rules.
 """
 import os
 from snakemake.utils import update_config
-from snakemake_rules._version import get_versions
-
+try:
+    from snakemake_rules._version import get_versions
+except:
+    get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
+    
 # Main logger
 import logging
-
-get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
 
 config_default = {
     'settings' : {
@@ -27,4 +28,4 @@ config_default = {
 update_config(config_default, config)
 config = config_default
 
-config['_version'] = get_versions()
+config['_snakemake_rules_version'] = get_versions()

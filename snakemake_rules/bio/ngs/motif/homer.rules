@@ -6,13 +6,18 @@
 #
 include: '../settings.rules'
 
+DEFAULT_RULES = ['annotatePeaks', 'findMotifsGenome']
+
 config_default = {
     'bio.ngs.motif.homer' : {
         'options' : '',
+        'rules': DEFAULT_RULES,
+        'genome_build': 'hg38',
     },
 }
 
 update_config(config_default, config)
 config = config_default
 
-
+for rule in config['bio.ngs.motif.homer']['rules']:
+    include: os.path.join("_homer", rule + ".rule")
