@@ -12,6 +12,7 @@ config_default = {
         'annotation' : config['bio.ngs.settings']['annotation']['transcript_annot_gtf'],
         'options' : "-readcount -fulltranscript -mRNAnorm -rmnameoverlap -bothendsceil",
         'unique' : "",
+        'use_multimapped': False, # rpkmforgenes requires uniquely mapping reads
         'annot_format' : 'refFlat',
     },
 }

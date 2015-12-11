@@ -12,6 +12,7 @@ config_default = {
         'ref_sfx' : '.transcripts.fa',
         'index' : "",
         'index_is_transcriptome': False, # Set to true if mapping directly to transcriptome
+        'use_multimapped': True, # RSEM uses multimapped reads for quantification
         'calculate-expression' : {
             'cmd' : 'rsem-calculate-expression',
             'options' : '--no-bam-output',
