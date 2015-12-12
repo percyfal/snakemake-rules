@@ -1,0 +1,9 @@
+0.1-alpha.5 (Dec 12 2015)
+==========================
+
+Add misc rules:
+
+- soft-clipping for rsem
+- homer rules
+
+Bug fixes.

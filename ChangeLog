@@ -1,8 +1,47 @@
 Changelog
 =========
 
+0.1-alpha.5 (2015-12-12)
+------------------------
+
+- Add release notes. [Per Unneberg]
+
+- Add use_multimapped option. [Per Unneberg]
+
+  Fixes #8
+
+- Add soft_clipping rule. [Per Unneberg]
+
+  Fixes #7
+
+  See https://groups.google.com/forum/#!msg/rna-star/gfz1mvylkTk/9SqPYBErkhsJ
+
+- Improve get_versions function. [Per Unneberg]
+
+- Update homer rules. [Per Unneberg]
+
+- Add macs2 rule to convert from bed to xls. [Per Unneberg]
+
+- Add findMotifs. [Per Unneberg]
+
+- Add macs2_xls_to_bed as default, add ref_is_trx. [Per Unneberg]
+
+- Add mark duplicates log rule. [Per Unneberg]
+
+- Unset transcript_annot_gtf. [Per Unneberg]
+
+- Make rseqc_qc default summary rule. [Per Unneberg]
+
+- Remove reference to ref, annotation, index functions. [Per Unneberg]
+
+- Add rsem flag for direct transcriptome mapping. [Per Unneberg]
+
+  Fix #2
+
 0.1-alpha.4 (2015-11-10)
 ------------------------
+
+- Update changelog and recipe for 0.1a4. [Per Unneberg]
 
 - Add release notes for 0.1-alpha.4. [Per Unneberg]
 
