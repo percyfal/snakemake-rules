@@ -1,0 +1,4 @@
+0.1-alpha.6 (Jan XX 2016)
+==========================
+
+Add deploy script.
