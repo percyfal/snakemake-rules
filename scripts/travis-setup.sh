@@ -36,9 +36,10 @@ conda install --yes $DEPS_TEST
 
 # Manual install needed
 conda install --yes snakemake
+
+conda build conda.recipe --output
+
 echo `pwd`
 
 snakemake -s /home/travis/build/percyfal/snakemake-rules/snakemake_rules/tests/Snakefile -F data/test.sort.bam
 
-
-conda build conda.recipe --output
