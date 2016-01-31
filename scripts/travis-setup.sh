@@ -37,6 +37,8 @@ conda install --yes $DEPS_TEST
 # Manual install needed
 conda install --yes snakemake
 
+conda build --quiet conda.recipe
+
 BUILDFILE=`conda build conda.recipe --output`
 
 conda install --yes $BUILDFILE
