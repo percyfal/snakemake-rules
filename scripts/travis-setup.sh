@@ -17,6 +17,10 @@ python -V
 conda config --set always_yes yes
 conda update -q conda
 conda info -a
+
+DEPS_TRAVIS="python=$TRAVIS_PYTHON_VERSION conda-build"
+conda install --yes $DEPS_TRAVIS
+
 conda config --add channels bokeh
 conda config --add channels percyfal
 
