@@ -1,0 +1,4 @@
+bio.ngs.align.bwa:
+  index: data/chr11.fa
+
+  
