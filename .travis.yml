@@ -7,7 +7,7 @@ os:
 
 python:
   - 3.4
-  - 3.5
+  # - 3.5
 
 env:
   global:
