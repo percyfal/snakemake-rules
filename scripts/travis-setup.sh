@@ -36,6 +36,8 @@ conda install --yes $DEPS_TEST
 
 # Manual install needed
 conda install --yes snakemake
+# Install coveralls
+pip install coveralls
 
 conda build --quiet conda.recipe
 
