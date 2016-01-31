@@ -31,6 +31,6 @@ EOF
 )
 echo $DEPS_TEST
 
-
+conda install --yes $DEPS_TEST
 
 conda build conda.recipe --output
