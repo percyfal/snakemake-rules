@@ -2,12 +2,11 @@
 from os.path import join
 from snakemake_rules import SNAKEMAKE_RULES_PATH
 
-print(SNAKEMAKE_RULES_PATH)
-
 workdir: join(SNAKEMAKE_RULES_PATH, "tests")
 
 configfile: join(SNAKEMAKE_RULES_PATH, "tests", "config.yaml")
 
 include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/align/bwa.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/samtools.rules")
 
 

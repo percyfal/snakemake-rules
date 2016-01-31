@@ -27,6 +27,11 @@ test:
     - mock
     - pytest
     - pytest-cov ==1.8.1
+
+    # workflow
+    - bwa ==0.7.12
+    - samtools ==1.3
+
   imports:
     - snakemake
     

@@ -18,5 +18,5 @@ def test_snakemake():
 
 def test_bwa_align():
     """Test bwa alignment"""
-    output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F', 'data/test.bam'], stderr=sp.STDOUT)
-    print(output)
+    output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F', 'data/test.sort.bam'], stderr=sp.STDOUT)
+    assert "3 of 3 steps (100%) done" in str(output)

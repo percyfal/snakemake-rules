@@ -15,7 +15,7 @@ env:
 
 
 script:
-  - py.test --cov-report= --cov=snakemake-rules .
+  - py.test --cov-report= --cov=snakemake_rules .
   
 branches:
   only:
