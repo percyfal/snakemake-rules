@@ -24,4 +24,13 @@ conda install --yes $DEPS_TRAVIS
 conda config --add channels bokeh
 conda config --add channels percyfal
 
+DEPS_TEST=$(cat <<EOF | python -
+from conda_build.metadata import MetaData
+print(" ".join([s.replace(" ", "") for s in MetaData("conda.recipe").get_value("test/requires")]))
+EOF
+)
+echo $DEPS_TEST
+
+
+
 conda build conda.recipe --output
