@@ -34,4 +34,7 @@ echo $DEPS_TEST
 
 conda install --yes $DEPS_TEST
 
+# Manual install needed
+conda install --yes snakemake
+
 conda build conda.recipe --output
