@@ -20,4 +20,4 @@ conda info -a
 conda config --add channels bokeh
 conda config --add channels percyfal
 
-conda build 
+conda build conda.recipe --output
