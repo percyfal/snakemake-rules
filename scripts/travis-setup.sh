@@ -39,8 +39,4 @@ conda install --yes snakemake
 # Install coveralls
 pip install coveralls
 
-conda build --quiet conda.recipe
-
-BUILDFILE=`conda build conda.recipe --output`
-
-conda install --yes $BUILDFILE
+python setup.py install
