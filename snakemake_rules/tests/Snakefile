@@ -7,6 +7,7 @@ workdir: join(SNAKEMAKE_RULES_PATH, "tests")
 configfile: join(SNAKEMAKE_RULES_PATH, "tests", "config.yaml")
 
 include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/align/bwa.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/align/star.rules")
 include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/samtools.rules")
 include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/bamtools.rules")
 
