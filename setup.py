@@ -42,7 +42,9 @@ rule_suffixes = ('.rules', '.rule')
                     
 package_path(join(ROOT, 'snakemake_rules'), rule_suffixes)
 package_path(join(ROOT, 'snakemake_rules', 'tests', 'Snakefile'))
+package_path(join(ROOT, 'snakemake_rules', 'tests', 'Snakefile_regions'))
 package_path(join(ROOT, 'snakemake_rules', 'tests', 'config.yaml'))
+package_path(join(ROOT, 'snakemake_rules', 'tests', 'config_regions.yaml'))
 package_path(join(ROOT, 'snakemake_rules', 'tests', 'data'))
 
 scripts = []
