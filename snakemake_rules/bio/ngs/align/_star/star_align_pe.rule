@@ -18,7 +18,7 @@ def _star_suffix():
     elif config['bio.ngs.align.star']['align']['outSAMtype'].find("SortedByCoordinate") > -1:
         return ".Aligned.sortedByCoord.out.bam"
 
-rule star_align:
+rule star_align_pe:
     """Run STAR alignment"""
     params: cmd = config['bio.ngs.align.star']['cmd'],
             genomedir = os.path.dirname(config['bio.ngs.align.star']['index']),
