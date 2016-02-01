@@ -14,13 +14,16 @@ SNAKEFILE_REGIONS=join(abspath(dirname(__file__)), "Snakefile_regions")
 def test_snakemake():
     """Test snakemake command call"""
     output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-l'], stderr=sp.STDOUT)
-    assert "bwa_mem" in str(output)
+    assert "bwa_mem" in output.decode("utf-8")
     
 
 def test_bwa_align():
     """Test bwa alignment"""
     output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F', 'data/test.sort.bam'], stderr=sp.STDOUT)
-    assert "3 of 3 steps (100%) done" in str(output)
+    assert "Removing temporary output file data/chr11.fa.sa." in output.decode("utf-8").replace("\t", " ")
+    assert "Removing temporary output file data/test.bam." in output.decode("utf-8").replace("\t", " ")
+    assert "3 of 3 steps (100%) done" in output.decode("utf-8").replace("\t", " ")
+
 
 
 def test_bamtools_filter():

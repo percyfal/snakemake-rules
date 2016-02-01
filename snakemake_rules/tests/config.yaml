@@ -1,9 +1,18 @@
+settings:
+  temporary_rules:
+    - bwa_index
+    - bwa_mem
+
 bio.ngs.align.bwa:
   index: data/chr11.fa
 
 bio.ngs.align.star:
   ref: data/chr11.fa
   index: data/Genome
+  rules:
+    - star_index
+    - star_align_pe
+    - star_align_log
 
 bio.ngs.tools.samtools:
   rules:
