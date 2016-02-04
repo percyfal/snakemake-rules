@@ -1,0 +1,25 @@
+# -*- snakemake -*-
+from os.path import join
+from snakemake.utils import set_temporary_output
+from snakemake_rules import SNAKEMAKE_RULES_PATH
+
+workdir: join(SNAKEMAKE_RULES_PATH, "tests")
+
+configfile: join(SNAKEMAKE_RULES_PATH, "tests", "config.yaml")
+
+rule all:
+    input: "data/test.sort.rg.dup.realign.recal.annotated.vcf"
+
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/align/bwa.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/align/star.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/samtools.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/bamtools.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/gatk.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/qc/picard.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/variation/snpeff.rules")
+
+set_temporary_output(*[workflow.get_rule(x) for x in config['settings']['temporary_rules']])
+
+
+ruleorder: samtools_sort > picard_sort_sam
+ruleorder: snpeff_annotate_variants > gatk_unified_genotyper

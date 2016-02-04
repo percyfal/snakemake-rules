@@ -17,6 +17,26 @@ python -V
 conda config --set always_yes yes
 conda update -q conda
 conda info -a
-conda config --add channels bokeh percyfal
 
-conda build 
+DEPS_TRAVIS="python=$TRAVIS_PYTHON_VERSION conda-build"
+conda install --yes $DEPS_TRAVIS
+
+conda config --add channels bioconda
+conda config --add channels bokeh
+conda config --add channels percyfal
+
+DEPS_TEST=$(cat <<EOF | python -
+from conda_build.metadata import MetaData
+print(" ".join([s.replace(" ", "") for s in MetaData("conda.recipe").get_value("test/requires")]))
+EOF
+)
+echo $DEPS_TEST
+
+conda install --yes $DEPS_TEST
+
+# Manual install needed
+conda install --yes snakemake
+# Install coveralls
+pip install coveralls
+
+python setup.py install

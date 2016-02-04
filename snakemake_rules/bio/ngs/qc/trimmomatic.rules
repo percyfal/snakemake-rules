@@ -7,8 +7,8 @@ config_default = {
     'bio.ngs.qc.trimmomatic' : {
         'home' : os.getenv("TRIMMOMATIC_HOME", os.curdir),
     	'options' : "-phred33",
-        'java_mem' : config['bio.ngs.settings']['java']['java_mem'],
-        'java_tmpdir' : config['bio.ngs.settings']['java']['java_tmpdir'],
+        'java_mem' : config['settings']['java']['java_mem'],
+        'java_tmpdir' : config['settings']['java']['java_tmpdir'],
         'processing_options' : "LEADING:15 TRAILING:15 MINLEN:36",
     },
 }

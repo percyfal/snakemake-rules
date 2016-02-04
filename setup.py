@@ -41,6 +41,12 @@ def package_path(path, filters=()):
 rule_suffixes = ('.rules', '.rule')
                     
 package_path(join(ROOT, 'snakemake_rules'), rule_suffixes)
+package_path(join(ROOT, 'snakemake_rules', 'tests', 'Snakefile'))
+package_path(join(ROOT, 'snakemake_rules', 'tests', 'Snakefile_regions'))
+package_path(join(ROOT, 'snakemake_rules', 'tests', 'config.yaml'))
+package_path(join(ROOT, 'snakemake_rules', 'tests', 'config_regions.yaml'))
+package_path(join(ROOT, 'snakemake_rules', 'tests', 'data'))
+
 scripts = []
 
 REQUIRES = [
@@ -58,27 +64,27 @@ except:
     pass
 
 # Integrating pytest with setuptools: see
-# https://pytest.org/latest/goodpractises.html#integrating-with-distutils-python-setup-py-test
-from distutils.core import setup, Command
-# you can also import from setuptools
+# http://pytest.org/latest/goodpractices.html#integrating-with-setuptools-python-setup-py-test-pytest-runner
+import sys
+from setuptools.command.test import test as TestCommand
 
-class PyTest(Command):
-    user_options = []
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+
     def initialize_options(self):
-        pass
+        TestCommand.initialize_options(self)
+        self.pytest_args = []
 
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        import subprocess
-        import sys
-        errno = subprocess.call([sys.executable, 'runtests.py'])
-        raise SystemExit(errno)
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(self.pytest_args)
+        sys.exit(errno)
 
 _version = versioneer.get_version()
 _cmdclass = versioneer.get_cmdclass()
 _cmdclass.update({'test': PyTest})
+
 setup(
     name="snakemake-rules",
     version=_version,
@@ -98,4 +104,5 @@ setup(
     # ],
     package_data={'snakemake_rules': package_data},
     install_requires=REQUIRES,
+    tests_require=["pytest"],
 )

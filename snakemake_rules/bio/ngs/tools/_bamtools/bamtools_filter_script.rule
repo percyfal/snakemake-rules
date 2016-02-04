@@ -3,9 +3,9 @@ rule bamtools_filter_script:
     """Run bamtools filter on a bam file using a script input file"""
     params: cmd = config['bio.ngs.tools.bamtools']['cmd'],
             options = " ".join("-{} \"{}\"".format(k,v) for k,v in config['bio.ngs.tools.bamtools']['filter']['options'].items()),
-            script = "-script {{input.script}} " if config['bio.ngs.tools.bamtools']['filter']['regions'] else ""
+            script = "-script " if config['bio.ngs.tools.bamtools']['filter']['regions'] else ""
     input: script = "{prefix}.script" if config['bio.ngs.tools.bamtools']['filter']['regions'] else [], bam = "{prefix}.bam"
     output: bam = "{prefix}.filter.bam"
     log: "{prefix}.filter.log"
     shell:
-        "{params.cmd} filter -in {input.bam} -out {output.bam} {params.options} {params.script} > {log}"
+        "{params.cmd} filter -in {input.bam} -out {output.bam} {params.options} {params.script} {input.script} > {log}"

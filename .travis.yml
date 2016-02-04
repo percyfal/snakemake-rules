@@ -5,13 +5,9 @@ language: python
 os:
   - linux
 
-cache:
-  directories:
-    - $HOME/.cache/pip
-
 python:
   - 3.4
-  - 3.5
+  # - 3.5
 
 env:
   global:
@@ -19,11 +15,12 @@ env:
 
 
 script:
-  - py.test --cov-report= --cov=snakemakelib .
+  - py.test --cov-report= --cov=snakemake_rules .
   
 branches:
   only:
     - master
+    - develop
     - /^\d+.\d+.\d+$/
     - /^\d+.\d+.\d+dev\d+$/
     - /^\d+.\d+.\d+alpha\.\d+$/

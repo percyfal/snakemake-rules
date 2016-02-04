@@ -15,8 +15,8 @@ config_default = {
     'bio.ngs.motif.gem' : {
         'rules' : DEFAULT_RULES,
         'home' : os.getenv("GEM_MOTIF_HOME", os.curdir),
-        'java_mem' : config['bio.ngs.settings']['java']['java_mem'],
-        'java_tmpdir' : config['bio.ngs.settings']['java']['java_tmpdir'],
+        'java_mem' : config['settings']['java']['java_mem'],
+        'java_tmpdir' : config['settings']['java']['java_tmpdir'],
         'options' : '',
     },
 }
