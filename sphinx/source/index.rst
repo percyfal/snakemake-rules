@@ -9,7 +9,7 @@ snakemake-rules - a library of snakemake rules
 .. _about:
 
 
-`Snakemake <https://bitbucket.org/johanneskoester/snakemake/wiki/Home>`__
+`Snakemake <https://bitbucket.org/johanneskoester/snakemake/wiki/Home>`_
 library for various applications, with a focus on bioinformatics and
 next-generation sequencing.
 
@@ -58,4 +58,7 @@ Contents
    docs/quickstart
    docs/configuration
    docs/examples
+   docs/troubleshooting
+   docs/resources
    docs/release_notes
+

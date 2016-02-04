@@ -1,4 +1,15 @@
-0.1-alpha.6 (Jan XX 2016)
+0.1-alpha.6 (Feb 2 2016)
 ==========================
 
 Add deploy script.
+
+Add simple test.
+
+Add travis and coveralls support.
+
+Issues
+----------
+
+- rename star_align (#10)
+- add genePredToBed (#11)
+- bamtools filter script (#12)
