@@ -5,6 +5,9 @@ settings:
 
 bio.ngs.align.bwa:
   index: data/chr11.fa
+  mem:
+    options: -M
+  threads: 2
 
 bio.ngs.align.star:
   ref: data/chr11.fa
