@@ -1,11 +1,13 @@
-0.1-alpha.6 (Feb 2 2016)
+0.1-alpha.6 (Feb 4 2016)
 ==========================
 
 Add deploy script.
 
-Add simple test.
+Add some simple tests and example Snakefiles.
 
 Add travis and coveralls support.
+
+Update documentation.
 
 Issues
 ----------
