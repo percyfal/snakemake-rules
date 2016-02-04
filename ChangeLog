@@ -1,6 +1,98 @@
 Changelog
 =========
 
+0.1-alpha.6 (2016-02-04)
+------------------------
+
+- Update documentation. [Per Unneberg]
+
+  Add notes on resources
+
+- Add graphviz. [Per Unneberg]
+
+- Add variation pipeline example. [Per Unneberg]
+
+- Correct java config parameter. [Per Unneberg]
+
+  Main java config now in settings, not bio.ngs.settings
+
+- Update documentation. [Per Unneberg]
+
+- Don't complain if python2 activate_cmd unset. [Per Unneberg]
+
+  Use docs to inform how to use python2 rules
+
+- Modify test to include temporary rules. [Per Unneberg]
+
+- Add star.rules to snakefile. [Per Unneberg]
+
+- Install using python setup.py. [Per Unneberg]
+
+- Update pytest integration for version 2.8. [Per Unneberg]
+
+- Add test for bamtools filter script on regions. [Per Unneberg]
+
+  Fix #12
+
+  Add extra line
+
+- Run bwa index on one file only. [Per Unneberg]
+
+  Previosly included both index and wildcards.prefix; choose which one to
+  use in the "input:" section
+
+- Rename star_align to star_align_pe. [Per Unneberg]
+
+  Fix #10
+
+- Add coveralls. [Per Unneberg]
+
+- Exclude py3.5 for now. [Per Unneberg]
+
+- Actually build the package. [Per Unneberg]
+
+- Install snakemake-rules via local install. [Per Unneberg]
+
+- Build recipe first. [Per Unneberg]
+
+- Add snakemake test statement. [Per Unneberg]
+
+- Add snakemake to tests. [Per Unneberg]
+
+- Add bioconda channel. [Per Unneberg]
+
+- Update tests to run alignment and sort. [Per Unneberg]
+
+- Add genePredToBed and samtools sort. [Per Unneberg]
+
+  Fixes #11
+
+- Add test data. [Per Unneberg]
+
+- Install test dependencies. [Per Unneberg]
+
+- Update dependencies for coveralls. [Per Unneberg]
+
+- Add conda-build dependency. [Per Unneberg]
+
+- Update test branches. [Per Unneberg]
+
+- Add conda build. [Per Unneberg]
+
+- Conda add channels separate rows. [Per Unneberg]
+
+- Add release notes. [Per Unneberg]
+
+- Update script mode. [Per Unneberg]
+
+- Add travis setup and support for devel tags. [Per Unneberg]
+
+- Add release notes. [Per Unneberg]
+
+- Add deploy script. [Per Unneberg]
+
+- Add release notes. [Per Unneberg]
+
 0.1-alpha.5 (2015-12-12)
 ------------------------
 
