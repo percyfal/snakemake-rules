@@ -1,0 +1,7 @@
+# -*- snakemake -*-
+rule emboss_seqret_fasta_to_genbank:
+    """EMBOSS seqret: convert fasta to genbank"""
+    input: "{prefix}.fasta"
+    output: "{prefix}.genbank"
+    shell: "seqret -sequence {input} -outseq genbank:{output}"
+    
