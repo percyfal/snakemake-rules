@@ -25,6 +25,7 @@ rule ercc_create_ref:
             if config['settings']['email'] is None:
                 s = "bio.ngs.db.ercc: No email set; must tell NCBI mail address! Either set USER_EMAIL environment variable or configuration variable settings.email"
                 smllogger.warn(s)
+                raise
             else:
                 from Bio import Entrez, SeqIO
                 Entrez.email = config['settings']['email']

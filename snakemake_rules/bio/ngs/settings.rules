@@ -5,7 +5,8 @@ config_default = {
     'bio.ngs.settings' : {
         'annotation' : {
             'annot_label' : "",
-            'transcript_annot_gtf' : "",
+            'transcript_annot_gtf' : None,
+            'sources': [],
         },
         'db' : {
             'dbsnp' : "",

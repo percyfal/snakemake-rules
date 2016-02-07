@@ -1,8 +1,37 @@
 Changelog
 =========
 
+0.1-alpha.7 (2016-02-07)
+------------------------
+
+- Add release notes. [Per Unneberg]
+
+- Misc minor fixes. [Per Unneberg]
+
+- Add rules. [Per Unneberg]
+
+  - db utilities to create annotation files
+  - emboss rules for sequence format conversion
+  - add config bio.ngs.settings:annotation:sources for creation of
+
+- Add and update rules. [Per Unneberg]
+
+  Add dag output
+  Init gtf file to None
+  Init star index to refdir + Genome
+
+- Remove unused star_index:genome config parameter. [Per Unneberg]
+
+- Rename test files and include second sample. [Per Unneberg]
+
+- Adds single end cutadapt rule. [Justin Fear]
+
 0.1-alpha.6 (2016-02-04)
 ------------------------
+
+- Updating conda version to 0.1-alpha.6. [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Update documentation. [Per Unneberg]
 
