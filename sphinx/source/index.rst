@@ -58,7 +58,11 @@ Contents
    docs/quickstart
    docs/configuration
    docs/examples
-   docs/troubleshooting
    docs/resources
+
+.. toctree::
+   :maxdepth: 1
+
+   docs/troubleshooting
    docs/release_notes
 

@@ -19,23 +19,28 @@ def test_snakemake():
 
 def test_bwa_align():
     """Test bwa alignment"""
-    output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F', 'data/test.sort.bam'], stderr=sp.STDOUT)
+    output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F', 'data/s1.sort.bam'], stderr=sp.STDOUT)
     assert "Removing temporary output file data/chr11.fa.sa." in output.decode("utf-8").replace("\t", " ")
-    assert "Removing temporary output file data/test.bam." in output.decode("utf-8").replace("\t", " ")
+    assert "Removing temporary output file data/s1.bam." in output.decode("utf-8").replace("\t", " ")
     assert "3 of 3 steps (100%) done" in output.decode("utf-8").replace("\t", " ")
 
 
 
 def test_bamtools_filter():
     """Test bamtools filter without using script file, dry run"""
-    output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F',  '-n',  '-p', 'data/test.filter.bam'])
-    assert 'bamtools filter -in data/test.bam -out data/test.filter.bam -mapQuality ">=255"   > data/test.filter.log' in output.decode("utf-8").replace("\t", " ")
+    output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F',  '-n',  '-p', 'data/s1.filter.bam'])
+    assert 'bamtools filter -in data/s1.bam -out data/s1.filter.bam -mapQuality ">=255"   > data/s1.filter.log' in output.decode("utf-8").replace("\t", " ")
 
 
 def test_bamtools_filter_script():
     """Test bamtools filter using script file, dry run. See issue #12."""
-    output = sp.check_output(['snakemake', '-s', SNAKEFILE_REGIONS, '-F',  '-n',  '-p', 'data/test.filter.bam'])
-    s = "echo '{\"filters\":[\n{\n\"reference\":\"chr11\",\n \"mapQuality\": \">=255\"\n\n}\n    ]\n}\n' > data/test.script"
+    output = sp.check_output(['snakemake', '-s', SNAKEFILE_REGIONS, '-F',  '-n',  '-p', 'data/s1.filter.bam'])
+    s = "echo '{\"filters\":[\n{\n\"reference\":\"chr11\",\n \"mapQuality\": \">=255\"\n\n}\n    ]\n}\n' > data/s1.script"
     assert s in output.decode("utf-8")
-    s = 'bamtools filter -in data/test.bam -out data/test.filter.bam -mapQuality ">=255" -script  data/test.script > data/test.filter.log'
+    s = 'bamtools filter -in data/s1.bam -out data/s1.filter.bam -mapQuality ">=255" -script  data/s1.script > data/s1.filter.log'
     assert s in output.decode("utf-8")
+
+
+def test_picard_merge():
+    """Test picard merge."""
+    pass
