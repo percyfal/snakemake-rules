@@ -10,7 +10,7 @@ config_default = {
         'ref' : config['bio.ngs.settings']['db']['ref'],
         'extra_ref' : config['bio.ngs.settings']['db']['extra_ref'],
         'rules' : DEFAULT_RULES,
-        'index' : os.path.join(os.curdir, "Genome"),
+        'index' : os.path.join(os.path.dirname(config['bio.ngs.settings']['db']['ref']), "Genome"),
     },
 }
 
