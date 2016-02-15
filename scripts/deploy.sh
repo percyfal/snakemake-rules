@@ -40,9 +40,6 @@ release_short=$( echo $release | sed 's|\([^\^.]*\)\(\^0\)$|\1|g' | sed 's/-alph
 if [[ -z "$devel" && ! -z "$release" ]]; then
     echo "You have triggered the release process"
 
-    # Make sure we start in develop; should exit if uncommited changes
-    # git checkout develop
-
     # create a new branch
     git checkout -b release_$release
 
@@ -82,6 +79,7 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
     git push origin $release
 
     git checkout develop
+    git merge master
 
 elif [[ ! -z "$devel" && -z "$release" ]]; then
     echo "You have triggered the devel build process"
