@@ -22,4 +22,8 @@ bio.ngs.tools.samtools:
     - samtools_sort
     - samtools_index
 
-  
+bio.ngs.qc.picard:
+  rules:
+    - picard_build_bam_index
+    - picard_mark_duplicates
+    - picard_merge_sam
