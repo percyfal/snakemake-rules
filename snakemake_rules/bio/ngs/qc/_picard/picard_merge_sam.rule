@@ -16,7 +16,6 @@ config_default = {
         'merge_sam' : {
             'label' : "merge", # target label
             'options' : "CREATE_INDEX=true",
-            'output' : [],
             'inputfun': _picard_merge_sam_input_fn,
         },
     },
