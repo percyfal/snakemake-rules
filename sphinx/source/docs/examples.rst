@@ -1,11 +1,12 @@
 Examples
 ==========
 
-snakemake_rules is shipped with some simple tests, including test data
-files and Snakefiles with auxiliary rules to run simple pipelines. The
-following examples are based on the example Snakefiles, located in the
-directory ``snakemake_rules/tests``. In the examples, we will use yaml
-configuration files that are loaded via the ``configfile`` directive.
+snakemake-rules is shipped with some simple tests, including test
+data files and Snakefiles with auxiliary rules to run simple
+pipelines. The following examples are based on the example Snakefiles,
+located in the directory ``snakemake_rules/tests``. In the examples,
+we will use yaml configuration files that are loaded via the
+``configfile`` directive.
 
 
 Bwa alignment
@@ -13,7 +14,7 @@ Bwa alignment
 
 .. note:: To actually run this example requires `bwa
           <http://bio-bwa.sourceforge.net/>`_ and `samtools
-          <http://www.htslib.org/>`_
+          <http://www.htslib.org/>`_.
 
 First, create a `Snakefile
 <https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-writing-snakefiles>`_
@@ -212,13 +213,18 @@ The configuration entry
 to the function in question. There is one wildcard ``prefix`` which in
 the function is accessible through ``wildcards.prefix``.
 
-Suppose for instance we have a merge target ``test.merge.bam`` that
-takes as input files ``test.run1.bam`` and ``test.run2.bam``. Then the following python code defines a function that generates the correct file names and sets the relevant configuration section:
+Suppose for instance we have a merge target ``data/s.merge.bam`` that
+takes as input files ``data/s1.bam`` and ``data/s2.bam``. Then the
+following python code defines a function that generates the correct
+file names and sets the relevant configuration section:
 
 .. code-block:: python
 
    def merge_inputs(wildcards):
-       return [wildcards.prefix + ".run1.bam", wildcards.prefix + ".run2.bam"] 
+       return [wildcards.prefix + "1.bam", wildcards.prefix + "2.bam"] 
 
 
-   config['bio.ngs.qc.picard']['merge_sam']['inputfun'] = merge_inputs
+   config = {'bio.ngs.qc.picard': {'merge_sam': {'inputfun': merge_inputs}}}
+
+
+See the test file for full examples.

@@ -27,7 +27,7 @@ be of general interest.
 
 
 Features
-^^^^^^^^
+---------
 
 1. **Rule library**. snakemake-rules is just a library of snakemake
    rules. At the very least, if rules need to be tweaked, the rule
@@ -49,11 +49,8 @@ Features
 
 
 
-Contents
----------
-
 .. toctree::
-   :maxdepth: 2
+   :hidden:
 
    docs/quickstart
    docs/configuration
@@ -61,7 +58,7 @@ Contents
    docs/resources
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
 
    docs/troubleshooting
    docs/release_notes
