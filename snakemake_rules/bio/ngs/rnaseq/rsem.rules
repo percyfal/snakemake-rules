@@ -10,7 +10,7 @@ config_default = {
         'threads' : config['settings']['threads'],
         'ref' : config['bio.ngs.settings']['db']['ref'],
         'ref_sfx' : '.transcripts.fa',
-        'index' : "",
+        'index' : "rsem_index",
         'index_is_transcriptome': False, # Set to true if mapping directly to transcriptome
         'use_multimapped': True, # RSEM uses multimapped reads for quantification
         'calculate-expression' : {

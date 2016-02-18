@@ -9,14 +9,14 @@ logger = logging.getLogger(__name__)
 
 SNAKEFILE=join(abspath(dirname(__file__)), "Snakefile")
 SNAKEFILE_REGIONS=join(abspath(dirname(__file__)), "Snakefile_regions")
-
+DRYRUN="-n"
 
 def test_snakemake():
     """Test snakemake command call"""
     output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-l'], stderr=sp.STDOUT)
     assert "bwa_mem" in output.decode("utf-8")
     
-
+@pytest.mark.skipif(shutil.which("bwa") is None, reason="bwa not installed")
 def test_bwa_align():
     """Test bwa alignment"""
     output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F', 'data/s1.sort.bam'], stderr=sp.STDOUT)
@@ -43,4 +43,7 @@ def test_bamtools_filter_script():
 
 def test_picard_merge():
     """Test picard merge."""
-    pass
+    output = sp.check_output(['snakemake', '-s', SNAKEFILE, '-F',  '-n',  '-p', 'data/s.merge.bam'])
+    assert 'input: data/s1.bam, data/s2.bam' in output.decode("utf-8")
+    assert 'output: data/s.merge.bam' in output.decode("utf-8")
+        

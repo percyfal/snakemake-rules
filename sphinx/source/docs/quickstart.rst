@@ -90,3 +90,29 @@ should produce
 
 To actually run the rules, we need to use the configuration utilities
 of snakemake.
+
+Running the tests
+------------------
+
+snakemake-rules is shipped with some simple tests designed to run
+with `py.test <https://pytest.org>`_. To run the tests, simply issue
+
+.. code:: shell
+
+   $ py.test
+
+in the snakemake-rules installation directory or
+
+.. code:: shell
+
+   $ python setup.py test
+
+
+Note that some tests require external dependencies. If you have
+installed snakemake-rules in a conda environment, simply run
+
+.. code:: shell
+
+   $ conda install -c bioconda bwa==0.7.12 samtools==1.3
+
+
