@@ -1,8 +1,21 @@
 Changelog
 =========
 
+0.1-beta.4 (2016-02-22)
+-----------------------
+
+- Add release notes. [Per Unneberg]
+
+- Fix failing test command. [Per Unneberg]
+
+  Since tests are installed, must exclude testing the build directory
+
 0.1-beta.3 (2016-02-22)
 -----------------------
+
+- Updating conda version to 0.1-beta.3. [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Add release notes. [Per Unneberg]
 
