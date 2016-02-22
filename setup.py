@@ -41,6 +41,7 @@ def package_path(path, filters=()):
 rule_suffixes = ('.rules', '.rule')
                     
 package_path(join(ROOT, 'snakemake_rules'), rule_suffixes)
+package_path(join(ROOT, 'snakemake_rules', 'tests'), ('.py'))
 package_path(join(ROOT, 'snakemake_rules', 'tests', 'Snakefile'))
 package_path(join(ROOT, 'snakemake_rules', 'tests', 'Snakefile_regions'))
 package_path(join(ROOT, 'snakemake_rules', 'tests', 'config.yaml'))
@@ -97,6 +98,7 @@ setup(
     scripts=scripts,
     packages=[
         'snakemake_rules',
+        'snakemake_rules.tests',
     ],
     # namespace_packages = [
     #     'snakemake',
