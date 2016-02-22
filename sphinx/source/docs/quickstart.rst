@@ -59,7 +59,7 @@ with the following content:
 
    # -*- snakemake -*-
    import os
-   from snakemake-rules import SNAKEMAKE_RULES_PATH
+   from snakemake_rules import SNAKEMAKE_RULES_PATH
 
    include: os.path.join(SNAKEMAKE_RULES__PATH, "bio/ngs/align/bwa.rules")
 
