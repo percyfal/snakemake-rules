@@ -1,8 +1,21 @@
 Changelog
 =========
 
+0.1-beta.3 (2016-02-22)
+-----------------------
+
+- Add release notes. [Per Unneberg]
+
+- Fix tests installation bug. [Per Unneberg]
+
+  package_path unnecessary
+
 0.1-beta.2 (2016-02-22)
 -----------------------
+
+- Updating conda version to 0.1-beta.2. [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Install test files. [Per Unneberg]
 
