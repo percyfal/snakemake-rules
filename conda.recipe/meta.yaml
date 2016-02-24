@@ -1,8 +1,8 @@
 package:
   name: snakemake-rules
-  version: "0.1b.4"
+  version: "0.1b.5"
 source:
-  git_rev: "0.1-beta.4"
+  git_rev: "0.1-beta.5"
   git_url: https://github.com/percyfal/snakemake-rules
 requirements:
   build:
