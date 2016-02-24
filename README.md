@@ -17,9 +17,9 @@
 
 ## About
 
-Library of snakemake rules. The rules can be used as-is without installing [snakemakelib](http://snakemakelib.readthedocs.org/en/latest/index.html)
+Library of snakemake rules. The rules can be used as-is without installing [snakemakelib](http://percyfal.github.io/snakemake-rules/)
 
-See [the documentation](http://snakemake-rules.readthedocs.org/en/latest/index.html)
+See [the documentation](http://percyfal.github.io/snakemake-rules/index.html)
 for more information.
 
 ## Installation

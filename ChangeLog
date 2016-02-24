@@ -1,8 +1,59 @@
 Changelog
 =========
 
+0.1-beta.5 (2016-02-24)
+-----------------------
+
+- Add release notes. [Per Unneberg]
+
+- Add documentation build to deploy script. [Per Unneberg]
+
+- Update docs to point to github.io. [Per Unneberg]
+
+  Add gh-pages
+
+  Squash commits
+
+  Add gh-pages rule
+
+  Indent gh-pages
+
+  Add gh-pages-dev rule
+
+  Update gh-pages rules
+
+  Update Makefile to use correct source directory
+
+  Add snakemake_rules to GH_PAGES_SOURCES
+
+  Make sure html files are included
+
+  Remove _images
+
+  Remove docs
+
+  Add setup.py
+
+  Add setup.cfg and versioneer
+
+  Add .version for gh-pages builds
+
+  Version info is untagged when using versioneer on gh-pages branch
+
+  Use fh.readline to get version
+
+  Use python setup.py to get version
+
+  Be more explicit on which files to add
+
+  Add _*
+
 0.1-beta.4 (2016-02-22)
 -----------------------
+
+- Updating conda version to 0.1-beta.4. [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Add release notes. [Per Unneberg]
 

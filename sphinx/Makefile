@@ -6,6 +6,7 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
+SOURCEDIR     =  $(dir $(lastword $(MAKEFILE_LIST)))/source
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -15,7 +16,7 @@ endif
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
-ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
+ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) $(SOURCEDIR)
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
@@ -175,3 +176,30 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+GH_PAGES_SOURCES = sphinx/source sphinx/Makefile snakemake_rules
+GH_PAGES_DOCS = *.html *.inv *.js _* docs
+## NB: Requires call from root directory
+gh-pages:
+	python setup.py version 2>/dev/null | grep Version | sed "s/Version://" > .version
+	git checkout gh-pages
+	rm -rf _build _sources _static _modules _images docs
+	git checkout master $(GH_PAGES_SOURCES)
+	git reset HEAD
+	make -f sphinx/Makefile html
+	mv -fv _build/html/* ./
+	rm -rf $(GH_PAGES_SOURCES) _build .version __pycache__
+	git add -A -f $(GH_PAGES_DOCS)
+	git commit -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages ; git checkout master
+
+gh-pages-dev:
+	python setup.py version 2>/dev/null | grep Version | sed "s/Version://" > .version
+	git checkout gh-pages
+	rm -rf _build _sources _static _modules _images docs
+	git checkout develop $(GH_PAGES_SOURCES)
+	git reset HEAD
+	make -f sphinx/Makefile html
+	mv -fv _build/html/* ./
+	rm -rf $(GH_PAGES_SOURCES) _build .version __pycache__
+	git add -A -f $(GH_PAGES_DOCS)
+	git commit -m "Generated gh-pages for `git log develop -1 --pretty=short --abbrev-commit`" && git push origin gh-pages ; git checkout develop

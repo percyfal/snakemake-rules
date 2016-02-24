@@ -1,0 +1,4 @@
+0.1-beta.5 (Feb 24 2016)
+=========================
+
+Move documentation to github.io
