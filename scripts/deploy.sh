@@ -80,6 +80,7 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
 
     git checkout develop
     git merge master
+    make -f sphinx/Makefile gh-pages
 
 elif [[ ! -z "$devel" && -z "$release" ]]; then
     echo "You have triggered the devel build process"
@@ -99,6 +100,7 @@ elif [[ ! -z "$devel" && -z "$release" ]]; then
     # and push the tag
     git push origin $devel
     echo "The new devel build was triggered."
+    make -f sphinx/Makefile gh-pages-dev
 
 else
     echo "You have to pass a -d tag (dev build) OR -r tag for release."
