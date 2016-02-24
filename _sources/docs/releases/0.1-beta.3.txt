@@ -1,0 +1,4 @@
+0.1-beta.3 (Feb 22 2016)
+=========================
+
+Fix test installation bug

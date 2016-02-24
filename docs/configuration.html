@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; snakemake_rules 0.1-beta.4+8.g2ac93d3 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1-beta.4+8.g2ac93d3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="snakemake_rules 0.1-beta.4+8.g2ac93d3 documentation" href="../index.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+
+<div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+
+    <div class="container">
+
+      <div class="navbar-header">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="../index.html">snakemake_rules</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.4+8.g2ac93d3</b></span>
+      </div>
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation-optional">Installation (optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#getting-started">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#running-the-tests">Running the tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rule-organization">Rule organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-default-configuration">The default configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-defined-configuration">User-defined configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#bwa-alignment">Bwa alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#variant-calling">Variant calling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#merging-files">Merging files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Additional resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#id1">snakemakelib-core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#id3">snakemakelib-workflows</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#i-don-t-know-which-configuration-value-to-set">1. I don&#8217;t know which configuration value to set</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release_notes.html#pre-releases">Pre-releases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.4.html">0.1-beta.4 (Feb 22 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.3.html">0.1-beta.3 (Feb 22 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.2.html">0.1-beta.2 (Feb 22 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.1.html">0.1-beta.1 (Feb 18 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.7.html">0.1-alpha.7 (Feb 7 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.6.html">0.1-alpha.6 (Feb 4 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.5.html">0.1-alpha.5 (Dec 12 2015)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.4.html">0.1-alpha.4 (Nov 10 2015)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.3.html">0.1-alpha.3 (Oct 18 2015)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.2.html">0.1-alpha.2 (Oct 7 2015)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.1.html">0.1-alpha.1 (Oct 6 2015)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#rule-organization">Rule organization</a></li>
+<li><a class="reference internal" href="#the-default-configuration">The default configuration</a></li>
+<li><a class="reference internal" href="#user-defined-configuration">User-defined configuration</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rule-organization">Rule organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-default-configuration">The default configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-defined-configuration">User-defined configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Additional resources</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+
+<div id="sourcelink">
+  <a href="../_sources/docs/configuration.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="col-md-9 content">
+      
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="rule-organization">
+<h2>Rule organization<a class="headerlink" href="#rule-organization" title="Permalink to this headline">¶</a></h2>
+<p>Rules are organized by application in <em>rule application files</em> that
+are grouped by a multi-level directory structure that reflects the
+application type. For instance, the file <code class="docutils literal"><span class="pre">bwa.rules</span></code> for the
+alignment application <a class="reference external" href="http://bio-bwa.sourceforge.net/">bwa</a> is
+located in the directory <code class="docutils literal"><span class="pre">bio/ngs/align</span></code>. Every application has a
+rule application file that ends in the suffix <code class="docutils literal"><span class="pre">.rules</span></code>.</p>
+<p>However, the rule application file does not contain any actual rules.
+Its main purpose is to load and initialize global configuration
+variables, and to define default configuration values applicable to
+<em>all</em> rules for the given application. The actual application rules
+are stored one rule per file in a subdirectory named with an
+underscore and the application name. Thus, the subdirectory <code class="docutils literal"><span class="pre">_bwa</span></code>
+stores rules for bwa in files named after the rule ending in the
+suffix <code class="docutils literal"><span class="pre">.rule</span></code>.</p>
+<p>It is important to remember that the <code class="docutils literal"><span class="pre">.rule</span></code> files should never be
+directly included in Snakefiles. Which rules are included in defined
+by a configuration parameter in the application rule file called
+<code class="docutils literal"><span class="pre">rules</span></code>. For instance, an excerpt from <code class="docutils literal"><span class="pre">bwa.rules</span></code> looks as
+follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">include</span><span class="p">:</span> <span class="s1">&#39;../settings.rules&#39;</span>
+
+<span class="n">DEFAULT_RULES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bwa_index&#39;</span><span class="p">,</span> <span class="s1">&#39;bwa_mem&#39;</span><span class="p">]</span>
+
+<span class="n">config_default</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s1">&#39;bio.ngs.align.bwa&#39;</span> <span class="p">:</span> <span class="p">{</span>
+       <span class="o">...</span>
+       <span class="s1">&#39;rules&#39;</span> <span class="p">:</span> <span class="n">DEFAULT_RULES</span><span class="p">,</span>
+       <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">update_config</span><span class="p">(</span><span class="n">config_default</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">config_default</span>
+
+<span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bio.ngs.align.bwa&#39;</span><span class="p">][</span><span class="s1">&#39;rules&#39;</span><span class="p">]:</span>
+    <span class="n">include</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;_bwa&quot;</span><span class="p">,</span> <span class="n">rule</span> <span class="o">+</span> <span class="s2">&quot;.rule&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The rules <code class="docutils literal"><span class="pre">bwa_index</span></code> and <code class="docutils literal"><span class="pre">bwa_mem</span></code> are loaded (included) by
+default, but by modifying the <code class="docutils literal"><span class="pre">rules</span></code> parameter, one can specify what
+rules to include. The following sections will show more specifically
+how this is done.</p>
+</div>
+<div class="section" id="the-default-configuration">
+<h2>The default configuration<a class="headerlink" href="#the-default-configuration" title="Permalink to this headline">¶</a></h2>
+<p>For any application, the application rule file contains a <em>default
+configuration</em> that ensures that all rules have sensible defaults set,
+regardless whether the user decides to modify them or not. The basic
+configuration structure looks like</p>
+<div class="highlight-text"><div class="highlight"><pre>namespace
+    section/parameter
+        parameter
+</pre></div>
+</div>
+<p>The <em>namespace</em> is an identifier for the rules file, and should be
+named <code class="docutils literal"><span class="pre">path.to.rules</span></code>, where <code class="docutils literal"><span class="pre">path</span></code> and <code class="docutils literal"><span class="pre">to</span></code> are directory names
+relative to the rules root path. The <em>section/parameter</em> is either a
+parameter related to the program, or a subprogram which in turn can
+have <em>parameters</em> assigned to it. The section levels are mapped to the
+corresponding levels in the snakemake global <em>config</em> dictionary
+object.</p>
+<p>As an example, consider the default configuration for
+bwa once again:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">config_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;bio.ngs.align.bwa&#39;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;cmd&#39;</span> <span class="p">:</span> <span class="s2">&quot;bwa&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;ref&#39;</span> <span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bio.ngs.settings&#39;</span><span class="p">][</span><span class="s1">&#39;db&#39;</span><span class="p">][</span><span class="s1">&#39;ref&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;index&#39;</span> <span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;index_ext&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;.amb&#39;</span><span class="p">,</span> <span class="s1">&#39;.ann&#39;</span><span class="p">,</span> <span class="s1">&#39;.bwt&#39;</span><span class="p">,</span> <span class="s1">&#39;.pac&#39;</span><span class="p">,</span> <span class="s1">&#39;.sa&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;threads&#39;</span> <span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">][</span><span class="s1">&#39;threads&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;rules&#39;</span> <span class="p">:</span> <span class="n">DEFAULT_RULES</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">update_config</span><span class="p">(</span><span class="n">config_default</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">config_default</span>
+</pre></div>
+</div>
+<p>The namespace is <code class="docutils literal"><span class="pre">bio.ngs.align.bwa</span></code>, reflecting the fact that the
+application rules file is located in the folder <code class="docutils literal"><span class="pre">bio/ngs/align</span></code> and
+is named <code class="docutils literal"><span class="pre">bwa.rules</span></code>. <code class="docutils literal"><span class="pre">config</span></code> is the global snakemake
+configuration object. The <code class="docutils literal"><span class="pre">config_default</span></code> dictionary is mapped to
+the <code class="docutils literal"><span class="pre">config</span></code> object by use of the function
+<code class="xref py py-meth docutils literal"><span class="pre">snakemake.utils.update_config()</span></code>. First, <code class="docutils literal"><span class="pre">config_default</span></code> is
+updated with the current state of <code class="docutils literal"><span class="pre">config</span></code>. Should <code class="docutils literal"><span class="pre">config</span></code> define
+any of the parameters in <code class="docutils literal"><span class="pre">config_default</span></code>, the latter are
+overwritten; if not, the default values are used. The updated
+<code class="docutils literal"><span class="pre">config_default</span></code> dictionary is then set to <code class="docutils literal"><span class="pre">config</span></code>. After the
+configuration has been updated, the <code class="docutils literal"><span class="pre">threads</span></code> parameter above would
+be accessible via <code class="docutils literal"><span class="pre">config['bio.ngs.align.bwa']['threads']</span></code>.</p>
+<p>Incidentally, this example shows another key idea of the
+configuration, namely that some options inherit from rules files
+higher up in the file hierarchy. The rules file
+<code class="docutils literal"><span class="pre">bio/ngs/settings.rules</span></code> contains a generic configuration that is
+common to all ngs rules. This implementation makes it possible to
+override settings for specific programs, like for instance in the case
+of the <code class="docutils literal"><span class="pre">threads</span></code> parameter.</p>
+<p>The application configuration is applicable to all bwa rules.
+However, each bwa rule can have additional configuration defaults
+that are defined in the rule file itself. The top section of
+<code class="docutils literal"><span class="pre">bwa_mem.rule</span></code> reads as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">config_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;bio.ngs.align.bwa&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;mem&#39;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="user-defined-configuration">
+<h2>User-defined configuration<a class="headerlink" href="#user-defined-configuration" title="Permalink to this headline">¶</a></h2>
+<p>User-defined configurations can be defined in the Snakefile through
+the <code class="docutils literal"><span class="pre">config</span></code> object, or through the <code class="docutils literal"><span class="pre">configfile</span></code> directive.
+Remember that the configurations must be set <strong>before</strong> any
+<code class="docutils literal"><span class="pre">include</span></code> statement are issued. The reason is that when a rules file
+is included, the default configuration values are compared to the
+existing <code class="docutils literal"><span class="pre">config</span></code>. If the user has defined custom configurations,
+these will take precedence over the default values. If no custom
+configuration exists, the default values are applied.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The following example shows two ways to configure the number of
+<code class="docutils literal"><span class="pre">threads</span></code> and <code class="docutils literal"><span class="pre">options</span></code> for the <code class="docutils literal"><span class="pre">mem</span></code> rule. First, one can
+initialize the config object in the Snakefile:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">snakemake_rules</span> <span class="kn">import</span> <span class="n">SNAKEMAKE_RULES_PATH</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;bio.ngs.align.bwa&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;mem&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="s2">&quot;-M&quot;</span><span class="p">,</span>
+         <span class="p">}</span>
+         <span class="s1">&#39;threads&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bio/ngs/align/bwa.rules&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, the configuration can be put in a yaml-file (e.g.
+<code class="docutils literal"><span class="pre">config.yaml</span></code>):</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l l-Scalar l-Scalar-Plain">bio.ngs.align.bwa</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">mem</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">options</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">-M</span>
+  <span class="l l-Scalar l-Scalar-Plain">threads</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+<p>and loaded in the Snakefile via the <code class="docutils literal"><span class="pre">configfile</span></code> directive:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">snakemake_rules</span> <span class="kn">import</span> <span class="n">SNAKEMAKE_RULES_PATH</span>
+
+<span class="n">configfile</span><span class="p">:</span> <span class="s2">&quot;config.yaml&quot;</span>
+
+<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bio/ngs/align/bwa.rules&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/docs/configuration.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, Per Unneberg.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

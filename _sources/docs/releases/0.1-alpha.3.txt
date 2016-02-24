@@ -1,0 +1,5 @@
+0.1-alpha.3 (Oct 18 2015)
+==========================
+
+- rename snakemakelib_rules to snakemake_rules
+- remove all references to snakemakelib

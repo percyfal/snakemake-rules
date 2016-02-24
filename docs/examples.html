@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Examples &mdash; snakemake_rules 0.1-beta.4+8.g2ac93d3 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1-beta.4+8.g2ac93d3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="snakemake_rules 0.1-beta.4+8.g2ac93d3 documentation" href="../index.html" />
+    <link rel="next" title="Additional resources" href="resources.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+
+<div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+
+    <div class="container">
+
+      <div class="navbar-header">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="../index.html">snakemake_rules</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.4+8.g2ac93d3</b></span>
+      </div>
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation-optional">Installation (optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#getting-started">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#running-the-tests">Running the tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#rule-organization">Rule organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#the-default-configuration">The default configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#user-defined-configuration">User-defined configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bwa-alignment">Bwa alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variant-calling">Variant calling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#merging-files">Merging files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Additional resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#id1">snakemakelib-core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#id3">snakemakelib-workflows</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#i-don-t-know-which-configuration-value-to-set">1. I don&#8217;t know which configuration value to set</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release_notes.html#pre-releases">Pre-releases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.4.html">0.1-beta.4 (Feb 22 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.3.html">0.1-beta.3 (Feb 22 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.2.html">0.1-beta.2 (Feb 22 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.1.html">0.1-beta.1 (Feb 18 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.7.html">0.1-alpha.7 (Feb 7 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.6.html">0.1-alpha.6 (Feb 4 2016)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.5.html">0.1-alpha.5 (Dec 12 2015)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.4.html">0.1-alpha.4 (Nov 10 2015)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.3.html">0.1-alpha.3 (Oct 18 2015)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.2.html">0.1-alpha.2 (Oct 7 2015)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-alpha.1.html">0.1-alpha.1 (Oct 6 2015)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#bwa-alignment">Bwa alignment</a></li>
+<li><a class="reference internal" href="#variant-calling">Variant calling</a></li>
+<li><a class="reference internal" href="#merging-files">Merging files</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bwa-alignment">Bwa alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variant-calling">Variant calling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#merging-files">Merging files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Additional resources</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+
+<div id="sourcelink">
+  <a href="../_sources/docs/examples.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="col-md-9 content">
+      
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>snakemake-rules is shipped with some simple tests, including test
+data files and Snakefiles with auxiliary rules to run simple
+pipelines. The following examples are based on the example Snakefiles,
+located in the directory <code class="docutils literal"><span class="pre">snakemake_rules/tests</span></code>. In the examples,
+we will use yaml configuration files that are loaded via the
+<code class="docutils literal"><span class="pre">configfile</span></code> directive.</p>
+<div class="section" id="bwa-alignment">
+<h2>Bwa alignment<a class="headerlink" href="#bwa-alignment" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To actually run this example requires <a class="reference external" href="http://bio-bwa.sourceforge.net/">bwa</a> and <a class="reference external" href="http://www.htslib.org/">samtools</a>.</p>
+</div>
+<p>First, create a <a class="reference external" href="https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-writing-snakefiles">Snakefile</a>
+with the following content:</p>
+<div class="code python highlight-python"><div class="highlight"><pre># -*- snakemake -*-
+from os.path import join
+from snakemake_rules import SNAKEMAKE_RULES_PATH
+
+workdir: join(SNAKEMAKE_RULES_PATH, &quot;tests&quot;)
+
+configfile: &quot;config_bwa.yaml&quot;
+
+include: join(SNAKEMAKE_RULES_PATH, &quot;bio/ngs/align/bwa.rules&quot;)
+</pre></div>
+</div>
+<p>Briefly, in this file we set a <strong>working directory</strong>, load the
+<strong>configuration file</strong> and <strong>include</strong> rules for bwa. In this minimal
+example, we make use of the internal snakemake variable
+<code class="docutils literal"><span class="pre">SNAKEMAKE_RULES_PATH</span></code> to locate the rules, but could as well have
+included the rules by supplying the full path. By setting the working
+directory here, we can place the Snakefile anywhere we like; the
+commands will still be executed in the working directory.</p>
+<p>Create the configuration file <code class="docutils literal"><span class="pre">config_bwa.yaml</span></code> with the following
+content:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l l-Scalar l-Scalar-Plain">bio.ngs.bwa.align</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">index</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">data/chr11.fa</span>
+</pre></div>
+</div>
+<p>Here, we indicate that the bwa index file <code class="docutils literal"><span class="pre">chr11.fa</span></code> is located in a
+directory <code class="docutils literal"><span class="pre">data</span></code> relative to the working directory. The <code class="docutils literal"><span class="pre">data</span></code>
+directory also contains a pair of sequence input files,
+<code class="docutils literal"><span class="pre">test_1.fastq.gz</span></code> and <code class="docutils literal"><span class="pre">test_2.fastq.gz</span></code>.</p>
+<p>Now, to see which rules are included, you can type:</p>
+<div class="code shell highlight-python"><div class="highlight"><pre>$ snakemake -l
+</pre></div>
+</div>
+<p>which should generate the following output:</p>
+<div class="code shell highlight-python"><div class="highlight"><pre>bwa_index
+     bwa index a reference
+samtools_index
+     Run samtools index
+bwa_mem
+     Run bwa mem
+</pre></div>
+</div>
+<p>So, by including <code class="docutils literal"><span class="pre">bwa.rules</span></code>, we have actually defined three
+<a class="reference external" href="https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-rules">snakemake rules</a>.
+The bwa rule has the output suffix <code class="docutils literal"><span class="pre">.bam</span></code> and input suffix
+<code class="docutils literal"><span class="pre">.fastq.gz</span></code>. Therefore, we can align the input files by issuing</p>
+<div class="code shell highlight-python"><div class="highlight"><pre>$ snakemake data/test.bam
+</pre></div>
+</div>
+<p>Prior to running a command, it is advisable to use the flags <code class="docutils literal"><span class="pre">-n</span></code>
+(dry run) and <code class="docutils literal"><span class="pre">-p</span></code> (print commands) to actually see what will
+happen. Optionally, one can add <code class="docutils literal"><span class="pre">-F</span></code> which will force snakemake to
+rerun rules, even if output files should exist. Then,</p>
+<div class="code shell highlight-python"><div class="highlight"><pre>$ snakemake -n -p -F data/test.bam
+</pre></div>
+</div>
+<p>generates the output</p>
+<div class="code shell highlight-python"><div class="highlight"><pre>rule bwa_index:
+     input: data/chr11.fa
+     output: data/chr11.fa.amb, data/chr11.fa.ann, data/chr11.fa.bwt, data/chr11.fa.pac, data/chr11.fa.sa
+bwa index data/chr11.fa
+rule bwa_mem:
+     input: data/chr11.fa.amb, data/chr11.fa.ann, data/chr11.fa.bwt, data/chr11.fa.pac, data/chr11.fa.sa, data/test_1.fastq.gz, data/test_2.fastq.gz
+     output: data/test.bam
+     log: data/test.log
+bwa mem -t 1  data/chr11.fa data/test_1.fastq.gz data/test_2.fastq.gz | samtools view -Sb - &gt; data/test.bam
+Job counts:
+        count    jobs
+        1        bwa_index
+        1        bwa_mem
+        2
+</pre></div>
+</div>
+<p>Consequently, <code class="docutils literal"><span class="pre">bwa</span> <span class="pre">index</span></code> will first be run on <code class="docutils literal"><span class="pre">data/chr11.fa</span></code>,
+followed by <code class="docutils literal"><span class="pre">bwa</span> <span class="pre">mem</span></code> on the input sequence files.</p>
+</div>
+<div class="section" id="variant-calling">
+<h2>Variant calling<a class="headerlink" href="#variant-calling" title="Permalink to this headline">¶</a></h2>
+<p>A slightly more complicated example is given in the Snakefile in
+tests. However, the only major difference to the previous example is
+that more applications (rules files) have been included, and a rule
+<code class="docutils literal"><span class="pre">all</span></code> has been added:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;data/test.sort.rg.dup.realign.recal.annotated.vcf&quot;</span>
+</pre></div>
+</div>
+<p>By combining suffixes in the right order and defining a desired output
+file, we generate a pipeline on the fly. The workflow can be
+visualized with the command</p>
+<div class="highlight-shell"><div class="highlight"><pre>$ snakemake -n -p --rulegraph
+</pre></div>
+</div>
+<p>with the following result</p>
+<p class="graphviz">
+<img src="../_images/graphviz-f17ab333a990215f0c0673dab21319e1ffb17dcf.png" alt="digraph snakemake_dag {
+ graph[bgcolor=white, margin=0];
+ node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+ edge[penwidth=2, color=grey];
+     0[label = &quot;bwa_mem&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     1[label = &quot;bwa_index&quot;, color = &quot;0.19 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     2[label = &quot;picard_mark_duplicates&quot;, color = &quot;0.59 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     3[label = &quot;gatk_unified_genotyper&quot;, color = &quot;0.41 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     4[label = &quot;gatk_realigner_target_creator&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     5[label = &quot;gatk_print_reads&quot;, color = &quot;0.06 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     6[label = &quot;picard_add_or_replace_read_groups&quot;, color = &quot;0.43 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     7[label = &quot;snpeff_annotate_variants&quot;, color = &quot;0.24 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     8[label = &quot;all&quot;, color = &quot;0.09 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     9[label = &quot;gatk_indel_realigner&quot;, color = &quot;0.28 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     10[label = &quot;picard_build_bam_index&quot;, color = &quot;0.30 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     11[label = &quot;gatk_base_recalibrator&quot;, color = &quot;0.52 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     12[label = &quot;samtools_sort&quot;, color = &quot;0.53 0.6 0.85&quot;, style=&quot;rounded&quot;];
+     1 -&gt; 0
+     6 -&gt; 2
+     10 -&gt; 2
+     5 -&gt; 3
+     2 -&gt; 4
+     10 -&gt; 4
+     9 -&gt; 5
+     11 -&gt; 5
+     12 -&gt; 6
+     3 -&gt; 7
+     7 -&gt; 8
+     2 -&gt; 9
+     4 -&gt; 9
+     2 -&gt; 10
+     6 -&gt; 10
+     9 -&gt; 11
+     0 -&gt; 12
+}" />
+</p>
+</div>
+<div class="section" id="merging-files">
+<h2>Merging files<a class="headerlink" href="#merging-files" title="Permalink to this headline">¶</a></h2>
+<p>Some rules require some additional tinkering; <code class="docutils literal"><span class="pre">picard_merge_sam</span></code> is
+one such rule. It falls into the class of rules that depend on input
+files whose number and names need to be generated by the rule itself.
+To see what this means in practice, let&#8217;s take a closer look at what
+the rule does.</p>
+<p>The <a class="reference external" href="http://broadinstitute.github.io/picard/">picard</a> command
+<a class="reference external" href="http://broadinstitute.github.io/picard/command-line-overview.html#MergeSamFiles">MergeSamFiles</a>
+merges several SAM/BAM files into one file. The input files should be
+provided as a list to snakemakes <code class="docutils literal"><span class="pre">input</span></code> directive. Instead of
+hard-coding names, Snakemake lets <code class="docutils literal"><span class="pre">input</span></code> take a <a class="reference external" href="https://bitbucket.org/snakemake/snakemake/wiki/Documentation#markdown-header-functions-as-input-files">function as
+argument</a>,
+a function that <strong>must</strong> take one parameter <code class="docutils literal"><span class="pre">wildcards</span></code>. In the case
+of <code class="docutils literal"><span class="pre">picard_merge_sam</span></code>, the function should return the list of files
+to be merged. Note that the function cannot simply look for existing
+output files (unless of course they are the starting files for the
+analysis); the rule needs to generate file names that are produced by
+some upstream rule.</p>
+<p>The <code class="docutils literal"><span class="pre">input</span></code> and <code class="docutils literal"><span class="pre">output</span></code> section of <code class="docutils literal"><span class="pre">picard_merge_sam</span></code> is shown
+below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">input</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bio.ngs.qc.picard&#39;</span><span class="p">][</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">][</span><span class="s1">&#39;inputfun&#39;</span><span class="p">]</span>
+<span class="n">output</span><span class="p">:</span> <span class="n">merge</span><span class="o">=</span><span class="s2">&quot;{prefix}.&quot;</span> <span class="o">+</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bio.ngs.qc.picard&#39;</span><span class="p">][</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.bam&quot;</span>
+</pre></div>
+</div>
+<p>The configuration entry
+<code class="docutils literal"><span class="pre">config['bio.ngs.qc.picard']['merge_sam']['inputfun']</span></code> should be set
+to the function in question. There is one wildcard <code class="docutils literal"><span class="pre">prefix</span></code> which in
+the function is accessible through <code class="docutils literal"><span class="pre">wildcards.prefix</span></code>.</p>
+<p>Suppose for instance we have a merge target <code class="docutils literal"><span class="pre">data/s.merge.bam</span></code> that
+takes as input files <code class="docutils literal"><span class="pre">data/s1.bam</span></code> and <code class="docutils literal"><span class="pre">data/s2.bam</span></code>. Then the
+following python code defines a function that generates the correct
+file names and sets the relevant configuration section:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">merge_inputs</span><span class="p">(</span><span class="n">wildcards</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">wildcards</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;1.bam&quot;</span><span class="p">,</span> <span class="n">wildcards</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;2.bam&quot;</span><span class="p">]</span>
+
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bio.ngs.qc.picard&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;inputfun&#39;</span><span class="p">:</span> <span class="n">merge_inputs</span><span class="p">}}}</span>
+</pre></div>
+</div>
+<p>See the test file for full examples.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/docs/examples.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, Per Unneberg.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
