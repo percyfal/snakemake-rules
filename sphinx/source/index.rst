@@ -26,6 +26,10 @@ be of general interest.
              data in the process.
 
 
+Recently, a similar project called `Snakemake wrappers
+<https://bitbucket.org/snakemake/snakemake-wrappers>`_ has been
+initiated in the official snakemake repository.
+	     
 Features
 ---------
 
