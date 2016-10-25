@@ -18,6 +18,6 @@ rule gatk_realigner_target_creator:
     params: cmd = config['bio.ngs.tools.gatk']['cmd'] + " -T " + config['bio.ngs.tools.gatk']['realigner_target_creator']['cmd'],
             options = " ".join(["-R", config['bio.ngs.tools.gatk']['realigner_target_creator']['ref'],
             config['bio.ngs.tools.gatk']['realigner_target_creator']['options']])
-    input: "{prefix}.bam", "{prefix}.bai", config['bio.ngs.tools.gatk']['realigner_target_creator']['ref'].replace(".fa", ".dict"), config['bio.ngs.tools.gatk']['realigner_target_creator']['ref'] + ".fai"
+    input: "{prefix}.bam", "{prefix}.bai", config['bio.ngs.tools.gatk']['realigner_target_creator']['ref'].replace(".fa", ".dict"), "{}.fai".format(config['bio.ngs.tools.gatk']['realigner_target_creator']['ref'])
     output: "{prefix}.intervals"
     shell: "{params.cmd} {params.options} -I {input[0]} -o {output}"
