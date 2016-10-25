@@ -20,4 +20,4 @@ rule gatk_realigner_target_creator:
             config['bio.ngs.tools.gatk']['realigner_target_creator']['options']])
     input: bam="{prefix}.bam", bai="{prefix}.bai", d=config['bio.ngs.tools.gatk']['realigner_target_creator']['ref'].replace(".fa", ".dict"), fai="{}.fai".format(config['bio.ngs.tools.gatk']['realigner_target_creator']['ref'])
     output: "{prefix}.intervals"
-    shell: "{params.cmd} {params.options} -I {input[0]} -o {output}"
+    shell: "{params.cmd} {params.options} -I {input.bam} -o {output}"
