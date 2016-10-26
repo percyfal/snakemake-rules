@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: '../settings.rules'
 
-DEFAULT_RULES = ['samtools_index']
+DEFAULT_RULES = ['samtools_index', 'samtools_faidx']
 
 config_default = { 
     'bio.ngs.tools.samtools' : {
@@ -9,9 +9,6 @@ config_default = {
         'cmd' : "samtools",
         'threads' : config['settings']['threads'],
         'options' : "",
-        'index' : {
-            'options' : '',
-        },
         'rules' : DEFAULT_RULES,
     },
 }
