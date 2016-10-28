@@ -24,18 +24,29 @@ applications = {x:join(RULEDIR, x) for x in os.listdir(RULEDIR) if isdir(join(RU
 rules = {k: [join(RULEDIR, k, x) for x in os.listdir(v) if x.endswith(".rule")] for k,v in applications.items() }
 
 
-# Add namespace with test files and director
-def pytest_namespace():
-    return {
-        'testdir': TESTDIR,
-        'ruledir': RULEDIR,
-        'snakefile': SNAKEFILE,
-        'snakefile_regions' : SNAKEFILE_REGIONS,
-        'config' : CONFIG,
-        'config_regions' : CONFIG_REGIONS,
-        'rules' : rules,
-    }
-
+keywords = "(?!\s+shell|\s+log|\s+input|\s+run)"
+regex = re.compile(r"output[: ]+(?P<output>.*\n(?:\n" + keywords + ".+)*)", re.MULTILINE)
+# Function for getting output rule
+def make_output(rule, prefix="s1"):
+    with open(rule) as fh:
+        info = "\n".join(fh.readlines())
+    m = regex.search(info)
+    if not m:
+        return None
+    output = m.group("output")
+    m = re.search("[a-zA-Z =]*\"[\{\}a-zA-Z]+(?P<ext>[\.a-z]+)[ ]*\"", output)
+    # Regular extension; use first one
+    if m:
+        return "{prefix}{ext}".format(prefix=prefix, ext=m.group("ext"))
+    # expand case; skip for now
+    m = re.search("expand", output)
+    if m:
+        return None
+    # Config case
+    m = re.search("[a-zA-Z =]*(?P<config>config[^\)]+)", output)
+    if m:
+        return "config"
+    return None
 
 # Add option to run slow tests; by default these are turned off
 def pytest_addoption(parser):
@@ -69,6 +80,18 @@ def pytest_report_header(config):
         py2str = "WARNING: No conda python2 environment found! Workflow tests depending on python2 programs will fail!"
     return "\n".join([py2str])
 
+# Add namespace with test files and director
+def pytest_namespace():
+    return {
+        'testdir': TESTDIR,
+        'ruledir': RULEDIR,
+        'snakefile': SNAKEFILE,
+        'snakefile_regions' : SNAKEFILE_REGIONS,
+        'config' : CONFIG,
+        'config_regions' : CONFIG_REGIONS,
+        'rules' : rules,
+        'make_output' : make_output,
+    }
 
 ##################################################
 # Setup test fixtures
@@ -81,32 +104,14 @@ sample1_2 = abspath(join(dirname(__file__), "data", "s1_2.fastq.gz"))
 sample2_1 = abspath(join(dirname(__file__), "data", "s2_1.fastq.gz"))
 sample2_2 = abspath(join(dirname(__file__), "data", "s2_2.fastq.gz"))
 sampleinfo = abspath(join(dirname(__file__), "data", "sampleinfo.csv"))
-
-##############################
-# Reference data
-##############################
-@pytest.fixture(scope="session", autouse=True)
-def ref(tmpdir_factory):
-    """Setup reference data
-
-    Reference data layout:
-
-    ref/
-    - chr11.fa
-    - ref-transcripts.gtf
-    """
-    p = tmpdir_factory.mktemp('ref', numbered=False)
-    p.join("chr11.fa").mksymlinkto(chr11)
-    p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
-    if pytest.config.getoption("-v"):
-        logger.info("Created reference data folder\n\t" + "\n\t".join(str(x) for x in sorted(p.visit())))
-    return p
+sam = abspath(join(dirname(__file__), "data", "s1.sam"))
+bam = abspath(join(dirname(__file__), "data", "s1.bam"))
 
 
 ##############################
 # sample
 ##############################
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="function", autouse=False)
 def data(tmpdir_factory):
     """
     Setup input data
@@ -117,7 +122,9 @@ def data(tmpdir_factory):
     p.join("s1_2.fastq.gz").mksymlinkto(sample1_2)
     p.join("s2_1.fastq.gz").mksymlinkto(sample2_1)
     p.join("s2_2.fastq.gz").mksymlinkto(sample2_2)
+    p.join("s1.sam").mksymlinkto(sam)
+    p.join("s1.bam").mksymlinkto(bam)
+    p.join("chr11.fa").mksymlinkto(chr11)
+    p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
 
-    if pytest.config.getoption("-v"):
-        logger.info("Created sample flat organization\n\t" + "\n\t".join(str(x) for x in sorted(p.visit())))
     return p

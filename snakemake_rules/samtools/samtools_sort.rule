@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 config_default = {
-    'bio.ngs.tools.samtools' : {
+    'samtools' : {
         'sort' : {
             'options' : '-T /tmp/aln.sorted',
         },
@@ -13,8 +13,7 @@ config = config_default
 
 rule samtools_sort:
     """Run samtools sort"""
-    params: cmd = config['bio.ngs.tools.samtools']['cmd'],
-            options = config['bio.ngs.tools.samtools']['sort']['options']
+    params: options = config['samtools']['sort']['options']
     input: "{prefix}.bam"
     output: "{prefix}.sort.bam"
-    shell: "{params.cmd} sort {params.options} -o {output} {input}"
+    shell: "samtools sort {params.options} -o {output} {input}"
