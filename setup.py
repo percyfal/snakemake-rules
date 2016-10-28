@@ -63,24 +63,6 @@ try:
 except:
     pass
 
-# Integrating pytest with setuptools: see
-# http://pytest.org/latest/goodpractices.html#integrating-with-setuptools-python-setup-py-test-pytest-runner
-import sys
-from setuptools.command.test import test as TestCommand
-
-class PyTest(TestCommand):
-    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
-
-    def initialize_options(self):
-        TestCommand.initialize_options(self)
-        self.pytest_args = []
-
-    def run_tests(self):
-        #import here, cause outside the eggs aren't loaded
-        import pytest
-        errno = pytest.main(self.pytest_args)
-        sys.exit(errno)
-
 _version = versioneer.get_version()
 _cmdclass = versioneer.get_cmdclass()
 _cmdclass.update({'test': PyTest})
@@ -105,5 +87,6 @@ setup(
     # ],
     package_data={'snakemake_rules': package_data},
     install_requires=REQUIRES,
+    setup_requires=['pytest-runner'],
     tests_require=["pytest"],
 )

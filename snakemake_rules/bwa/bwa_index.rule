@@ -1,0 +1,9 @@
+# -*- snakemake -*-
+include: "bwa.settings"
+
+rule bwa_index:
+    """bwa index a reference"""
+    input: indexref = config['bwa']['index'] if config['bwa']['index'] else "{prefix}{ext}"
+    output: expand("{{prefix}}{{ext}}{bwaext}",\
+            bwaext=config['bwa']['index_ext'])
+    shell: "bwa index {input.indexref}"

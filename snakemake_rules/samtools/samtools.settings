@@ -1,0 +1,14 @@
+# -*- snakemake -*-
+include: '../settings.rules'
+
+config_default = { 
+    'samtools' : {
+        'ref' : config['settings']['db']['ref'],
+        'threads' : config['settings']['threads'],
+        'options' : "",
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+

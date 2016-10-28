@@ -1,0 +1,28 @@
+# -*- snakemake -*-
+include: "bwa.settings"
+
+config_default = {
+    'bwa': {
+        'mem' : {
+            'options': "",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule bwa_mem:
+    """Run bwa mem"""
+    params: options = config['bwa']['mem']['options'],
+            index = config['bwa']['index']
+    input: read1 = "{prefix}" + config['settings']['read1_label'] + config['settings']['fastq_suffix'],
+           read2 = "{prefix}" + config['settings']['read2_label'] + config['settings']['fastq_suffix'],
+           index = expand("{index}{ext}", index=config['bwa']['index'], ext=config['bwa']['index_ext'])
+    output: bam = "{prefix}.bam"
+    log: log = "{prefix}.log"
+    threads: config['bwa']['threads']
+    shell:
+        "bwa mem -t {threads} {params.options} {params.index} " + \
+        "{input.read1} {input.read2} | " + \
+        " samtools view -Sb - > {output.bam}"
