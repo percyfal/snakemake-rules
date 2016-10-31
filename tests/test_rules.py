@@ -23,9 +23,16 @@ def test_snakemake_list(rule):
     output = sp.check_output(['snakemake', '-s', rule, '-l'], stderr=sp.STDOUT)
 
 
+application_blacklist = ['utils']
+applications = list(set(applications).difference(application_blacklist))
+blacklist =[]
+
+rules = [(y) for x in applications for y in getattr(pytest.rules, x) if not basename(y).rsplit(".rule") in blacklist]
+
+@pytest.mark.skipif(not applications, reason="application '{}' in blacklist".format(pytest.config.getoption("--application")))
 @pytest.mark.slow
 @pytest.mark.parametrize("rule", rules)
-def test_snakemake_run(rule, data, config):
+def test_snakemake_run(rule, data):
     target = pytest.make_output(rule)
     if target is None:
         pytest.skip("Unable to parse target for rule {}".format(basename(rule)))
