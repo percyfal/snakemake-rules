@@ -7,6 +7,7 @@ import pytest
 import shutil
 import subprocess as sp
 import ast
+from snakemake.parser import parse
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -24,15 +25,9 @@ applications = {x:join(RULEDIR, x) for x in os.listdir(RULEDIR) if isdir(join(RU
 rules = {k: [join(RULEDIR, k, x) for x in os.listdir(v) if x.endswith(".rule")] for k,v in applications.items() }
 
 
-keywords = "(?!\s+shell|\s+log|\s+input|\s+run)"
-regex = re.compile(r"output[: ]+(?P<output>.*\n(?:\n" + keywords + ".+)*)", re.MULTILINE)
-# Function for getting output rule
 def make_output(rule, prefix="s1"):
-    with open(rule) as fh:
-        info = "\n".join(fh.readlines())
-    m = regex.search(info)
-    if not m:
-        return None
+    code, linemake, rulecount = parse(rule)
+    m = re.search("@workflow.output\(\s+(?P<output>.*)", code)
     output = m.group("output")
     m = re.search("[a-zA-Z =]*\"[\{\}a-zA-Z]+(?P<ext>[\.a-z]+)[ ]*\"", output)
     # Regular extension; use first one
@@ -48,6 +43,7 @@ def make_output(rule, prefix="s1"):
         return "config"
     return None
 
+
 # Add option to run slow tests; by default these are turned off
 def pytest_addoption(parser):
     parser.addoption("--slow", action="store_true",
@@ -59,6 +55,10 @@ def pytest_addoption(parser):
                      default="py2.7",
                      help="name of python2 conda environment [default: py2.7]",
                      dest="python2_conda")
+    parser.addoption("-A", "--application", action="store",
+                     help="application to test",
+                     dest="application")
+
 
 
 def pytest_runtest_setup(item):
