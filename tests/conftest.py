@@ -106,6 +106,7 @@ sample2_2 = abspath(join(dirname(__file__), "data", "s2_2.fastq.gz"))
 sampleinfo = abspath(join(dirname(__file__), "data", "sampleinfo.csv"))
 sam = abspath(join(dirname(__file__), "data", "s1.sam"))
 bam = abspath(join(dirname(__file__), "data", "s1.bam"))
+configfile = abspath(join(dirname(__file__), "data", "config.yaml"))
 
 
 ##############################
@@ -126,5 +127,5 @@ def data(tmpdir_factory):
     p.join("s1.bam").mksymlinkto(bam)
     p.join("chr11.fa").mksymlinkto(chr11)
     p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
-
+    p.join("config.yaml").mksymlinkto(configfile)
     return p
