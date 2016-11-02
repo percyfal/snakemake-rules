@@ -1,0 +1,20 @@
+# -*- snakemake -*-
+config_default = {
+    'bio.ngs.tools.samtools' : {
+        'faidx' : {
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule samtools_faidx:
+    """Run samtools faidx"""
+    params: cmd = config['bio.ngs.tools.samtools']['cmd'],
+            options = config['bio.ngs.tools.samtools']['faidx']['options']
+    input: fa = "{prefix}.fa"
+    output: "{prefix}.fa.fai"
+    shell: "{params.cmd} {params.options} faidx {input.fa}"
