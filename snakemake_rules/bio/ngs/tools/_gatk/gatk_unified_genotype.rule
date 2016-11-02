@@ -21,7 +21,7 @@ rule gatk_unified_genotyper:
     params: cmd = config['bio.ngs.tools.gatk']['cmd'] + " -T " + config['bio.ngs.tools.gatk']['unified_genotyper']['cmd'],
             options = " ".join(["-R", config['bio.ngs.tools.gatk']['unified_genotyper']['ref'], 
             config['bio.ngs.tools.gatk']['unified_genotyper']['options']])
-    input: "{prefix}.bam"
+    input: bam="{prefix}.bam", dbsnp=config['bio.ngs.tools.gatk']['dbsnp']
     output: "{prefix}.vcf"
-    shell: "{params.cmd} {params.options} -I {input} -o {output}"
+    shell: "{params.cmd} {params.options} -I {input.bam} -o {output}"
 
