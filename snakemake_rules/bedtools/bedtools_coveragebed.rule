@@ -1,0 +1,26 @@
+# -*- snakemake -*-
+include: "bedtools.settings"
+
+config_default = {
+    'bedtools' : {
+        'coveragebed' : {
+            'cmd' : 'coverageBed',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule bedtools_coveragebed_bam:
+    """Calculate coverage for a bam file.
+
+    Input: {prefix}.bam; output: {prefix}.coverage
+    """
+    params: cmd = config['bedtools']['coveragebed']['cmd'],
+            options=config['bedtools']['options'],
+            bfile = config['bedtools']['bfile']
+    input: "{prefix}.bam"
+    output: "{prefix}.coverage"
+    shell: "{params.cmd} {params.options} -abam {input} -b {params.bfile} > {output}"

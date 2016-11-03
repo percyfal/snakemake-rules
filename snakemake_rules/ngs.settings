@@ -6,7 +6,7 @@ config_default = {
     'ngs.settings' : {
         'annotation' : {
             'annot_label' : "",
-            'transcript_annot_gtf' : None,
+            'transcript_annot_gtf' : "",
             'sources': [],
         },
         'db' : {

@@ -3,14 +3,21 @@
 settings for all rules.
 """
 import os
+from os.path import join
 import csv
+import shutil
 from snakemake.utils import update_config
+from snakemake.exceptions import RuleException
 from snakemake.logging import logger
 try:
     from snakemake_rules._version import get_versions
 except:
     get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
-    
+
+# Check for old configuration key versions
+if any(x.startswith("bio.") for x in list(config.keys())):
+    raise Exception("bio. namespace is deprecated; please update your configuration keys")
+
 # Main logger
 import logging
 

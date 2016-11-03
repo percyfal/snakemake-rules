@@ -1,0 +1,13 @@
+# -*- snakemake -*-
+include: "../main.settings"
+
+
+config_default = {
+    'bio.ngs.assemblyqc.jellyfish' : {
+        'cmd': 'jellyfish',
+        'threads': config['settings']['threads']
+    },
+}
+
+update_config(config_default, config)
+config = config_default

@@ -1,0 +1,16 @@
+# -*- snakemake -*-
+include: '../ngs.settings'
+
+
+config_default = { 
+    'cutadapt' : {
+        'cmd' : "cutadapt",
+        'threeprime': "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+        'fiveprime' : "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT",
+        'options' : "",
+        'fastq_suffix' : config['ngs.settings']['fastq_suffix'],
+    },
+}
+
+update_config(config_default, config)
+config = config_default

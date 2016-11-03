@@ -1,0 +1,29 @@
+# -*- snakemake -*-
+include: 'gatk.settings'
+
+config_default = {
+    'gatk' : {
+        'unified_genotyper' : {
+            'cmd' : 'UnifiedGenotyper',
+            'ref' : config['gatk']['ref'],
+            'options' : " ".join(["-stand_call_conf 30.0 -stand_emit_conf 10.0  --downsample_to_coverage 200 --output_mode EMIT_VARIANTS_ONLY -glm BOTH",
+                                  "--dbsnp {dbsnp}".format(dbsnp=config['gatk']['dbsnp']),
+                                  "-L {target}".format(target=config['gatk']['target_regions']) if not config['gatk']['target_regions'] == "" else "",
+            ])
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule gatk_unified_genotyper:
+    """Run GATK UnifiedGenotyper"""
+    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['unified_genotyper']['cmd'],
+            options = " ".join(["-R", config['gatk']['unified_genotyper']['ref'], 
+            config['gatk']['unified_genotyper']['options']])
+    input: "{prefix}.bam"
+    output: "{prefix}.vcf"
+    shell: "{params.cmd} {params.options} -I {input} -o {output}"
+

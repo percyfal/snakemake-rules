@@ -1,0 +1,27 @@
+# -*- snakemake -*-
+include: "ucsc.settings"
+
+config_default = {
+    'ucsc' : { 
+        'bedGraphToBigWig' : {
+            'cmd' : 'bedGraphToBigWig',
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule ucsc_bedgraph_to_bigWig:
+    """Convert bedGraph file to bigWig.
+
+    Run bedGraphToBigWig to convert bedGraph file to bigWig.
+    """
+    params: cmd = config['ucsc']['bedGraphToBigWig']['cmd'],
+            options = config['ucsc']['bedGraphToBigWig']['options']
+    input: wig = "{prefix}.bdg",
+           sizes = "chrom.sizes"
+    output: bigwig = "{prefix}.bdg.bw"
+    shell: "{params.cmd} {params.options} {input.wig} {input.sizes} {output.bigwig}"

@@ -1,0 +1,27 @@
+# -*- snakemake -*-
+include: "rseqc.settings"
+
+config_default = {
+    'rseqc' : {
+        'junction_annotation' : {
+            'cmd' : 'junction_annotation.py',
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule rseqc_junction_annotation:
+    """Run RSeQC junction_annotation.py
+    NB: Requries reference gene model in bed format
+    """
+    params: cmd = config['rseqc']['junction_annotation']['cmd'],
+            options = config['rseqc']['junction_annotation']['options'],
+    input: bam = "{prefix}.bam", refgene = config['rseqc']['refgene']
+    output: xls = "{prefix}_rseqc/junction_annotation_refseq.junction.xls",
+            txt = "{prefix}_rseqc/junction_annotation_refseq.txt"
+    shell: " {params.cmd} {params.options} -i {input.bam} -o $(dirname {output.txt})/junction_annotation_refseq -r {input.refgene} 2> {output.txt}"
+

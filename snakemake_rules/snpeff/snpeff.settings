@@ -1,0 +1,41 @@
+# -*- snakemake -*-
+include: '../ngs.settings'
+
+config_default = {
+    'snpeff' : {
+        'home' : os.getenv("SNPEFF_HOME", os.curdir),
+        'java_mem' : config['settings']['java']['java_mem'],
+        'java_tmpdir' : config['settings']['java']['java_tmpdir'],
+        'dblist' : "hg19",
+        'genome_version' : config['ngs.settings']['db']['build'],
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+config_default2 = {
+    'snpeff': {
+        'config' : os.path.join(config['snpeff']['home'], "snpEff.config"),
+        'jar' : os.path.join(config['snpeff']['home'], "snpEff.jar"),
+        }}
+
+update_config(config_default2, config)
+config = config_default2
+
+snpeff_args = ["-Xmx" + config['snpeff']['java_mem'], "-Djava.io.tmpdir=" + config['snpeff']['java_tmpdir'], " "]
+
+if shutil.which("snpeff") is None:
+    snpeff = " ".join(["java"] + snpeff_args + ["-jar", join(config['snpeff']['home'], "snpeff.jar ")])
+else:
+    snpeff = " ".join(["snpeff"] + snpeff_args)
+
+config_default3 = {
+    'snpeff': {
+        'options' : "-c {config}".format(config=config['snpeff']['config']),
+        'cmd': snpeff,
+    }}
+
+update_config(config_default3, config)
+config = config_default3

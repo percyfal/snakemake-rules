@@ -1,0 +1,33 @@
+# -*- snakemake -*-
+include: "picard.settings"
+
+config_default = {
+    'picard' : {
+        'mark_duplicates' : {
+            'targets' : [],
+            'options' : config['picard']['options'],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule picard_mark_duplicates:
+    """Picard: mark duplicates"""
+    params: cmd = config['picard']['cmd'] + MARK_DUPLICATES,
+            options = config['picard']['mark_duplicates']['options'],
+            suffix = ".dup_metrics"
+    input: bam = "{prefix}.bam", bai = "{prefix}.bai"
+    output: bam = "{prefix}.dup.bam"
+    shell: "{params.cmd} I={input.bam} O={output.bam} {params.options} M={wildcards.prefix}.dup.dup_metrics"
+
+
+
+rule picard_mark_duplicates_log:
+    """Picard: mark duplicates, log output"""
+    input: bam = "{prefix}.dup.bam"
+    output: metrics = "{prefix}.dup.dup_metrics"
+    run:
+        pass

@@ -1,0 +1,27 @@
+# -*- snakemake -*-
+include: "ucsc.settings"
+
+config_default = {
+    'ucsc' : {
+        'fetchChromSizes' : {
+            'cmd' : 'fetchChromSizes',
+            'options' : 'hg19',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule ucsc_chrom_sizes:
+    """Generate chromosome sizes.
+
+    Chrom sizes file is of format: <chromosome name> <size in bases>
+
+    Uses fetchChromSizes
+    """
+    params: cmd = config['ucsc']["fetchChromSizes"]["cmd"],
+            options = config['ucsc']["fetchChromSizes"]["options"]
+    output: sizes = "chrom.sizes"
+    shell: "{params.cmd} {params.options} > {output.sizes}"

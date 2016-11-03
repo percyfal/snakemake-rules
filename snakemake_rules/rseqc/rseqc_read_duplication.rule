@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+include: "rseqc.settings"
+
+config_default = {
+    'rseqc' : {
+        'read_duplication' : {
+            'cmd' : 'read_duplication.py',
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule rseqc_read_duplication:
+    """Run RSeQC read_duplication.py"""
+    params: cmd = config['rseqc']['read_duplication']['cmd'],
+            options = config['rseqc']['read_duplication']['options'],
+    input: bam = "{prefix}.bam"
+    output: pos = "{prefix}_rseqc/read_dup.pos.DupRate.xls",
+            seq = "{prefix}_rseqc/read_dup.seq.DupRate.xls",
+    shell: " {params.cmd} {params.options} -i {input.bam} -o $(dirname {output.seq})/read_dup"

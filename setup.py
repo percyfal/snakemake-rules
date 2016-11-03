@@ -51,6 +51,8 @@ scripts = []
 
 REQUIRES = [
     'snakemake>=3.4.2',
+    'pytest',
+    'pytest-cov',
 ]
 
 try:

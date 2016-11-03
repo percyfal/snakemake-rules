@@ -1,0 +1,52 @@
+# -*- snakemake -*-
+include: "picard.settings"
+
+def _add_rg(wildcards):
+    """Return read group string"""
+    current_sample = wildcards.prefix
+    rg = {'rgid': current_sample,
+          'rgsm': current_sample,
+          'rglb': 'lib',
+          'rgpu': 'pu'
+    }
+    try:
+        runfmt = config['settings']['runfmt']
+        rginfo = None
+        for s in config['_sampleinfo']:
+            if current_sample.startswith(runfmt.format(**s)):
+                rginfo = s
+                continue
+        if rginfo is None:
+            raise Exception("no such run prefix {}; sampleinfo file malformatted?".format(current_sample))
+        rg.update(rginfo)
+        rg['rgid'] = "{SM}_{PU}".format(SM=rg['rgsm'], PU=rg['rgpu'])
+        rg_str = "RGID={rgid} RGSM={rgsm} RGLB={rglb} RGPL=Illumina RGPU={rgpu}".format(**rg)
+        logger.info("setting read group information to " + rg_str)
+        return rg_str
+    except:
+        raise RuleException("""Implement function for adding read group information and set
+        configuration config['picard']['add_or_replace_read_groups']['rgfun']
+        to the function. The function should take a file name as its input parameter.""")
+
+
+config_default = {
+    'picard' : {
+        'add_or_replace_read_groups' : {
+            'options' : "sort_order=coordinate create_index=true",
+            'rgfun' : _add_rg,
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule picard_add_or_replace_read_groups:
+    """Picard: add or replace read groups. Currently tailored for Illumina read groups."""
+    params: cmd = config['picard']['cmd'] + ADD_OR_REPLACE_READ_GROUPS,
+            options = config['picard']['options'],
+            custom_options = config['picard']['add_or_replace_read_groups']['options']
+    input: bam = "{prefix}.bam"
+    output: bam = "{prefix}.rg.bam"
+    run:
+        shell("{params.cmd} INPUT={input.bam} OUTPUT={output.bam} {params.custom_options} " + config['picard']['add_or_replace_read_groups']['rgfun'](wildcards))

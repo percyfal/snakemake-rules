@@ -1,4 +1,6 @@
 # -*- snakemake -*-
+include: "samtools.settings"
+
 config_default = {
     'samtools' : {
         'sort' : {
@@ -13,7 +15,8 @@ config = config_default
 
 rule samtools_sort:
     """Run samtools sort"""
-    params: options = config['samtools']['sort']['options']
+    params: options = config['samtools']['sort']['options'],
+            cmd = config['samtools']['cmd']
     input: "{prefix}.bam"
     output: "{prefix}.sort.bam"
-    shell: "samtools sort {params.options} -o {output} {input}"
+    shell: "{params.cmd} sort {params.options} -o {output} {input}"

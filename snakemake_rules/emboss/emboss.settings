@@ -1,0 +1,11 @@
+# -*- snakemake -*-
+include: '../ngs.settings'
+
+
+config_default = { 
+    'emboss' : {
+    },
+}
+
+update_config(config_default, config)
+config = config_default

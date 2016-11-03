@@ -3,6 +3,7 @@ include: '../ngs.settings'
 
 config_default = { 
     'samtools' : {
+        'cmd' : 'samtools',
         'ref' : config['ngs.settings']['db']['ref'],
         'threads' : config['settings']['threads'],
         'options' : "",

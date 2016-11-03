@@ -1,0 +1,13 @@
+# -*- snakemake -*-
+include: '../ngs.settings'
+# include: '../misc/conversion.rules'
+
+config_default = {
+    'rseqc' : {
+        'refgene' : config['ngs.settings']["annotation"]["transcript_annot_gtf"].replace(".gtf", ".bed12"),
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+

@@ -3,8 +3,9 @@ include: "samtools.settings"
 
 rule samtools_sam2bam:
     """Convert sam file to bam."""
-    params: options = config['samtools']['options']
+    params: options = config['samtools']['options'],
+            cmd = config['samtools']['cmd']
     input: "{prefix}.sam"
     output: "{prefix}.bam"
-    shell: "samtools view {params.options} -Sb {input} > {output}"
+    shell: "{params.cmd} view {params.options} -Sb {input} > {output}"
 

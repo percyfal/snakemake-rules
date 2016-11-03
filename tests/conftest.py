@@ -24,7 +24,6 @@ blacklist = ['__pycache__', 'bio', 'comp']
 applications = {x:join(RULEDIR, x) for x in os.listdir(RULEDIR) if isdir(join(RULEDIR, x)) and not x in blacklist}
 rules = {k: [join(RULEDIR, k, x) for x in os.listdir(v) if x.endswith(".rule")] for k,v in applications.items() }
 
-
 def make_output(rule, prefix="s1"):
     code, linemake, rulecount = parse(rule)
     m = re.search("@workflow.output\(\s+(?P<output>.*)", code)
