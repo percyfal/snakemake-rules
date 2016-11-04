@@ -29,5 +29,5 @@ rule picard_mark_duplicates_log:
     """Picard: mark duplicates, log output"""
     input: bam = "{prefix}.dup.bam"
     output: metrics = "{prefix}.dup.dup_metrics"
-    run:
-        pass
+    shell: "touch {output.metrics}"
+        
