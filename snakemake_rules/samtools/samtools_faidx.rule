@@ -18,5 +18,5 @@ rule samtools_faidx:
     params: cmd = config['samtools']['cmd'],
             options = config['samtools']['faidx']['options']
     input: "{prefix}.fa"
-    output: "{prefix}.fai"
+    output: "{prefix}.fa.fai"
     shell: "{params.cmd} {params.options} faidx {input}"

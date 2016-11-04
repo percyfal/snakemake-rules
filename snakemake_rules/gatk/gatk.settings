@@ -38,7 +38,7 @@ config = config_default2
 gatk_args = ["-Xmx" + config['gatk']['java_mem'], "-Djava.io.tmpdir=" + config['gatk']['java_tmpdir'], " "]
 
 if shutil.which("gatk") is None:
-    gatk = " ".join(["java"] + gatk_args + ["-jar", join(config['gatk']['home'], "gatk.jar ")])
+    gatk = " ".join(["java"] + gatk_args + ["-jar", join(config['gatk']['jar'])])
 else:
     gatk = " ".join(["gatk"] + gatk_args)
 

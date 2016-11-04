@@ -23,7 +23,7 @@ rule gatk_unified_genotyper:
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['unified_genotyper']['cmd'],
             options = " ".join(["-R", config['gatk']['unified_genotyper']['ref'], 
             config['gatk']['unified_genotyper']['options']])
-    input: "{prefix}.bam"
+    input: bam="{prefix}.bam", dbsnp=config['gatk']['dbsnp']
     output: "{prefix}.vcf"
-    shell: "{params.cmd} {params.options} -I {input} -o {output}"
+    shell: "{params.cmd} {params.options} -I {input.bam} -o {output}"
 

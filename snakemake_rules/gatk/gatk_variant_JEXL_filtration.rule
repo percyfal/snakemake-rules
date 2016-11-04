@@ -22,9 +22,10 @@ rule gatk_variant_JEXL_filtration:
     """
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['variant_JEXL_filtration']['cmd'],
             options = " ".join(["-R", config['gatk']['variant_JEXL_filtration']['ref']]) + \
-                      " ".join(["--filterName GATKStandard{e} --filterExpression '{exp}'".format(e=exp.split()[0], exp=exp) \
-                                for exp in config['gatk']['variant_JEXL_filtration']['expressions']])
+                      " ".join(["--filterName GATKStandard{e} --filterExpression \"{exp}\"".format(e=exp.split()[0], exp=exp) \
+                                for exp in config['gatk']['variant_JEXL_filtration']['expressions']]),
+            quote = "'" if config['gatk']['cmd'].startswith("gatk") else ""
     input: "{prefix}.vcf"
     output: "{prefix}.filtered.vcf"
-    shell: "{params.cmd} {params.options} --variant {input} --out {output}"
+    shell: "{params.cmd} {params.quote}{params.options}{params.quote} --variant {input} --out {output}"
 
