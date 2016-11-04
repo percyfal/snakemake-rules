@@ -1,9 +1,5 @@
 # -*- snakemake -*-
 #
-import os
-import logging
-logger = logging.getLogger('cloudbiolinux')
-
 include: "../ngs.settings"
 
 config_default = {

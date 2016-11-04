@@ -18,9 +18,6 @@ except:
 if any(x.startswith("bio.") for x in list(config.keys())):
     raise Exception("bio. namespace is deprecated; please update your configuration keys")
 
-# Main logger
-import logging
-
 config_default = {
     'settings' : {
         'email' : os.getenv("USER_EMAIL", None),

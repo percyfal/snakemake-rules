@@ -1,8 +1,4 @@
 # -*- snakemake -*-
-import os
-import logging
-logger = logging.getLogger('ercc')
-
 include: "../ngs.settings"
 
 config_default = {
