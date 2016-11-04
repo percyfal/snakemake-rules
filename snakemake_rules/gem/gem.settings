@@ -1,0 +1,16 @@
+# -*- snakemake -*-
+"""
+`GEM <http://algorithms.cnag.cat/wiki/The_GEM_library>`_
+----------------------------------------------------------
+
+The GEM library
+"""
+include: "../ngs.settings"
+
+config_default = {
+    'gem' : {
+    },
+}
+
+update_config(config_default, config)
+config = config_default

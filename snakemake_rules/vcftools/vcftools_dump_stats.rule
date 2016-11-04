@@ -1,0 +1,11 @@
+# -*- snakemake -*-
+include: "vcftools.settings"
+
+rule vcftools_dump_stats:
+    """vcftools: dump statistics"""
+    params: cmd='vcf-stats',
+            options=config['vcftools']['options']['stats']
+    input: "{prefix}.vcf"
+    output: "{prefix}.stats.dump"
+    shell: "{params.cmd} {params.options} {input} -p {wildcards.prefix}.stats"
+

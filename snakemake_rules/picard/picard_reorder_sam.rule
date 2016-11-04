@@ -1,0 +1,11 @@
+# -*- snakemake -*-
+include: "picard.settings"
+
+rule picard_reorder_sam:
+    """Picard: reorder bam file"""
+    params: cmd = config['picard']['cmd'] + REORDER_SAM,
+            options = config['picard']['options']
+    input: "{prefix}.bam", config['picard']['ref']
+    output: "{prefix}.resorted.bam"
+    shell: "{params.cmd} I={input[0]} R={input[1]} O={output} {params.options}"
+

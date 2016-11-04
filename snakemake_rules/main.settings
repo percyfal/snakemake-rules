@@ -1,0 +1,59 @@
+# -*- snakemake -*- 
+"""Main settings for snakemake-rules. Defines top-level configuration
+settings for all rules.
+"""
+import os
+from os.path import join
+import csv
+import shutil
+from snakemake.utils import update_config
+from snakemake.exceptions import RuleException
+from snakemake.logging import logger
+try:
+    from snakemake_rules._version import get_versions
+except:
+    get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
+
+# Check for old configuration key versions
+if any(x.startswith("bio.") for x in list(config.keys())):
+    raise Exception("bio. namespace is deprecated; please update your configuration keys")
+
+# Main logger
+import logging
+
+config_default = {
+    'settings' : {
+        'email' : os.getenv("USER_EMAIL", None),
+        'java' : {
+            'java_mem' : "8g",
+            'java_tmpdir' : "/tmp",
+        },
+        'threads' : 8,
+        'temporary_rules': [],
+        'protected_rules': [],
+        'samples': [],
+        'sampleinfo': None,
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+# Parse sampleinfo if present
+try:
+    ## Get the sample information
+    with open(config['settings']['sampleinfo']) as csvfile:
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        csvfile.seek(0)
+        reader = csv.DictReader(csvfile, dialect=dialect)
+        rows = [row for row in reader]
+        config['_sampleinfo'] = []
+        for row in rows:
+            if config['samples'] and row['SM'] in config['samples']:
+                config['_sampleinfo'].append(row)
+            else:
+                logger.info("snakemake_rules.settings: ignoring sample {SM} in current run".format(**row))
+except:
+    logger.info("snakemake_rules.settings: no sampleinfo provided; not setting config['_sampleinfo']")
+    
+config['_snakemake_rules_version'] = get_versions()

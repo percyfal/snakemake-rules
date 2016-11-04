@@ -1,0 +1,22 @@
+# -*- snakemake -*-
+include: "samtools.settings"
+
+config_default = {
+    'samtools' : {
+        'index' : {
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule samtools_index:
+    """Run samtools index"""
+    params: options = config['samtools']['index']['options'],
+            cmd = config['samtools']['cmd']
+    input: "{prefix}.bam"
+    output: "{prefix}.bam.bai"
+    shell: "{params.cmd} {params.options} index {input}"

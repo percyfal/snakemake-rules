@@ -1,0 +1,28 @@
+# -*- snakemake -*-
+include: "qualimap.settings"
+
+config_default = {
+    'qualimap' : {
+        'bamqc' : {
+            'options' : [],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+
+rule qualimap_bamqc:
+    """Qualimap: run bamqc on bam file"""
+    params: cmd = config['qualimap']['cmd'],
+            options = " ".join(config['qualimap']['bamqc']['options'] +
+                               [" --java-mem-size={java_mem}".format(**config['qualimap'])])
+    input: bam = "{prefix}.bam"
+    output: html = os.path.join("{prefix}.bam.qualimap", "qualimapReport.html"),
+            genome = os.path.join("{prefix}.bam.qualimap", "genome_results.txt"),
+            outdir = "{prefix}.bam.qualimap"
+    threads: config['qualimap']['threads']
+    shell: "unset DISPLAY; {params.cmd} bamqc -bam {input.bam} -nt {threads} {params.options} -outdir {output.outdir}"
+

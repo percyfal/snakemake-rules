@@ -1,0 +1,33 @@
+# -*- snakemake -*-
+include: 'gatk.settings'
+
+config_default = {
+    'gatk' : {
+        'combine_variants' : {
+            'cmd' : 'CombineVariants',
+            'ref' : config['gatk']['ref'],
+            'options' : "",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule gatk_combine_variants:
+    """Run GATK CombineVariants to combine variant files.
+    
+    The default rule combines files with suffixes filteredSNP.vcf and
+    filteredINDEL.vcf.
+
+    """
+    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['combine_variants']['cmd'],
+            options = " ".join(["-R", config['gatk']['combine_variants']['ref'],
+                                config['gatk']['combine_variants']['options']])
+    input: "{prefix}.snp.filteredSNP.vcf", "{prefix}.indel.filteredINDEL.vcf"
+    output: "{prefix}.variants.vcf"
+    run: 
+        inputstr = " ".join(["-V {}".format(x) for x in input])
+        shell("{cmd} {ips} -o {out} {opt}".format(cmd=params.cmd, ips=inputstr, out=output, opt=params.options))
+

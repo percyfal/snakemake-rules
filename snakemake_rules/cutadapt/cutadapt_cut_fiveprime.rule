@@ -1,0 +1,12 @@
+# -*- snakemake -*-
+include: "cutadapt.settings"
+
+rule cutadapt_cut_fiveprime:
+    """Cutadapt: cut fiveprime adapter"""
+    params: cmd = config['cutadapt']['cmd'],
+            options = config['cutadapt']['options'],
+            fiveprime = config['cutadapt']['fiveprime']
+    input: fastq = "{prefix}" + config['ngs.settings']['read2_label'] + config['cutadapt']['fastq_suffix']
+    output: trim = "{prefix}" + ".trimmed" + config['ngs.settings']['read2_label'] + config['cutadapt']['fastq_suffix']
+    shell: "{params.cmd} {params.options} -a {params.fiveprime} {input.fastq} -o {output.trim} > {wildcards.prefix}.cutadapt_metrics"
+

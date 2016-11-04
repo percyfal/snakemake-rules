@@ -1,0 +1,34 @@
+# -*- snakemake -*-
+include: "bowtie.settings"
+
+config_default = {
+    'bowtie' : {
+        'align' : {
+            'threads': config['settings']['threads'],
+            'options': '--chunkmbs 200',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule bowtie_align_pe:
+    """Bowtie paired end alignment"""
+    params: cmd = config['bowtie']['cmd'],
+            options = config['bowtie']['align']['options'],
+            index = config['bowtie']['index'],
+            samtools = config['samtools']['cmd']
+    input: read1 = "{prefix}" + config['ngs.settings']['read1_label'] + config['ngs.settings']['fastq_suffix'],\
+           read2 = "{prefix}" + config['ngs.settings']['read2_label'] + config['ngs.settings']['fastq_suffix'],\
+           index = expand("{index}{ext}", index=config['bowtie']['index'], ext=config['bowtie']['build_ext'])
+    output: bam = "{prefix}.bam"
+    benchmark: "{prefix}.json"
+    threads: config['bowtie']['align']['threads']
+    log: "{prefix}.bwt.log"
+    shell:
+        "if mimetype -b {input.read1} | grep -q zip; then "
+        "{params.cmd} -S -p {threads} {params.options} {params.index} -1 <(gunzip -c {input.read1}) -2 <(gunzip -c {input.read2}) 2> {log} | {params.samtools} view -bS - > {output.bam}; "
+        " else "
+        "{params.cmd} -S -p {threads} {params.options} {params.index} -1 {input.read1} -2 {input.read2} 2> {log} | {params.samtools} view -bS - > {output.bam};"
+        " fi"

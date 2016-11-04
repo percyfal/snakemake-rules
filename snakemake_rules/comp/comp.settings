@@ -2,6 +2,8 @@
 import os
 from snakemake.utils import update_config
 
+include: "../main.settings"
+
 """
 Main settings for snakemake_rules.comp. Defines top-level configuration
 settings for comp rules. 
@@ -23,9 +25,6 @@ config_default = {
                 '.zip' : "unzip -p",
                 '.bz2' : "bzip2 -c",
             },
-        },
-        'python2' : {
-            'activate_cmd' : "",
         },
     },
 }

@@ -1,0 +1,13 @@
+# -*- snakemake -*-
+include: 'gatk.settings'
+include: "gatk_select_variants.rule"
+
+rule gatk_select_variants_sample:
+    """Run GATK SelectVariants to select variants based on a sample"""
+    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['select_variants']['cmd'],
+            options = " ".join(["-R", config['gatk']['select_variants']['ref'],
+                                config['gatk']['select_variants']['options']])
+    input: vcf="{prefix}.vcf"
+    output: "{prefix}.sample_{sample}.vcf"
+    shell: "{params.cmd} {params.options} -sn {wildcards.sample} --variant {input.vcf} --out {output}"
+

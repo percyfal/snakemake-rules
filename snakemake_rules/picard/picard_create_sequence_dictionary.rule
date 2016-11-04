@@ -1,0 +1,11 @@
+# -*- snakemake -*-
+include: "picard.settings"
+
+rule picard_create_sequence_dictionary:
+    """Picard: create sequence dictionary"""
+    params: cmd = config['picard']['cmd'] + CREATE_SEQUENCE_DICTIONARY,
+            options = config['picard']['options']
+    input: fa="{prefix}.fa"
+    output: dict="{prefix}.dict"
+    shell: "{params.cmd} {params.options} R={input.fa} O={output.dict}"
+

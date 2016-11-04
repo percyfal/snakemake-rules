@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+include: "rseqc.settings"
+
+config_default = {
+    'rseqc' : {
+        'clipping_profile' : {
+            'cmd' : 'clipping_profile.py',
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule rseqc_clipping_profile:
+    """Run RSeQC clipping_profile.py"""
+    params: cmd = config['rseqc']['clipping_profile']['cmd'],
+            options = config['rseqc']['clipping_profile']['options'],
+    input: bam = "{prefix}.bam"
+    output: xls = "{prefix}_rseqc/clippingprofile.clipping_profile.xls",
+    shell: " {params.cmd} {params.options} -i {input.bam} -o $(dirname {output.xls})/clippingprofile"
+

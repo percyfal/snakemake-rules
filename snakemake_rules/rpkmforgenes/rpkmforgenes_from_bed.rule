@@ -1,0 +1,15 @@
+# -*- snakemake -*-
+include: 'rpkmforgenes.settings'
+
+rule rpkmforgenes_from_bed:
+    """Run rpkmforgenes from bed input"""
+    params: cmd = config['rpkmforgenes']['cmd'],
+            options = " ".join([
+                config['rpkmforgenes']['options'],
+                "-a", config['rpkmforgenes']['annotation'],
+            ])
+    input: unique = config['rpkmforgenes']['unique'], bed = "{prefix}.bed" 
+    output: rpkmforgenes = "{prefix}.rpkmforgenes"
+    run:
+        print (input)
+

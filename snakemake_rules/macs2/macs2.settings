@@ -1,0 +1,14 @@
+# -*- snakemake -*-
+#
+# Install with pip; use recent version of gcc (>=4.9)
+#
+include: "../ngs.settings"
+
+config_default = {
+    'macs2' : {
+        'cmd' : 'macs2',
+    },
+}
+
+update_config(config_default, config)
+config = config_default
