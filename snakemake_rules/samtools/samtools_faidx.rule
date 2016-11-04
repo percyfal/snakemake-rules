@@ -1,0 +1,22 @@
+# -*- snakemake -*-
+include: "samtools.settings"
+
+config_default = {
+    'samtools' : {
+        'faidx' : {
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule samtools_faidx:
+    """Run samtools faidx"""
+    params: cmd = config['samtools']['cmd'],
+            options = config['samtools']['faidx']['options']
+    input: "{prefix}.fa"
+    output: "{prefix}.fai"
+    shell: "{params.cmd} {params.options} faidx {input}"
