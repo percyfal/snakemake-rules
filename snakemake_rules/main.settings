@@ -28,9 +28,9 @@ config_default = {
         'threads' : 8,
         'temporary_rules': [],
         'protected_rules': [],
-        'samples': [],
         'sampleinfo': None,
     },
+    'samples': [],
 }
 
 update_config(config_default, config)
@@ -46,7 +46,7 @@ try:
         rows = [row for row in reader]
         config['_sampleinfo'] = []
         for row in rows:
-            if config['samples'] and row['SM'] in config['samples']:
+            if config['samples'] and row['SM'] in config['samples'] or len(config['samples']) == 0:
                 config['_sampleinfo'].append(row)
             else:
                 logger.info("snakemake_rules.settings: ignoring sample {SM} in current run".format(**row))
