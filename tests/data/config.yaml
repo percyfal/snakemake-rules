@@ -1,3 +1,6 @@
 ngs.settings:
   db:
-    ref: chr
+    ref: chr11.fa
+
+rseqc:
+  refgene: ref-transcripts.bed12

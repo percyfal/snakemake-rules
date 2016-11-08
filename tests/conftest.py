@@ -28,7 +28,7 @@ def make_output(rule, prefix="s1"):
     code, linemake, rulecount = parse(rule)
     m = re.search("@workflow.output\(\s+(?P<output>.*)", code)
     output = m.group("output")
-    m = re.search("[a-zA-Z =]*\"[\{\}a-zA-Z]+(?P<ext>[\.a-z]+)[ ]*\"", output)
+    m = re.search("\"[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})+(?P<ext>[_\/\.a-zA-Z0-9 ]+)\"", output)
     # Regular extension; use first one
     if m:
         return "{prefix}{ext}".format(prefix=prefix, ext=m.group("ext"))
@@ -57,7 +57,10 @@ def pytest_addoption(parser):
     parser.addoption("-A", "--application", action="store",
                      help="application to test",
                      dest="application")
-
+    parser.addoption("-T", "--threads", action="store",
+                     default="1",
+                     help="number of threads to use",
+                     dest="threads")
 
 
 def pytest_runtest_setup(item):
@@ -98,6 +101,7 @@ def pytest_namespace():
 # Input files
 chr11 = abspath(join(dirname(__file__), "data", "chr11.fa"))
 ref_transcripts = abspath(join(dirname(__file__), "data", "ref-transcripts.gtf"))
+ref_transcripts_bed12 = abspath(join(dirname(__file__), "data", "ref-transcripts.bed12"))
 sample1_1 = abspath(join(dirname(__file__), "data", "s1_1.fastq.gz"))
 sample1_2 = abspath(join(dirname(__file__), "data", "s1_2.fastq.gz"))
 sample2_1 = abspath(join(dirname(__file__), "data", "s2_1.fastq.gz"))
@@ -105,6 +109,8 @@ sample2_2 = abspath(join(dirname(__file__), "data", "s2_2.fastq.gz"))
 sampleinfo = abspath(join(dirname(__file__), "data", "sampleinfo.csv"))
 sam = abspath(join(dirname(__file__), "data", "s1.sam"))
 bam = abspath(join(dirname(__file__), "data", "s1.bam"))
+sortbam = abspath(join(dirname(__file__), "data", "s1.sort.bam"))
+sortbambai = abspath(join(dirname(__file__), "data", "s1.sort.bam.bai"))
 configfile = abspath(join(dirname(__file__), "data", "config.yaml"))
 
 
@@ -124,7 +130,10 @@ def data(tmpdir_factory):
     p.join("s2_2.fastq.gz").mksymlinkto(sample2_2)
     p.join("s1.sam").mksymlinkto(sam)
     p.join("s1.bam").mksymlinkto(bam)
+    p.join("s1.sort.bam").mksymlinkto(sortbam)
+    p.join("s1.sort.bam.bai").mksymlinkto(sortbambai)
     p.join("chr11.fa").mksymlinkto(chr11)
     p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
+    p.join("ref-transcripts.bed12").mksymlinkto(ref_transcripts_bed12)
     p.join("config.yaml").mksymlinkto(configfile)
     return p
