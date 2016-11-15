@@ -1,0 +1,54 @@
+# -*- snakemake -*-
+include: 'mapdamage2.settings'
+
+folder = "results"
+m = re.search("(-d|--folder)\s+(?P<folder>.*)", config["mapdamage2"]["options"])
+if m:
+    folder = m.group("folder")
+
+
+rescalebam = None
+m = re.search("(?P<rescalebam>--rescale-out\s+[\w\.]+)", config["mapdamage2"]["options"])
+if m:
+    logger.warning("--rescale-out given in option string; replacing with prefix based name")
+    rescalebam = m.group("rescalebam")
+    config["mapdamage2"]["options"] = re.sub(rescalebam, "", config["mapdamage2"]["options"])
+
+rescale = False
+m = re.search("(--rescale\s+)", config["mapdamage2"]["options"])
+if rescalebam and not m:
+    config["mapdamage2"]["options"] += " --rescale "
+    rescale = True
+else:
+    rescale = True
+
+
+rule mapdamage2:
+    """mapdamage2
+
+    Run mapdamage2. Produces 16 output files.
+    """
+    version: "0.1"
+    params: options = config["mapdamage2"]["options"]
+    input: bam = "{prefix}.bam", ref = config["mapdamage2"]["ref"]
+    output: log = join("_".join([folder, os.path.basename("{prefix}")]), "Runtime_log.txt"),
+            fragmisincorporation = join("_".join([folder, "{prefix}"]), "Fragmisincorporation_plot.pdf"),
+            lengthplot = join("_".join([folder, "{prefix}"]), "Length_plot.pdf"),
+            misincorporation = join("_".join([folder, "{prefix}"]), "misincorporation.txt"),
+            CtoT = join("_".join([folder, "{prefix}"]), "5pCtoT_freq.txt"),
+            GtoA = join("_".join([folder, "{prefix}"]), "3pGtoA_freq.txt"),
+            dnacomp = join("_".join([folder, "{prefix}"]), "dnacomp.txt"),
+            lgdist = join("_".join([folder, "{prefix}"]), "lgdistribution.txt"), 
+            mcmc_hist = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_hist.pdf"),
+            mcmc_iter = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_iter.csv"),
+            mcmc_trace = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_trace.pdf"),
+            mcmc_iter_summ = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_iter_summ_stat.csv"),
+            mcmc_post_pred = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_post_pred.pdf"),
+            mcmc_correct_prob = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_correct_prob.csv"),
+            dnacomp_genome = join("_".join([folder, "{prefix}"]), "dnacomp_genome.csv"),
+            rescale_bam = join("_".join([folder, "{prefix}"]), "{prefix}.rescaled.bam") if rescalebam else [],
+    run:
+        cmd = "mapDamage " + params.options + " -i " + input.bam + " -r " + input.ref
+        if rescale:
+            cmd += " --rescale-out " + output.rescale_bam
+        shell(cmd)
