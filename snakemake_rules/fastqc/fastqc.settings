@@ -1,10 +1,11 @@
 # -*- snakemake -*-
-include: "../settings.rules"
+include: "../ngs.settings"
 
 config_default = {
-    'bio.ngs.qc.fastqc' : {
+    'fastqc' : {
         'cmd' : "fastqc",
-        'options' : "-q",
+        'options' : "",
+        'threads' : config['settings']['threads'],
     },
 }
 
@@ -14,10 +15,14 @@ config = config_default
 
 rule fastqc_main:
     """fastqc: run fastqc on a fastq file"""
-    params: cmd = config['bio.ngs.qc.fastqc']['cmd'],
-            options = config['bio.ngs.qc.fastqc']['options'],
-    input: "{prefix}" + config['bio.ngs.settings']['fastq_suffix']
-    output: "{prefix}_fastqc/fastqc_report.html"
-    shell: "{params.cmd} {params.options} {input}"
-
+    params: cmd = config['fastqc']['cmd'],
+            options = config['fastqc']['options']
+    threads: config['fastqc']['threads']
+    input: fastq = "{prefix}" + config["ngs.settings"]["fastq_suffix"]
+    output: html = "{prefix}_fastqc/fastqc_report.html",
+            txt="{prefix}_fastqc/fastqc_data.txt",
+            zipfile="{prefix}_fastqc.zip"
+    shell:
+        "mkdir -p $(dirname {output.html}) && " + \
+            "{params.cmd} -t {threads} {params.options} --extract {input} -o $(dirname $(dirname {output.html}))"
 
