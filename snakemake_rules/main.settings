@@ -4,7 +4,7 @@ settings for all rules.
 """
 import sys
 import os
-from os.path import join
+from os.path import join, basename, dirname
 import csv
 import shutil
 import glob
