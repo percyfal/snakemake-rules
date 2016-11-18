@@ -1,10 +1,13 @@
 # -*- snakemake -*-
 include: 'mapdamage2.settings'
 
-folder = "results"
-m = re.search("(-d|--folder)\s+(?P<folder>.*)", config["mapdamage2"]["options"])
+folder = "mapdamage2"
+m = re.search("(?P<opt>-d|--folder)\s+(?P<folder>.*)", config["mapdamage2"]["options"])
 if m:
     folder = m.group("folder")
+    opt = m.group("opt")
+    config["mapdamage2"]["options"] = re.sub(opt, "", config["mapdamage2"]["options"])
+    config["mapdamage2"]["options"] = re.sub(folder, "", config["mapdamage2"]["options"])
 
 
 rescalebam = None
@@ -19,9 +22,8 @@ m = re.search("(--rescale\s+)", config["mapdamage2"]["options"])
 if rescalebam and not m:
     config["mapdamage2"]["options"] += " --rescale "
     rescale = True
-else:
+elif m:
     rescale = True
-
 
 rule mapdamage2:
     """mapdamage2
@@ -31,24 +33,24 @@ rule mapdamage2:
     version: "0.1"
     params: options = config["mapdamage2"]["options"]
     input: bam = "{prefix}.bam", ref = config["mapdamage2"]["ref"]
-    output: log = join("_".join([folder, os.path.basename("{prefix}")]), "Runtime_log.txt"),
-            fragmisincorporation = join("_".join([folder, "{prefix}"]), "Fragmisincorporation_plot.pdf"),
-            lengthplot = join("_".join([folder, "{prefix}"]), "Length_plot.pdf"),
-            misincorporation = join("_".join([folder, "{prefix}"]), "misincorporation.txt"),
-            CtoT = join("_".join([folder, "{prefix}"]), "5pCtoT_freq.txt"),
-            GtoA = join("_".join([folder, "{prefix}"]), "3pGtoA_freq.txt"),
-            dnacomp = join("_".join([folder, "{prefix}"]), "dnacomp.txt"),
-            lgdist = join("_".join([folder, "{prefix}"]), "lgdistribution.txt"), 
-            mcmc_hist = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_hist.pdf"),
-            mcmc_iter = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_iter.csv"),
-            mcmc_trace = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_trace.pdf"),
-            mcmc_iter_summ = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_iter_summ_stat.csv"),
-            mcmc_post_pred = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_post_pred.pdf"),
-            mcmc_correct_prob = join("_".join([folder, "{prefix}"]), "Stats_out_MCMC_correct_prob.csv"),
-            dnacomp_genome = join("_".join([folder, "{prefix}"]), "dnacomp_genome.csv"),
-            rescale_bam = join("_".join([folder, "{prefix}"]), "{prefix}.rescaled.bam") if rescalebam else [],
+    output: log = join("{prefix}" + "_" + folder, "Runtime_log.txt"),
+            fragmisincorporation = join("{prefix}"+ "_" + folder, "Fragmisincorporation_plot.pdf"),
+            lengthplot = join("{prefix}"+ "_" + folder, "Length_plot.pdf"),
+            misincorporation = join("{prefix}"+ "_" + folder, "misincorporation.txt"),
+            CtoT = join("{prefix}"+ "_" + folder, "5pCtoT_freq.txt"),
+            GtoA = join("{prefix}"+ "_" + folder, "3pGtoA_freq.txt"),
+            dnacomp = join("{prefix}"+ "_" + folder, "dnacomp.txt"),
+            lgdist = join("{prefix}"+ "_" + folder, "lgdistribution.txt"), 
+            mcmc_hist = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_hist.pdf"),
+            mcmc_iter = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_iter.csv"),
+            mcmc_trace = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_trace.pdf"),
+            mcmc_iter_summ = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_iter_summ_stat.csv"),
+            mcmc_post_pred = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_post_pred.pdf"),
+            mcmc_correct_prob = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_correct_prob.csv"),
+            dnacomp_genome = join("{prefix}"+ "_" + folder, "dnacomp_genome.csv"),
+            rescale_bam = join("{prefix}"+ "_" + folder, "{prefix}.rescaled.bam") if rescalebam else [],
     run:
-        cmd = "mapDamage " + params.options + " -i " + input.bam + " -r " + input.ref
+        cmd = "mapDamage " + params.options + " -i " + input.bam + " -r " + input.ref + " -d " + "{}_{}".format(wildcards.prefix, folder)
         if rescale:
-            cmd += " --rescale-out " + output.rescale_bam
+            cmd = cmd + " --rescale-out " + str(output.rescale_bam)
         shell(cmd)
