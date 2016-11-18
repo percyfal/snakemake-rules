@@ -6,8 +6,10 @@ rule cutadapt_cut_threeprime:
     params: cmd = config['cutadapt']['cmd'],
             options = config['cutadapt']['options'],
             threeprime = config['cutadapt']['threeprime']
-    input: fastq = "{prefix}" +  config['ngs.settings']['read1_label'] + config['cutadapt']['fastq_suffix']
-    output: trim = "{prefix}" + ".trimmed" + config['ngs.settings']['read1_label'] + config['cutadapt']['fastq_suffix']
-    shell: "{params.cmd} {params.options} -a {params.threeprime} {input.fastq} -o {output.trim} > {wildcards.prefix}.cutadapt_metrics"
+    input: read = "{prefix}{fastq}"
+    output: read = "{prefix}.trimmed{fastq, " + config['cutadapt']['fastq_suffix_re'] + "}",
+            log = "{prefix}.trimmed{fastq}.cutadapt_metrics"
+    log: "{prefix}.trimmed{fastq}.cutadapt_metrics"
+    shell: "{params.cmd} {params.options} -a {params.threeprime} {input.read} -o {output.read} > {wildcards.prefix}.cutadapt_metrics"
 
 

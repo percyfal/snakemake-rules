@@ -6,7 +6,8 @@ rule cutadapt_cut_fiveprime:
     params: cmd = config['cutadapt']['cmd'],
             options = config['cutadapt']['options'],
             fiveprime = config['cutadapt']['fiveprime']
-    input: fastq = "{prefix}" + config['ngs.settings']['read2_label'] + config['cutadapt']['fastq_suffix']
-    output: trim = "{prefix}" + ".trimmed" + config['ngs.settings']['read2_label'] + config['cutadapt']['fastq_suffix']
-    shell: "{params.cmd} {params.options} -a {params.fiveprime} {input.fastq} -o {output.trim} > {wildcards.prefix}.cutadapt_metrics"
+    input: read = "{prefix}{fastq}"
+    output: read = "{prefix}.trimmed{fastq, " + config['cutadapt']['fastq_suffix_re'] + "}",
+            log = "{prefix}.trimmed{fastq}.cutadapt_metrics"
+    shell: "{params.cmd} {params.options} -a {params.fiveprime} {input.read} -o {output.read} > {wildcards.prefix}.cutadapt_metrics"
 
