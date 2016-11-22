@@ -19,8 +19,7 @@ rule bedtools_coveragebed_bam:
     Input: {prefix}.bam; output: {prefix}.coverage
     """
     params: cmd = config['bedtools']['coveragebed']['cmd'],
-            options=config['bedtools']['options'],
-            bfile = config['bedtools']['bfile']
-    input: "{prefix}.bam"
+            options=config['bedtools']['options']
+    input: a = "{prefix}.bam", b = config['bedtools']['bfile']
     output: "{prefix}.coverage"
-    shell: "{params.cmd} {params.options} -abam {input} -b {params.bfile} > {output}"
+    shell: "{params.cmd} {params.options} -abam {input.a} -b {input.b} > {output}"
