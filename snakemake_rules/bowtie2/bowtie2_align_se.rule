@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "bowtie2.settings"
-
+include: "bowtie2_build.rule"
 
 config_default = {
     'bowtie2' : {
