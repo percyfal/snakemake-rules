@@ -22,7 +22,7 @@ rule gatk_genotype_gvcfs:
     """Run GATK GenotypeGVCFs"""
     params: cmd = cmd + " -T " + config['gatk']['genotype_gvcfs']['cmd'],
             options = config['gatk']['genotype_gvcfs']['options']
-    input: fofn = "{prefix}.fofn", ref = config['gatk']['genotype_gvcfs']['ref']
+    input: fofn = "{prefix}.g.vcf.fofn", ref = config['gatk']['genotype_gvcfs']['ref']
     output: "{prefix}.vcf"
     threads: config['gatk']['threads']
     log: "{prefix}.vcf.log"
