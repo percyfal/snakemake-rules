@@ -22,9 +22,8 @@ config = config_default
 rule gatk_select_indel_variants:
     """Run GATK SelectVariants to select INDELs"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['select_indel_variants']['cmd'],
-            options = " ".join(["-R", config['gatk']['select_indel_variants']['ref'],
-                                config['gatk']['select_indel_variants']['options']])
-    input: "{prefix}.vcf"
-    output: "{prefix}.indel.vcf"
-    shell: "{params.cmd} {params.options} --variant {input} --out {output}"
+            options =  config['gatk']['select_indel_variants']['options']
+    input: vcf = "{prefix}.vcf", ref = config['gatk']['select_indel_variants']['ref']
+    output: vcf = "{prefix}.indel.vcf"
+    shell: "{params.cmd} {params.options} -R {input.ref} --variant {input.vcf} --out {output.vcf}"
 

@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
+include: '../picard/picard_build_bam_index.rule'
 
 config_default = {
     'gatk' : {
@@ -21,8 +22,8 @@ rule gatk_haplotype_caller:
     """Run GATK HaplotypeCaller"""
     params: cmd = cmd + " -T " + config['gatk']['haplotype_caller']['cmd'],
             options = config['gatk']['haplotype_caller']['options']
-    input: bam = "{prefix}.bam", ref = config['gatk']['haplotype_caller']['ref'] 
-    output: "{prefix}.g.vcf"
+    input: bam = "{prefix}.bam", bai = "{prefix}.bai", ref = config['gatk']['haplotype_caller']['ref'] 
+    output: gvcf = "{prefix}.g.vcf"
     log: "{prefix}.g.vcf.log"
-    shell: "{params.cmd} {params.options} -I {input.bam} -R {input.ref} -o {output} -log {log}"
+    shell: "{params.cmd} {params.options} -I {input.bam} -R {input.ref} -o {output.gvcf} -log {log}"
 

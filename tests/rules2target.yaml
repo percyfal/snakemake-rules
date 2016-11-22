@@ -21,5 +21,6 @@ gatk:
   gatk_unified_genotyper: s1.rg.sort.vcf
   gatk_select_snp_variants: s1.snp.vcf
   gatk_select_indel_variants: s1.indel.vcf
+  
   gatk_variant_snp_JEXL_filtration: s1.snp.filteredSNP.vcf
   gatk_variant_indel_JEXL_filtration: s1.indel.filteredINDEL.vcf

@@ -18,9 +18,8 @@ config = config_default
 rule gatk_select_snp_variants:
     """Run GATK SelectVariants to select SNPs"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['select_snp_variants']['cmd'],
-            options = " ".join(["-R", config['gatk']['select_snp_variants']['ref'],
-                                config['gatk']['select_snp_variants']['options']])
-    input: "{prefix}.vcf"
-    output: "{prefix}.snp.vcf"
-    shell: "{params.cmd} {params.options} --variant {input} --out {output}"
+            options = config['gatk']['select_snp_variants']['options']
+    input: vcf = "{prefix}.vcf", ref = config['gatk']['select_snp_variants']['ref']
+    output: vcf = "{prefix}.snp.vcf"
+    shell: "{params.cmd} {params.options} -R {input.ref} --variant {input.vcf} --out {output.vcf}"
 

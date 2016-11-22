@@ -19,6 +19,7 @@ if not set(applications).issubset(pytest.rules.__all__):
 blacklist = [
     'bwa_index',
     'bwa_link_ref',
+    'gatk_read_backed_phasing',
     'rsem_calculate_expression_bowtie',
     'rseqc_qc_8',
     'rseqc_qc',

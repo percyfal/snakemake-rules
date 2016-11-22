@@ -1,5 +1,7 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
+include: '../samtools/samtools_faidx.rule'
+include: '../picard/picard_create_sequence_dictionary.rule'
 
 config_default = {
     'gatk' : {
@@ -7,10 +9,10 @@ config_default = {
             'cmd' : 'UnifiedGenotyper',
             'ref' : config['gatk']['ref'],
             'options' : " ".join(["-stand_call_conf 30.0 -stand_emit_conf 10.0  --downsample_to_coverage 200 --output_mode EMIT_VARIANTS_ONLY -glm BOTH",
-                                  "--dbsnp {dbsnp}".format(dbsnp=config['gatk']['dbsnp']),
+                                  "--dbsnp {dbsnp}".format(dbsnp=config['gatk']['dbsnp']) if not config['gatk']['dbsnp'] == "" else "",
                                   "-L {target}".format(target=config['gatk']['target_regions']) if not config['gatk']['target_regions'] == "" else "",
+            ]),
             'java_mem' : config['gatk']['java_mem'],
-            ])
         },
     },
 }
@@ -20,12 +22,15 @@ config = config_default
 
 cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['unified_genotyper']['java_mem']), config['gatk']['cmd'])
 
+
 rule gatk_unified_genotyper:
     """Run GATK UnifiedGenotyper"""
     params: cmd = cmd + " -T " + config['gatk']['unified_genotyper']['cmd'],
-            options = " ".join(["-R", config['gatk']['unified_genotyper']['ref'], 
-            config['gatk']['unified_genotyper']['options']])
-    input: bam="{prefix}.bam", dbsnp=config['gatk']['dbsnp']
-    output: "{prefix}.vcf"
-    shell: "{params.cmd} {params.options} -I {input.bam} -o {output}"
+            options = config['gatk']['unified_genotyper']['options']
+    input: bam = "{prefix}.bam",
+           ref = config['gatk']['unified_genotyper']['ref'],
+           fai = config['gatk']['unified_genotyper']['ref'] + '.fai',
+           dict = os.path.splitext(config['gatk']['unified_genotyper']['ref'])[0] + '.dict',
+    output: vcf = "{prefix}.vcf"
+    shell: "{params.cmd} {params.options} -R {input.ref} -I {input.bam} -o {output.vcf}"
 
