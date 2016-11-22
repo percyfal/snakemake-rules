@@ -1,0 +1,26 @@
+# -*- snakemake -*-
+include: "bcftools.settings"
+include: "../htslib/htslib_bgzip.rule"
+
+config_default = {
+    'bcftools' : {
+        'stats' : {
+            'options' : '',
+            'B' : [],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule bcftools_stats:
+    """bcftools: calculate statistics.
+
+    NB: previously called 'vcfcheck'"""
+    params: cmd = config['bcftools']['cmd'],
+            options = config['bcftools']['stats']['options']
+    input: vcf = "{prefix}.g.vcf.gz", B = config['bcftools']['stats']['B'] if config['bcftools']['stats']['B'] else []
+    output: stats = "{prefix}.stats"
+    shell: "{params.cmd} stats {params.options} {input.vcf} {input.B} > {output.stats}"
+

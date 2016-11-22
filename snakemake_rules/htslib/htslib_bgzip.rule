@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+include: "htslib.settings"
+
+config_default = {
+    'htslib' : {
+        'bgzip' : {
+            'options' : '',
+            'threads' : config['htslib']['threads']
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule htslib_bgzip:
+    """htslib: run bgzip
+    """
+    params: cmd = 'bgzip',
+            options = config['htslib']['bgzip']['options']
+    input: vcf = "{prefix}.vcf"
+    output: bgzip = "{prefix}.vcf.gz"
+    threads: config['htslib']['bgzip']['threads']
+    shell: "{params.cmd} {params.options} -i {input.vcf} -@ {threads} {output.bgzip}"

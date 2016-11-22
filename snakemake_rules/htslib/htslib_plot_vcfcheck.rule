@@ -1,6 +1,9 @@
 # -*- snakemake -*-
 rule htslib_plot_vcfcheck:
-    """htslib: plot vcf check outut file"""
+    """htslib: plot vcf check outut file
+    
+    Output from vcftools stats.
+    """
     params: cmd='plot-vcfcheck'
     input: "{prefix}.chk"
     output: "{prefix}-summary.pdf"

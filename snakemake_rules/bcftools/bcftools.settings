@@ -2,8 +2,11 @@
 include: '../ngs.settings'
 
 config_default = {
-    'htslib' : {
-        'threads' : config['settings']['threads'],
+    'bcftools' : {
+        'cmd' : 'bcftools',
+        'options' : {
+            'main' : "",
+        },
     },
 }
 
