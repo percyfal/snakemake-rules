@@ -10,6 +10,6 @@ rule cutadapt_cut_threeprime:
     output: read = "{prefix}.trimmed{fastq, " + config['cutadapt']['fastq_suffix_re'] + "}",
             log = "{prefix}.trimmed{fastq}.cutadapt_metrics"
     log: "{prefix}.trimmed{fastq}.cutadapt_metrics"
-    shell: "{params.cmd} {params.options} -a {params.threeprime} {input.read} -o {output.read} > {wildcards.prefix}.cutadapt_metrics"
+    shell: "{params.cmd} {params.options} -a {params.threeprime} {input.read} -o {output.read} > {log}"
 
 
