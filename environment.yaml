@@ -1,0 +1,39 @@
+dependencies:
+  # - annovar
+  - bamtools
+  - bedtools
+  - blat
+  - bowtie
+  - bowtie2
+  - bwa
+  # - centipede
+  # - cloudbiolinux
+  - cutadapt
+  # - danpos
+  # - dfilter
+  - diamond
+  - emboss
+  # - ercc
+  - fastqc
+  - gatk
+  - gem
+  # - homer
+  - htslib
+  - jellyfish
+  # - multo
+  - picard
+  - plink2
+  - qualimap
+  # - rnaseqc
+  - rsem
+  - samtools
+  - snpeff
+  - sra-tools
+  - star
+  - trim-galore
+  # - trimmomatic
+  # - tuxedo
+  # - ucsc
+  # - vcf
+  - vcftools
+  - vsearch

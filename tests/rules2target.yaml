@@ -1,0 +1,25 @@
+blat:
+  blat_faToTwoBit: chr11.2bit
+bowtie:
+  bowtie_build: chr11.1.ebwt
+bowtie2:
+  bowtie2_build: chr11.1.bt2
+cutadapt:
+  cutadapt_cut_fiveprime: s1_1.trimmed.fastq.gz
+  cutadapt_cut_threeprime: s1_1.trimmed.fastq.gz
+  cutadapt_cut_paired_end: s1_1.trimmed.fastq.gz
+  cutadapt_cut_single_end: s1_1.trimmed.fastq.gz
+fastqc:
+  fastqc: s1_1_fastqc/fastqc_data.txt
+gatk:
+  gatk_base_recalibrator: s1.rg.sort.recal_data.grp
+  gatk_clip_reads: s1.rg.sort.clip.bam
+  gatk_realigner_target_creator: s1.rg.sort.intervals
+  gatk_indel_realigner: s1.rg.sort.realign.bam
+  gatk_print_reads: s1.rg.sort.recal.bam
+  gatk_haplotype_caller: s1.rg.sort.g.vcf
+  gatk_unified_genotyper: s1.rg.sort.vcf
+  gatk_select_snp_variants: s1.snp.vcf
+  gatk_select_indel_variants: s1.indel.vcf
+  gatk_variant_snp_JEXL_filtration: s1.snp.filteredSNP.vcf
+  gatk_variant_indel_JEXL_filtration: s1.indel.filteredINDEL.vcf
