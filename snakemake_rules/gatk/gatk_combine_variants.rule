@@ -7,6 +7,7 @@ config_default = {
             'cmd' : 'CombineVariants',
             'ref' : config['gatk']['ref'],
             'options' : "",
+            'java_mem' : config['gatk']['java_mem'],
         },
     },
 }
@@ -14,6 +15,7 @@ config_default = {
 update_config(config_default, config)
 config = config_default
 
+cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['combine_variants']['java_mem']), config['gatk']['cmd'])
 
 rule gatk_combine_variants:
     """Run GATK CombineVariants to combine variant files.
@@ -22,7 +24,7 @@ rule gatk_combine_variants:
     filteredINDEL.vcf.
 
     """
-    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['combine_variants']['cmd'],
+    params: cmd = cmd + " -T " + config['gatk']['combine_variants']['cmd'],
             options = " ".join(["-R", config['gatk']['combine_variants']['ref'],
                                 config['gatk']['combine_variants']['options']])
     input: "{prefix}.snp.filteredSNP.vcf", "{prefix}.indel.filteredINDEL.vcf"

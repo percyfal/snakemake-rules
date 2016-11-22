@@ -1,0 +1,29 @@
+# -*- snakemake -*-
+include: 'gatk.settings'
+
+config_default = {
+    'gatk' : {
+        'genotype_gvcfs' : {
+            'cmd' : 'GenotypeGVCFs',
+            'ref' : config['gatk']['ref'],
+            'threads' : config['gatk']['threads'],
+            'options' : '',
+            'java_mem' : config['gatk']['java_mem'],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['genotype_gvcfs']['java_mem']), config['gatk']['cmd'])
+
+rule gatk_genotype_gvcfs:
+    """Run GATK GenotypeGVCFs"""
+    params: cmd = cmd + " -T " + config['gatk']['genotype_gvcfs']['cmd'],
+            options = config['gatk']['genotype_gvcfs']['options']
+    input: fofn = "{prefix}.fofn", ref = config['gatk']['genotype_gvcfs']['ref']
+    output: "{prefix}.vcf"
+    threads: config['gatk']['threads']
+    log: "{prefix}.vcf.log"
+    shell: "{params.cmd} {params.options} -nt {threads} -R {input.ref} -o {output} -log {log} $(cat {input.fofn} | sed -e \"s/^\(.*\)/--variant \\1/g\" | tr \"\\n\", \" \")"
