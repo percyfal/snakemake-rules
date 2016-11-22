@@ -1,6 +1,24 @@
+settings:
+  sampleinfo: sampleinfo.csv
+  runfmt: "{SM}"
+  
 ngs.settings:
   db:
     ref: chr11.fa
+    dbsnp: dbsnp132_chr11.vcf
 
 rseqc:
   refgene: ref-transcripts.bed12
+
+bedtools:
+  bfile: targets.bed
+
+bowtie:
+  index: chr11
+
+bowtie2:
+  index: chr11
+
+gatk:
+  combine_variants:
+    options: --genotypemergeoption UNIQUIFY

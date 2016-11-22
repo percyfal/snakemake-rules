@@ -7,6 +7,7 @@ import pytest
 import shutil
 import subprocess as sp
 import ast
+import yaml
 from snakemake.parser import parse
 
 logging.basicConfig(level=logging.INFO)
@@ -23,8 +24,16 @@ CONFIG_REGIONS = join(TESTDIR, "config_regions.yaml")
 blacklist = ['__pycache__', 'bio', 'comp']
 applications = {x:join(RULEDIR, x) for x in os.listdir(RULEDIR) if isdir(join(RULEDIR, x)) and not x in blacklist}
 rules = {k: [join(RULEDIR, k, x) for x in os.listdir(v) if x.endswith(".rule")] for k,v in applications.items() }
+with open(os.path.join(TESTDIR, "rules2target.yaml")) as fh:
+    rules2targets = yaml.load(fh)
+
 
 def make_output(rule, prefix="s1"):
+    rn = os.path.basename(rule).replace(".rule", "")
+    app = os.path.basename(os.path.dirname(rule))
+    target = rules2targets.get(app, {}).get(rn, None)
+    if target:
+        return target
     code, linemake, rulecount = parse(rule)
     m = re.search("@workflow.output\(\s+(?P<output>.*)", code)
     output = m.group("output")
@@ -46,7 +55,9 @@ def make_output(rule, prefix="s1"):
 # Add option to run slow tests; by default these are turned off
 def pytest_addoption(parser):
     parser.addoption("--slow", action="store_true",
-        help="run slow tests")
+                     help="run slow tests", dest="slow")
+    parser.addoption("--slow-only", action="store_true",
+                     help="run slow tests only", dest="slow_only")
     parser.addoption("-W", "--show-workflow-output", action="store_true",
                      help="show workflow output",
                      dest="show_workflow_output")
@@ -61,14 +72,20 @@ def pytest_addoption(parser):
                      default="1",
                      help="number of threads to use",
                      dest="threads")
+    parser.addoption("-R", "--rule", action="store",
+                     default=None,
+                     help="run a specific rule",
+                     dest="rule")
 
 
 def pytest_runtest_setup(item):
     """Skip tests if they are marked as slow and --slow is not given"""
-    if getattr(item.obj, 'slow', None) and not item.config.getvalue('slow'):
+    if getattr(item.obj, 'slow', None) and not (item.config.getvalue('slow') or item.config.getvalue('slow_only')):
         pytest.skip('slow tests not requested')
+    if not getattr(item.obj, 'slow', None) and item.config.getvalue('slow_only'):
+        pytest.skip('run only slow tests')
 
-
+        
 def pytest_report_header(config):
     try:
         output = sp.check_output(['conda', 'env', 'list', '--json'])
@@ -100,6 +117,9 @@ def pytest_namespace():
 ##################################################
 # Input files
 chr11 = abspath(join(dirname(__file__), "data", "chr11.fa"))
+chr11fai = abspath(join(dirname(__file__), "data", "chr11.fa.fai"))
+chr11dict = abspath(join(dirname(__file__), "data", "chr11.dict"))
+dbsnp = abspath(join(dirname(__file__), "data", "dbsnp132_chr11.vcf"))
 ref_transcripts = abspath(join(dirname(__file__), "data", "ref-transcripts.gtf"))
 ref_transcripts_bed12 = abspath(join(dirname(__file__), "data", "ref-transcripts.bed12"))
 sample1_1 = abspath(join(dirname(__file__), "data", "s1_1.fastq.gz"))
@@ -109,15 +129,21 @@ sample2_2 = abspath(join(dirname(__file__), "data", "s2_2.fastq.gz"))
 sampleinfo = abspath(join(dirname(__file__), "data", "sampleinfo.csv"))
 sam = abspath(join(dirname(__file__), "data", "s1.sam"))
 bam = abspath(join(dirname(__file__), "data", "s1.bam"))
+rgbam = abspath(join(dirname(__file__), "data", "s1.rg.bam"))
+rgsortbam = abspath(join(dirname(__file__), "data", "s1.rg.sort.bam"))
+vcf = abspath(join(dirname(__file__), "data", "s1.vcf"))
+fofn = abspath(join(dirname(__file__), "data", "s1.fofn"))
+gvcf = abspath(join(dirname(__file__), "data", "s1.g.vcf"))
 sortbam = abspath(join(dirname(__file__), "data", "s1.sort.bam"))
 sortbambai = abspath(join(dirname(__file__), "data", "s1.sort.bam.bai"))
 configfile = abspath(join(dirname(__file__), "data", "config.yaml"))
+targets = abspath(join(dirname(__file__), "data", "targets.bed"))
 
 
 ##############################
 # sample
 ##############################
-@pytest.fixture(scope="function", autouse=False)
+@pytest.fixture(scope="module", autouse=False)
 def data(tmpdir_factory):
     """
     Setup input data
@@ -130,10 +156,20 @@ def data(tmpdir_factory):
     p.join("s2_2.fastq.gz").mksymlinkto(sample2_2)
     p.join("s1.sam").mksymlinkto(sam)
     p.join("s1.bam").mksymlinkto(bam)
+    p.join("s1.vcf").mksymlinkto(vcf)
+    p.join("s1.g.vcf").mksymlinkto(gvcf)
+    p.join("s2.g.vcf").mksymlinkto(gvcf)
+    p.join("s1.fofn").mksymlinkto(fofn)
     p.join("s1.sort.bam").mksymlinkto(sortbam)
     p.join("s1.sort.bam.bai").mksymlinkto(sortbambai)
+    p.join("s1.rg.bam").mksymlinkto(rgbam)
+    p.join("s1.rg.sort.bam").mksymlinkto(rgsortbam)
     p.join("chr11.fa").mksymlinkto(chr11)
+    p.join("chr11.fa.fai").mksymlinkto(chr11fai)
+    p.join("chr11.dict").mksymlinkto(chr11dict)
+    p.join("dbsnp132_chr11.vcf").mksymlinkto(dbsnp)
     p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
     p.join("ref-transcripts.bed12").mksymlinkto(ref_transcripts_bed12)
     p.join("config.yaml").mksymlinkto(configfile)
+    p.join("targets.bed").mksymlinkto(targets)
     return p

@@ -31,3 +31,4 @@
 ##contig=<ID=chr11,length=2000000>
 ##reference=file:///pica/h1/perun/dev/snakemake-rules/tests/data/chr11.fa
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	s1
+chr11	3665	.	T	C	.	.	MLEAC=3666	GT:DP:GQ:DP:PL	0/0:25:27:25:0,27,405

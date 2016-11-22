@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 stderr = None if pytest.config.getoption("--show-workflow-output") else sp.STDOUT
 applications = [pytest.config.getoption("--application")] if pytest.config.getoption("--application") else pytest.rules.__all__
+rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
 THREADS = pytest.config.getoption("--threads")
 
 if not set(applications).issubset(pytest.rules.__all__):
@@ -22,8 +23,19 @@ blacklist = [
     'rseqc_qc_8',
     'rseqc_qc',
 ]
-rules = [(x, y) for x in applications for y in getattr(pytest.rules, x) if not re.sub(".rule", "", basename(y)) in blacklist]
 
+rules = []
+for x in applications:
+    for y in getattr(pytest.rules, x):
+        if not rule is None:
+            if not rule in y:
+                continue
+        else:
+            if re.sub(".rule", "", basename(y)) in blacklist:
+                continue
+        rules.append((x,y))
+
+        
 @pytest.mark.parametrize("x", rules, ids=["{}/{}".format(x[0], basename(x[1])) for x in rules])
 def test_snakemake_list(x):
     app, rule = x
@@ -35,7 +47,18 @@ def test_snakemake_list(x):
 
 application_blacklist = ['utils']
 applications = list(set(applications).difference(application_blacklist))
-rules = [(x, y) for x in applications for y in getattr(pytest.rules, x) if not re.sub(".rule", "", basename(y)) in blacklist]
+
+
+rules = []
+for x in applications:
+    for y in getattr(pytest.rules, x):
+        if not rule is None:
+            if not rule in y:
+                continue
+        else:
+            if re.sub(".rule", "", basename(y)) in blacklist:
+                continue
+        rules.append((x,y))
 
 
 @pytest.mark.skipif(not applications, reason="application '{}' in blacklist".format(pytest.config.getoption("--application")))
