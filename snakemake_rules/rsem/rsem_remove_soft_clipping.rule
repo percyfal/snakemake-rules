@@ -1,8 +1,5 @@
 # -*- snakemake -*-
 # Rule to remove soft-clipping
-import re
-import pysam
-
 include: "rsem.settings"
 
 rule rsem_remove_soft_clipping:
