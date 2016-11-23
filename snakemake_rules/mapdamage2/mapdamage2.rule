@@ -25,6 +25,13 @@ if rescalebam and not m:
 elif m:
     rescale = True
 
+
+stats = True
+m = re.search("(--no-stats)", config["mapdamage2"]["options"])
+if m:
+    stats = False
+
+    
 rule mapdamage2:
     """mapdamage2
 
@@ -35,19 +42,19 @@ rule mapdamage2:
     input: bam = "{prefix}.bam", ref = config["mapdamage2"]["ref"]
     output: log = join("{prefix}" + "_" + folder, "Runtime_log.txt"),
             fragmisincorporation = join("{prefix}"+ "_" + folder, "Fragmisincorporation_plot.pdf"),
-            lengthplot = join("{prefix}"+ "_" + folder, "Length_plot.pdf"),
+            #lengthplot = join("{prefix}"+ "_" + folder, "Length_plot.pdf"),
             misincorporation = join("{prefix}"+ "_" + folder, "misincorporation.txt"),
             CtoT = join("{prefix}"+ "_" + folder, "5pCtoT_freq.txt"),
             GtoA = join("{prefix}"+ "_" + folder, "3pGtoA_freq.txt"),
             dnacomp = join("{prefix}"+ "_" + folder, "dnacomp.txt"),
             lgdist = join("{prefix}"+ "_" + folder, "lgdistribution.txt"), 
-            mcmc_hist = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_hist.pdf"),
-            mcmc_iter = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_iter.csv"),
-            mcmc_trace = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_trace.pdf"),
-            mcmc_iter_summ = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_iter_summ_stat.csv"),
-            mcmc_post_pred = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_post_pred.pdf"),
-            mcmc_correct_prob = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_correct_prob.csv"),
-            dnacomp_genome = join("{prefix}"+ "_" + folder, "dnacomp_genome.csv"),
+            mcmc_hist = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_hist.pdf") if stats else [],
+            mcmc_iter = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_iter.csv") if stats else [],
+            mcmc_trace = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_trace.pdf") if stats else [],
+            mcmc_iter_summ = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_iter_summ_stat.csv") if stats else [],
+            mcmc_post_pred = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_post_pred.pdf") if stats else [],
+            mcmc_correct_prob = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_correct_prob.csv") if stats else [],
+            dnacomp_genome = join("{prefix}"+ "_" + folder, "dnacomp_genome.csv") if stats else [],
             rescale_bam = join("{prefix}"+ "_" + folder, "{prefix}.rescaled.bam") if rescalebam else [],
     run:
         cmd = "mapDamage " + params.options + " -i " + input.bam + " -r " + input.ref + " -d " + "{}_{}".format(wildcards.prefix, folder)
