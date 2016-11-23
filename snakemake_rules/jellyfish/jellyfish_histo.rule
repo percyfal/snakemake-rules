@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 include: "jellyfish.settings"
+include: "jellyfish_count.rule"
 
 config_default = {
     'bio.ngs.assemblyqc.jellyfish': {
