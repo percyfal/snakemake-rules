@@ -1,0 +1,25 @@
+# -*- snakemake -*-
+include: "bedtools.settings"
+include: join(os.pardir, "ucsc", "ucsc_fetchChromSizes.rule")
+
+config_default = {
+    'bedtools' : {
+        'genomecov' : {
+            'options' : "",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule bedtools_bedToBedGraph:
+    """Convert bed to bedGraph
+    """
+    params: cmd = "bedtools genomecov ",
+            options=config['bedtools']['genomecov']['options']
+    input: infile = "{prefix}.bed",
+           chrom = "chrom.sizes"
+    output: bedgraph = "{prefix}.bedGraph"
+    shell: "{params.cmd} {params.options} -bg -trackline -trackopts name={wildcards.prefix} -i {input.infile} -g {input.chrom} > {output.bedgraph}"
