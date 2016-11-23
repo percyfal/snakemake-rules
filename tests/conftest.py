@@ -1,6 +1,7 @@
 # Copyright (C) 2016 by Per Unneberg
 import os
 from os.path import abspath, dirname, join, isdir
+import sys
 import re
 import logging
 import pytest
@@ -19,6 +20,9 @@ SNAKEFILE = join(TESTDIR, "Snakefile")
 SNAKEFILE_REGIONS = join(TESTDIR, "Snakefile_regions")
 CONFIG = join(TESTDIR, "config.yaml")
 CONFIG_REGIONS = join(TESTDIR, "config_regions.yaml")
+
+# Add test source path to pythonpath
+sys.path.insert(0, join(TESTDIR, os.pardir))
 
 # Autogenerate all application directories
 blacklist = ['__pycache__', 'bio', 'comp']
@@ -125,12 +129,15 @@ configfile = abspath(join(dirname(__file__), "data", "config.yaml"))
 chr11 = abspath(join(dirname(__file__), "data", "chr11.fa"))
 chr11fai = abspath(join(dirname(__file__), "data", "chr11.fa.fai"))
 chr11dict = abspath(join(dirname(__file__), "data", "chr11.dict"))
+chromsizes = abspath(join(dirname(__file__), "data", "chrom.sizes"))
 
 # annotation files
 dbsnp = abspath(join(dirname(__file__), "data", "dbsnp132_chr11.vcf"))
 ref_transcripts = abspath(join(dirname(__file__), "data", "ref-transcripts.gtf"))
 ref_transcripts_bed12 = abspath(join(dirname(__file__), "data", "ref-transcripts.bed12"))
+ref_transcripts_genepred = abspath(join(dirname(__file__), "data", "ref-transcripts.genePred"))
 targets = abspath(join(dirname(__file__), "data", "targets.bed"))
+targets_list = abspath(join(dirname(__file__), "data", "targets.interval_list"))
 
 # fastq files
 sample1_1 = abspath(join(dirname(__file__), "data", "s1_1.fastq.gz"))
@@ -143,6 +150,9 @@ sample2_2 = abspath(join(dirname(__file__), "data", "s2_2.fastq.gz"))
 sam = abspath(join(dirname(__file__), "data", "s1.sam"))
 bam = abspath(join(dirname(__file__), "data", "s1.bam"))
 sortbam = abspath(join(dirname(__file__), "data", "s1.sort.bam"))
+sortbed = abspath(join(dirname(__file__), "data", "s1.sort.bed"))
+sortwig = abspath(join(dirname(__file__), "data", "s1.sort.wig"))
+sortbedgraph = abspath(join(dirname(__file__), "data", "s1.sort.bedGraph"))
 sortbambai = abspath(join(dirname(__file__), "data", "s1.sort.bam.bai"))
 rgbam = abspath(join(dirname(__file__), "data", "s1.rg.bam"))
 rgsortbam = abspath(join(dirname(__file__), "data", "s1.rg.sort.bam"))
@@ -158,7 +168,7 @@ gvcfgz = abspath(join(dirname(__file__), "data", "s1.g.vcf.gz"))
 ##############################
 # sample
 ##############################
-@pytest.fixture(scope="module", autouse=False)
+@pytest.fixture(scope="function", autouse=False)
 def data(tmpdir_factory):
     """
     Setup input data
@@ -173,14 +183,24 @@ def data(tmpdir_factory):
     p.join("chr11.fa").mksymlinkto(chr11)
     p.join("chr11.fa.fai").mksymlinkto(chr11fai)
     p.join("chr11.dict").mksymlinkto(chr11dict)
+    p.join("chrom.sizes").mksymlinkto(chromsizes)
 
     # annotation files
     p.join("dbsnp132_chr11.vcf").mksymlinkto(dbsnp)
     p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
+    p.join("s1.gtf").mksymlinkto(ref_transcripts)
     p.join("ref-transcripts.bed12").mksymlinkto(ref_transcripts_bed12)
+    p.join("ref-transcripts.genePred").mksymlinkto(ref_transcripts_genepred)
+    p.join("s1.genePred").mksymlinkto(ref_transcripts_genepred)
     p.join("targets.bed").mksymlinkto(targets)
+    p.join("targets.interval_list").mksymlinkto(targets_list)
+
+    # fasta files
+    p.join("s1.fasta").mksymlinkto(chr11)
+    p.join("s1.fa").mksymlinkto(chr11)
     
     # fastq files
+    p.join("s1.fastq.gz").mksymlinkto(sample1_1)
     p.join("s1_1.fastq.gz").mksymlinkto(sample1_1)
     p.join("s1_2.fastq.gz").mksymlinkto(sample1_2)
     p.join("s2_1.fastq.gz").mksymlinkto(sample2_1)
@@ -189,8 +209,11 @@ def data(tmpdir_factory):
     # alignment files
     p.join("s1.sam").mksymlinkto(sam)
     p.join("s1.bam").mksymlinkto(bam)
+    p.join("s1.bed").mksymlinkto(sortbed)
     p.join("s1.sort.bam").mksymlinkto(sortbam)
     p.join("s1.sort.bam.bai").mksymlinkto(sortbambai)
+    p.join("s1.bdg").mksymlinkto(sortbedgraph)
+    p.join("s1.wig").mksymlinkto(sortwig)
     p.join("s1.rg.bam").mksymlinkto(rgbam)
     p.join("s1.rg.sort.bam").mksymlinkto(rgsortbam)
     

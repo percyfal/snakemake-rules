@@ -6,10 +6,12 @@ ngs.settings:
   db:
     ref: chr11.fa
     dbsnp: dbsnp132_chr11.vcf
-
-rseqc:
-  refgene: ref-transcripts.bed12
-
+  annotation:
+    transcript_annot_gtf: ref-transcripts.gtf
+  sequence_capture:
+    bait_regions: targets.interval_list
+    target_regions: targets.interval_list
+      
 bedtools:
   bfile: targets.bed
 
@@ -25,3 +27,14 @@ gatk:
 
 mapdamage2:
   options: --no-stats
+
+rseqc:
+  refgene: ref-transcripts.bed12
+
+star:
+  star_index:
+    options: --genomeSAindexNbases 9
+    
+vsearch:
+  fastq_stats:
+    options: --fastq_qmax 50

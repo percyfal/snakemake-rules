@@ -5,6 +5,7 @@ settings for all rules.
 import sys
 import os
 from os.path import join, basename, dirname
+import re
 import csv
 import shutil
 import glob
@@ -15,6 +16,7 @@ from snakemake.exceptions import RuleException
 from snakemake.logging import logger
 try:
     from snakemake_rules._version import get_versions
+    from snakemake_rules import SNAKEMAKE_RULES_PATH
 except:
     get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
 
