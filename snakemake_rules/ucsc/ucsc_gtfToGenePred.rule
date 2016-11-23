@@ -14,10 +14,12 @@ update_config(config_default, config)
 config = config_default
 
 
-rule ucsc_gtf_to_genepred:
+rule ucsc_gtfToGenepred:
     """Run gtfToGenePred"""
     params: cmd = config['ucsc']['gtfToGenePred']['cmd'],
             options = config['ucsc']['gtfToGenePred']['options']
     input: gtf = "{prefix}.gtf"
     output: genepred = "{prefix}.genePred"
+    conda:
+        join("envs", "ucsc_gtftogenepred.yaml")
     shell: "{params.cmd} {params.options} {input.gtf} {output.genepred}"
