@@ -1,0 +1,5 @@
+0.1-beta.7 (Nov 23 2016)
+=========================
+
+Hotfix: setup.py imported non-existing files.
+  
