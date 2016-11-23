@@ -8,6 +8,8 @@ from os.path import join, basename, dirname
 import csv
 import shutil
 import glob
+import subprocess as sp
+import ast
 from snakemake.utils import update_config
 from snakemake.exceptions import RuleException
 from snakemake.logging import logger
@@ -37,6 +39,9 @@ config_default = {
         'temporary_rules': [],
         'protected_rules': [],
         'sampleinfo': None,
+        'conda' : {
+            'python2' : 'py2.7',
+        }, 
     },
     'samples': [],
 }
@@ -57,8 +62,20 @@ try:
             if config['samples'] and row['SM'] in config['samples'] or len(config['samples']) == 0:
                 config['_sampleinfo'].append(row)
             else:
-                logger.info("snakemake_rules.settings: ignoring sample {SM} in current run".format(**row))
+                logger.info("[snakemake_rules.settings]: ignoring sample {SM} in current run".format(**row))
 except:
     logger.info("snakemake_rules.settings: no sampleinfo provided; not setting config['_sampleinfo']")
+
+# Add python 2 path if possbile
+try:
+    output = sp.check_output(['conda', 'env', 'list', '--json'])
+    envs = ast.literal_eval(output.decode("utf-8"))
+    py2 = [x for x  in envs['envs'] if re.search("{}{}$".format(os.sep, config['settings']['conda']['python2']), x)][0]
+    py2bin = os.path.join(py2, "bin")
+    os.environ["PATH"] = ":".join([os.environ["PATH"], py2bin])
+    logger.info("[snakemake_rules.settings]: Add python2 bin path '{}' to PATH".format(py2bin))
+except:
+    logger.info("[snakemake_rules.settings]: failed to add conda python2 environment '{py2}' to PATH".format(py2=config['settings']['conda']['python2']))
+
     
 config['_snakemake_rules_version'] = get_versions()
