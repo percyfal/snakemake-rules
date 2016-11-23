@@ -1,11 +1,27 @@
 # -*- snakemake -*-
 include: "snpeff.settings"
 
+config_default = {
+    'snpeff' : {
+        'annotate' : {
+            'threads' : config['snpeff']['threads'],
+            'options' : '',
+            'java_mem' : config['snpeff']['java_mem'],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['snpeff']['annotate']['java_mem']), config['snpeff']['cmd'])
+
+
 rule snpeff_annotate_variants:
     """snpEff: annotate variants"""
-    params: cmd=config['snpeff']['cmd'],
+    params: cmd = " ".join([config['snpeff']['cmd'], "ann"]),
             options=config['snpeff']['options'],
             genome_version=config['snpeff']['genome_version']
     input: "{prefix}.vcf"
     output: "{prefix}.annotated.{sfx}"
-    shell: "{params.cmd} {params.options} {params.genome_version} {input} -i vcf -o {wildcards.sfx} > {output}"
+    shell: "{params.cmd} ann {params.options} {params.genome_version} {input} -i vcf -o {wildcards.sfx} > {output}"
