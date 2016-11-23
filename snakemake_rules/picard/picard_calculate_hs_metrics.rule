@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 include: "picard.settings"
+include: "picard_build_bam_index.rule"
 
 config_default = {
     'picard' : {
@@ -19,12 +20,12 @@ rule picard_calculate_hs_metrics:
     """Picard: calculate hybrid selection metrics"""
     params: cmd = config['picard']['cmd'] + CALCULATE_HS_METRICS,
             options = config['picard']['calculate_hs_metrics']['options'],
-            target_regions = config['picard']['calculate_hs_metrics']['target_regions'],
-            bait_regions = config['picard']['calculate_hs_metrics']['bait_regions'],
             suffix = ".hs_metrics"
     input: bam = "{prefix}.bam",
            bai = "{prefix}.bai",
-           ref = config['picard']['ref']
+           ref = config['picard']['ref'],
+           bait_regions = config['picard']['calculate_hs_metrics']['bait_regions'],
+           target_regions = config['picard']['calculate_hs_metrics']['target_regions']
     output: metrics = "{prefix}.hs_metrics"
-    shell: "{params.cmd} {params.options} TI={params.target_regions} BI={params.bait_regions} I={input.bam} O={output.metrics} R={input.ref}"
+    shell: "{params.cmd} {params.options} TI={input.target_regions} BI={input.bait_regions} I={input.bam} O={output.metrics} R={input.ref}"
 

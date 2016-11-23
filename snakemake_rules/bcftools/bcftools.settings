@@ -1,0 +1,14 @@
+# -*- snakemake -*-
+include: '../ngs.settings'
+
+config_default = {
+    'bcftools' : {
+        'cmd' : 'bcftools',
+        'options' : {
+            'main' : "",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default

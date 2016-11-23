@@ -1,0 +1,47 @@
+blat:
+  blat_faToTwoBit: chr11.2bit
+bowtie:
+  bowtie_build: chr11.1.ebwt
+bowtie2:
+  bowtie2_build: chr11.1.bt2
+bwa:
+  bwa_index: chr11.fa.bwt  
+cutadapt:
+  cutadapt_cut_fiveprime: s1_1.trimmed.fastq.gz
+  cutadapt_cut_threeprime: s1_1.trimmed.fastq.gz
+  cutadapt_cut_paired_end: s1_1.trimmed.fastq.gz
+  cutadapt_cut_single_end: s1_1.trimmed.fastq.gz
+fastqc:
+  fastqc: s1_1_fastqc/fastqc_data.txt
+gatk:
+  gatk_base_recalibrator: s1.rg.sort.recal_data.grp
+  gatk_clip_reads: s1.rg.sort.clip.bam
+  gatk_realigner_target_creator: s1.rg.sort.intervals
+  gatk_indel_realigner: s1.rg.sort.realign.bam
+  gatk_print_reads: s1.rg.sort.recal.bam
+  gatk_haplotype_caller: s1.rg.sort.g.vcf
+  gatk_unified_genotyper: s1.rg.sort.vcf
+  gatk_select_snp_variants: s1.snp.vcf
+  gatk_select_indel_variants: s1.indel.vcf
+  gatk_variant_snp_JEXL_filtration: s1.snp.filteredSNP.vcf
+  gatk_variant_indel_JEXL_filtration: s1.indel.filteredINDEL.vcf
+jellyfish:
+  jellyfish_count: s1_1.fastq.gz.mer_counts.jf
+  jellyfish_histo: s1_1.fastq.gz.histo
+macs2:
+  macs2_xls_to_bed: s1_peaks.xls
+mapdamage2:
+  mapdamage2: s1_mapdamage2/Runtime_log.txt
+picard:
+  picard_bed_to_interval_list: targets.interval_list
+  picard_build_bam_index: s1.sort.bai
+  picard_calculate_hs_metrics: s1.sort.hs_metrics
+  picard_collect_insert_size_metrics: s1.sort.insert_metrics
+  picard_collect_alignment_summary_metrics: s1.sort.bai
+  picard_mark_duplicates: s1.sort.dup.dup_metrics
+samtools:
+  samtools_index: s1.sort.bam.bai
+snpeff:
+  snpeff_annotate_variants: s1.annotated.vcf
+ucsc:
+  ucsc_fetchChromSizes: chrom.sizes

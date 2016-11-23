@@ -1,17 +1,11 @@
 # -*- snakemake -*-
 include: '../ngs.settings'
 
-DEFAULT_RULES = ['htslib_plot_vcfcheck']
-
 config_default = {
     'htslib' : {
-        'rules' : DEFAULT_RULES,
-        'cmd' : "vcf",
+        'threads' : config['settings']['threads'],
     },
 }
 
 update_config(config_default, config)
 config = config_default
-
-for rule in config['htslib']['rules']:
-    include: os.path.join("_htslib", rule + ".rule")

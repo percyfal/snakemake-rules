@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 include: "star.settings"
+include: "star_index.rule"
 
 config_default = { 
     'star' : {
@@ -24,7 +25,7 @@ def _star_suffix():
 rule star_align_se:
     """Run STAR alignment, single-end"""
     params: cmd = config['star']['cmd'],
-            genomedir = os.path.dirname(config['star']['index']),
+            genomedir = dirname(join(os.curdir, config['star']['index'])),
             options = " ".join([config['star']['align']['options'],
                                 "--readFilesCommand {cmd}".format(cmd=config['comp']['compression']['prog_map'].get(os.path.splitext(config['ngs.settings']['fastq_suffix'])[1], "")),
                                 "--outSAMtype BAM {}".format(config['star']['align']['outSAMtype']),

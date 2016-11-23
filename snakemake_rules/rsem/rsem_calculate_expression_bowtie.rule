@@ -4,7 +4,7 @@
 # Take into account different aligners
 include: "rsem.settings"
 
-aligner = config['ngs.settings']['aligner']
+aligner = config['ngs.settings'].get('aligner', 'star')
 align_section = '' + aligner
 align_include = os.path.join(os.pardir, aligner + ".rules")
 

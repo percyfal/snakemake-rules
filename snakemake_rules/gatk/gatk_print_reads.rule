@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
+include: 'gatk_base_recalibrator.rule'
 
 config_default = {
     'gatk' : {
@@ -18,8 +19,7 @@ config = config_default
 rule gatk_print_reads:
     """Run GATK PrintReads"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['print_reads']['cmd'],
-            options = " ".join(["-R", config['gatk']['print_reads']['ref'],
-            config['gatk']['print_reads']['options']])
-    input: "{prefix}.bam", "{prefix}.recal_data.grp"
-    output: "{prefix}.recal.bam", "{prefix}.recal.bai"
-    shell: "{params.cmd} {params.options} -I {input[0]} -BQSR {input[1]} -o {output[0]}"
+            options = config['gatk']['print_reads']['options']
+    input: bam = "{prefix}.bam", recal = "{prefix}.recal_data.grp", ref = config['gatk']['print_reads']['ref']
+    output: bam = "{prefix}.recal.bam", bai = "{prefix}.recal.bai"
+    shell: "{params.cmd} {params.options} -R {input.ref} -I {input.bam} -BQSR {input.recal} -o {output.bam}"

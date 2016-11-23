@@ -12,15 +12,18 @@ config_default = {
 update_config(config_default, config)
 config = config_default
 
-
 rule cutadapt_cut_single_end:
-    """Cutadapt: cut single end sequences"""
+    """Cutadapt: cut single end sequences. 
+
+    Trim both fiveprime and threeprime adatper.
+    """
     params: cmd = config['cutadapt']['cmd'],
             options = config['cutadapt']['single_end']['options'],
             threeprime = config['cutadapt']['threeprime'],
             fiveprime = config['cutadapt']['fiveprime']
-    input: read = "{prefix}" + config['ngs.settings']['fastq_suffix'],
-    output: read = "{prefix}" + ".trimmed" + config['ngs.settings']['fastq_suffix'],
-            log = "{prefix}.cutadapt_metrics"
-    log: "{prefix}.cutadapt_metrics"
+    input: read = "{prefix}{fastq}"
+    # Move trimmed label before read
+    output: read = "{prefix}.trimmed{fastq, " + config['cutadapt']['fastq_suffix_re'] + "}",
+            log = "{prefix}.trimmed{fastq}.cutadapt_metrics"
+    log: "{prefix}.trimmed{fastq}.cutadapt_metrics"
     shell: "{params.cmd} {params.options} {input.read} -b {params.fiveprime} -b {params.threeprime} -o {output.read} > {log}"

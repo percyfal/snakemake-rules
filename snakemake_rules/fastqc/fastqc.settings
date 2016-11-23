@@ -1,23 +1,13 @@
 # -*- snakemake -*-
-include: "../settings.rules"
+include: "../ngs.settings"
 
 config_default = {
-    'bio.ngs.qc.fastqc' : {
+    'fastqc' : {
         'cmd' : "fastqc",
-        'options' : "-q",
+        'options' : "",
+        'threads' : config['settings']['threads'],
     },
 }
 
 update_config(config_default, config)
 config = config_default
-
-
-rule fastqc_main:
-    """fastqc: run fastqc on a fastq file"""
-    params: cmd = config['bio.ngs.qc.fastqc']['cmd'],
-            options = config['bio.ngs.qc.fastqc']['options'],
-    input: "{prefix}" + config['bio.ngs.settings']['fastq_suffix']
-    output: "{prefix}_fastqc/fastqc_report.html"
-    shell: "{params.cmd} {params.options} {input}"
-
-

@@ -8,6 +8,7 @@ config_default = {
         'java_tmpdir' : config['settings']['java']['java_tmpdir'],
         'dblist' : "hg19",
         'genome_version' : config['ngs.settings']['db']['build'],
+        'threads' : config['snpeff']['threads'],
     },
 }
 
@@ -26,10 +27,10 @@ config = config_default2
 
 snpeff_args = ["-Xmx" + config['snpeff']['java_mem'], "-Djava.io.tmpdir=" + config['snpeff']['java_tmpdir'], " "]
 
-if shutil.which("snpeff") is None:
+if shutil.which("snpEff") is None:
     snpeff = " ".join(["java"] + snpeff_args + ["-jar", join(config['snpeff']['home'], "snpeff.jar ")])
 else:
-    snpeff = " ".join(["snpeff"] + snpeff_args)
+    snpeff = " ".join(["snpEff"] + snpeff_args)
 
 config_default3 = {
     'snpeff': {

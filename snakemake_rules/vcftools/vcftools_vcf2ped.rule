@@ -5,7 +5,7 @@ rule vcftools_vcf2ped:
     """vcftools: convert ped file to vcf."""
     params: cmd=config['vcftools']['cmd'],
             options=config['vcftools']['options']['main']
-    input: "{prefix}.vcf"
-    output: "{prefix}.ped"
-    shell: "{params.cmd} {params.options} --vcf {input} --plink --out {output}"
+    input: vcf = "{prefix}.vcf"
+    output: ped = "{prefix}.ped"
+    shell: "out={output.ped} && {params.cmd} {params.options} --vcf {input.vcf} --plink --out ${{out%.ped}}"
 

@@ -1,0 +1,9 @@
+0.1-beta.6 (Nov 23 2016)
+=========================
+
+This is a last major update before the 0.1 release. In summary:
+
+- all applications now live in the root directory
+- pytest is now invoked for every rule, both listing and running the rule
+- add lots of new rules
+  

@@ -1,6 +1,40 @@
+settings:
+  sampleinfo: sampleinfo.csv
+  runfmt: "{SM}"
+  
 ngs.settings:
   db:
     ref: chr11.fa
+    dbsnp: dbsnp132_chr11.vcf
+  annotation:
+    transcript_annot_gtf: ref-transcripts.gtf
+  sequence_capture:
+    bait_regions: targets.interval_list
+    target_regions: targets.interval_list
+      
+bedtools:
+  bfile: targets.bed
+
+bowtie:
+  index: chr11
+
+bowtie2:
+  index: chr11
+
+gatk:
+  combine_variants:
+    options: --genotypemergeoption UNIQUIFY
+
+mapdamage2:
+  options: --no-stats
 
 rseqc:
   refgene: ref-transcripts.bed12
+
+star:
+  star_index:
+    options: --genomeSAindexNbases 9
+    
+vsearch:
+  fastq_stats:
+    options: --fastq_qmax 50

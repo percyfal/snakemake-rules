@@ -1,8 +1,4 @@
 # -*- snakemake -*-
-import pysam
-import json
-import numpy as np
-
 include: "danpos.settings"
 
 config_default = {
@@ -20,6 +16,9 @@ rule danpos_bin_reads_by_nucleosome:
     output: bed=["{{prefix}}.{nucleosome}.bed".format(nucleosome=x) for x in range(len(config['danpos']['bins']))]
     log: json="{prefix}.danposbin.json"
     run:
+        import pysam
+        import json
+        import numpy as np
         samfile = pysam.AlignmentFile(input.bam, "rb")
         outfh = [open(f, "w") for f in output.bed]
         bins = np.array([x for item in config['danpos']['bins'] for x in item])

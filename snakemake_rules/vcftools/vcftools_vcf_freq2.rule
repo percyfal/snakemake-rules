@@ -7,5 +7,5 @@ rule vcftools_vcf_freq2:
             options=config['vcftools']['options']['main']
     input: "{prefix}.vcf"
     output: "{prefix}.2.frq"
-    shell: "{params.cmd} --counts --freq2 {params.options} --vcf {input} --out {wildcards.prefix}.2"
+    shell: "{params.cmd} --freq2 {params.options} --vcf {input} --out {wildcards.prefix}.2"
 

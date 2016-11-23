@@ -1,0 +1,28 @@
+# -*- snakemake -*-
+include: "ucsc.settings"
+
+config_default = \{
+    'ucsc' : \{ 
+        '{programlc}' : \{
+            'cmd' : '{program}',
+            'options' : '',
+        \},
+    \},
+\}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule ucsc_{programlc}:
+    """Convert wig file to bigWig.
+
+    Run wigToBigWig to convert wig file to bigWig.
+    """
+    params: cmd = config['ucsc']['{programlc}']['cmd'],
+            options = config['ucsc']['{programlc}']['options']
+    log: "\{prefix\}.{programlc}.log"
+    input: {input}
+    output: {output}
+    shell: "\{params.cmd\} \{params.options\} {input} {output} 2> \{log\}"
+

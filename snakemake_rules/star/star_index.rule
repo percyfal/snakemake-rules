@@ -15,7 +15,7 @@ config_default = {
 
 update_config(config_default, config)
 config = config_default
-
+print(config['star'])
 rule star_index:
     """Generate STAR genome index. By default will generate index in a
     directory '../rnaseq/star' relative to the directory of the reference
@@ -31,7 +31,7 @@ rule star_index:
                                 "--sjdbGTFfile {}".format(config['star']['star_index']['sjdbGTFfile']) if config['star']['star_index']['sjdbGTFfile'] else "",\
                                 "--sjdbOverhang {}".format(config['star']['star_index']['sjdbOverhang']) if config['star']['star_index']['sjdbGTFfile'] else ""\
                                 ]),
-            genomedir = os.path.dirname(config['star']['index'])
+            genomedir = dirname(join(os.curdir, config['star']['index']))
     input: ref = [config['star']['ref']] + ([config['star']['extra_ref']] if config['star']['extra_ref'] else []),
            gtf = config['star']['star_index']['sjdbGTFfile'] if config['star']['star_index']['sjdbGTFfile'] else []
     output: Genome = config['star']['index'], SA=os.path.join(os.path.dirname(config['star']['index']), "SA")
