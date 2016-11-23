@@ -3,6 +3,7 @@ include: '../ngs.settings'
 include: '../comp/comp.settings'
 
 # Jar program names
+BED_TO_INTERVAL_LIST = "BedToIntervalList"
 BUILD_BAM_INDEX = "BuildBamIndex"
 SORT_SAM = "SortSam"
 MERGE_SAM_FILES = "MergeSamFiles"
