@@ -38,36 +38,26 @@ def package_path(path, filters=()):
                 if not filters or f.endswith(filters):
                     package_data.append(join(path, f))
 
-rule_suffixes = ('.rules', '.rule')
+rule_suffixes = ('.rules', '.rule', '.settings')
                     
 package_path(join(ROOT, 'snakemake_rules'), rule_suffixes)
-package_path(join(ROOT, 'snakemake_rules', 'tests', 'Snakefile'))
-package_path(join(ROOT, 'snakemake_rules', 'tests', 'Snakefile_regions'))
-package_path(join(ROOT, 'snakemake_rules', 'tests', 'config.yaml'))
-package_path(join(ROOT, 'snakemake_rules', 'tests', 'config_regions.yaml'))
-package_path(join(ROOT, 'snakemake_rules', 'tests', 'data'))
+package_path(join(ROOT, 'tests', 'examples', 'Snakefile'))
+package_path(join(ROOT, 'tests', 'examples', 'Snakefile_regions'))
+package_path(join(ROOT, 'tests', 'examples', 'config.yaml'))
+package_path(join(ROOT, 'tests', 'examples', 'config_regions.yaml'))
+package_path(join(ROOT, 'tests', 'data'))
 
 scripts = []
 
 REQUIRES = [
-    'snakemake>=3.4.2',
+    'snakemake>=3.9.0',
     'pytest',
     'pytest-cov',
+    'pytest-runner',
 ]
-
-try:
-    # Hack for readthedocs
-    if not 'readthedocs' in os.path.dirname(os.path.realpath(__file__)):
-        pass
-    else:
-        print("readthedocs in path name; assuming we're building docs @readthedocs")
-        REQUIRES.append('sphinx-bootstrap-theme')
-except:
-    pass
 
 _version = versioneer.get_version()
 _cmdclass = versioneer.get_cmdclass()
-_cmdclass.update({'test': PyTest})
 
 setup(
     name="snakemake-rules",
@@ -81,12 +71,7 @@ setup(
     scripts=scripts,
     packages=[
         'snakemake_rules',
-        'snakemake_rules.tests',
     ],
-    # namespace_packages = [
-    #     'snakemake',
-    #     'snakemake.rules',
-    # ],
     package_data={'snakemake_rules': package_data},
     install_requires=REQUIRES,
     setup_requires=['pytest-runner'],
