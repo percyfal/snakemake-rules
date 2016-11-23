@@ -18,7 +18,7 @@ rule macs2_callpeak_treatment_only_bam_pe:
     params: cmd = config['macs2']['cmd'],
             options = config['macs2']['callpeak']['options']
     input: bam = "{prefix}.bam"
-    output: xls = ["{prefix}_peaks.xls"],
+    output: xls = "{prefix}_peaks.xls",
             bedGraph = ["{prefix}_control_lambda.bdg", "{prefix}_treat_pileup.bdg"] if " -B" in config['macs2']['callpeak']['options'] else [],
             summits = "{prefix}_summits.bed",
             narrowPeak = "{prefix}_peaks.narrowPeak",

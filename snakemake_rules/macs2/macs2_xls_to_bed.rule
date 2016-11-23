@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 include: "macs2.settings"
+include: "macs2_callpeak_treatment_only_bam_pe.rule"
 
 rule macs2_xls_to_bed:
     """MACS: convert peak xls file to bed.
