@@ -116,28 +116,43 @@ def pytest_namespace():
 # Setup test fixtures
 ##################################################
 # Input files
+
+# metadata
+sampleinfo = abspath(join(dirname(__file__), "data", "sampleinfo.csv"))
+configfile = abspath(join(dirname(__file__), "data", "config.yaml"))
+
+# references
 chr11 = abspath(join(dirname(__file__), "data", "chr11.fa"))
 chr11fai = abspath(join(dirname(__file__), "data", "chr11.fa.fai"))
 chr11dict = abspath(join(dirname(__file__), "data", "chr11.dict"))
+
+# annotation files
 dbsnp = abspath(join(dirname(__file__), "data", "dbsnp132_chr11.vcf"))
 ref_transcripts = abspath(join(dirname(__file__), "data", "ref-transcripts.gtf"))
 ref_transcripts_bed12 = abspath(join(dirname(__file__), "data", "ref-transcripts.bed12"))
+targets = abspath(join(dirname(__file__), "data", "targets.bed"))
+
+# fastq files
 sample1_1 = abspath(join(dirname(__file__), "data", "s1_1.fastq.gz"))
 sample1_2 = abspath(join(dirname(__file__), "data", "s1_2.fastq.gz"))
 sample2_1 = abspath(join(dirname(__file__), "data", "s2_1.fastq.gz"))
 sample2_2 = abspath(join(dirname(__file__), "data", "s2_2.fastq.gz"))
-sampleinfo = abspath(join(dirname(__file__), "data", "sampleinfo.csv"))
+
+
+# alignment files
 sam = abspath(join(dirname(__file__), "data", "s1.sam"))
 bam = abspath(join(dirname(__file__), "data", "s1.bam"))
-rgbam = abspath(join(dirname(__file__), "data", "s1.rg.bam"))
-rgsortbam = abspath(join(dirname(__file__), "data", "s1.rg.sort.bam"))
-vcf = abspath(join(dirname(__file__), "data", "s1.vcf"))
-fofn = abspath(join(dirname(__file__), "data", "s1.fofn"))
-gvcf = abspath(join(dirname(__file__), "data", "s1.g.vcf"))
 sortbam = abspath(join(dirname(__file__), "data", "s1.sort.bam"))
 sortbambai = abspath(join(dirname(__file__), "data", "s1.sort.bam.bai"))
-configfile = abspath(join(dirname(__file__), "data", "config.yaml"))
-targets = abspath(join(dirname(__file__), "data", "targets.bed"))
+rgbam = abspath(join(dirname(__file__), "data", "s1.rg.bam"))
+rgsortbam = abspath(join(dirname(__file__), "data", "s1.rg.sort.bam"))
+
+# vcf
+vcf = abspath(join(dirname(__file__), "data", "s1.vcf"))
+vcfgz = abspath(join(dirname(__file__), "data", "s1.vcf.gz"))
+vcffofn = abspath(join(dirname(__file__), "data", "s1.vcf.fofn"))
+gvcf = abspath(join(dirname(__file__), "data", "s1.g.vcf"))
+gvcfgz = abspath(join(dirname(__file__), "data", "s1.g.vcf.gz"))
 
 
 ##############################
@@ -149,27 +164,43 @@ def data(tmpdir_factory):
     Setup input data
     """
     p = tmpdir_factory.mktemp('data')
+
+    # metadata
     p.join("sampleinfo.csv").mksymlinkto(sampleinfo)
+    p.join("config.yaml").mksymlinkto(configfile)
+
+    # references
+    p.join("chr11.fa").mksymlinkto(chr11)
+    p.join("chr11.fa.fai").mksymlinkto(chr11fai)
+    p.join("chr11.dict").mksymlinkto(chr11dict)
+
+    # annotation files
+    p.join("dbsnp132_chr11.vcf").mksymlinkto(dbsnp)
+    p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
+    p.join("ref-transcripts.bed12").mksymlinkto(ref_transcripts_bed12)
+    p.join("targets.bed").mksymlinkto(targets)
+    
+    # fastq files
     p.join("s1_1.fastq.gz").mksymlinkto(sample1_1)
     p.join("s1_2.fastq.gz").mksymlinkto(sample1_2)
     p.join("s2_1.fastq.gz").mksymlinkto(sample2_1)
     p.join("s2_2.fastq.gz").mksymlinkto(sample2_2)
+
+    # alignment files
     p.join("s1.sam").mksymlinkto(sam)
     p.join("s1.bam").mksymlinkto(bam)
-    p.join("s1.vcf").mksymlinkto(vcf)
-    p.join("s1.g.vcf").mksymlinkto(gvcf)
-    p.join("s2.g.vcf").mksymlinkto(gvcf)
-    p.join("s1.fofn").mksymlinkto(fofn)
     p.join("s1.sort.bam").mksymlinkto(sortbam)
     p.join("s1.sort.bam.bai").mksymlinkto(sortbambai)
     p.join("s1.rg.bam").mksymlinkto(rgbam)
     p.join("s1.rg.sort.bam").mksymlinkto(rgsortbam)
-    p.join("chr11.fa").mksymlinkto(chr11)
-    p.join("chr11.fa.fai").mksymlinkto(chr11fai)
-    p.join("chr11.dict").mksymlinkto(chr11dict)
-    p.join("dbsnp132_chr11.vcf").mksymlinkto(dbsnp)
-    p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
-    p.join("ref-transcripts.bed12").mksymlinkto(ref_transcripts_bed12)
-    p.join("config.yaml").mksymlinkto(configfile)
-    p.join("targets.bed").mksymlinkto(targets)
+    
+    # vcf files
+    p.join("s1.vcf").mksymlinkto(vcf)
+    p.join("s1.g.vcf").mksymlinkto(gvcf)
+    p.join("s1.g.vcf.gz").mksymlinkto(gvcfgz)
+    p.join("s1.vcf.fofn").mksymlinkto(vcffofn)
+    p.join("s1.g.vcf.fofn").mksymlinkto(vcffofn)
+    p.join("s2.g.vcf").mksymlinkto(gvcf)
+    p.join("s2.g.vcf.gz").mksymlinkto(gvcfgz)
+
     return p
