@@ -1,8 +1,195 @@
 Changelog
 =========
 
+0.1-beta.6 (2016-11-23)
+-----------------------
+
+- Update release notes. [Per Unneberg]
+
+- Misc doc and config updates. [Per Unneberg]
+
+- Update rsem rules. [Per Unneberg]
+
+- Update snpeff rules. [Per Unneberg]
+
+- Fix star rules. [Per Unneberg]
+
+- Fix ucsc rules. [Per Unneberg]
+
+- Various configuration updates. [Per Unneberg]
+
+- Fix rpkmforgenes tests. [Per Unneberg]
+
+- Add bed to interval_list. [Per Unneberg]
+
+- Add missing includes. [Per Unneberg]
+
+- Move import statements. [Per Unneberg]
+
+- Add bedtools rules. [Per Unneberg]
+
+- Add new test files and missing rules. [Per Unneberg]
+
+- Add targets. [Per Unneberg]
+
+- Group example data files. [Per Unneberg]
+
+- Add conda python2 environment if present. [Per Unneberg]
+
+- Fix mapdamage rule. [Per Unneberg]
+
+- Fix some picard rules and tests. [Per Unneberg]
+
+- Fix macs2 rules and test. [Per Unneberg]
+
+- Fix htslib test. [Per Unneberg]
+
+- Fix jellyfish rules. [Per Unneberg]
+
+- Use g.vcf as suffix for input. [Per Unneberg]
+
+- Add bcftools and update htslib rules. [Per Unneberg]
+
+- Update gatk rules to pass tests. [Per Unneberg]
+
+- Fix vcftools rules. [Per Unneberg]
+
+- Add fastqc main rule. [Per Unneberg]
+
+- Fix cutadapt tests. [Per Unneberg]
+
+- Fix bowtie2 tests. [Per Unneberg]
+
+- Fix bowtie tests. [Per Unneberg]
+
+- Fix bedtools tests. [Per Unneberg]
+
+- Update tests. [Per Unneberg]
+
+  - add flag for one rule
+  - add links to new test data
+
+- Add output files. [Per Unneberg]
+
+- Add HaplotypeCaller, GenotypeGVCFs, java_mem to some tasks. [Per
+  Unneberg]
+
+- Fix output directory format. [Per Unneberg]
+
+- Add imports and file regular expressions. [Per Unneberg]
+
+- Update cutadapt rules. [Per Unneberg]
+
+  - put .trimmed label after read label
+  - use fastq regexp for inputs
+
+- Add diamond rule. [Per Unneberg]
+
+- Add mapdamage2. [Per Unneberg]
+
+- Add stats rules for fastq and bam files. [Per Unneberg]
+
+- Modify fastqc so it actually works. [Per Unneberg]
+
+- Add trimmed label before fastq extension. [Per Unneberg]
+
+- Add bwa and bowtie single end rules. [Per Unneberg]
+
+- Ensure threads is less than workflow.threads. [Per Unneberg]
+
+  Update threads handling
+
+- Move samples to top level, don't filter if empty. [Per Unneberg]
+
+- Add test cases, primarily for rseqc. [Per Unneberg]
+
+  - add test files
+  - update some rules
+  - add threads
+
+- Delete ruleorder statement. [Per Unneberg]
+
+- Delete inclusion of picard_build_bam_index. [Per Unneberg]
+
+- Use snakemake logger throughout. [Per Unneberg]
+
+- Add dbsnp, known sites requirements, improve legibility. [Per
+  Unneberg]
+
+- Add samtools_faidx. [Per Unneberg]
+
+- Touch output in mark_duplicates log dummy rule. [Per Unneberg]
+
+- Add samtools_faidx. [Per Unneberg]
+
+- Add touch statement. [Per Unneberg]
+
+- Move bio.ngs applications to root. [Per Unneberg]
+
+  Fixes #16, #15, #18
+
+  Move align settings
+
+  Move assemblyqc
+
+  Move bio.ngs applications to root
+
+  Moved final batch of files
+
+  Fix failing tests
+
+- Add configfile to data. [Per Unneberg]
+
+- Add application blacklist to run tests. [Per Unneberg]
+
+- Move utils.rules to utils application folder. [Per Unneberg]
+
+- Delete obsolete application-specifice tests. [Per Unneberg]
+
+- Simplify rule testing and add application flag. [Per Unneberg]
+
+  - add '-A' option for application to test
+  - simplify rule tests via parametrized tests
+  - add global config
+
+- Add functioning tests for bwa and samtools. [Per Unneberg]
+
+- Setup pytest, create tests and move bwa, samtools to root. [Per
+  Unneberg]
+
+  - setup pytest fixtures
+  - create tests directory
+  - move data, tests
+  - move bwa, samtools to root
+
+- Add parsing of sampleinfo if present. [Per Unneberg]
+
+- Add samtools faidx. [Per Unneberg]
+
+- Add functionality to picard input functions. [Per Unneberg]
+
+  Try to make use of sampleinfo information if present
+
+- Correct to input.bam. [Per Unneberg]
+
+- Use dict rule for input. [Per Unneberg]
+
+- Use format to generate fai string. [Per Unneberg]
+
+- Add fai dependency to realigner_target_creator. [Per Unneberg]
+
+- Add dict dependency to realigner_target_creator. [Per Unneberg]
+
+- Correct resources urls. [Per Unneberg]
+
+- Update sphinx variable. [Per Unneberg]
+
 0.1-beta.5 (2016-02-24)
 -----------------------
+
+- Updating conda version to 0.1-beta.5. [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Add release notes. [Per Unneberg]
 
