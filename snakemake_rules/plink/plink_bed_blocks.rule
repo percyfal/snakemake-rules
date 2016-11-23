@@ -1,0 +1,12 @@
+# -*- snakemake -*-
+include: "plink.settings"
+
+rule plink_bed_blocks:
+    """calculate linkage disequilibrium blocks(?). 
+    """
+    params: cmd = config['plink']['cmd'],
+            options = config['plink']['options']
+    input: "{prefix}.bed"
+    output: "{prefix}.blocks"
+    shell: "{params.cmd} {params.options}  --bfile {wildcards.prefix} --blocks --out {wildcards.prefix}"
+

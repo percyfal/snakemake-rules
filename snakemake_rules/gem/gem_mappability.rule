@@ -1,0 +1,21 @@
+# -*- snakemake -*-
+include: "gem.settings"
+
+config_default = {
+    'gem' : {
+        'gem_mappability' : {
+            'options' : "-l 100 -T 7",
+            'cmd' : 'gem-mappability'
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule gem_mappability:
+    params: cmd = config['gem']['gem_mappability']['cmd'],
+            options = config['gem']['gem_mappability']['options']
+    input: gem = "{prefix}.gem"
+    output: mappability = "{prefix}.mappability"
+    shell: "{params.cmd} {params.options} -I {input.gem} -o {output.mappability}"

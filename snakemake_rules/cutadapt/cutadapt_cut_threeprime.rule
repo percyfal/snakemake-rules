@@ -1,0 +1,15 @@
+# -*- snakemake -*-
+include: "cutadapt.settings"
+
+rule cutadapt_cut_threeprime:
+    """Cutadapt: cut threeprime adapter"""
+    params: cmd = config['cutadapt']['cmd'],
+            options = config['cutadapt']['options'],
+            threeprime = config['cutadapt']['threeprime']
+    input: read = "{prefix}{fastq}"
+    output: read = "{prefix}.trimmed{fastq, " + config['cutadapt']['fastq_suffix_re'] + "}",
+            log = "{prefix}.trimmed{fastq}.cutadapt_metrics"
+    log: "{prefix}.trimmed{fastq}.cutadapt_metrics"
+    shell: "{params.cmd} {params.options} -a {params.threeprime} {input.read} -o {output.read} > {log}"
+
+

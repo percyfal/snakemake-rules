@@ -1,0 +1,5 @@
+dependencies:
+  - macs2
+  - rseqc
+  - mapdamage2
+  - rpkmforgenes

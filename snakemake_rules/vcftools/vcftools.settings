@@ -1,0 +1,15 @@
+# -*- snakemake -*-
+include: '../ngs.settings'
+
+config_default = {
+    'vcftools' : {
+        'cmd' : 'vcftools',
+        'options' : {
+            'main' : "",
+            'stats' : "",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default

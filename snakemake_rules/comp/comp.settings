@@ -1,0 +1,34 @@
+# -*- snakemake -*- 
+import os
+from snakemake.utils import update_config
+
+include: "../main.settings"
+
+"""
+Main settings for snakemake_rules.comp. Defines top-level configuration
+settings for comp rules. 
+"""
+
+# Most programs are usually found in $PATH
+config_default = {
+    'comp' : {
+        'awk' : "awk",
+        'cat' : "cat",
+        'grep' : "grep",
+        'gzip' : "gzip",
+        'head' : "head",
+        'zcat' : "zcat",
+        'compression' : {
+            're' : "(.gz$|.zip$|.bz2$)",
+            'prog_map' : {
+                '.gz' : "zcat",
+                '.zip' : "unzip -p",
+                '.bz2' : "bzip2 -c",
+            },
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+

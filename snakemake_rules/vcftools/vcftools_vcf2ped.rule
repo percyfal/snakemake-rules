@@ -1,0 +1,11 @@
+# -*- snakemake -*-
+include: "vcftools.settings"
+
+rule vcftools_vcf2ped:
+    """vcftools: convert ped file to vcf."""
+    params: cmd=config['vcftools']['cmd'],
+            options=config['vcftools']['options']['main']
+    input: vcf = "{prefix}.vcf"
+    output: ped = "{prefix}.ped"
+    shell: "out={output.ped} && {params.cmd} {params.options} --vcf {input.vcf} --plink --out ${{out%.ped}}"
+

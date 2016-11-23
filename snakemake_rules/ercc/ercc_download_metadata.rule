@@ -1,0 +1,8 @@
+# -*- snakemake -*-
+include: "ercc.settings"
+
+rule ercc_download_metadata:
+    params: source = config['ercc']['source']
+    output: temp('cms_095047.txt')
+    shell: "wget {params.source} -O {output}"
+

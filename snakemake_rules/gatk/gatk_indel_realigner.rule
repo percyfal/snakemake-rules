@@ -1,0 +1,26 @@
+# -*- snakemake -*-
+include: 'gatk.settings'
+include: 'gatk_realigner_target_creator.rule'
+
+config_default = {
+    'gatk' : {
+        'indel_realigner' : {
+            'cmd' : 'IndelRealigner',
+            'ref' : config['gatk']['ref'],
+            'options' : " ".join(["-L {target}".format(target=config['gatk']['target_regions']) if not config['gatk']['target_regions'] == "" else ""])
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule gatk_indel_realigner:
+    """Run GATK IndelRealigner"""
+    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['indel_realigner']['cmd'],
+            options = " ".join(["-R", config['gatk']['indel_realigner']['ref'],
+            config['gatk']['indel_realigner']['options']])
+    input: bam = "{prefix}.bam", intervals = "{prefix}.intervals"
+    output: bam = "{prefix}.realign.bam", bai = "{prefix}.realign.bai"
+    shell: "{params.cmd} {params.options} -o {output.bam} --targetIntervals {input.intervals} -I {input.bam}"

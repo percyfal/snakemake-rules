@@ -1,0 +1,23 @@
+# -*- snakemake -*-
+include: "jellyfish.settings"
+include: "jellyfish_count.rule"
+
+config_default = {
+    'bio.ngs.assemblyqc.jellyfish': {
+        'histo': {
+            'options': "",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule jellyfish_histo:
+    params: cmd = config['bio.ngs.assemblyqc.jellyfish']['cmd'],
+            options = config['bio.ngs.assemblyqc.jellyfish']['histo']['options'],
+    input: counts = "{prefix}.mer_counts.jf"
+    output: histo = "{prefix}.histo"
+    threads: config['bio.ngs.assemblyqc.jellyfish']['threads']
+    shell:
+        "{params.cmd} histo {params.options} {input.counts} -o {output.histo}"

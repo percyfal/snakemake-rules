@@ -1,0 +1,23 @@
+# -*- snakemake -*-
+include: "ucsc.settings"
+
+config_default = {
+    'ucsc' : {
+        'genePredToBed' : {
+            'cmd' : 'genePredToBed',
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule ucsc_genePredToBed:
+    """Run genePredToBed"""
+    params: cmd = config['ucsc']['genePredToBed']['cmd'],
+            options = config['ucsc']['genePredToBed']['options']
+    input: genepred = "{prefix}.genePred"
+    output: bed = "{prefix}.bed"
+    shell: "{params.cmd} {params.options} {input.genepred} {output.bed}"

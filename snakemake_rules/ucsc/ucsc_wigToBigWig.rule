@@ -1,0 +1,30 @@
+# -*- snakemake -*-
+include: "ucsc.settings"
+include: "ucsc_fetchChromSizes.rule"
+
+config_default = {
+    'ucsc' : { 
+        'wigToBigWig' : {
+            'cmd' : 'wigToBigWig',
+            'options' : '-clip',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule ucsc_wigToBigWig:
+    """Convert wig file to bigWig.
+
+    Run wigToBigWig to convert wig file to bigWig.
+    """
+    params: cmd = config['ucsc']['wigToBigWig']['cmd'],
+            options = config['ucsc']['wigToBigWig']['options']
+    log: "{prefix}.wig.log"
+    input: wig = "{prefix}.wig",
+           sizes = "chrom.sizes"
+    output: bigwig = "{prefix}.wig.bw"
+    shell: "{params.cmd} {params.options} {input.wig} {input.sizes} {output.bigwig} 2> {log}"
+

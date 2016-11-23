@@ -1,0 +1,11 @@
+# -*- snakemake -*-
+include: "vcftools.settings"
+
+rule vcftools_vcf_freq2:
+    """vcftools: calculate the variant frequencies in a vcf file using option --freq2"""
+    params: cmd=config['vcftools']['cmd'],
+            options=config['vcftools']['options']['main']
+    input: "{prefix}.vcf"
+    output: "{prefix}.2.frq"
+    shell: "{params.cmd} --freq2 {params.options} --vcf {input} --out {wildcards.prefix}.2"
+

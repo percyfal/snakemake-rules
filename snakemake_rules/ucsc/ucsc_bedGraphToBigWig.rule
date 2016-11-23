@@ -1,0 +1,29 @@
+# -*- snakemake -*-
+include: "ucsc.settings"
+include: "ucsc_fetchChromSizes.rule"
+
+config_default = {
+    'ucsc' : { 
+        'bedGraphToBigWig' : {
+            'cmd' : 'bedGraphToBigWig',
+            'options' : '',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule ucsc_bedGraphToBigWig:
+    """Convert bedGraph file to bigWig.
+
+    Run bedGraphToBigWig to convert bedGraph file to bigWig.
+    """
+    params: cmd = config['ucsc']['bedGraphToBigWig']['cmd'],
+            options = config['ucsc']['bedGraphToBigWig']['options']
+    input: wig = "{prefix}.bdg",
+           sizes = "chrom.sizes"
+    output: bigwig = "{prefix}.bdg.bw"
+    conda: "envs/ucsc_bedgraphtobigwig.yaml"
+    shell: "{params.cmd} {params.options} {input.wig} {input.sizes} {output.bigwig}"

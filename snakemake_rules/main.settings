@@ -1,0 +1,83 @@
+# -*- snakemake -*- 
+"""Main settings for snakemake-rules. Defines top-level configuration
+settings for all rules.
+"""
+import sys
+import os
+from os.path import join, basename, dirname
+import re
+import csv
+import shutil
+import glob
+import subprocess as sp
+import ast
+from snakemake.utils import update_config
+from snakemake.exceptions import RuleException
+from snakemake.logging import logger
+try:
+    from snakemake_rules._version import get_versions
+    from snakemake_rules import SNAKEMAKE_RULES_PATH
+except:
+    get_versions = lambda: {'full-revisionid': 'unknown', 'version': 'unknown', 'dirty': "unknown", 'error': None}
+
+# Check for old configuration key versions
+if any(x.startswith("bio.") for x in list(config.keys())):
+    raise Exception("bio. namespace is deprecated; please update your configuration keys")
+
+# Get the number of threads passed via command line
+_threads = 8
+m = re.search("(-j|--jobs|--cores)\s+(?P<threads>\d+)", " ".join(sys.argv))
+if m:
+    _threads = int(m.group("threads"))
+
+config_default = {
+    'settings' : {
+        'email' : os.getenv("USER_EMAIL", None),
+        'java' : {
+            'java_mem' : "8g",
+            'java_tmpdir' : "/tmp",
+        },
+        'threads' : _threads,
+        'temporary_rules': [],
+        'protected_rules': [],
+        'sampleinfo': None,
+        'conda' : {
+            'python2' : 'py2.7',
+        }, 
+    },
+    'samples': [],
+}
+
+update_config(config_default, config)
+config = config_default
+
+# Parse sampleinfo if present
+try:
+    ## Get the sample information
+    with open(config['settings']['sampleinfo']) as csvfile:
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        csvfile.seek(0)
+        reader = csv.DictReader(csvfile, dialect=dialect)
+        rows = [row for row in reader]
+        config['_sampleinfo'] = []
+        for row in rows:
+            if config['samples'] and row['SM'] in config['samples'] or len(config['samples']) == 0:
+                config['_sampleinfo'].append(row)
+            else:
+                logger.info("[snakemake_rules.settings]: ignoring sample {SM} in current run".format(**row))
+except:
+    logger.info("snakemake_rules.settings: no sampleinfo provided; not setting config['_sampleinfo']")
+
+# Add python 2 path if possbile
+try:
+    output = sp.check_output(['conda', 'env', 'list', '--json'])
+    envs = ast.literal_eval(output.decode("utf-8"))
+    py2 = [x for x  in envs['envs'] if re.search("{}{}$".format(os.sep, config['settings']['conda']['python2']), x)][0]
+    py2bin = os.path.join(py2, "bin")
+    os.environ["PATH"] = ":".join([os.environ["PATH"], py2bin])
+    logger.info("[snakemake_rules.settings]: Add python2 bin path '{}' to PATH".format(py2bin))
+except:
+    logger.info("[snakemake_rules.settings]: failed to add conda python2 environment '{py2}' to PATH".format(py2=config['settings']['conda']['python2']))
+
+    
+config['_snakemake_rules_version'] = get_versions()

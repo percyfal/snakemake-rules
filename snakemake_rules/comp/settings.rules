@@ -9,7 +9,7 @@ settings for comp rules.
 
 # Most programs are usually found in $PATH
 config_default = {
-    'comp.settings' : {
+    'comp' : {
         'awk' : "awk",
         'cat' : "cat",
         'grep' : "grep",

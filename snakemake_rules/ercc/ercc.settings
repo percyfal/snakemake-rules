@@ -1,0 +1,12 @@
+# -*- snakemake -*-
+include: "../ngs.settings"
+
+config_default = {
+    'ercc' : {
+        # Using Lifetech's source for now
+        'source': 'https://tools.lifetechnologies.com/content/sfs/manuals/cms_095047.txt',
+    },
+}
+
+update_config(config_default, config)
+config = config_default

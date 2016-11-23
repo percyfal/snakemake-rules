@@ -1,0 +1,17 @@
+# -*- snakemake -*-
+include: '../ngs.settings'
+
+config_default = { 
+    'bedtools' : {
+        'cmd' : "bedtools",
+        'bfile' : "",
+        'options' : "",
+        'sequence_capture' : {
+            'bait_regions' : config['ngs.settings']['sequence_capture']['bait_regions'],
+            'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
