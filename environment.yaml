@@ -1,39 +1,54 @@
 dependencies:
-  # - annovar
   - bamtools
   - bedtools
   - blat
   - bowtie
   - bowtie2
   - bwa
-  # - centipede
-  # - cloudbiolinux
   - cutadapt
-  # - danpos
-  # - dfilter
   - diamond
   - emboss
-  # - ercc
   - fastqc
   - gatk
-  - gem
-  # - homer
   - htslib
   - jellyfish
-  # - multo
   - picard
   - plink2
+  - pysam
   - qualimap
-  # - rnaseqc
   - rsem
   - samtools
   - snpeff
   - sra-tools
   - star
   - trim-galore
-  # - trimmomatic
+  - trimmomatic
+  - vcftools
+  - vsearch
+
+  # Ucsc binaries
+  - ucsc-bedgraphtobigwig
+  - ucsc-fetchchromsizes
+  - ucsc-genepredtobed
+  - ucsc-gtftogenepred
+  - ucsc-wigtobigwig
+
+  # Missing 
+  # - gem
+  # - homer
+  # - centipede
+  # - danpos
+  # - dfilter
   # - tuxedo
   # - ucsc
   # - vcf
-  - vcftools
-  - vsearch
+
+    
+  # Never via conda
+  # - annovar
+
+  # Non-package rules
+  # - cloudbiolinux
+  # - ercc
+  # - multo
+  # - rnaseqc
