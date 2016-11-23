@@ -28,4 +28,4 @@ rule gatk_base_recalibrator:
     threads: config['gatk']['base_recalibrator']['threads']
     input: bam = "{prefix}.bam", bai = "{prefix}.bai", known = config['gatk']['known_sites']
     output: grp = "{prefix}.recal_data.grp"
-    shell: "{params.cmd} {params.options} -nt {threads} -I {input.bam} -o {output.grp}"
+    shell: "{params.cmd} {params.options} -I {input.bam} -o {output.grp}"
