@@ -21,6 +21,19 @@ gatk:
   gatk_unified_genotyper: s1.rg.sort.vcf
   gatk_select_snp_variants: s1.snp.vcf
   gatk_select_indel_variants: s1.indel.vcf
-  
   gatk_variant_snp_JEXL_filtration: s1.snp.filteredSNP.vcf
   gatk_variant_indel_JEXL_filtration: s1.indel.filteredINDEL.vcf
+jellyfish:
+  jellyfish_count: s1_1.fastq.gz.mer_counts.jf
+  jellyfish_histo: s1_1.fastq.gz.histo
+macs2:
+  macs2_xls_to_bed: s1_peaks.xls
+mapdamage2:
+  mapdamage2: s1_mapdamage2/Runtime_log.txt
+picard:
+  #picard_add_or_replace_read_groups: s1.sort.rg.bam
+  picard_build_bam_index: s1.sort.bai
+  picard_collect_hs_metrics: s1.sort.hs_metrics
+  picard_collect_insert_size_metrics: s1.sort.insert_metrics
+  picard_collect_alignment_summary_metrics: s1.sort.bai
+  picard_mark_duplicates: s1.sort.dup.dup_metrics

@@ -22,3 +22,6 @@ bowtie2:
 gatk:
   combine_variants:
     options: --genotypemergeoption UNIQUIFY
+
+mapdamage2:
+  options: --no-stats
