@@ -21,5 +21,5 @@ rule bedtools_bedToBedGraph:
             options=config['bedtools']['genomecov']['options']
     input: infile = "{prefix}.bed",
            chrom = "chrom.sizes"
-    output: bedgraph = "{prefix}.bedGraph"
+    output: bedgraph = "{prefix}.bdg"
     shell: "{params.cmd} {params.options} -bg -trackline -trackopts name={wildcards.prefix} -i {input.infile} -g {input.chrom} > {output.bedgraph}"
