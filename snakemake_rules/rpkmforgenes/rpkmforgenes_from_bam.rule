@@ -6,9 +6,11 @@ rule rpkmforgenes_from_bam:
     """Run rpkmforgenes from bam input"""
     params: cmd = config['rpkmforgenes']['cmd'],
             options = " ".join([
-            config['rpkmforgenes']['options'],
+                config['rpkmforgenes']['options'],
+                " -u {}".format(config['rpkmforgenes']['unique']) if config['rpkmforgenes']['unique'] else "",
+                " -a {}".format(config['rpkmforgenes']['annotation']) if config['rpkmforgenes']['annotation'] else "",
             ])
-    input: unique = [config['rpkmforgenes']['unique']] if config['rpkmforgenes']['unique'] else [],
+    input: unique = [config['rpkmforgenes']['unique']] if not config['rpkmforgenes']['unique'] is None else [],
            annotation = [config['rpkmforgenes']['annotation']] if config['rpkmforgenes']['annotation'] else [],
            bam = "{prefix}.bam"
     output: rpkmforgenes = "{prefix}.rpkmforgenes"
@@ -16,6 +18,4 @@ rule rpkmforgenes_from_bam:
     shell:
         " ".join(["{params.cmd} {params.options} ",
                   "-bamu -i {input.bam} -o {output.rpkmforgenes} ",
-                  " -u {input.unique}" if "{input.unique}" else "",
-                  " -a {input.annotation}" if "{input.annotation}" else "",
                   " &> {log}"])

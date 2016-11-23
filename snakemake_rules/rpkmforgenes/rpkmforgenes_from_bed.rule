@@ -6,10 +6,15 @@ rule rpkmforgenes_from_bed:
     params: cmd = config['rpkmforgenes']['cmd'],
             options = " ".join([
                 config['rpkmforgenes']['options'],
-                "-a", config['rpkmforgenes']['annotation'],
+                " -u {}".format(config['rpkmforgenes']['unique']) if config['rpkmforgenes']['unique'] else "",
+                " -a {}".format(config['rpkmforgenes']['annotation']) if config['rpkmforgenes']['annotation'] else "",
             ])
-    input: unique = config['rpkmforgenes']['unique'], bed = "{prefix}.bed" 
+    input: unique = [config['rpkmforgenes']['unique']] if not config['rpkmforgenes']['unique'] is None else [],
+           annotation = [config['rpkmforgenes']['annotation']] if config['rpkmforgenes']['annotation'] else [],
+           bed = "{prefix}.bed" 
     output: rpkmforgenes = "{prefix}.rpkmforgenes"
-    run:
-        print (input)
-
+    log: "{prefix}.rpkmforgenes.log"
+    shell:
+        " ".join(["{params.cmd} {params.options} ",
+                  "-bed -i {input.bed} -o {output.rpkmforgenes} ",
+                  " &> {log}"])
