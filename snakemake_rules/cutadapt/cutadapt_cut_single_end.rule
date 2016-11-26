@@ -21,9 +21,10 @@ rule cutadapt_cut_single_end:
             options = config['cutadapt']['single_end']['options'],
             threeprime = config['cutadapt']['threeprime'],
             fiveprime = config['cutadapt']['fiveprime']
-    input: read = "{prefix}{fastq}"
-    # Move trimmed label before read
-    output: read = "{prefix}.trimmed{fastq, " + config['cutadapt']['fastq_suffix_re'] + "}",
-            log = "{prefix}.trimmed{fastq}.cutadapt_metrics"
-    log: "{prefix}.trimmed{fastq}.cutadapt_metrics"
+    wildcard_constraints: fastq = config['cutadapt']['fastq_suffix_re'],
+                          read = config['cutadapt']['read_label_re']
+    input: read = "{prefix}{read}{fastq}"
+    output: read = "{prefix}.trimmed{read}{fastq}",
+            log = "{prefix}.trimmed{read}{fastq}.cutadapt_metrics"
+    log: "{prefix}.trimmed{read}{fastq}.cutadapt_metrics"
     shell: "{params.cmd} {params.options} {input.read} -b {params.fiveprime} -b {params.threeprime} -o {output.read} > {log}"
