@@ -1,0 +1,23 @@
+# -*- snakemake -*-
+include: "samtools.settings"
+
+config_default = {
+    'samtools' : {
+        'tabix_vcf' : {
+            'options' : '',
+	    'cmd' : 'tabix',
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule samtools_tabix_vcf:
+    """Run samtools tabix on gzipped vcf file"""
+    params: options = "-p vcf " + config['samtools']['tabix_vcf']['options'],
+            cmd = config['samtools']['tabix_vcf']['cmd']
+    input: "{prefix}.vcf.gz"
+    output: "{prefix}.vcf.gz.tbi"
+    shell: "{params.cmd} {params.options} {input}"

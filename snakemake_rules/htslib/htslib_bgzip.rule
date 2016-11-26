@@ -21,4 +21,4 @@ rule htslib_bgzip:
     input: vcf = "{prefix}.vcf"
     output: bgzip = "{prefix}.vcf.gz"
     threads: config['htslib']['bgzip']['threads']
-    shell: "{params.cmd} {params.options} -i {input.vcf} -@ {threads} {output.bgzip}"
+    shell: "{params.cmd} {params.options} -i -@ {threads} {input.vcf}"
