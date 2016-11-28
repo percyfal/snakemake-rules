@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: './gatk.settings'
 include: '../picard/picard_build_bam_index.rule'
 
 config_default = {
