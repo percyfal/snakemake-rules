@@ -62,7 +62,7 @@ def pytest_addoption(parser):
                      help="run slow tests", dest="slow")
     parser.addoption("--slow-only", action="store_true",
                      help="run slow tests only", dest="slow_only")
-    parser.addoption("-W", "--show-workflow-output", action="store_true",
+    parser.addoption("-V", "--show-workflow-output", action="store_true",
                      help="show workflow output",
                      dest="show_workflow_output")
     parser.addoption("-P", "--python2-conda", action="store",
@@ -156,6 +156,7 @@ sortbedgraph = abspath(join(dirname(__file__), "data", "s1.sort.bedGraph"))
 sortbambai = abspath(join(dirname(__file__), "data", "s1.sort.bam.bai"))
 rgbam = abspath(join(dirname(__file__), "data", "s1.rg.bam"))
 rgsortbam = abspath(join(dirname(__file__), "data", "s1.rg.sort.bam"))
+bamfofn = abspath(join(dirname(__file__), "data", "bamfiles.fofn"))
 
 # vcf
 vcf = abspath(join(dirname(__file__), "data", "s1.vcf"))
@@ -211,12 +212,15 @@ def data(tmpdir_factory):
     p.join("s1.bam").mksymlinkto(bam)
     p.join("s1.bed").mksymlinkto(sortbed)
     p.join("s1.sort.bam").mksymlinkto(sortbam)
+    p.join("s2.sort.bam").mksymlinkto(sortbam)
     p.join("s1.sort.bam.bai").mksymlinkto(sortbambai)
+    p.join("s2.sort.bam.bai").mksymlinkto(sortbambai)
     p.join("s1.bdg").mksymlinkto(sortbedgraph)
     p.join("s1.wig").mksymlinkto(sortwig)
     p.join("s1.rg.bam").mksymlinkto(rgbam)
     p.join("s1.rg.sort.bam").mksymlinkto(rgsortbam)
-    
+    p.join("bamfiles.fofn").mksymlinkto(bamfofn)
+
     # vcf files
     p.join("s1.vcf").mksymlinkto(vcf)
     p.join("s1.g.vcf").mksymlinkto(gvcf)

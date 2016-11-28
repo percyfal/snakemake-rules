@@ -1,3 +1,7 @@
+angsd:
+  angsd_dosaf: bamfiles.saf.gz
+  angsd_realsfs: bamfiles.sfs
+  angsd_domaf: bamfiles.mafs.gz
 blat:
   blat_faToTwoBit: chr11.2bit
 bowtie:

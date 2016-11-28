@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+include: 'angsd.settings'
+include: 'angsd_dothetas.rule'
+
+config_default = {
+    'angsd' : {
+        'thetastat_makebed' : {
+            'options' : config['angsd']['options'],
+            },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule angsd_thetastat_makebed:
+    """angsd thetastat_makebed: perform neutrality test statistic on thetas.gz output
+
+    makebed: generate input for dostat
+    """
+    params: options = config['angsd']['thetastat_makebed']['options']
+    input: thetasgz = "{prefix}.thetas.gz"
+    output: bin = "{prefix}.bin", idx = "{prefix}.idx"
+    shell: "thetaStat make_bed {input.thetasgz}"
