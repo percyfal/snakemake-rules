@@ -1,0 +1,7 @@
+0.1-beta.8 (Nov 30 2016)
+=========================
+
+- add angsd, multiqc rules
+- revert cutadapt to old behaviour
+- add tabix
+  
