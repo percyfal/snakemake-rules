@@ -1,3 +1,7 @@
+angsd:
+  angsd_dosaf: bamfiles.saf.gz
+  angsd_realsfs: bamfiles.sfs
+  angsd_domaf: bamfiles.mafs.gz
 blat:
   blat_faToTwoBit: chr11.2bit
 bowtie:
@@ -7,10 +11,10 @@ bowtie2:
 bwa:
   bwa_index: chr11.fa.bwt  
 cutadapt:
-  cutadapt_cut_fiveprime: s1_1.trimmed.fastq.gz
-  cutadapt_cut_threeprime: s1_1.trimmed.fastq.gz
-  cutadapt_cut_paired_end: s1_1.trimmed.fastq.gz
-  cutadapt_cut_single_end: s1_1.trimmed.fastq.gz
+  cutadapt_cut_fiveprime: s1.trimmed_1.fastq.gz
+  cutadapt_cut_threeprime: s1.trimmed_1.fastq.gz
+  cutadapt_cut_paired_end: s1.trimmed_1.fastq.gz
+  cutadapt_cut_single_end: s1.trimmed.fastq.gz
 fastqc:
   fastqc: s1_1_fastqc/fastqc_data.txt
 gatk:

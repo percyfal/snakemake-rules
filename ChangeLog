@@ -1,8 +1,43 @@
 Changelog
 =========
 
+0.1-beta.8 (2016-11-30)
+-----------------------
+
+- Add release notes for 0.1-beta.8. [Per Unneberg]
+
+- Add runtime to multiqc. [Per Unneberg]
+
+- Add multiqc. [Per Unneberg]
+
+- Start adding angsd rules. [Per Unneberg]
+
+- Revert curdir path. [Per Unneberg]
+
+- Use curdir to gatk.settings. [Per Unneberg]
+
+- Revert behaviour of cutadapt. [Per Unneberg]
+
+  Place "trimmed" label before read label. The motivation to change was
+  to avoid use of read1_label and read2_label. With the use of
+  wildcard_constraints however, this use is only now required for
+  cutadapt_cut_paired_end rule.
+
+- Add release notes for 0.1-beta.7. [Per Unneberg]
+
+- Add tabix vcf, fix bgzip options. [Per Unneberg]
+
+0.1-beta.7 (2016-11-23)
+-----------------------
+
+- Fix erroneous imports in setup. [Per Unneberg]
+
 0.1-beta.6 (2016-11-23)
 -----------------------
+
+- Updating conda version to 0.1-beta.6. [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Update release notes. [Per Unneberg]
 

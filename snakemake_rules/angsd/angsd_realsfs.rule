@@ -1,0 +1,25 @@
+# -*- snakemake -*-
+include: 'angsd.settings'
+include: 'angsd_dosaf.rule'
+
+config_default = {
+    'angsd' : {
+        'realsfs' : {
+            'options' : config['angsd']['options'],
+            'threads' : config['angsd']['threads'],
+            },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule angsd_realsfs:
+    """angsd realSFS: estimate the SFS.
+    """
+    params: options = config['angsd']['realsfs']['options']
+    input: idx = "{prefix}.saf.idx"
+    output: sfs = "{prefix}.sfs"
+    threads: config['angsd']['realsfs']['threads']
+    shell: "realSFS -P {threads} {input.idx} > {output.sfs}"
+

@@ -22,11 +22,12 @@ rule cutadapt_cut_paired_end:
             options = config['cutadapt']['paired_end']['options'],
             threeprime = config['cutadapt']['threeprime'],
             fiveprime = config['cutadapt']['fiveprime']
-    input: read1 = "{prefix}" + config['ngs.settings']['read1_label'] + "{fastq}",
-           read2 = "{prefix}" + config['ngs.settings']['read2_label'] + "{fastq}"
+    wildcard_constraints: fastq = config['cutadapt']['fastq_suffix_re']
+    input: read1 = "{prefix}" + config['cutadapt']['read1_label'] + "{fastq}",
+           read2 = "{prefix}" + config['cutadapt']['read2_label'] + "{fastq}"
     output:
-        read1 = "{prefix}" + config['ngs.settings']['read1_label'] + ".trimmed{fastq," + config['cutadapt']['fastq_suffix_re'] + "}",
-        read2 = "{prefix}" + config['ngs.settings']['read2_label'] + ".trimmed{fastq,"  + config['cutadapt']['fastq_suffix_re'] + "}",
+        read1 = "{prefix}.trimmed" + config['cutadapt']['read1_label'] + "{fastq}",
+        read2 = "{prefix}.trimmed" + config['cutadapt']['read2_label'] + "{fastq}",
         log = "{prefix}{fastq}.cutadapt_metrics"
     log: "{prefix}{fastq}.cutadapt_metrics"
     shell: "{params.cmd} {params.options} {input.read1} {input.read2} -b {params.fiveprime} -b {params.threeprime} -B {params.threeprime} -B {params.fiveprime} -o {output.read1} -p {output.read2} > {log}"

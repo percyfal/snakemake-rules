@@ -1,0 +1,25 @@
+# -*- snakemake -*-
+include: 'angsd.settings'
+include: 'angsd_dothetas.rule'
+include: 'angsd_thetastat_makebed.rule'
+
+config_default = {
+    'angsd' : {
+        'thetastat_dostat' : {
+            'options' : config['angsd']['options'],
+            },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule angsd_thetastat_dostat:
+    """angsd thetastat dostat: estimate for every chromosome
+    """
+    params:
+        options = " ".join(['-nChr {}'.format(config['angsd']['nChr']),
+                            config['angsd']['thetastat_dostat']['options']])
+    input: bin = "{prefix}.bin", idx = "{prefix}.idx"
+    output: thetas = "{prefix}.pestPG"
+    shell: "thetaStat do_stat {wildcards.prefix} {params.options}"

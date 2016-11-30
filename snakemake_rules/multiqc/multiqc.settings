@@ -1,0 +1,13 @@
+# -*- snakemake -*-
+include: "../ngs.settings"
+
+config_default = {
+    'multiqc' : {
+        'cmd' : "multiqc",
+        'options' : "",
+        'runtime' : '00:60:00',
+    },
+}
+
+update_config(config_default, config)
+config = config_default

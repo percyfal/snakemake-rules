@@ -11,7 +11,10 @@ ngs.settings:
   sequence_capture:
     bait_regions: targets.interval_list
     target_regions: targets.interval_list
-      
+
+angsd:
+  nChr: 4
+  
 bedtools:
   bfile: targets.bed
 

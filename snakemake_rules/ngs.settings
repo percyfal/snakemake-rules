@@ -21,6 +21,7 @@ config_default = {
         'filter_suffix': "_1.fastq.gz",
         'read1_label' : "_1",
         'read2_label' : "_2",
+        'read_label_re' : "(|_1|_2|_R1|_R2)",
         'read1_label_re' : "(_1|_R1)",
         'read2_label_re' : "(_2|_R2)",
         'read1_suffix' : ".fastq.gz",
