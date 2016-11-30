@@ -7,6 +7,8 @@ config_default = {
         'stats' : {
             'options' : '',
             'B' : [],
+            'threads' : 1,
+            'runtime' : '01:00:00',
         },
     },
 }
@@ -19,8 +21,10 @@ rule bcftools_stats:
 
     NB: previously called 'vcfcheck'"""
     params: cmd = config['bcftools']['cmd'],
-            options = config['bcftools']['stats']['options']
-    input: vcf = "{prefix}.vcf.gz", B = config['bcftools']['stats']['B'] if config['bcftools']['stats']['B'] else []
+            options = config['bcftools']['stats']['options'],
+            runtime = config['bcftools']['stats']['runtime']
+    input: vcf = "{prefix}.vcf.gz", B = config['bcftools']['stats']['B'] if config['bcftools']['stats']['B'] else [], ref = config['bcftools']['ref']
     output: stats = "{prefix}.vcf.gz.stats"
-    shell: "{params.cmd} stats {params.options} {input.vcf} {input.B} > {output.stats}"
+    threads: config['bcftools']['stats']['threads']
+    shell: "{params.cmd} stats {params.options} -f {input.ref} {input.vcf} {input.B} > {output.stats}"
 

@@ -6,6 +6,8 @@ config_default = {
         'tabix_vcf' : {
             'options' : '',
 	    'cmd' : 'tabix',
+            'runtime' : '01:00:00',
+            'threads' : 1,
         },
     },
 }
@@ -17,7 +19,9 @@ config = config_default
 rule samtools_tabix_vcf:
     """Run samtools tabix on gzipped vcf file"""
     params: options = "-p vcf " + config['samtools']['tabix_vcf']['options'],
-            cmd = config['samtools']['tabix_vcf']['cmd']
+            cmd = config['samtools']['tabix_vcf']['cmd'],
+            runtime = config['samtools']['tabix_vcf']['runtime']
     input: "{prefix}.vcf.gz"
     output: "{prefix}.vcf.gz.tbi"
+    threads: config['samtools']['tabix_vcf']['threads']
     shell: "{params.cmd} {params.options} {input}"

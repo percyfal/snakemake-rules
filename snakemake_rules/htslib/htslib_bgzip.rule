@@ -5,7 +5,8 @@ config_default = {
     'htslib' : {
         'bgzip' : {
             'options' : '',
-            'threads' : config['htslib']['threads']
+            'threads' : config['htslib']['threads'],
+            'runtime' : '01:00:00',
         },
     },
 }
@@ -17,7 +18,8 @@ rule htslib_bgzip:
     """htslib: run bgzip
     """
     params: cmd = 'bgzip',
-            options = config['htslib']['bgzip']['options']
+            options = config['htslib']['bgzip']['options'],
+            runtime = config['htslib']['bgzip']['runtime']
     input: vcf = "{prefix}.vcf"
     output: bgzip = "{prefix}.vcf.gz"
     threads: config['htslib']['bgzip']['threads']

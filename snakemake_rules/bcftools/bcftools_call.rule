@@ -6,7 +6,8 @@ config_default = {
     'bcftools' : {
         'call' : {
             'options' : '-vmO z',
-            'runtime' : config['bcftools']['runtime'],
+            'runtime' : '100:00:00',
+            'threads' : 1,
         },
     },
     'samtools' : {
@@ -27,6 +28,6 @@ rule bcftools_call:
             runtime = config['bcftools']['call']['runtime']
     input: fofn = "{prefix}.bam.fofn", ref = config['bcftools']['ref']
     output: vcf = "{prefix}.bcftools.vcf.gz"
-    threads: 1
+    threads: config['bcftools']['call']['threads']
     shell: "samtools mpileup {params.mpileup_options} -f {input.ref}  $(cat {input.fofn} | tr \"\\n\", \" \") | {params.cmd} call {params.options} -o {output.vcf}"
 

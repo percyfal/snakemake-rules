@@ -10,6 +10,7 @@ rule multiqc:
             options = config['multiqc']['options'],
             runtime = config['multiqc']['runtime']
     threads: 1
+    input: config['multiqc']['inputs']
     output: html = os.path.join("multiqc", "multiqc_report.html")
     shell:
         "{params.cmd} {params.options} . -o {output.html}"

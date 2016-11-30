@@ -5,7 +5,7 @@ config_default = {
     'bcftools' : {
         'cmd' : 'bcftools',
         'ref' : config['ngs.settings']['db']['ref'],
-        'runtime' : '100:00:00',
+        'runtime' : '03:00:00',
         'threads' : config['settings']['threads'],
         'options' : {
             'main' : "",
