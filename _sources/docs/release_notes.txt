@@ -11,6 +11,8 @@ Pre-releases
 .. toctree::
    :maxdepth: 1
 
+   releases/0.1-beta.8
+   releases/0.1-beta.7
    releases/0.1-beta.6
    releases/0.1-beta.5
    releases/0.1-beta.4
