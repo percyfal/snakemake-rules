@@ -156,6 +156,7 @@ sortbedgraph = abspath(join(dirname(__file__), "data", "s1.sort.bedGraph"))
 sortbambai = abspath(join(dirname(__file__), "data", "s1.sort.bam.bai"))
 rgbam = abspath(join(dirname(__file__), "data", "s1.rg.bam"))
 rgsortbam = abspath(join(dirname(__file__), "data", "s1.rg.sort.bam"))
+s2rgsortbam = abspath(join(dirname(__file__), "data", "s2.rg.sort.bam"))
 bamfofn = abspath(join(dirname(__file__), "data", "bamfiles.fofn"))
 
 # vcf
@@ -219,7 +220,9 @@ def data(tmpdir_factory):
     p.join("s1.wig").mksymlinkto(sortwig)
     p.join("s1.rg.bam").mksymlinkto(rgbam)
     p.join("s1.rg.sort.bam").mksymlinkto(rgsortbam)
+    p.join("s2.rg.sort.bam").mksymlinkto(s2rgsortbam)
     p.join("bamfiles.fofn").mksymlinkto(bamfofn)
+    p.join("s1.bam.fofn").mksymlinkto(bamfofn)
 
     # vcf files
     p.join("s1.vcf").mksymlinkto(vcf)
