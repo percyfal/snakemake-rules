@@ -1,0 +1,32 @@
+# -*- snakemake -*-
+include: "bcftools.settings"
+include: "../samtools/samtools.settings"
+
+config_default = {
+    'bcftools' : {
+        'call' : {
+            'options' : '-vmO z',
+            'runtime' : config['bcftools']['runtime'],
+        },
+    },
+    'samtools' : {
+        'mpileup' : {
+            'options' : "-ug",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule bcftools_call:
+    """bcftools call: call variants from samtools mpileup"""
+    params: cmd = config['bcftools']['cmd'],
+            options = config['bcftools']['call']['options'],
+            mpileup_options = config['samtools']['mpileup']['options'],
+            runtime = config['bcftools']['call']['runtime']
+    input: fofn = "{prefix}.bam.fofn", ref = config['bcftools']['ref']
+    output: vcf = "{prefix}.bcftools.vcf.gz"
+    threads: 1
+    shell: "samtools mpileup {params.mpileup_options} -f {input.ref}  $(cat {input.fofn} | tr \"\\n\", \" \") | {params.cmd} call {params.options} -o {output.vcf}"
+

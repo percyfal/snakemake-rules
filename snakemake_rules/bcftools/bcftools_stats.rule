@@ -20,7 +20,7 @@ rule bcftools_stats:
     NB: previously called 'vcfcheck'"""
     params: cmd = config['bcftools']['cmd'],
             options = config['bcftools']['stats']['options']
-    input: vcf = "{prefix}.g.vcf.gz", B = config['bcftools']['stats']['B'] if config['bcftools']['stats']['B'] else []
-    output: stats = "{prefix}.stats"
+    input: vcf = "{prefix}.vcf.gz", B = config['bcftools']['stats']['B'] if config['bcftools']['stats']['B'] else []
+    output: stats = "{prefix}.vcf.gz.stats"
     shell: "{params.cmd} stats {params.options} {input.vcf} {input.B} > {output.stats}"
 

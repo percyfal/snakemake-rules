@@ -2,16 +2,15 @@
 include: '../ngs.settings'
 
 config_default = {
-    'bcftools' : {
-        'cmd' : 'bcftools',
+    'freebayes' : {
+        'cmd' : 'freebayes',
         'ref' : config['ngs.settings']['db']['ref'],
         'runtime' : '100:00:00',
-        'threads' : config['settings']['threads'],
-        'options' : {
-            'main' : "",
-        },
+        'options' : "",
+        'threads' : 1,
     },
 }
 
 update_config(config_default, config)
 config = config_default
+
