@@ -7,7 +7,8 @@ rule multiqc:
     By default runs in the working directory.
     """
     params: cmd = config['multiqc']['cmd'],
-            options = config['multiqc']['options']
+            options = config['multiqc']['options'],
+            runtime = config['multiqc']['runtime']
     threads: 1
     output: html = os.path.join("multiqc", "multiqc_report.html")
     shell:

@@ -5,6 +5,7 @@ config_default = {
     'multiqc' : {
         'cmd' : "multiqc",
         'options' : "",
+        'runtime' : '00:60:00',
     },
 }
 
