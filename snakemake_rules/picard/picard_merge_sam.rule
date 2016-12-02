@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 include: "picard.settings"
+include: "picard_sort_sam.rule"
 
 def _picard_merge_sam_input_fn(wildcards):
     """Function to find input files for picard merge.
@@ -42,7 +43,8 @@ config_default = {
             'label' : "merge", # target label
             'source_suffix' : ".bam",
             'options' : "CREATE_INDEX=true",
-            'inputfun': _picard_merge_sam_input_fn,
+            'inputfun' : _picard_merge_sam_input_fn,
+            'runtime' : '24:00:00', 
         },
     },
 }
@@ -58,9 +60,11 @@ rule picard_merge_sam:
     """
     params: cmd = config['picard']['cmd'] + MERGE_SAM_FILES,
             options = " ".join([config['picard']['options'],
-                                config['picard']['merge_sam']['options']])
+                                config['picard']['merge_sam']['options']]),
+            runtime = config['picard']['merge_sam']['runtime']
     input: config['picard']['merge_sam']['inputfun']
     output: merge="{prefix}." + config['picard']['merge_sam']['label'] + ".bam"
+    threads: 1
     run: 
       if (len(input) > 1):
           inputstr = " ".join(["INPUT={}".format(x) for x in input])
@@ -68,4 +72,8 @@ rule picard_merge_sam:
       else:
           if os.path.exists(output.merge):
               os.unlink(output.merge)
-          shutil.copy(input[0], output.merge)
+          shell("{picard} {cmd} I={infile} O={out} {opt} {sortopt}".format(picard=config['picard']['cmd'],
+                                                                           cmd=SORT_SAM,
+                                                                           infile=input[0], out=output.merge,
+                                                                           opt=config['picard']['options'],
+                                                                           sortopt=config['picard']['sort_sam_options']))
