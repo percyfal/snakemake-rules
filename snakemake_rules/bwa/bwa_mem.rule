@@ -25,5 +25,5 @@ rule bwa_mem:
     threads: config['bwa']['threads']
     shell:
         "bwa mem -t {threads} {params.options} {params.index} " + \
-        "{input.read1} {input.read2} | " + \
+        "{input.read1} {input.read2} 2> {log} | " + \
         " samtools view -Sb - > {output.bam}"
