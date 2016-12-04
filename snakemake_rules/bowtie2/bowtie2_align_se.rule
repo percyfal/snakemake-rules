@@ -7,6 +7,7 @@ config_default = {
         'align' : {
             'threads' : config['settings']['threads'],
             'options' : '',
+            'runtime' : '24:00:00',
         },
     },
 }
@@ -19,7 +20,8 @@ rule bowtie2_align_se:
     params: cmd = config['bowtie2']['cmd'],
             options = config['bowtie2']['align']['options'],
             index = str(config['bowtie2']['index']),
-            samtools = config['samtools']['cmd']
+            samtools = config['samtools']['cmd'],
+            runtime = config['bowtie2']['align']['runtime']
     input: read = "{prefix}" + config['ngs.settings']['read1_label'] + config['ngs.settings']['fastq_suffix'],
            index = expand("{index}{ext}", index=config['bowtie2']['index'], ext=config['bowtie2']['build_ext'])
     output: bam = "{prefix}.bam"

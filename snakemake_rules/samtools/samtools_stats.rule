@@ -5,6 +5,7 @@ config_default = {
     'samtools' : {
        	'stats' : {
             'options' : "",
+            'runtime' : "01:00:00",
         },
     },
 }
@@ -15,7 +16,8 @@ config = config_default
 rule samtools_stats:
     """BAM statistics"""
     params: options = config['samtools']['stats']['options'],
-            cmd = config['samtools']['cmd']
+            cmd = config['samtools']['cmd'],
+            runtime = config['samtools']['stats']['runtime']
     input: bam = "{prefix}.bam"
     output: stats = "{prefix}.samtools_stats.txt"
     shell: "{params.cmd} stats {params.options} {input.bam} > {output.stats}"

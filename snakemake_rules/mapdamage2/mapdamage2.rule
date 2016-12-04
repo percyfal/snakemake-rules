@@ -38,7 +38,8 @@ rule mapdamage2:
     Run mapdamage2. Produces 16 output files.
     """
     version: "0.1"
-    params: options = config["mapdamage2"]["options"]
+    params: options = config["mapdamage2"]["options"],
+            runtime = config["mapdamage2"]["runtime"]
     input: bam = "{prefix}.bam", ref = config["mapdamage2"]["ref"]
     output: log = join("{prefix}" + "_" + folder, "Runtime_log.txt"),
             fragmisincorporation = join("{prefix}"+ "_" + folder, "Fragmisincorporation_plot.pdf"),
@@ -56,6 +57,7 @@ rule mapdamage2:
             mcmc_correct_prob = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_correct_prob.csv") if stats else [],
             dnacomp_genome = join("{prefix}"+ "_" + folder, "dnacomp_genome.csv") if stats else [],
             rescale_bam = join("{prefix}"+ "_" + folder, "{prefix}.rescaled.bam") if rescalebam else [],
+    threads: 1
     run:
         cmd = "mapDamage " + params.options + " -i " + input.bam + " -r " + input.ref + " -d " + "{}_{}".format(wildcards.prefix, folder)
         if rescale:

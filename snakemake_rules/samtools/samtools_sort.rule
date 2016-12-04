@@ -5,6 +5,7 @@ config_default = {
     'samtools' : {
         'sort' : {
             'options' : '-T /tmp/aln.sorted',
+            'runtime' : '01:00:00',
         },
     },
 }
@@ -16,7 +17,9 @@ config = config_default
 rule samtools_sort:
     """Run samtools sort"""
     params: options = config['samtools']['sort']['options'],
-            cmd = config['samtools']['cmd']
+            cmd = config['samtools']['cmd'],
+            runtime = config['samtools']['sort']['runtime']
     input: "{prefix}.bam"
     output: "{prefix}.sort.bam"
+    threads: 1
     shell: "{params.cmd} sort {params.options} -o {output} {input}"

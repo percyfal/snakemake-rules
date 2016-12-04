@@ -5,6 +5,7 @@ config_default = {
     'vsearch' : {
         'fastq_stats' : {
             'options' : "",
+            'runtime' : "01:00:00",
         },
     },
 }
@@ -15,7 +16,8 @@ config = config_default
 rule vsearch_fastq_stats:
     """vsearch --fastq_stats: FASTQ quality statistics"""
     params: cmd = config['vsearch']['cmd'],
-            options = config['vsearch']['fastq_stats']['options']
+            options = config['vsearch']['fastq_stats']['options'],
+            runtime = config['vsearch']['fastq_stats']['runtime']
     threads: config['vsearch']['threads']
     input: fastq = "{prefix}" + config["ngs.settings"]["fastq_suffix"]
     output: log = "{prefix}.fastq_stats.txt"

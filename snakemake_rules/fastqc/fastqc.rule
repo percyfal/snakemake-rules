@@ -5,7 +5,8 @@ include: "fastqc.settings"
 rule fastqc:
     """fastqc: run fastqc on a fastq file"""
     params: cmd = config['fastqc']['cmd'],
-            options = config['fastqc']['options']
+            options = config['fastqc']['options'],
+            runtime = config['fastqc']['runtime']
     threads: config['fastqc']['threads']
     input: fastq = "{prefix}" + config["ngs.settings"]["fastq_suffix"]
     output: html = "{prefix}_fastqc/fastqc_report.html",
