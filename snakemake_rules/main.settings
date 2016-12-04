@@ -54,6 +54,7 @@ config = config_default
 # Parse sampleinfo if present
 try:
     ## Get the sample information
+    _ignored = []
     with open(config['settings']['sampleinfo']) as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
@@ -64,7 +65,9 @@ try:
             if config['samples'] and row['SM'] in config['samples'] or len(config['samples']) == 0:
                 config['_sampleinfo'].append(row)
             else:
-                logger.info("[snakemake_rules.settings]: ignoring sample {SM} in current run".format(**row))
+                if not row['SM'] in _ignored:
+                    logger.info("[snakemake_rules.settings]: ignoring sample {SM} in current run".format(**row))
+                    _ignored.append(row['SM'])
 except:
     logger.info("snakemake_rules.settings: no sampleinfo provided; not setting config['_sampleinfo']")
 
