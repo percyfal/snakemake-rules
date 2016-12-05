@@ -1,0 +1,29 @@
+# -*- snakemake -*-
+include: "freebayes.settings"
+
+config_default = {
+    'freebayes' : {
+        'freebayes_parallel' : {
+            'options' : '',
+            'region_size' : 1000000,
+            'runtime' : "7-00:00:00",
+            'threads' : config['freebayes']['threads'],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule freebayes_parallel:
+    """Run freebayes in parallel on a set of bam files over small regions"""
+    params: cmd = 'freebayes-parallel',
+            region_size = config['freebayes']['freebayes_parallel']['region_size'],
+            runtime = config['freebayes']['freebayes_parallel']['runtime']
+    input: fofn = "{prefix}.bam.fofn", ref = config['freebayes']['ref']
+    output: vcf = "{prefix}.freebayes.vcf"
+    threads: config['freebayes']['threads']
+    shell: "{params.cmd} <(fasta_generate_regions.py {input.ref} {params.region_size}) {threads}  -f {input.ref} {input.fofn} > {output.vcf}"
+
+
