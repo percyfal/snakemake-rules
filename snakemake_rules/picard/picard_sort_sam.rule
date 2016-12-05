@@ -4,6 +4,9 @@ include: "picard.settings"
 config_default = {
     'picard' : {
         'sort_sam_options' : "SORT_ORDER=coordinate",
+        'sort_sam': {
+            'runtime': "01:00:00",
+        },
     },
 }
 
@@ -15,8 +18,10 @@ rule picard_sort_sam:
     """Picard: sort bam file"""
     params: cmd = config['picard']['cmd'] + SORT_SAM,
             options = config['picard']['options'],
-            sortsam_options = config['picard']['sort_sam_options']
+            sortsam_options = config['picard']['sort_sam_options'],
+            runtime = config['picard']['sort_sam']['runtime']
     input: "{prefix}.bam"
     output: "{prefix}.sort.bam"
+    threads: 1
     shell: "{params.cmd} I={input} O={output} {params.options} {params.sortsam_options}"
 
