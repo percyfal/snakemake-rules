@@ -4,7 +4,8 @@ include: "bwa_index.rule"
 
 config_default = {
     'bwa': {
-        'mem_se' : {
+        'aln' : {
+	    'threads' : config['bwa']['threads'],
             'options': "",
             'runtime': "01:00:00",
         },
@@ -15,17 +16,16 @@ update_config(config_default, config)
 config = config_default
 
 
-rule bwa_mem_se:
-    """Run bwa mem, single end"""
-    params: options = config['bwa']['mem_se']['options'],
+rule bwa_aln:
+    """Run bwa aln"""
+    params: options = config['bwa']['aln']['options'],
             index = config['bwa']['index'],
-            runtime = config['bwa']['mem_se']['runtime']
+            runtime = config['bwa']['aln']['runtime']
     input: read = "{prefix}" + config['ngs.settings']['read1_label'] + config['ngs.settings']['fastq_suffix'],
            index = expand("{index}{ext}", index=config['bwa']['index'], ext=config['bwa']['index_ext'])
-    output: bam = "{prefix}.bam"
+    output: bam = "{prefix}.sai"
     log: log = "{prefix}.bwa.log"
-    threads: config['bwa']['threads']
+    threads: config['bwa']['aln']['threads']
     shell:
-        "bwa mem -t {threads} {params.options} {params.index} " + \
-        "{input.read} 2> {log} | " + \
-        " samtools view -Sb - > {output.bam}"
+        "bwa aln -t {threads} {params.options} {params.index} " + \
+        "{input.read} -f {output} 2> {log}"

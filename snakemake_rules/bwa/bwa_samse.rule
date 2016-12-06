@@ -1,0 +1,33 @@
+# -*- snakemake -*-
+include: "bwa.settings"
+include: "bwa_index.rule"
+include: "bwa_aln.rule"
+
+config_default = {
+    'bwa': {
+        'samse' : {
+	    'threads' : 1,
+            'options': "",
+            'runtime': "01:00:00",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule bwa_samse:
+    """Run bwa samse"""
+    params: options = config['bwa']['samse']['options'],
+            index = config['bwa']['index'],
+            runtime = config['bwa']['samse']['runtime']
+    input: sai = "{prefix}.sai",
+           index = config['bwa']['index']
+    output: bam = "{prefix}.bam"
+    log: log = "{prefix}.samse.log"
+    threads: 1
+    shell:
+        "bwa samse {params.options} {params.index} " + \
+        "{input.sai} 2> {log} | " + \
+        " samtools view -b - > {output.bam}"
