@@ -119,52 +119,59 @@ def pytest_namespace():
 ##################################################
 # Setup test fixtures
 ##################################################
-# Input files
+d = {}
+for f in os.listdir(abspath(join(dirname(__file__), "data"))):
+    print(f)
+    d[f] = abspath(join(dirname(__file__), "data", f))
+    
+# # Input files
+# d = {
+#     # metadata
+#     'sampleinfo.csv' : _input_file("sampleinfo.csv"),
+#     'config.yaml' : _input_file("config.yaml"),
+#     # references
+#     'chr11.fa' : _input_file("chr11.fa"),
+#     'chr11.fa.fai' : _input_file("chr11.fa.fai"),
+#     'chr11.dict' : _input_file("chr11.dict"),
+#     'chrom.sizes' : _input_file("chrom.sizes"),
+#     # annotation files
+#     'dbsnp132_chr11.vcf' : _input_file("dbsnp132_chr11.vcf"),
+#     'ref-transcripts.gtf' : _input_file("ref-transcripts.gtf"),
+#     'ref-transcripts.bed12' : _input_file("ref-transcripts.bed12"),
+#     'ref-transcripts.genePred' : _input_file("ref-transcripts.genePred"),
+# targets = _input_file("targets.bed"),
+# targets_list = _input_file("targets.interval_list"),
 
-# metadata
-sampleinfo = abspath(join(dirname(__file__), "data", "sampleinfo.csv"))
-configfile = abspath(join(dirname(__file__), "data", "config.yaml"))
-
-# references
-chr11 = abspath(join(dirname(__file__), "data", "chr11.fa"))
-chr11fai = abspath(join(dirname(__file__), "data", "chr11.fa.fai"))
-chr11dict = abspath(join(dirname(__file__), "data", "chr11.dict"))
-chromsizes = abspath(join(dirname(__file__), "data", "chrom.sizes"))
-
-# annotation files
-dbsnp = abspath(join(dirname(__file__), "data", "dbsnp132_chr11.vcf"))
-ref_transcripts = abspath(join(dirname(__file__), "data", "ref-transcripts.gtf"))
-ref_transcripts_bed12 = abspath(join(dirname(__file__), "data", "ref-transcripts.bed12"))
-ref_transcripts_genepred = abspath(join(dirname(__file__), "data", "ref-transcripts.genePred"))
-targets = abspath(join(dirname(__file__), "data", "targets.bed"))
-targets_list = abspath(join(dirname(__file__), "data", "targets.interval_list"))
-
-# fastq files
-sample1_1 = abspath(join(dirname(__file__), "data", "s1_1.fastq.gz"))
-sample1_2 = abspath(join(dirname(__file__), "data", "s1_2.fastq.gz"))
-sample2_1 = abspath(join(dirname(__file__), "data", "s2_1.fastq.gz"))
-sample2_2 = abspath(join(dirname(__file__), "data", "s2_2.fastq.gz"))
+# # fastq files
+# sample1_1 = _input_file("s1_1.fastq.gz"),
+# sample1_2 = _input_file("s1_2.fastq.gz"),
+# sample2_1 = _input_file("s2_1.fastq.gz"),
+# sample2_2 = _input_file("s2_2.fastq.gz"),
 
 
-# alignment files
-sam = abspath(join(dirname(__file__), "data", "s1.sam"))
-bam = abspath(join(dirname(__file__), "data", "s1.bam"))
-sortbam = abspath(join(dirname(__file__), "data", "s1.sort.bam"))
-sortbed = abspath(join(dirname(__file__), "data", "s1.sort.bed"))
-sortwig = abspath(join(dirname(__file__), "data", "s1.sort.wig"))
-sortbedgraph = abspath(join(dirname(__file__), "data", "s1.sort.bedGraph"))
-sortbambai = abspath(join(dirname(__file__), "data", "s1.sort.bam.bai"))
-rgbam = abspath(join(dirname(__file__), "data", "s1.rg.bam"))
-rgsortbam = abspath(join(dirname(__file__), "data", "s1.rg.sort.bam"))
-s2rgsortbam = abspath(join(dirname(__file__), "data", "s2.rg.sort.bam"))
-bamfofn = abspath(join(dirname(__file__), "data", "bamfiles.fofn"))
+# # alignment files
+# sam = _input_file("s1.sam"),
+# bam = _input_file("s1.bam"),
+# sortbam = _input_file("s1.sort.bam"),
+# sortbed = _input_file("s1.sort.bed"),
+# sortwig = _input_file("s1.sort.wig"),
+# sortbedgraph = _input_file("s1.sort.bedGraph"),
+# sortbambai = _input_file("s1.sort.bam.bai"),
+# rgbam = _input_file("s1.rg.bam"),
+# rgsortbam = _input_file("s1.rg.sort.bam"),
+# s2rgsortbam = _input_file("s2.rg.sort.bam"),
+# rgsortbambai = _input_file("s1.rg.sort.bam.bai"),
+# s2rgsortbambai = _input_file("s2.rg.sort.bam.bai"),
+# bamfofn = _input_file("bamfiles.fofn"),
 
-# vcf
-vcf = abspath(join(dirname(__file__), "data", "s1.vcf"))
-vcfgz = abspath(join(dirname(__file__), "data", "s1.vcf.gz"))
-vcffofn = abspath(join(dirname(__file__), "data", "s1.vcf.fofn"))
-gvcf = abspath(join(dirname(__file__), "data", "s1.g.vcf"))
-gvcfgz = abspath(join(dirname(__file__), "data", "s1.g.vcf.gz"))
+# # vcf
+# vcf = _input_file("s1.vcf"),
+# vcfgz = _input_file("s1.vcf.gz"),
+# vcffofn = _input_file("s1.vcf.fofn"),
+# gvcf = _input_file("s1.g.vcf"),
+# gvcfgz = _input_file("s1.g.vcf.gz"),
+
+# }
 
 
 ##############################
@@ -221,6 +228,8 @@ def data(tmpdir_factory):
     p.join("s1.rg.bam").mksymlinkto(rgbam)
     p.join("s1.rg.sort.bam").mksymlinkto(rgsortbam)
     p.join("s2.rg.sort.bam").mksymlinkto(s2rgsortbam)
+    p.join("s1.rg.sort.bam.bai").mksymlinkto(rgsortbambai)
+    p.join("s2.rg.sort.bam.bai").mksymlinkto(s2rgsortbambai)
     p.join("bamfiles.fofn").mksymlinkto(bamfofn)
     p.join("s1.bam.fofn").mksymlinkto(bamfofn)
 
