@@ -24,6 +24,11 @@ bowtie:
 bowtie2:
   index: chr11
 
+freebayes:
+  freebayes_parallel:
+    region_size: 100
+    threads: 2
+  
 gatk:
   combine_variants:
     options: --genotypemergeoption UNIQUIFY
