@@ -16,10 +16,6 @@ logger = logging.getLogger(__name__)
 
 TESTDIR = abspath(dirname(__file__))
 RULEDIR = join(abspath(dirname(__file__)), os.pardir, "snakemake_rules")
-SNAKEFILE = join(TESTDIR, "Snakefile")
-SNAKEFILE_REGIONS = join(TESTDIR, "Snakefile_regions")
-CONFIG = join(TESTDIR, "config.yaml")
-CONFIG_REGIONS = join(TESTDIR, "config_regions.yaml")
 
 # Add test source path to pythonpath
 sys.path.insert(0, join(TESTDIR, os.pardir))
@@ -33,6 +29,9 @@ with open(os.path.join(TESTDIR, "rules2target.yaml")) as fh:
 
 
 def make_output(rule, prefix="s1"):
+    """Generate output file for rule. Assume target is based on prefix
+    's1'; else, use rules2targets dictionary"""
+
     rn = os.path.basename(rule).replace(".rule", "")
     app = os.path.basename(os.path.dirname(rule))
     target = rules2targets.get(app, {}).get(rn, None)
@@ -89,7 +88,7 @@ def pytest_runtest_setup(item):
     if not getattr(item.obj, 'slow', None) and item.config.getvalue('slow_only'):
         pytest.skip('run only slow tests')
 
-        
+
 def pytest_report_header(config):
     try:
         output = sp.check_output(['conda', 'env', 'list', '--json'])
@@ -108,10 +107,10 @@ def pytest_namespace():
     return {
         'testdir': TESTDIR,
         'ruledir': RULEDIR,
-        'snakefile': SNAKEFILE,
-        'snakefile_regions' : SNAKEFILE_REGIONS,
-        'config' : CONFIG,
-        'config_regions' : CONFIG_REGIONS,
+        'snakefile': join(TESTDIR, "Snakefile"),
+        'snakefile_regions' : join(TESTDIR, "Snakefile_regions"),
+        'config' : join(TESTDIR, "config.yaml"),
+        'config_regions' : join(TESTDIR, "config_regions.yaml"),
         'rules' : rules,
         'make_output' : make_output,
     }
@@ -121,57 +120,24 @@ def pytest_namespace():
 ##################################################
 d = {}
 for f in os.listdir(abspath(join(dirname(__file__), "data"))):
-    print(f)
     d[f] = abspath(join(dirname(__file__), "data", f))
-    
-# # Input files
-# d = {
-#     # metadata
-#     'sampleinfo.csv' : _input_file("sampleinfo.csv"),
-#     'config.yaml' : _input_file("config.yaml"),
-#     # references
-#     'chr11.fa' : _input_file("chr11.fa"),
-#     'chr11.fa.fai' : _input_file("chr11.fa.fai"),
-#     'chr11.dict' : _input_file("chr11.dict"),
-#     'chrom.sizes' : _input_file("chrom.sizes"),
-#     # annotation files
-#     'dbsnp132_chr11.vcf' : _input_file("dbsnp132_chr11.vcf"),
-#     'ref-transcripts.gtf' : _input_file("ref-transcripts.gtf"),
-#     'ref-transcripts.bed12' : _input_file("ref-transcripts.bed12"),
-#     'ref-transcripts.genePred' : _input_file("ref-transcripts.genePred"),
-# targets = _input_file("targets.bed"),
-# targets_list = _input_file("targets.interval_list"),
 
-# # fastq files
-# sample1_1 = _input_file("s1_1.fastq.gz"),
-# sample1_2 = _input_file("s1_2.fastq.gz"),
-# sample2_1 = _input_file("s2_1.fastq.gz"),
-# sample2_2 = _input_file("s2_2.fastq.gz"),
-
-
-# # alignment files
-# sam = _input_file("s1.sam"),
-# bam = _input_file("s1.bam"),
-# sortbam = _input_file("s1.sort.bam"),
-# sortbed = _input_file("s1.sort.bed"),
-# sortwig = _input_file("s1.sort.wig"),
-# sortbedgraph = _input_file("s1.sort.bedGraph"),
-# sortbambai = _input_file("s1.sort.bam.bai"),
-# rgbam = _input_file("s1.rg.bam"),
-# rgsortbam = _input_file("s1.rg.sort.bam"),
-# s2rgsortbam = _input_file("s2.rg.sort.bam"),
-# rgsortbambai = _input_file("s1.rg.sort.bam.bai"),
-# s2rgsortbambai = _input_file("s2.rg.sort.bam.bai"),
-# bamfofn = _input_file("bamfiles.fofn"),
-
-# # vcf
-# vcf = _input_file("s1.vcf"),
-# vcfgz = _input_file("s1.vcf.gz"),
-# vcffofn = _input_file("s1.vcf.fofn"),
-# gvcf = _input_file("s1.g.vcf"),
-# gvcfgz = _input_file("s1.g.vcf.gz"),
-
-# }
+d.update({
+    "s1.gtf" : d['ref-transcripts.gtf'],
+    "s1.genePred" : d['ref-transcripts.genePred'],
+    "s1.fasta" : d['chr11.fa'],
+    "s1.fa" : d['chr11.fa'],
+    "s1.fastq.gz" : d['s1_1.fastq.gz'],
+    "s1.bed" : d['s1.sort.bed'],
+    "s2.sort.bam" : d['s1.sort.bam'],
+    "s2.sort.bam.bai" : d['s1.sort.bam.bai'],
+    "s1.bdg" : d['s1.sort.bedGraph'],
+    "s1.wig" : d['s1.sort.wig'],
+    "s1.bam.fofn" : d['bamfiles.fofn'],
+    "s1.g.vcf.fofn" : d['s1.vcf.fofn'],
+    "s2.g.vcf" : d['s1.g.vcf'],
+    "s2.g.vcf.gz" : d['s1.g.vcf.gz'],
+})
 
 
 ##############################
@@ -184,62 +150,7 @@ def data(tmpdir_factory):
     """
     p = tmpdir_factory.mktemp('data')
 
-    # metadata
-    p.join("sampleinfo.csv").mksymlinkto(sampleinfo)
-    p.join("config.yaml").mksymlinkto(configfile)
-
-    # references
-    p.join("chr11.fa").mksymlinkto(chr11)
-    p.join("chr11.fa.fai").mksymlinkto(chr11fai)
-    p.join("chr11.dict").mksymlinkto(chr11dict)
-    p.join("chrom.sizes").mksymlinkto(chromsizes)
-
-    # annotation files
-    p.join("dbsnp132_chr11.vcf").mksymlinkto(dbsnp)
-    p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
-    p.join("s1.gtf").mksymlinkto(ref_transcripts)
-    p.join("ref-transcripts.bed12").mksymlinkto(ref_transcripts_bed12)
-    p.join("ref-transcripts.genePred").mksymlinkto(ref_transcripts_genepred)
-    p.join("s1.genePred").mksymlinkto(ref_transcripts_genepred)
-    p.join("targets.bed").mksymlinkto(targets)
-    p.join("targets.interval_list").mksymlinkto(targets_list)
-
-    # fasta files
-    p.join("s1.fasta").mksymlinkto(chr11)
-    p.join("s1.fa").mksymlinkto(chr11)
-    
-    # fastq files
-    p.join("s1.fastq.gz").mksymlinkto(sample1_1)
-    p.join("s1_1.fastq.gz").mksymlinkto(sample1_1)
-    p.join("s1_2.fastq.gz").mksymlinkto(sample1_2)
-    p.join("s2_1.fastq.gz").mksymlinkto(sample2_1)
-    p.join("s2_2.fastq.gz").mksymlinkto(sample2_2)
-
-    # alignment files
-    p.join("s1.sam").mksymlinkto(sam)
-    p.join("s1.bam").mksymlinkto(bam)
-    p.join("s1.bed").mksymlinkto(sortbed)
-    p.join("s1.sort.bam").mksymlinkto(sortbam)
-    p.join("s2.sort.bam").mksymlinkto(sortbam)
-    p.join("s1.sort.bam.bai").mksymlinkto(sortbambai)
-    p.join("s2.sort.bam.bai").mksymlinkto(sortbambai)
-    p.join("s1.bdg").mksymlinkto(sortbedgraph)
-    p.join("s1.wig").mksymlinkto(sortwig)
-    p.join("s1.rg.bam").mksymlinkto(rgbam)
-    p.join("s1.rg.sort.bam").mksymlinkto(rgsortbam)
-    p.join("s2.rg.sort.bam").mksymlinkto(s2rgsortbam)
-    p.join("s1.rg.sort.bam.bai").mksymlinkto(rgsortbambai)
-    p.join("s2.rg.sort.bam.bai").mksymlinkto(s2rgsortbambai)
-    p.join("bamfiles.fofn").mksymlinkto(bamfofn)
-    p.join("s1.bam.fofn").mksymlinkto(bamfofn)
-
-    # vcf files
-    p.join("s1.vcf").mksymlinkto(vcf)
-    p.join("s1.g.vcf").mksymlinkto(gvcf)
-    p.join("s1.g.vcf.gz").mksymlinkto(gvcfgz)
-    p.join("s1.vcf.fofn").mksymlinkto(vcffofn)
-    p.join("s1.g.vcf.fofn").mksymlinkto(vcffofn)
-    p.join("s2.g.vcf").mksymlinkto(gvcf)
-    p.join("s2.g.vcf.gz").mksymlinkto(gvcfgz)
+    for k, v in d.items():
+        p.join(k).mksymlinkto(v)
 
     return p

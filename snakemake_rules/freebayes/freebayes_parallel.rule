@@ -4,6 +4,7 @@ include: "freebayes.settings"
 config_default = {
     'freebayes' : {
         'freebayes_parallel' : {
+            'cmd' : 'freebayes-parallel',
             'region_size' : 1000000,
             'runtime' : "7-00:00:00",
             'threads' : config['freebayes']['threads'],
@@ -17,7 +18,7 @@ config = config_default
 
 rule freebayes_parallel:
     """Run freebayes in parallel on a set of bam files over small regions"""
-    params: cmd = 'freebayes-parallel',
+    params: cmd = config['freebayes']['freebayes_parallel']['cmd'],
             region_size = config['freebayes']['freebayes_parallel']['region_size'],
             runtime = config['freebayes']['freebayes_parallel']['runtime']
     input: fofn = "{prefix}.bam.fofn", ref = config['freebayes']['ref']
