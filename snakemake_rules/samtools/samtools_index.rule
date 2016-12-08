@@ -5,6 +5,7 @@ config_default = {
     'samtools' : {
         'index' : {
             'options' : '',
+            'runtime' : '01:00:00',
         },
     },
 }
@@ -16,7 +17,9 @@ config = config_default
 rule samtools_index:
     """Run samtools index"""
     params: options = config['samtools']['index']['options'],
-            cmd = config['samtools']['cmd']
+            cmd = config['samtools']['cmd'],
+            runtime = config['samtools']['index']['runtime']
     input: "{prefix}.bam"
     output: "{prefix}.bam.bai"
+    threads: 1
     shell: "{params.cmd} {params.options} index {input}"
