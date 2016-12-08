@@ -1,0 +1,29 @@
+# -*- snakemake -*-
+include: "kpal.settings"
+
+config_default = {
+    'kpal' : {
+        'count_all' : {
+            'options' : "",
+            'runtime' : "03:00:00",
+            'input' : [],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule kpal_count_all:
+    """kpal: count k-mers for multiple input files"""
+    params: cmd = config['kpal']['cmd'],
+            options = config['kpal']['count_all']['options'],
+            runtime = config['kpal']['count_all']['runtime']
+    wildcard_constraints: kmer = "[0-9]+"
+    input: reads = config['kpal']['count_all']['input']
+    output: kmer = os.path.join("{path}", "kpal_{label}.k{kmer}")
+    threads: 1
+    shell:
+        "if file --mime-type -b -L {input.read} | grep -q gzip; then zcat {input.read} | {params.cmd} count {params.options} -k {wildcards.kmer} - {output.kmer};"
+        "else "
+        "{params.cmd} count {params.options} -k {wildcards.kmer} {input.read} {output.kmer}; fi;"

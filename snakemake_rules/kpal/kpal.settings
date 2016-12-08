@@ -1,0 +1,13 @@
+# -*- snakemake -*-
+include: '../ngs.settings'
+
+config_default = { 
+    'kpal' : {
+        'cmd' : "kpal",
+        'runtime' : '24:00:00',
+        'options' : "",
+    },
+}
+
+update_config(config_default, config)
+config = config_default

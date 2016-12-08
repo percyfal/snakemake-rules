@@ -1,0 +1,26 @@
+# -*- snakemake -*-
+include: "seqtk.settings"
+
+config_default = {
+    'seqtk' : {
+        'seq' : {
+            'options' : "",
+            'runtime' : "01:00:00",
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule seqtk_seq_fastq_to_fasta:
+    """seqtk: convert fastq to fasta"""
+    params: cmd = config['seqtk']['cmd'],
+            options = config['seqtk']['seq']['options'],
+            runtime = config['seqtk']['seq']['runtime']
+    wildcard_constraints: fastq = config['ngs.settings']['fastq_suffix_re']
+    input: reads = "{prefix}{fastq}"
+    output: fasta = "{prefix}.fasta"
+    threads: 1
+    shell: "{params.cmd} {params.options} -a {input.reads} > {output.fasta}"
+
