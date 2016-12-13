@@ -1,0 +1,14 @@
+# -*- snakemake -*-
+include: "bamtools.settings"
+
+rule bamtools_filter_unique:
+    """Run bamtools filter on a bam file"""
+    params: cmd = config['bamtools']['cmd'],
+            options = " ".join("-{} \"{}\"".format(k,v) for k,v in config['bamtools']['filter']['options'].items()),
+            runtime = config['bamtools']['runtime']
+    input: bam = "{prefix}.bam"
+    output: bam = "{prefix}.filter.bam"
+    log: "{prefix}.filter.log"
+    threads: 1
+    shell: "{params.cmd} filter -in {input.bam} -out {output.bam} {params.options} > {log}"
+
