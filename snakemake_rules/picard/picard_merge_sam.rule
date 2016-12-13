@@ -31,9 +31,9 @@ def _picard_merge_sam_input_fn(wildcards):
         correct. Else, implement function for generating source files and
         set configuration
         config['picard']['merge_sam']['inputfun'] to the
-        function. Alternatively, use
+        function or a list of input files. Alternatively, use
         workflow.rules.picard_merge_sam.set_input(function) to set the
-        input function. The function should return a list of bam files to
+        input. The function should return a list of bam files to
         be merged""")
 
 

@@ -7,6 +7,7 @@ config_default = {
             'options' : "",
             'runtime' : "03:00:00",
             'input' : [],
+            'threads' : 1,
         },
     },
 }
@@ -20,10 +21,8 @@ rule kpal_count_all:
             options = config['kpal']['count_all']['options'],
             runtime = config['kpal']['count_all']['runtime']
     wildcard_constraints: kmer = "[0-9]+"
-    input: reads = config['kpal']['count_all']['input']
-    output: kmer = os.path.join("{path}", "kpal_{label}.k{kmer}")
-    threads: 1
+    input: config['kpal']['count_all']['input']
+    output: kmer = os.path.join("{path}", "kpal{label}.k{kmer}")
+    threads: config['kpal']['count_all']['threads']
     shell:
-        "if file --mime-type -b -L {input.read} | grep -q gzip; then zcat {input.read} | {params.cmd} count {params.options} -k {wildcards.kmer} - {output.kmer};"
-        "else "
-        "{params.cmd} count {params.options} -k {wildcards.kmer} {input.read} {output.kmer}; fi;"
+        "command=\"{params.cmd} count {params.options} -k {wildcards.kmer} $(echo {input} | sed -e 's/[^ ][^ ]*/<(seqtk seq -a &)/g') {output.kmer}\"; eval \"${{command}}\""

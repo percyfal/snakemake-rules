@@ -20,6 +20,6 @@ rule samtools_index:
             cmd = config['samtools']['cmd'],
             runtime = config['samtools']['index']['runtime']
     input: "{prefix}.bam"
-    output: "{prefix}.bam.bai"
+    output: "{prefix}.bai"
     threads: 1
     shell: "{params.cmd} {params.options} index {input}"

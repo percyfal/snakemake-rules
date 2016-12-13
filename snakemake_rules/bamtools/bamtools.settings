@@ -8,6 +8,7 @@ config_default = {
         'home' : "",
         'threads' : config['settings']['threads'],
         'options' : "",
+        'runtime' : "01:00:00",
         'filter' : {
             'options' : {'mapQuality' : ">=255"},
             'regions' : config['ngs.settings']['regions'],
