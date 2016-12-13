@@ -18,9 +18,8 @@ rule seqtk_seq_fastq_to_fasta:
     params: cmd = config['seqtk']['cmd'],
             options = config['seqtk']['seq']['options'],
             runtime = config['seqtk']['seq']['runtime']
-    wildcard_constraints: fastq = config['ngs.settings']['fastq_suffix_re']
-    input: reads = "{prefix}{fastq}"
+    input: reads = "{prefix}" + config['ngs.settings']['fastq_suffix']
     output: fasta = "{prefix}.fasta"
     threads: 1
-    shell: "{params.cmd} {params.options} -a {input.reads} > {output.fasta}"
+    shell: "{params.cmd} seq {params.options} -a {input.reads} > {output.fasta}"
 
