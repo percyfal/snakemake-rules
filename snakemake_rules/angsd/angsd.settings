@@ -11,6 +11,7 @@ config_default = {
         'gl' : 1,
         'majorminor' : 1,
         'nChr' : 1, # Number of chromosomes
+        'runtime' : '01:00:00',
     },
 }
 

@@ -9,6 +9,7 @@ config_default = {
             'gl' : config['angsd']['gl'],
 	    'majorminor' : config['angsd']['majorminor'],
             'threads' : config['angsd']['threads'],
+            'runtime' : config['angsd']['runtime'],
             },
     },
 }
@@ -28,8 +29,10 @@ rule angsd_domaf:
             options = " ".join(['-doMaf {}'.format(str(config['angsd']['domaf']['domaf'])),
 	    	      	    	'-doMajorMinor {}'.format(str(config['angsd']['domaf']['majorminor'])),
                                 '-GL {}'.format(str(config['angsd']['domaf']['gl'])),
-                                config['angsd']['domaf']['options']])
+                                config['angsd']['domaf']['options']]),
+            runtime = config['angsd']['domaf']['runtime']
     input: fofn = "{prefix}.fofn"
     output: pos = "{prefix}.mafs.gz"
     threads: config['angsd']['domaf']['threads']
+    conda: "env.yaml"
     shell: "{params.cmd} -bam {input.fofn} {params.options} -nThreads {threads} -out {wildcards.prefix}"
