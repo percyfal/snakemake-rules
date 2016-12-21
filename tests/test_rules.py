@@ -41,6 +41,8 @@ def test_snakemake_list(x):
     if set([name]).issubset(blacklist):
         pytest.skip("{} part of blacklist".format(name))
     output = sp.check_output(['snakemake', '-s', rule, '-l'], stderr=sp.STDOUT)
+    if pytest.config.getoption("--show-workflow-output"):
+        print(output.decode("utf-8"))
 
 
 application_blacklist = ['annovar', 'cloudbiolinux', 'danpos',
