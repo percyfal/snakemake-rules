@@ -26,5 +26,6 @@ rule bcftools_stats:
     input: vcf = "{prefix}.vcf.gz", B = config['bcftools']['stats']['B'] if config['bcftools']['stats']['B'] else [], ref = config['bcftools']['ref']
     output: stats = "{prefix}.vcf.gz.stats"
     threads: config['bcftools']['stats']['threads']
+    conda: "env.yaml"
     shell: "{params.cmd} stats {params.options} -f {input.ref} {input.vcf} {input.B} > {output.stats}"
 
