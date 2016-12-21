@@ -5,6 +5,7 @@ config_default = {
     'annovar' : {
         'table_annovar' : {
             'options' : "--otherinfo",
+            'runtime' : config['annovar']['runtime'],
         },
     },
 }
@@ -18,8 +19,10 @@ rule annovar_table_annovar:
     params: cmd='table_annovar.pl',
             options=config['annovar']['table_annovar']['options'],
             db=config['annovar']['db'],
-            buildver=config['annovar']['buildver']
+            buildver=config['annovar']['buildver'],
+            runtime=config['annovar']['table_annovar']['runtime'],
     input: "{prefix}.avinput"
     output: "{prefix}.avinput.hg19_multianno.txt"
+    threads: 1
     shell: "{params.cmd} {input} {params.db} {params.options} --buildver hg19"
 

@@ -5,6 +5,7 @@ config_default = {
     'annovar' : {
         'annotate_variation' : {
             'options' : "",
+            'runtime' : config['annovar']['runtime'],
         },
     },
 }
@@ -16,7 +17,9 @@ config = config_default
 rule annovar_annotate_variation:
     params: cmd='annotate_variation.pl',
             buildver=config['annovar']['buildver'],
-            db = config['annovar']['db']
+            db = config['annovar']['db'],
+            runtime = config['annovar']['annotate_variation']['runtime'],
     #output: os.path.join(config['annovar']['home'], config['annovar']['db'], "{db}")
     output: db="{db}"
+    threads: 1
     shell: "{params.cmd} -buildver {params.buildver} -downdb {wildcards.db} {params.db}"
