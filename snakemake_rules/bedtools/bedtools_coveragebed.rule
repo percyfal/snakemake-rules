@@ -5,6 +5,8 @@ config_default = {
     'bedtools' : {
         'coveragebed' : {
             'cmd' : 'coverageBed',
+            'options' : "",
+            'runtime' : config['bedtools']['runtime'],
         },
     },
 }
@@ -19,7 +21,10 @@ rule bedtools_coveragebed_bam:
     Input: {prefix}.bam; output: {prefix}.coverage
     """
     params: cmd = config['bedtools']['coveragebed']['cmd'],
-            options=config['bedtools']['options']
+            options=config['bedtools']['coveragebed']['options'],
+            runtime = config['bedtools']['coveragebed']['runtime'],
     input: a = "{prefix}.bam", b = config['bedtools']['bfile']
     output: "{prefix}.coverage"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -abam {input.a} -b {input.b} > {output}"

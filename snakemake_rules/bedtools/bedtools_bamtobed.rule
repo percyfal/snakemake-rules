@@ -6,6 +6,7 @@ config_default = {
         'bamtobed' : {
             'cmd' : 'bamToBed',
             'options' : "",
+            'runtime' : config['bedtools']['runtime'],
         },
     },
 }
@@ -17,7 +18,10 @@ config = config_default
 rule bedtools_bamtobed:
     """Convert a bam file to bed format"""
     params: cmd =config['bedtools']['bamtobed']['cmd'],
-            options = config['bedtools']['options']
+            options = config['bedtools']['bamtobed']['options'],
+            runtime = config['bedtools']['bamtobed']['runtime'],
     input: "{prefix}.bam"
     output: "{prefix}.bed"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -i {input} > {output}"

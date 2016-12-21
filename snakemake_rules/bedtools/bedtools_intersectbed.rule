@@ -6,6 +6,7 @@ config_default = {
         'intersectbed' : {
             'cmd' : 'intersectBed',
             'options' : "",
+            'runtime' : config['bedtools']['runtime'],
         },
     },
 }
@@ -17,17 +18,22 @@ config = config_default
 rule bedtools_intersectbed_make_region_baits:
     """Generate overlapping bed file for bait definition file"""
     params: cmd = config['bedtools']['intersectbed']['cmd'],
-            options = config['bedtools']['intersectbed']['options']
+            options = config['bedtools']['intersectbed']['options'],
+            runtime = config['bedtools']['intersectbed']['runtime'],
     input: a="{prefix}.region_{gene}.bed", b=config['bedtools']['sequence_capture']['bait_regions']
     output: "{prefix}.region_{gene}.baits.bed"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} -a {input.a} -b {input.b} > {output}"
 
-           
 rule bedtools_intersectbed_make_region_targets:
     """Generate overlapping bed file for target definition file"""
     params: cmd = config['bedtools']['intersectbed']['cmd'],
-            options = config['bedtools']['intersectbed']['options']
+            options = config['bedtools']['intersectbed']['options'],
+            runtime = config['bedtools']['intersectbed']['runtime'],
     input: a="{prefix}.region_{gene}.bed", b=config['bedtools']['sequence_capture']['target_regions']
     output: "{prefix}.region_{gene}.targets.bed"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} -a {input.a} -b {input.b} > {output}"
 

@@ -6,6 +6,7 @@ config_default = {
     'bedtools' : {
         'genomecov' : {
             'options' : "",
+            'runtime' : config['bedtools']['runtime'],
         },
     },
 }
@@ -18,8 +19,11 @@ rule bedtools_bedToBedGraph:
     """Convert bed to bedGraph
     """
     params: cmd = "bedtools genomecov ",
-            options=config['bedtools']['genomecov']['options']
+            options=config['bedtools']['genomecov']['options'],
+            runtime=config['bedtools']['genomecov']['runtime'],
     input: infile = "{prefix}.bed",
            chrom = "chrom.sizes"
     output: bedgraph = "{prefix}.bdg"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -bg -trackline -trackopts name={wildcards.prefix} -i {input.infile} -g {input.chrom} > {output.bedgraph}"

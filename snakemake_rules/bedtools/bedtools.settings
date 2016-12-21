@@ -10,6 +10,7 @@ config_default = {
             'bait_regions' : config['ngs.settings']['sequence_capture']['bait_regions'],
             'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
         },
+        'runtime' : "01:00:00",
     },
 }
 
