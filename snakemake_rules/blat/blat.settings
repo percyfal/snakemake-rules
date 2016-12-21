@@ -13,6 +13,7 @@ config_default = {
     'blat' : {
         'ref': config['ngs.settings']['db']['ref'],
         'index': "",
+        'runtime' : "01:00:00",
     },
 }
 

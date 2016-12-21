@@ -6,6 +6,7 @@ config_default = {
         'faToTwoBit' : {
             'cmd' : 'faToTwoBit',
             'options' : "",
+            'runtime' : config['blat']['runtime'],
         },
     },
 }
@@ -22,7 +23,10 @@ rule blat_faToTwoBit:
 
     """
     params: cmd = config['blat']['faToTwoBit']['cmd'],
-            options = config['blat']['faToTwoBit']['options']
+            options = config['blat']['faToTwoBit']['options'],
+            runtime = config['blat']['faToTwoBit']['runtime'],
     input: fa = "{prefix}.fa"
     output: twobit = "{prefix}.2bit"
+    conda: "env.yaml"
+    threads: 1
     shell: "{params.cmd} {params.options} {input.fa} {output.twobit}"
