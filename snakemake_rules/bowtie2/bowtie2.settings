@@ -16,6 +16,7 @@ config_default = {
         'index' : os.path.splitext(config['ngs.settings']['db']['ref'])[0],
         'ref' : config['ngs.settings']['db']['ref'],
         'rg_fn' : None,
+        'runtime' : "01:00:00",
     },
 }
 
