@@ -7,7 +7,7 @@ config_default = {
         'aln' : {
 	    'threads' : config['bwa']['threads'],
             'options': "",
-            'runtime': "01:00:00",
+            'runtime': config['bwa']['runtime'],
         },
     },
 }
@@ -26,6 +26,7 @@ rule bwa_aln:
     output: bam = "{prefix}.sai"
     log: log = "{prefix}.bwa.log"
     threads: config['bwa']['aln']['threads']
+    conda: "env.yaml"
     shell:
         "bwa aln -t {threads} {params.options} {params.index} " + \
         "{input.read} -f {output} 2> {log}"

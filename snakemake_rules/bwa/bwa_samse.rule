@@ -8,7 +8,7 @@ config_default = {
         'samse' : {
 	    'threads' : 1,
             'options': "",
-            'runtime': "01:00:00",
+            'runtime': config['bwa']['runtime'],
         },
     },
 }
@@ -27,6 +27,7 @@ rule bwa_samse:
     output: bam = "{prefix}.bam"
     log: log = "{prefix}.samse.log"
     threads: 1
+    conda: "env.yaml"
     shell:
         "bwa samse {params.options} {params.index} " + \
         "{input.sai} 2> {log} | " + \

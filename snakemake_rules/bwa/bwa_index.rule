@@ -20,4 +20,5 @@ rule bwa_index:
     output: expand("{{prefix}}{{ext,\.[a-z]+}}{bwaext}",\
             bwaext=config['bwa']['index_ext'])
     threads: 1
+    conda: "env.yaml"
     shell: "bwa index {input.indexref}"

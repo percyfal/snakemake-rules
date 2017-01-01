@@ -7,7 +7,7 @@ config_default = {
         'aln' : {
 	    'threads' : config['bwa']['threads'],
             'options': "",
-            'runtime': "01:00:00",
+            'runtime': config['bwa']['runtime'],
         },
         'samse' : {
             'options' : "",
@@ -41,6 +41,7 @@ rule bwa_aln_samse_sort:
     output: bam = "{prefix}.sort.bam"
     log: log = "{prefix}.bwa.log"
     threads: config['bwa']['aln']['threads']
+    conda: "env.yaml"
     shell:
         "bwa aln -t {threads} {params.options} {params.index} " + \
         "{input.read} 2> {log} | bwa samse {params.options_samse} {params.index} - {input.read}" + \

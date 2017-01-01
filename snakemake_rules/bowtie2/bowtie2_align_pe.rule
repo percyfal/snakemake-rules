@@ -7,7 +7,7 @@ config_default = {
         'align' : {
             'threads' : config['settings']['threads'],
             'options' : '',
-            'runtime' : config['settings']['runtime'],
+            'runtime' : config['bowtie2']['runtime'],
         },
     },
 }
