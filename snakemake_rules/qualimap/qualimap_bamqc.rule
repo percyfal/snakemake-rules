@@ -25,5 +25,6 @@ rule qualimap_bamqc:
             genome = os.path.join("{prefix}.bam.qualimap", "genome_results.txt"),
             outdir = "{prefix}.bam.qualimap"
     threads: config['qualimap']['bamqc']['threads']
+    conda: "env.yaml"
     shell: "unset DISPLAY; {params.cmd} bamqc -bam {input.bam} -nt {threads} {params.options} -outdir {output.outdir}"
 
