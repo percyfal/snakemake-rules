@@ -5,8 +5,10 @@ rule plink_bed_blocks:
     """calculate linkage disequilibrium blocks(?). 
     """
     params: cmd = config['plink']['cmd'],
-            options = config['plink']['options']
+            options = config['plink']['options'],
+            runtime = config['plink']['runtime']
     input: "{prefix}.bed"
     output: "{prefix}.blocks"
+    threads: 1
     shell: "{params.cmd} {params.options}  --bfile {wildcards.prefix} --blocks --out {wildcards.prefix}"
 

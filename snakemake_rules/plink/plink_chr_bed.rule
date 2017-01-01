@@ -6,7 +6,9 @@ rule plink_chr_bed:
     """
     params: cmd = config['plink']['cmd'],
             options = config['plink']['options'],
-            chr = config['plink']['chr']
+            chr = config['plink']['chr'],
+            runtime = config['plink']['runtime'],
     input: "{prefix}.bed"
     output: "{prefix}.chr{params.chr}.bed"
+    threads: 1
     shell: "{params.cmd} {params.options} --bfile {wildcards.prefix} --make-bed --out {wildcards.prefix}.chr{params.chr}"
