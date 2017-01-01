@@ -58,6 +58,7 @@ rule mapdamage2:
             dnacomp_genome = join("{prefix}"+ "_" + folder, "dnacomp_genome.csv") if stats else [],
             rescale_bam = join("{prefix}"+ "_" + folder, "{prefix}.rescaled.bam") if rescalebam else [],
     threads: 1
+    conda: "env.yaml"
     run:
         cmd = "mapDamage " + params.options + " -i " + input.bam + " -r " + input.ref + " -d " + "{}_{}".format(wildcards.prefix, folder)
         if rescale:
