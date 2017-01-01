@@ -18,6 +18,7 @@ rule freebayes:
     input: fofn = "{prefix}.bam.fofn", ref = config['freebayes']['ref']
     output: vcf = "{prefix}.freebayes.vcf"
     threads: config['freebayes']['threads']
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -f {input.ref} -L {input.fofn} > {output.vcf}"
 
 
