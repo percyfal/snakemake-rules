@@ -6,6 +6,7 @@ config_default = {
         'rmarkdown_revealjs' : {
             'cmd' : "Rscript",
             'options' : "",
+            'runtime' : config['r']['runtime'],
             },
     },
 }
@@ -15,6 +16,8 @@ config = config_default
 
 rule rmarkdown_revealjs:
     """Create revealjs presentation from Rmarkdown"""
+    params: runtime = config['r']['rmarkdown_revealjs']['runtime']
     input: "{prefix}.Rmd"
     output: "{prefix}.html"
+    threads: 1
     shell: "Rscript -e \"rmarkdown::render('{input}')\"
