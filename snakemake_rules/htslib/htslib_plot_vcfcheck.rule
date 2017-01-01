@@ -5,6 +5,7 @@ config_default = {
     'htslib' : {
         'plot-vcfcheck' : {
             'options' : '',
+            'runtime' : config['htslib']['runtime'],
         },
     },
 }
@@ -18,7 +19,10 @@ rule htslib_plot_vcfcheck:
     Output from vcftools stats.
     """
     params: cmd='plot-vcfcheck',
-            options = config['htslib']['plot-vcfcheck']['options']
+            options = config['htslib']['plot-vcfcheck']['options'],
+            runtime = config['htslib']['plot-vcfcheck']['runtime']
     input: "{prefix}.chk"
     output: "{prefix}-summary.pdf"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {input} -p {wildcards.prefix}"
