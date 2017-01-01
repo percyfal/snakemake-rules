@@ -23,6 +23,7 @@ rule kpal_count:
     input: read = "{prefix}{read}" + config['ngs.settings']['fastq_suffix']
     output: kmer = "{prefix}{read}.k{kmer}"
     threads: 1
+    conda: "env.yaml"
     shell:
         "if file --mime-type -b -L {input.read} | grep -q gzip; then zcat {input.read} | {params.cmd} count {params.options} -k {wildcards.kmer} - {output.kmer};"
         "else "

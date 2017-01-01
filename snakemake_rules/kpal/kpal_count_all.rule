@@ -24,5 +24,6 @@ rule kpal_count_all:
     input: config['kpal']['count_all']['input']
     output: kmer = os.path.join("{path}", "kpal{label}.k{kmer}")
     threads: config['kpal']['count_all']['threads']
+    conda: "env.yaml"
     shell:
         "command=\"{params.cmd} count {params.options} -k {wildcards.kmer} $(echo {input} | sed -e 's/[^ ][^ ]*/<(seqtk seq -a &)/g') {output.kmer}\"; eval \"${{command}}\""

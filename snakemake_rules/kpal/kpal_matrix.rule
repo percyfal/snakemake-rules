@@ -23,5 +23,6 @@ rule kpal_matrix:
     input: kmer = "{prefix}.k{kmer}"
     output: res = "{prefix}.k{kmer}.mat"
     threads: config['kpal']['matrix']['threads']
+    conda: "env.yaml"
     shell:
         "{params.cmd} matrix {params.options} {input.kmer} {output.res}"
