@@ -17,9 +17,11 @@ config = config_default
 
 rule ercc_create_ref:
     """Create ERCC reference file"""
+    params: runtime = config['ercc']['runtime']
     input: txt = os.path.basename(config['ercc']['source'])
     output: gb = protected(re.sub("(.fa$|.fasta$)", ".gb", config['ercc']['ref'])),
             fa = protected(config['ercc']['ref'])
+    threads: 1
     run:
         with open(input.txt, 'r') as fh:
             reader = DictReader(fh, delimiter='\t')

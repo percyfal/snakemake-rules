@@ -2,7 +2,9 @@
 include: "ercc.settings"
 
 rule ercc_download_metadata:
-    params: source = config['ercc']['source']
+    params: source = config['ercc']['source'],
+            runtime = config['ercc']['runtime']
     output: temp('cms_095047.txt')
+    threads: 1
     shell: "wget {params.source} -O {output}"
 

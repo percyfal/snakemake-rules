@@ -3,6 +3,7 @@ include: "../ngs.settings"
 
 config_default = {
     'ercc' : {
+        'runtime': "01:00:00",
         # Using Lifetech's source for now
         'source': 'https://tools.lifetechnologies.com/content/sfs/manuals/cms_095047.txt',
     },
