@@ -7,6 +7,7 @@ include: "../ngs.settings"
 config_default = {
     'macs2' : {
         'cmd' : 'macs2',
+        'runtime' : "01:00:00",
     },
 }
 
