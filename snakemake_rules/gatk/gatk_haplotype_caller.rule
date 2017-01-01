@@ -8,6 +8,7 @@ config_default = {
             'cmd' : 'HaplotypeCaller',
             'ref' : config['gatk']['ref'],
             'options' : '-ERC GVCF',
+            'runtime' : config['gatk']['runtime'],
             'java_mem' : config['gatk']['java_mem'],
         },
     },
@@ -21,9 +22,12 @@ cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['haplotyp
 rule gatk_haplotype_caller:
     """Run GATK HaplotypeCaller"""
     params: cmd = cmd + " -T " + config['gatk']['haplotype_caller']['cmd'],
-            options = config['gatk']['haplotype_caller']['options']
+            options = config['gatk']['haplotype_caller']['options'],
+            runtime = config['gatk']['haplotype_caller']['runtime'],
     input: bam = "{prefix}.bam", bai = "{prefix}.bai", ref = config['gatk']['haplotype_caller']['ref'] 
     output: gvcf = "{prefix}.g.vcf"
+    threads: 1
+    conda: "env.yaml"
     log: "{prefix}.g.vcf.log"
     shell: "{params.cmd} {params.options} -I {input.bam} -R {input.ref} -o {output.gvcf} -log {log}"
 

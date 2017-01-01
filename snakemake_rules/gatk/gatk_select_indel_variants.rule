@@ -10,7 +10,8 @@ config_default = {
                                   "--selectTypeToInclude", "MIXED",
                                   "--selectTypeToInclude", "MNP",
                                   "--selectTypeToInclude", "SYMBOLIC",
-                                  "--selectTypeToInclude", "NO_VARIATION"])
+                                  "--selectTypeToInclude", "NO_VARIATION"]),
+            'runtime' : config['gatk']['runtime'],
         },
     },
 }
@@ -22,8 +23,11 @@ config = config_default
 rule gatk_select_indel_variants:
     """Run GATK SelectVariants to select INDELs"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['select_indel_variants']['cmd'],
-            options =  config['gatk']['select_indel_variants']['options']
+            options =  config['gatk']['select_indel_variants']['options'],
+            runtime =  config['gatk']['select_indel_variants']['runtime']
     input: vcf = "{prefix}.vcf", ref = config['gatk']['select_indel_variants']['ref']
     output: vcf = "{prefix}.indel.vcf"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -R {input.ref} --variant {input.vcf} --out {output.vcf}"
 

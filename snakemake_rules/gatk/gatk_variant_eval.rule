@@ -8,6 +8,7 @@ config_default = {
             'ref' : config['gatk']['ref'],
             'options' : " ".join(["-ST Filter -l INFO --doNotUseAllStandardModules --evalModule CompOverlap --evalModule CountVariants --evalModule TiTvVariantEvaluator --evalModule ValidationReport",
             ]),
+            'runtime' : config['gatk']['runtime'],
         },
     },
 }
@@ -21,8 +22,11 @@ rule gatk_variant_eval:
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['variant_eval']['cmd'],
             options = " ".join(["-R", config['gatk']['variant_eval']['ref'],
                                 config['gatk']['variant_eval']['options'],
-                                "--dbsnp {known}".format(known=config['gatk']['known_sites'] if not config['gatk']['known_sites'] == "" else "")])
+                                "--dbsnp {known}".format(known=config['gatk']['known_sites'] if not config['gatk']['known_sites'] == "" else "")]),
+            runtime = config['gatk']['variant_eval']['runtime']
     input: "{prefix}.vcf"
     output: "{prefix}.eval_metrics"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} --eval {input} -o {output}"
 

@@ -12,6 +12,7 @@ config_default = {
             'cmd' : 'ReadBackedPhasing',
             'ref' : config['gatk']['ref'],
             'options' : "",
+            'runtime' : config['gatk']['runtime'],
             'inputfun' : _gatk_read_backed_phasing_inputs_fn,
         },
     },
@@ -25,7 +26,10 @@ rule gatk_read_backed_phasing:
     """Run GATK ReadBackedPhasing"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['read_backed_phasing']['cmd'],
             options = " ".join(["-R", config['gatk']['read_backed_phasing']['ref'],
-                                config['gatk']['read_backed_phasing']['options']])
+                                config['gatk']['read_backed_phasing']['options']]),
+            runtime = config['gatk']['read_backed_phasing']['runtime'],
     input: config['gatk']['read_backed_phasing']['inputfun']
     output: "{prefix}.phased.vcf"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -I {input[1]} -o {output} --variant {input[0]}"

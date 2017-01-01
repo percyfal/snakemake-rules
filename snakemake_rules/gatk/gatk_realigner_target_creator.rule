@@ -8,6 +8,7 @@ config_default = {
             'cmd' : 'RealignerTargetCreator',
             'ref' : config['gatk']['ref'],
             'options' : "",
+            'runtime' : config['gatk']['runtime'],
             },
     },
 }
@@ -20,7 +21,10 @@ rule gatk_realigner_target_creator:
     """Run GATK RealignerTargetCreator"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['realigner_target_creator']['cmd'],
             options = " ".join(["-R", config['gatk']['realigner_target_creator']['ref'],
-            config['gatk']['realigner_target_creator']['options']])
+            config['gatk']['realigner_target_creator']['options']]),
+            runtime = config['gatk']['realigner_target_creator']['runtime']
     input: bam="{prefix}.bam", bai="{prefix}.bai", d=config['gatk']['realigner_target_creator']['ref'].replace(".fa", ".dict"), fai="{}.fai".format(config['gatk']['realigner_target_creator']['ref'])
     output: intervals = "{prefix}.intervals"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -I {input.bam} -o {output.intervals}"

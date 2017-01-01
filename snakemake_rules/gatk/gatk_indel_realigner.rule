@@ -7,7 +7,8 @@ config_default = {
         'indel_realigner' : {
             'cmd' : 'IndelRealigner',
             'ref' : config['gatk']['ref'],
-            'options' : " ".join(["-L {target}".format(target=config['gatk']['target_regions']) if not config['gatk']['target_regions'] == "" else ""])
+            'options' : " ".join(["-L {target}".format(target=config['gatk']['target_regions']) if not config['gatk']['target_regions'] == "" else ""]),
+            'runtime' : config['gatk']['runtime'],
         },
     },
 }
@@ -20,7 +21,10 @@ rule gatk_indel_realigner:
     """Run GATK IndelRealigner"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['indel_realigner']['cmd'],
             options = " ".join(["-R", config['gatk']['indel_realigner']['ref'],
-            config['gatk']['indel_realigner']['options']])
+            config['gatk']['indel_realigner']['options']]),
+            runtime  = config['gatk']['indel_realigner']['runtime']
     input: bam = "{prefix}.bam", intervals = "{prefix}.intervals"
     output: bam = "{prefix}.realign.bam", bai = "{prefix}.realign.bai"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -o {output.bam} --targetIntervals {input.intervals} -I {input.bam}"

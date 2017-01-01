@@ -11,7 +11,8 @@ config_default = {
                                   "--selectTypeToInclude", "MIXED",
                                   "--selectTypeToInclude", "MNP",
                                   "--selectTypeToInclude", "SYMBOLIC",
-                                  "--selectTypeToInclude", "NO_VARIATION"])
+                                  "--selectTypeToInclude", "NO_VARIATION"]),
+            'runtime' : config['gatk']['runtime'],
         },
     },
 }
@@ -24,8 +25,11 @@ rule gatk_select_variants:
     """Run GATK SelectVariants to select variants"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['select_variants']['cmd'],
             options = " ".join(["-R", config['gatk']['select_variants']['ref'],
-                                config['gatk']['select_variants']['options']])
+                                config['gatk']['select_variants']['options']]),
+            runtime = config['gatk']['select_variants']['runtime']
     input: "{prefix}.vcf"
     output: "{prefix}.all.vcf"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} --variant {input} --out {output}"
 

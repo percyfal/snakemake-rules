@@ -14,9 +14,12 @@ rule gatk_variant_eval_stratify_by_baits:
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['variant_eval']['cmd'],
             options = " ".join(["-R", config['gatk']['variant_eval']['ref'],
                                 config['gatk']['variant_eval']['options'],
-                                "--dbsnp {known}".format(known=config['gatk']['known_sites'] if not config['gatk']['known_sites'] == "" else "")])
+                                "--dbsnp {known}".format(known=config['gatk']['known_sites'] if not config['gatk']['known_sites'] == "" else "")]),
+            runtime = config['gatk']['variant_eval']['runtime'],
     input: vcf="{prefix}.region_{region}.vcf", bed="{prefix}.region_{region}.baits.bed"
     output: "{prefix}.region_{region}.eval_metrics"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} --eval {input.vcf} -o {output} --stratIntervals {input.bed} -ST IntervalStratification"
 
 ruleorder: gatk_variant_eval_stratify_by_baits > gatk_variant_eval

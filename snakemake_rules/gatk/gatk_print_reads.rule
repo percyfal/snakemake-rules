@@ -7,7 +7,8 @@ config_default = {
         'print_reads' : {
             'cmd' : 'PrintReads',
             'ref' : config['gatk']['ref'],
-            'options' : ""
+            'options' : "",
+            'runtime' : config['gatk']['runtime'],
         },
     },
 }
@@ -19,7 +20,10 @@ config = config_default
 rule gatk_print_reads:
     """Run GATK PrintReads"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['print_reads']['cmd'],
-            options = config['gatk']['print_reads']['options']
+            options = config['gatk']['print_reads']['options'],
+            runtime = config['gatk']['print_reads']['runtime'],
     input: bam = "{prefix}.bam", recal = "{prefix}.recal_data.grp", ref = config['gatk']['print_reads']['ref']
     output: bam = "{prefix}.recal.bam", bai = "{prefix}.recal.bai"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -R {input.ref} -I {input.bam} -BQSR {input.recal} -o {output.bam}"

@@ -13,6 +13,7 @@ config_default = {
         'java_mem' : config['settings']['java']['java_mem'],
         'java_tmpdir' : config['settings']['java']['java_tmpdir'],
         'ref' : config['ngs.settings']['db']['ref'],
+        'runtime' : "24:00:00",
         'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
         'threads' : config['settings']['threads'],
         'vcfsuffix' : ".vcf",

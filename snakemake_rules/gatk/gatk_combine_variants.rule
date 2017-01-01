@@ -9,6 +9,7 @@ config_default = {
             'cmd' : 'CombineVariants',
             'ref' : config['gatk']['ref'],
             'options' : "",
+            'runtime' : config['gatk']['runtime'],
             'java_mem' : config['gatk']['java_mem'],
         },
     },
@@ -28,9 +29,12 @@ rule gatk_combine_variants:
     """
     params: cmd = cmd + " -T " + config['gatk']['combine_variants']['cmd'],
             options = " ".join(["-R", config['gatk']['combine_variants']['ref'],
-                                config['gatk']['combine_variants']['options']])
+                                config['gatk']['combine_variants']['options']]),
+            runtime = config['gatk']['combine_variants']['runtime']
     input: "{prefix}.snp.filteredSNP.vcf", "{prefix}.indel.filteredINDEL.vcf"
     output: "{prefix}.variants.vcf"
+    threads: 1
+    conda: "env.yaml"
     run: 
         inputstr = " ".join(["-V {}".format(x) for x in input])
         shell("{cmd} {ips} -o {out} {opt}".format(cmd=params.cmd, ips=inputstr, out=output, opt=params.options))

@@ -7,6 +7,7 @@ config_default = {
             'cmd' : 'SelectVariants',
             'ref' : config['gatk']['ref'],
             'options' : "--selectTypeToInclude SNP",
+            'runtime' : config['gatk']['runtime'],
         },
     },
 }
@@ -18,8 +19,11 @@ config = config_default
 rule gatk_select_snp_variants:
     """Run GATK SelectVariants to select SNPs"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['select_snp_variants']['cmd'],
-            options = config['gatk']['select_snp_variants']['options']
+            options = config['gatk']['select_snp_variants']['options'],
+            runtime = config['gatk']['select_snp_variants']['runtime']
     input: vcf = "{prefix}.vcf", ref = config['gatk']['select_snp_variants']['ref']
     output: vcf = "{prefix}.snp.vcf"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -R {input.ref} --variant {input.vcf} --out {output.vcf}"
 

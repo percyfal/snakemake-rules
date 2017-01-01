@@ -7,6 +7,7 @@ config_default = {
         'clip_reads' : {
             'cmd' : 'ClipReads',
             'options' : "",
+            'runtime' : config['gatk']['runtime'],
         },
     },
 }
@@ -18,8 +19,11 @@ config = config_default
 rule gatk_clip_reads:
     """Run GATK ClipReads"""
     params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['clip_reads']['cmd'],
-            options = " ".join([config['gatk']['clip_reads']['options']])
+            options = " ".join([config['gatk']['clip_reads']['options']]),
+            runtime = config['gatk']['clip_reads']['runtime']
     input: bam = "{prefix}.bam", bai = "{prefix}.bai", ref = config['gatk']['ref']
     output: "{prefix}.clip.bam"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -R {input.ref} -I {input.bam} -o {output}"
 
