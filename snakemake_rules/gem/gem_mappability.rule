@@ -5,7 +5,8 @@ config_default = {
     'gem' : {
         'gem_mappability' : {
             'options' : "-l 100 -T 7",
-            'cmd' : 'gem-mappability'
+            'cmd' : 'gem-mappability',
+            'runtime' : config['gem']['runtime'],
         },
     },
 }
@@ -15,7 +16,9 @@ config = config_default
 
 rule gem_mappability:
     params: cmd = config['gem']['gem_mappability']['cmd'],
-            options = config['gem']['gem_mappability']['options']
+            options = config['gem']['gem_mappability']['options'],
+            runtime = config['gem']['gem_mappability']['runtime']
     input: gem = "{prefix}.gem"
     output: mappability = "{prefix}.mappability"
+    threads: 1
     shell: "{params.cmd} {params.options} -I {input.gem} -o {output.mappability}"

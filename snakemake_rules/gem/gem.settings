@@ -9,6 +9,7 @@ include: "../ngs.settings"
 
 config_default = {
     'gem' : {
+        'runtime': "01:00:00",
     },
 }
 

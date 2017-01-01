@@ -6,6 +6,7 @@ config_default = {
         'gem_indexer' : {
             'options' : "-T 7",
             'cmd' : 'gem-indexer',
+            'runtime': config['gem']['runtime'],
         },
     },
 }
@@ -15,8 +16,10 @@ config = config_default
 
 rule gem_indexer:
     params: cmd = config['gem']['gem_indexer']['cmd'],
-            options = config['gem']['gem_indexer']['options']
+            options = config['gem']['gem_indexer']['options'],
+            runtime = config['gem']['gem_indexer']['runtime'],
     input: fasta = "{prefix}.fasta"
     output: gem = "{prefix}.gem"
     log: log = "{prefix}.gem.log"
+    threads: 1
     shell: "{params.cmd} {params.options} -i {input.fasta} -o {output.gem} > {log.log}"
