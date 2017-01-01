@@ -22,6 +22,7 @@ rule picard_do_qc:
     params: runtime = "01:00:00"
     input: ["{{prefix}}{sfx}".format(sfx=workflow._rules[x].params.suffix) for x in config['picard']['qcrules']]
     output: out="{prefix}.picardqc.txt"
+    conda: "env.yaml"
     threads: 1
     run:
         with open (output.out, "w") as fh:

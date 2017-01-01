@@ -24,6 +24,7 @@ rule picard_calculate_region_hs_metrics:
             runtime = config['picard']['calculate_region_hs_metrics']['runtime']
     input: bam = "{prefix}.region_{gene}.{sfx}.bam", targets="{prefix}.region_{gene}.targets.dict", baits="{prefix}.region_{gene}.baits.dict", ref=config['picard']['ref']
     output: metrics = "{prefix}.region_{gene}.{sfx}.hs_metrics"
+    conda: "env.yaml"
     threads: 1
     shell: "{params.cmd} {params.options} TI={input.targets} BI={input.baits} I={input.bam} O={output.metrics} R={input.ref}"
 

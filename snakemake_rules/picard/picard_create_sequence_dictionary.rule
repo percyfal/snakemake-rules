@@ -21,6 +21,7 @@ rule picard_create_sequence_dictionary:
             runtime = config['picard']['create_sequence_dictionary']['runtime']
     input: fa="{prefix}.fa"
     output: dict="{prefix}.dict"
+    conda: "env.yaml"
     threads: 1
     shell: "{params.cmd} {params.options} R={input.fa} O={output.dict}"
 

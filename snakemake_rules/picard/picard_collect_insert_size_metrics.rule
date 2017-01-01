@@ -24,6 +24,7 @@ rule picard_collect_insert_size_metrics:
             runtime = config['picard']['collect_insert_size_metrics']['runtime']
     input: bam = "{prefix}.bam", bai = "{prefix}.bai", ref = config['picard']['ref']
     output: metrics = "{prefix}.insert_metrics"
+    conda: "env.yaml"
     threads: 1
     shell: "{params.cmd} {params.options} H={wildcards.prefix}.hist I={input.bam} O={output.metrics} R={input.ref}"
 

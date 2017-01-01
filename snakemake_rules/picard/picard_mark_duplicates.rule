@@ -33,6 +33,7 @@ rule picard_mark_duplicates_log:
     params: runtime = "00:10:00"
     input: metrics = "{prefix}.dup.dup_metrics"
     output: metrics = "{prefix}.dup.dup_metrics.log"
+    conda: "env.yaml"
     threads: 1
     shell: "cp {input.metrics} {output.metrics}"
 

@@ -21,6 +21,7 @@ rule picard_reorder_sam:
             runtime = config['picard']['reorder_sam']['runtime'],
     input: "{prefix}.bam", config['picard']['ref']
     output: "{prefix}.resorted.bam"
+    conda: "env.yaml"
     threads: 1
     shell: "{params.cmd} I={input[0]} R={input[1]} O={output} {params.options}"
 

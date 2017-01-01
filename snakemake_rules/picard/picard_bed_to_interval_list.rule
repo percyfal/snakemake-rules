@@ -21,6 +21,7 @@ rule picard_bed_to_interval_list:
             runtime = config['picard']['bed_to_interval_list']['runtime']
     input: bed = "{prefix}.bed", dict = os.path.splitext(config['picard']['ref'])[0] + ".dict"
     output: list = "{prefix}.interval_list"
+    conda: "env.yaml"
     threads: 1
     shell: "{params.cmd} {params.options} I={input.bed} O={output.list} SD={input.dict}"
 

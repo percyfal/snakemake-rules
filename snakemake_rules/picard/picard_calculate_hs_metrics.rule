@@ -29,6 +29,7 @@ rule picard_calculate_hs_metrics:
            bait_regions = config['picard']['calculate_hs_metrics']['bait_regions'],
            target_regions = config['picard']['calculate_hs_metrics']['target_regions']
     output: metrics = "{prefix}.hs_metrics"
+    conda: "env.yaml"
     threads: 1
     shell: "{params.cmd} {params.options} TI={input.target_regions} BI={input.bait_regions} I={input.bam} O={output.metrics} R={input.ref}"
 

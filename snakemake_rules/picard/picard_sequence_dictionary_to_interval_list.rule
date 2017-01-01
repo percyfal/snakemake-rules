@@ -6,6 +6,7 @@ rule picard_sequence_dictionary_to_interval_list:
     params: runtime = "01:00:00"
     input: dict = "{prefix}.dict"
     output: interval_list = "{prefix}.interval_list"
+    conda: "env.yaml"
     threads: 1
     shell:
         "cat {input.dict} > {output.interval_list};"
