@@ -27,7 +27,7 @@ def _picard_merge_sam_input_fn(wildcards):
     except:
         raise RuleException("""
         picard_merge_sam: Default merge function failed. Make sure the source
-        suffix config['picard']['merge_sam']['source_label'] is
+        suffix config['picard']['merge_sam']['source_suffix'] is
         correct. Else, implement function for generating source files and
         set configuration
         config['picard']['merge_sam']['inputfun'] to the
@@ -40,7 +40,6 @@ def _picard_merge_sam_input_fn(wildcards):
 config_default = {
     'picard' : {
         'merge_sam' : {
-            'label' : "merge", # target label
             'source_suffix' : ".bam",
             'options' : "CREATE_INDEX=true",
             'inputfun' : _picard_merge_sam_input_fn,
@@ -63,9 +62,9 @@ rule picard_merge_sam:
                                 config['picard']['merge_sam']['options']]),
             runtime = config['picard']['merge_sam']['runtime']
     input: config['picard']['merge_sam']['inputfun']
-    output: merge="{prefix}." + config['picard']['merge_sam']['label'] + ".bam"
+    output: merge="{prefix}.merge.bam"
     threads: 1
-    run: 
+    run:
       if (len(input) > 1):
           inputstr = " ".join(["INPUT={}".format(x) for x in input])
           shell("{cmd} {ips} OUTPUT={out} {opt}".format(cmd=params.cmd, ips=inputstr, out=output.merge, opt=params.options))
