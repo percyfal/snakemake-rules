@@ -1,9 +1,25 @@
 # -*- snakemake -*-
 include: "emboss.settings"
 
+config_default = {
+    'emboss' : {
+        'seqret_fasta_to_genbank': {
+            'options' : "",
+            'runtime': config['emboss']['runtime'],
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
 rule emboss_seqret_fasta_to_genbank:
     """EMBOSS seqret: convert fasta to genbank"""
+    params: runtime = config['emboss']['seqret_fasta_to_genbank']['runtime']
     input: "{prefix}.fasta"
     output: "{prefix}.genbank"
+    conda: "env.yaml"
+    threads: 1
     shell: "seqret -sequence {input} -outseq genbank:{output}"
     

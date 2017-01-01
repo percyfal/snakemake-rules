@@ -4,6 +4,7 @@ include: '../ngs.settings'
 
 config_default = { 
     'emboss' : {
+        'runtime' : "01:00:00",
     },
 }
 
