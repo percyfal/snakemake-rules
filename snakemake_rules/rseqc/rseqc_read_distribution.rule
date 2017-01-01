@@ -6,6 +6,7 @@ config_default = {
         'read_distribution' : {
             'cmd' : 'read_distribution.py',
             'options' : '',
+            'runtime' : config['rseqc']['runtime'],
         },
     },
 }
@@ -22,7 +23,10 @@ rule rseqc_read_distribution:
     """
     params: cmd = config['rseqc']['read_distribution']['cmd'],
             options = config['rseqc']['read_distribution']['options'],
+            runtime = config['rseqc']['read_distribution']['runtime'],
     input: bam = "{prefix}.bam", refgene = config['rseqc']['refgene']
     output: "{prefix}_rseqc/read_distribution.txt"
+    threads: 1
+    conda: "env.yaml"
     shell: " {params.cmd} {params.options} -i {input.bam} -r {input.refgene} &> {output}"
 

@@ -6,6 +6,7 @@ config_default = {
         'junction_annotation' : {
             'cmd' : 'junction_annotation.py',
             'options' : '',
+            'runtime' : config['rseqc']['runtime'],
         },
     },
 }
@@ -20,8 +21,11 @@ rule rseqc_junction_annotation:
     """
     params: cmd = config['rseqc']['junction_annotation']['cmd'],
             options = config['rseqc']['junction_annotation']['options'],
+            runtime = config['rseqc']['junction_annotation']['runtime'],
     input: bam = "{prefix}.bam", refgene = config['rseqc']['refgene']
     output: xls = "{prefix}_rseqc/junction_annotation_refseq.junction.xls",
             txt = "{prefix}_rseqc/junction_annotation_refseq.txt"
+    threads: 1
+    conda: "env.yaml"
     shell: " {params.cmd} {params.options} -i {input.bam} -o $(dirname {output.txt})/junction_annotation_refseq -r {input.refgene} 2> {output.txt}"
 

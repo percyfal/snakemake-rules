@@ -6,6 +6,7 @@ config_default = {
         'read_NVC' : {
             'cmd' : 'read_NVC.py',
             'options' : '',
+            'runtime' : config['rseqc']['runtime'],
         },
     },
 }
@@ -17,8 +18,11 @@ config = config_default
 rule rseqc_read_NVC:
     """Run RSeQC read_NVC.py"""
     params: cmd = config['rseqc']['read_NVC']['cmd'],
-            options = config['rseqc']['read_NVC']['options']
+            options = config['rseqc']['read_NVC']['options'],
+            runtime = config['rseqc']['read_NVC']['runtime']
     input: "{prefix}.bam"
     output: xls = "{prefix}_rseqc/read_NVC.NVC.xls"
+    threads: 1
+    conda: "env.yaml"
     shell: " {params.cmd} {params.options} -i {input} -o $(dirname {output.xls})/read_NVC"
 

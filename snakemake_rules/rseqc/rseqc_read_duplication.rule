@@ -6,6 +6,7 @@ config_default = {
         'read_duplication' : {
             'cmd' : 'read_duplication.py',
             'options' : '',
+            'runtime' : config['rseqc']['runtime'],
         },
     },
 }
@@ -18,7 +19,10 @@ rule rseqc_read_duplication:
     """Run RSeQC read_duplication.py"""
     params: cmd = config['rseqc']['read_duplication']['cmd'],
             options = config['rseqc']['read_duplication']['options'],
+            runtime = config['rseqc']['read_duplication']['runtime'],
     input: bam = "{prefix}.bam"
     output: pos = "{prefix}_rseqc/read_dup.pos.DupRate.xls",
             seq = "{prefix}_rseqc/read_dup.seq.DupRate.xls",
+    threads: 1
+    conda: "env.yaml"
     shell: " {params.cmd} {params.options} -i {input.bam} -o $(dirname {output.seq})/read_dup"

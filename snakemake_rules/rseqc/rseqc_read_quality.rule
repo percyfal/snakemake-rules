@@ -6,6 +6,7 @@ config_default = {
         'read_quality' : {
             'cmd' : 'read_quality.py',
             'options' : '',
+            'runtime' : config['rseqc']['runtime'],
         },
     },
 }
@@ -18,7 +19,10 @@ rule rseqc_read_quality:
     """Run RSeQC read_quality.py"""
     params: cmd = config['rseqc']['read_quality']['cmd'],
             options = config['rseqc']['read_quality']['options'],
+            runtime = config['rseqc']['read_quality']['runtime'],
     input: "{prefix}.bam"
     output: r = "{prefix}_rseqc/read_quality.qual.r"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} -i {input} -o $(dirname {output.r})/read_quality"
 
