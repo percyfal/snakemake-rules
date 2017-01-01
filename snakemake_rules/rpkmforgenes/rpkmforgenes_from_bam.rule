@@ -9,12 +9,15 @@ rule rpkmforgenes_from_bam:
                 config['rpkmforgenes']['options'],
                 " -u {}".format(config['rpkmforgenes']['unique']) if config['rpkmforgenes']['unique'] else "",
                 " -a {}".format(config['rpkmforgenes']['annotation']) if config['rpkmforgenes']['annotation'] else "",
-            ])
+            ]),
+            runtime = config['rpkmforgenes']['runtime'],
     input: unique = [config['rpkmforgenes']['unique']] if not config['rpkmforgenes']['unique'] is None else [],
            annotation = [config['rpkmforgenes']['annotation']] if config['rpkmforgenes']['annotation'] else [],
            bam = "{prefix}.bam"
     output: rpkmforgenes = "{prefix}.rpkmforgenes"
     log: "{prefix}.rpkmforgenes.log"
+    threads: 1
+    conda: "env.yaml"
     shell:
         " ".join(["{params.cmd} {params.options} ",
                   "-bamu -i {input.bam} -o {output.rpkmforgenes} ",
