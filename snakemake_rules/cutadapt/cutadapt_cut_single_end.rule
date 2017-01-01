@@ -28,5 +28,6 @@ rule cutadapt_cut_single_end:
     output: read = "{prefix}.trimmed{read}{fastq}",
             log = "{prefix}.trimmed{read}{fastq}.cutadapt_metrics"
     threads: 1
+    conda: "env.yaml"
     log: "{prefix}.trimmed{read}{fastq}.cutadapt_metrics"
     shell: "{params.cmd} {params.options} {input.read} -a {params.threeprime} -o {output.read} > {log}"
