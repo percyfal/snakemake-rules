@@ -1,0 +1,15 @@
+# -*- snakemake -*-
+include: "picard.settings"
+
+rule picard_interval_list_to_bed:
+    """Picard: convert interval list to bed"""
+    params: cmd = config['picard']['cmd'] + INTERVAL_LIST_TO_BED,
+            options = config['picard']['options'],
+            runtime = "00:10:00"
+    input: interval_list = "{prefix}.interval_list"
+    output: bed = "{prefix}.bed"
+    threads: 1
+    shell: "{params.cmd} {params.options} I={input.interval_list} O={output.bed}"
+
+
+localrules: picard_interval_list_to_bed

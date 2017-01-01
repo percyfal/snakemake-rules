@@ -9,6 +9,7 @@ config_default = {
             'bait_regions' : config['ngs.settings']['sequence_capture']['bait_regions'],
             'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
             'options' : config['picard']['options'],
+            'runtime' : "01:00:00",
         },
     },
 }
@@ -20,12 +21,14 @@ rule picard_calculate_hs_metrics:
     """Picard: calculate hybrid selection metrics"""
     params: cmd = config['picard']['cmd'] + CALCULATE_HS_METRICS,
             options = config['picard']['calculate_hs_metrics']['options'],
-            suffix = ".hs_metrics"
+            suffix = ".hs_metrics",
+            runtime = config['picard']['calculate_hs_metrics']['runtime'],
     input: bam = "{prefix}.bam",
            bai = "{prefix}.bai",
            ref = config['picard']['ref'],
            bait_regions = config['picard']['calculate_hs_metrics']['bait_regions'],
            target_regions = config['picard']['calculate_hs_metrics']['target_regions']
     output: metrics = "{prefix}.hs_metrics"
+    threads: 1
     shell: "{params.cmd} {params.options} TI={input.target_regions} BI={input.bait_regions} I={input.bam} O={output.metrics} R={input.ref}"
 

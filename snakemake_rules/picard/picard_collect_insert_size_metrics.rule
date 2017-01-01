@@ -7,6 +7,7 @@ config_default = {
         'collect_insert_size_metrics' : {
             'targets' : [],
             'options' : config['picard']['options'],
+            'runtime' : config['picard']['runtime'],
         },
     },
 }
@@ -19,8 +20,10 @@ rule picard_collect_insert_size_metrics:
     """Picard: collect insertion size metrics"""
     params: cmd = config['picard']['cmd'] + COLLECT_INSERT_SIZE_METRICS,
             options = config['picard']['collect_insert_size_metrics']['options'],
-            suffix = ".insert_metrics"
+            suffix = ".insert_metrics",
+            runtime = config['picard']['collect_insert_size_metrics']['runtime']
     input: bam = "{prefix}.bam", bai = "{prefix}.bai", ref = config['picard']['ref']
     output: metrics = "{prefix}.insert_metrics"
+    threads: 1
     shell: "{params.cmd} {params.options} H={wildcards.prefix}.hist I={input.bam} O={output.metrics} R={input.ref}"
 

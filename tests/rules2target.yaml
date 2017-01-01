@@ -17,6 +17,8 @@ cutadapt:
   cutadapt_cut_single_end: s1.trimmed.fastq.gz
 fastqc:
   fastqc: s1_1_fastqc/fastqc_data.txt
+fileutils:
+  make_bed_targets: ref.1.bed
 gatk:
   gatk_base_recalibrator: s1.rg.sort.recal_data.grp
   gatk_clip_reads: s1.rg.sort.clip.bam
@@ -43,6 +45,8 @@ picard:
   picard_collect_insert_size_metrics: s1.sort.insert_metrics
   picard_collect_alignment_summary_metrics: s1.sort.bai
   picard_mark_duplicates: s1.sort.dup.dup_metrics
+  picard_interval_list_to_bed: ref.bed
+  picard_sequence_dictionary_to_interval_list: ref.interval_list
 samtools:
   samtools_index: s1.sort.bam.bai
 snpeff:

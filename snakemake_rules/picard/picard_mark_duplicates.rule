@@ -30,8 +30,10 @@ rule picard_mark_duplicates:
 
 rule picard_mark_duplicates_log:
     """Picard: mark duplicates, log output"""
+    params: runtime = "00:10:00"
     input: metrics = "{prefix}.dup.dup_metrics"
     output: metrics = "{prefix}.dup.dup_metrics.log"
+    threads: 1
     shell: "cp {input.metrics} {output.metrics}"
 
 localrules: picard_mark_duplicates_log           

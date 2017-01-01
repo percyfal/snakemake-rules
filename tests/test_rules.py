@@ -17,6 +17,7 @@ if not set(applications).issubset(pytest.rules.__all__):
     raise Exception("No such application '{}'".format(applications[0]))
 
 blacklist = [
+    'picard_do_qc',
     'rsem_calculate_expression_bowtie',
     'snpeff_annotate_variants',
     'snpeff_download_database',
@@ -34,7 +35,7 @@ for x in applications:
         rules.append((x,y))
 
         
-@pytest.mark.parametrize("x", rules, ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(rules)])
+@pytest.mark.parametrize("x", sorted(rules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(rules)])
 def test_snakemake_list(x):
     app, rule = x
     name = re.sub(".rule$", "", basename(rule))
@@ -81,7 +82,7 @@ for x in applications:
 
 @pytest.mark.skipif(not applications, reason="application '{}' in blacklist".format(pytest.config.getoption("--application")))
 @pytest.mark.slow
-@pytest.mark.parametrize("x", slow_rules, ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(slow_rules)])
+@pytest.mark.parametrize("x", sorted(slow_rules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(slow_rules)])
 def test_snakemake_run(x, data):
     app, rule = x
     target = pytest.make_output(rule)

@@ -5,6 +5,7 @@ include: '../comp/comp.settings'
 # Jar program names
 BED_TO_INTERVAL_LIST = "BedToIntervalList"
 BUILD_BAM_INDEX = "BuildBamIndex"
+INTERVAL_LIST_TO_BED = "IntervalListToBed"
 SORT_SAM = "SortSam"
 MERGE_SAM_FILES = "MergeSamFiles"
 REORDER_SAM = "ReorderSam"
@@ -22,6 +23,7 @@ config_default = {
         'java_mem' : config['settings']['java']['java_mem'],
         'java_tmpdir' : config['settings']['java']['java_tmpdir'],
         'ref' : config['ngs.settings']['db']['ref'],
+        'runtime' : "01:00:00",
     },
 }
 

@@ -35,6 +35,7 @@ config_default = {
         'add_or_replace_read_groups' : {
             'options' : "sort_order=coordinate create_index=true",
             'rgfun' : _add_rg,
+            'runtime' : config['picard']['runtime'],
         },
     },
 }
@@ -46,8 +47,10 @@ rule picard_add_or_replace_read_groups:
     """Picard: add or replace read groups. Currently tailored for Illumina read groups."""
     params: cmd = config['picard']['cmd'] + ADD_OR_REPLACE_READ_GROUPS,
             options = config['picard']['options'],
-            custom_options = config['picard']['add_or_replace_read_groups']['options']
+            custom_options = config['picard']['add_or_replace_read_groups']['options'],
+            runtime = config['picard']['add_or_replace_read_groups']['runtime']
     input: bam = "{prefix}.bam"
     output: bam = "{prefix}.rg.bam"
+    threads: 1
     run:
         shell("{params.cmd} INPUT={input.bam} OUTPUT={output.bam} {params.custom_options} " + config['picard']['add_or_replace_read_groups']['rgfun'](wildcards))
