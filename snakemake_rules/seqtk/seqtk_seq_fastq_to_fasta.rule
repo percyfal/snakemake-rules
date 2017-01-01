@@ -21,5 +21,6 @@ rule seqtk_seq_fastq_to_fasta:
     input: reads = "{prefix}" + config['ngs.settings']['fastq_suffix']
     output: fasta = "{prefix}.fasta"
     threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} seq {params.options} -a {input.reads} > {output.fasta}"
 
