@@ -9,6 +9,7 @@ config_default = {
         'dblist' : "hg19",
         'genome_version' : config['ngs.settings']['db']['build'],
         'threads' : config['snpeff']['threads'],
+        'runtime' : "01:00:00",
     },
 }
 

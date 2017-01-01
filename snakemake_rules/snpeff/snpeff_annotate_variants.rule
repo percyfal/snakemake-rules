@@ -7,6 +7,7 @@ config_default = {
             'threads' : config['snpeff']['threads'],
             'options' : '',
             'java_mem' : config['snpeff']['java_mem'],
+            'runtime' : config['snpeff']['runtime'],
         },
     },
 }
@@ -21,7 +22,10 @@ rule snpeff_annotate_variants:
     """snpEff: annotate variants"""
     params: cmd = " ".join([config['snpeff']['cmd'], "ann"]),
             options=config['snpeff']['options'],
-            genome_version=config['snpeff']['genome_version']
+            genome_version=config['snpeff']['genome_version'],
+            runtime=config['snpeff']['annotate']['runtime'],
     input: "{prefix}.vcf"
     output: "{prefix}.annotated.{sfx}"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} ann {params.options} {params.genome_version} {input} -i vcf -o {wildcards.sfx} > {output}"

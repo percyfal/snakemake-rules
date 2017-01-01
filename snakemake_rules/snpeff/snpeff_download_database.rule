@@ -4,7 +4,10 @@ include: "snpeff.settings"
 rule snpeff_download_database:
     """Download snpEff database. FIXME: fix output so that rule doesn't rerun everytime."""
     params: home=config['snpeff']['home'],
-            cmd=config['snpeff']['cmd']
+            cmd=config['snpeff']['cmd'],
+            runtime = config['snpeff']['runtime'],
     output: config['snpeff']['dblist']
+    threads: 1
+    conda: "env.yaml"
     shell: "cd {params.home} && {params.cmd} download {output}"
 
