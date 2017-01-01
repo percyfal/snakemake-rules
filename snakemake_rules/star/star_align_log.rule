@@ -12,3 +12,5 @@ rule star_align_log_sorted:
     output: log = "{prefix}.Log.final.out.bak"
     shell: "cp {wildcards.prefix}.Log.final.out {output.log}"
     
+
+localrules: star_align_log, star_align_log_sorted           
