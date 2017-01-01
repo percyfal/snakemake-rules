@@ -22,4 +22,5 @@ rule samtools_sort:
     input: "{prefix}.bam"
     output: "{prefix}.sort.bam"
     threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} sort {params.options} -o {output} {input}"

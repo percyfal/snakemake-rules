@@ -24,4 +24,5 @@ rule samtools_tabix_vcf:
     input: "{prefix}.vcf.gz"
     output: "{prefix}.vcf.gz.tbi"
     threads: config['samtools']['tabix_vcf']['threads']
+    conda: "env.yaml"
     shell: "{params.cmd} {params.options} {input}"

@@ -4,8 +4,11 @@ include: "samtools.settings"
 rule samtools_sam2bam:
     """Convert sam file to bam."""
     params: options = config['samtools']['options'],
-            cmd = config['samtools']['cmd']
+            cmd = config['samtools']['cmd'],
+            runtime = config['samtools']['runtime'],
     input: "{prefix}.sam"
     output: "{prefix}.bam"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} view {params.options} -Sb {input} > {output}"
 

@@ -20,4 +20,6 @@ rule samtools_stats:
             runtime = config['samtools']['stats']['runtime']
     input: bam = "{prefix}.bam"
     output: stats = "{prefix}.samtools_stats.txt"
+    threads: 1
+    conda: "env.yaml"
     shell: "{params.cmd} stats {params.options} {input.bam} > {output.stats}"
