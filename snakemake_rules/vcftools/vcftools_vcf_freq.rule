@@ -4,7 +4,9 @@ include: "vcftools.settings"
 rule vcftools_vcf_freq:
     """vcftools: calculate the variant frequencies in a vcf file"""
     params: cmd=config['vcftools']['cmd'],
-            options=config['vcftools']['options']['main']
+            options=config['vcftools']['options']['main'],
+            runtime = config['vcftools']['runtime']
     input: "{prefix}.vcf"
     output: "{prefix}.frq"
+    threads: 1
     shell: "{params.cmd} --freq {params.options} --vcf  {input} --out {wildcards.prefix}"
