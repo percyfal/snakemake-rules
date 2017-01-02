@@ -23,4 +23,4 @@ rule samtools_index:
     output: "{prefix}.bai"
     threads: 1
     conda: "env.yaml"
-    shell: "{params.cmd} {params.options} index {input}"
+    shell: "{params.cmd} {params.options} index {input} {output}"

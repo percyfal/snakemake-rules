@@ -8,6 +8,7 @@ config_default = {
         'runtime' : '100:00:00',
         'options' : "",
         'threads' : 1,
+        'targets' : config['ngs.settings']['regions'],
     },
 }
 

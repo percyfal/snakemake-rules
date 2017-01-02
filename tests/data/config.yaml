@@ -46,3 +46,5 @@ star:
 vsearch:
   fastq_stats:
     options: --fastq_qmax 50
+  fastq_filter:
+    options: --fastq_qmax 50

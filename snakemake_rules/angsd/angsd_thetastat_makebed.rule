@@ -25,4 +25,4 @@ rule angsd_thetastat_makebed:
     input: thetasgz = "{prefix}.thetas.gz"
     output: bin = "{prefix}.bin", idx = "{prefix}.idx"
     conda: "env.yaml"
-    shell: "thetaStat make_bed {input.thetasgz}"
+    shell: "thetaStat make_bed {input.thetasgz} {wildcards.prefix}"

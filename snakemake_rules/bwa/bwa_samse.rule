@@ -23,12 +23,13 @@ rule bwa_samse:
             index = config['bwa']['index'],
             runtime = config['bwa']['samse']['runtime']
     input: sai = "{prefix}.sai",
-           index = config['bwa']['index']
+           index = config['bwa']['index'],
+           read = "{prefix}" + config['ngs.settings']['read1_label'] + config['ngs.settings']['fastq_suffix']
     output: bam = "{prefix}.bam"
     log: log = "{prefix}.samse.log"
     threads: 1
     conda: "env.yaml"
     shell:
         "bwa samse {params.options} {params.index} " + \
-        "{input.sai} 2> {log} | " + \
+        "{input.sai} {input.read} 2> {log} | " + \
         " samtools view -b - > {output.bam}"

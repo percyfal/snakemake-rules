@@ -1,7 +1,7 @@
 angsd:
-  angsd_dosaf: bamfiles.saf.gz
-  angsd_realsfs: bamfiles.sfs
-  angsd_domaf: bamfiles.mafs.gz
+  dosaf: bamfiles.saf.gz
+  realsfs: bamfiles.sfs
+  domaf: bamfiles.mafs.gz
 blat:
   blat_faToTwoBit: chr11.2bit
 bowtie:
@@ -15,6 +15,8 @@ cutadapt:
   cutadapt_cut_threeprime: s1.trimmed_1.fastq.gz
   cutadapt_cut_paired_end: s1.trimmed_1.fastq.gz
   cutadapt_cut_single_end: s1.trimmed.fastq.gz
+emacs:
+  emacs_org_to_reveal: s1.revealjs.html
 fastqc:
   fastqc: s1_1_fastqc/fastqc_data.txt
 fileutils:
@@ -47,9 +49,13 @@ picard:
   picard_mark_duplicates: s1.sort.dup.dup_metrics
   picard_interval_list_to_bed: ref.bed
   picard_sequence_dictionary_to_interval_list: ref.interval_list
+r:
+  r_rmarkdown_revealjs: s1.revealjs.html
 samtools:
-  samtools_index: s1.sort.bam.bai
+  samtools_index: s1.sort.bai
 snpeff:
   snpeff_annotate_variants: s1.annotated.vcf
 ucsc:
   ucsc_fetchChromSizes: chrom.sizes
+vsearch:
+  vsearch_fastq_filter: s1.filter.fastq

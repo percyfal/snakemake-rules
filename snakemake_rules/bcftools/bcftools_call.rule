@@ -30,5 +30,5 @@ rule bcftools_call:
     output: vcf = "{prefix}.bcftools.vcf.gz"
     threads: config['bcftools']['call']['threads']
     conda: "env.yaml"
-    shell: "samtools mpileup {params.mpileup_options} -f {input.ref}  $(cat {input.fofn} | tr \"\\n\", \" \") | {params.cmd} call {params.options} -o {output.vcf}"
+    shell: "samtools mpileup {params.mpileup_options} -f {input.ref} -b {input.fofn} | {params.cmd} call {params.options} -o {output.vcf}"
 

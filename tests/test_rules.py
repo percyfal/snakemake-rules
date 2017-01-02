@@ -53,6 +53,8 @@ applications = list(set(applications).difference(application_blacklist))
 
 blacklist_slow = [
     'bwa_link_ref',
+    'emacs_org_to_reveal',
+    'freebayes_parallel',
     'gatk_read_backed_phasing',
     'picard_do_qc',
     'picard_merge_sam',

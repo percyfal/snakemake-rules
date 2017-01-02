@@ -1,6 +1,6 @@
 # Copyright (C) 2016 by Per Unneberg
 import os
-from os.path import abspath, dirname, join, isdir
+from os.path import abspath, dirname, join, isdir, basename
 import sys
 import re
 import logging
@@ -122,6 +122,8 @@ d = {}
 for f in os.listdir(abspath(join(dirname(__file__), "data"))):
     d[f] = abspath(join(dirname(__file__), "data", f))
 
+copyfiles = ['s1.revealjs.Rmd']
+    
 d.update({
     "s1.gtf" : d['ref-transcripts.gtf'],
     "s1.genePred" : d['ref-transcripts.genePred'],
@@ -134,6 +136,7 @@ d.update({
     "s1.bdg" : d['s1.sort.bedGraph'],
     "s1.wig" : d['s1.sort.wig'],
     "s1.bam.fofn" : d['bamfiles.fofn'],
+    "s1.fofn" : d['bamfiles.fofn'],
     "s1.g.vcf.fofn" : d['s1.vcf.fofn'],
     "s2.g.vcf" : d['s1.g.vcf'],
     "s2.g.vcf.gz" : d['s1.g.vcf.gz'],
@@ -145,12 +148,17 @@ d.update({
 ##############################
 @pytest.fixture(scope="function", autouse=False)
 def data(tmpdir_factory):
-    """
-    Setup input data
+    """Setup input data
+
+    FIXME: currently a test directory is setup for *every* atomic
+    test. However, setting it up only once will fail parallel tests.
+
     """
     p = tmpdir_factory.mktemp('data')
 
     for k, v in d.items():
-        p.join(k).mksymlinkto(v)
-
+        if basename(v) in copyfiles:
+            shutil.copyfile(v, str(p.join(k)))
+        else:
+            p.join(k).mksymlinkto(v)
     return p
