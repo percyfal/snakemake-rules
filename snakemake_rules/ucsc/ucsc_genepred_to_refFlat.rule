@@ -9,6 +9,8 @@ rule ucsc_genepred_to_refFlat:
     we need to add extra column at start.
 
     """
+    params: runtime = config['ucsc']['runtime']
     input: genepred = "{prefix}.genePred"
     output: refflat = "{prefix}.refFlat"
+    threads: 1
     shell: "awk '{{printf(\"%s\\t%s\\n\", $1, $0)}}'  {input.genepred} > {output.refflat}"

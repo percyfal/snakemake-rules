@@ -6,6 +6,7 @@ config_default = {
         'gtfToGenePred' : {
             'cmd' : 'gtfToGenePred',
             'options' : '-genePredExt -ignoreGroupsWithoutExons',
+            'runtime' : config['ucsc']['runtime'],
         },
     },
 }
@@ -17,9 +18,11 @@ config = config_default
 rule ucsc_gtfToGenepred:
     """Run gtfToGenePred"""
     params: cmd = config['ucsc']['gtfToGenePred']['cmd'],
-            options = config['ucsc']['gtfToGenePred']['options']
+            options = config['ucsc']['gtfToGenePred']['options'],
+            runtime = config['ucsc']['gtfToGenePred']['runtime']
     input: gtf = "{prefix}.gtf"
     output: genepred = "{prefix}.genePred"
+    threads: 1
     conda:
         join("envs", "ucsc_gtftogenepred.yaml")
     shell: "{params.cmd} {params.options} {input.gtf} {output.genepred}"

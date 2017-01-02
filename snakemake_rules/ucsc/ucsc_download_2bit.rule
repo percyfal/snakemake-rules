@@ -3,7 +3,9 @@ include: "ucsc.settings"
 
 rule ucsc_download_2bit:
     """Download 2bit file from ucsc"""
-    params: urlinput = os.path.join(config['ucsc']['urldownload'], "{build}", "bigZips", "{build}.2bit")
+    params: urlinput = os.path.join(config['ucsc']['urldownload'], "{build}", "bigZips", "{build}.2bit"),
+            runtime = config['ucsc']['runtime']
     output: os.path.join("{path}", "{build}", "ucsc", "{build}.2bit")
+    threads: 1
     shell: "mkdir -p `dirname {output}` && wget {params.urlinput} -O {output}"
 

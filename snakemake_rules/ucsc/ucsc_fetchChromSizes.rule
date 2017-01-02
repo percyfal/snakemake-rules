@@ -6,6 +6,7 @@ config_default = {
         'fetchChromSizes' : {
             'cmd' : 'fetchChromSizes',
             'options' : 'hg19',
+            'runtime' : config['ucsc']['runtime'],
         },
     },
 }
@@ -22,6 +23,9 @@ rule ucsc_fetchChromSizes:
     Uses fetchChromSizes
     """
     params: cmd = config['ucsc']["fetchChromSizes"]["cmd"],
-            options = config['ucsc']["fetchChromSizes"]["options"]
+            options = config['ucsc']["fetchChromSizes"]["options"],
+            runtime = config['ucsc']["fetchChromSizes"]["runtime"],
     output: sizes = "chrom.sizes"
+    conda: "envs/ucsc_fetchchromsizes.yaml"
+    threads: 1
     shell: "{params.cmd} {params.options} > {output.sizes}"
