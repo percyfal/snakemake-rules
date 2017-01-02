@@ -22,4 +22,5 @@ rule vsearch_fastq_filter:
     input: fastq = "{prefix}" + config["ngs.settings"]["fastq_suffix"]
     output: fastq = "{prefix}.filter" + re.sub(config["ngs.settings"]["zip_re"], "", config["ngs.settings"]["fastq_suffix"]),
             log = "{prefix}.fastq_filter.txt"
+    conda: "env.yaml"
     shell: "{params.cmd} --threads {threads} --fastq_filter {input.fastq} {params.options} --log {output.log} --fastqout {output.fastq}"

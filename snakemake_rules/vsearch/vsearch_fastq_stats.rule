@@ -21,4 +21,5 @@ rule vsearch_fastq_stats:
     threads: config['vsearch']['threads']
     input: fastq = "{prefix}" + config["ngs.settings"]["fastq_suffix"]
     output: log = "{prefix}.fastq_stats.txt"
+    conda: "env.yaml"
     shell: "{params.cmd} --threads {threads} --fastq_stats {input.fastq} {params.options} --log {output.log}"
