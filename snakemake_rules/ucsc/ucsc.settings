@@ -7,6 +7,7 @@ config_default = {
         'ref' : config['ngs.settings']['db']['ref'],
         'index' : "",
         'urldownload' : 'http://hgdownload.cse.ucsc.edu/goldenPath/',
+        'runtime' : "01:00:00",
     },
 }
 

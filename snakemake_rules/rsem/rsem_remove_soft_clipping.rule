@@ -15,7 +15,7 @@ rule rsem_remove_soft_clipping:
     https://groups.google.com/forum/#!msg/rna-star/gfz1mvylkTk/9SqPYBErkhsJ
 
     """
-    params: runtime = conda['rsem']['runtime']
+    params: runtime = config['rsem']['runtime']
     input: bam = "{prefix}.bam"
     output: bam = "{prefix}.noS.bam"
     threads: 1

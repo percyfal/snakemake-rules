@@ -20,4 +20,4 @@ rule rmarkdown_revealjs:
     input: "{prefix}.Rmd"
     output: "{prefix}.html"
     threads: 1
-    shell: "Rscript -e \"rmarkdown::render('{input}')\"
+    shell: "Rscript -e \"rmarkdown::render('{input}')\""
