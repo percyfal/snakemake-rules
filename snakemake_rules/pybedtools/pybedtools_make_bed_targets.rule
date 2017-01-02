@@ -1,0 +1,43 @@
+# -*- snakemake -*-
+# Simplest greedy algorithm: see https://en.wikipedia.org/wiki/Partition_problem#The_greedy_algorithm
+# 1. choose the p largest regions to initial partitions
+# 2. for each remaining element, add it to the smallest set
+include: "pybedtools.settings"
+
+config_default = {
+    'pybedtools' : {
+        'make_bed_targets' : {
+            'partitions' : 5,
+        },
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule pybedtools_make_bed_targets:
+    """Generate bed targets"""
+    params: runtime = "01:00:00"
+    input: targets = "{prefix}.bed"
+    output: targets = ["{{prefix}}.{partition}.bed".format(partition=p+1) for p in range(config['pybedtools']['make_bed_targets']['partitions'])]
+    threads: 1
+    conda: "env.yaml"
+    run:
+        regions = pybedtools.BedTool(input.targets)
+        p = min(config['pybedtools']['make_bed_targets']['partitions'], len(regions))
+        print(regions)
+        print(type(regions))
+        ll = [len(x) for x in regions]
+        ix = sorted(range(len(regions)), key=lambda k: len(regions[k]), reverse=True)
+        out = [[regions[i]] for i in ix[0:p]]
+        for j in ix[p:len(ix)]:
+            imin = sorted(range(len(out)), key=lambda k: sum(len(r) for r in out[k]))[0]
+            print(out[imin])
+            out[imin].append(regions[j])
+        for j in range(p):
+            bedout = pybedtools.BedTool("\n".join(str(r) for r in out[j]), from_string=True)
+            bedout.saveas(output.targets[j])
+
+
+localrules: pybedtools_make_bed_targets
