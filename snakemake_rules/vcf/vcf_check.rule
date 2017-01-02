@@ -5,6 +5,7 @@ config_default = {
     'vcf' : {
         'check' : {
             'options' : "",
+            'runtime' : "01:00:00",
         },
     },
 }
@@ -15,7 +16,9 @@ config = config_default
 
 rule vcf_check:
     """vcf: Run vcf check on vcf file"""
-    params: cmd=config['vcf']['cmd']
+    params: cmd=config['vcf']['cmd'],
+            runtime=config['vcf']['check']['runtime']
     input: "{prefix}.vcf"
     output: "{prefix}.check"
+    threads: 1
     shell: "{params.cmd} check {input} > {output}"
