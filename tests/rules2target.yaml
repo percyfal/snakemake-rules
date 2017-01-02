@@ -49,6 +49,8 @@ picard:
   picard_mark_duplicates: s1.sort.dup.dup_metrics
   picard_interval_list_to_bed: ref.bed
   picard_sequence_dictionary_to_interval_list: ref.interval_list
+pybedtools:
+  pybedtools_make_bed_targets: ref.1.bed
 r:
   r_rmarkdown_revealjs: s1.revealjs.html
 samtools:
