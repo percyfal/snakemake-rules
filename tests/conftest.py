@@ -39,7 +39,12 @@ def make_output(rule, prefix="s1"):
         return target
     code, linemake, rulecount = parse(rule)
     m = re.search("@workflow.output\(\s+(?P<output>.*)", code)
-    output = m.group("output")
+    if m is None:
+        # return input case
+        m = re.search("@workflow.input\(\s+(?P<input>.*)", code)
+        output = m.group("input")
+    else:
+        output = m.group("output")
     m = re.search("\"[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})+(?P<ext>[_\/\.a-zA-Z0-9 ]+)\"", output)
     # Regular extension; use first one
     if m:

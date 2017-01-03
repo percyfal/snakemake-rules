@@ -14,7 +14,7 @@ ngs.settings:
 
 angsd:
   nChr: 4
-  
+
 bedtools:
   bfile: targets.bed
 

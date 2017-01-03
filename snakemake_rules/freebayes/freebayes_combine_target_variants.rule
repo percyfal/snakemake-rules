@@ -1,33 +1,9 @@
 # -*- snakemake -*-
 include: "freebayes.settings"
 include: "freebayes_targets.rule"
-include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../htslib/htslib_bgzip.rule"
-include: "../samtools/samtools_tabix_vcf.rule"
-include: "../gatk/gatk.settings"
-
-config_default = {
-    'freebayes' : {
-        'combine_target_variants': {
-            'options' : "--genotypemergeoption UNSORTED",
-            'runtime' : "01:00:00",
-        },
-    },
-}
-
-update_config(config_default, config)
-config = config_default
-
-cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['java_mem']), config['gatk']['cmd'])
+include: "../pybedtools/pybedtools_make_bed_targets.rule"
+include: "../gatk/gatk_combine_variants_targets.rule"
 
 rule freebayes_combine_target_variants:
-    """Combine freebayes target variants using gatk CombineVariants"""
-    params:  cmd = cmd + " -T " + "CombineVariants",
-             options = " ".join(["-R", config['gatk']['ref'],
-                                 config['freebayes']['combine_target_variants']['options']]),
-             runtime = config['freebayes']['combine_target_variants']['runtime']
-    input: vcf = ["{{prefix}}.freebayes.{partition}.vcf.gz".format(partition=p+1) for p in range(config['pybedtools']['make_bed_targets']['partitions'])],
-           tbi = ["{{prefix}}.freebayes.{partition}.vcf.gz.tbi".format(partition=p+1) for p in range(config['pybedtools']['make_bed_targets']['partitions'])]
-    output: vcf = "{prefix}.freebayes.combined.vcf.gz"
-    threads: config['freebayes']['threads']
-    shell:  "command=\"{params.cmd} {params.options} $(echo {input.vcf} | sed -e 's/[^ ][^ ]*/-V &/g') -o {output.vcf}\"; eval \"${{command}}\""
+    input: vcf = "{prefix}.freebayes.combined.vcf.gz"
