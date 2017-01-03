@@ -27,7 +27,7 @@ rule ucsc_wigToBigWig:
     log: "{prefix}.wig.log"
     input: wig = "{prefix}.wig",
            sizes = "chrom.sizes"
-    output: bigwig = "{prefix}.wig.bw"
+    output: bigwig = "{prefix}.bigWig"
     threads: 1
     conda: "envs/ucsc_wigtobigwig.yaml"
     shell: "{params.cmd} {params.options} {input.wig} {input.sizes} {output.bigwig} 2> {log}"

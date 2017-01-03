@@ -1,4 +1,4 @@
-#bedGraph section chr11:72866-76124
+track type=bedGraph name=s1.rg.sort
 chr11	72866	72942	1
 chr11	72947	73023	1
 chr11	75611	75687	1

@@ -23,7 +23,7 @@ rule bedtools_bedToBedGraph:
             runtime=config['bedtools']['genomecov']['runtime'],
     input: infile = "{prefix}.bed",
            chrom = "chrom.sizes"
-    output: bedgraph = "{prefix}.bdg"
+    output: bedgraph = "{prefix}.bedGraph"
     threads: 1
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} -bg -trackline -trackopts name={wildcards.prefix} -i {input.infile} -g {input.chrom} > {output.bedgraph}"

@@ -123,23 +123,32 @@ for f in os.listdir(abspath(join(dirname(__file__), "data"))):
     d[f] = abspath(join(dirname(__file__), "data", f))
 
 copyfiles = ['s1.revealjs.Rmd']
+skipfiles = ['Snakefile']
     
 d.update({
+    "s1.bam" : d['s1.rg.sort.bam'],
+    "s1.bai" : d['s1.rg.sort.bai'],
+    "s1.fofn" : d['bamfiles.fofn'],
+    "s1.bam.fofn" : d['bamfiles.fofn'],
+    "s1.bdg" : d['s1.rg.sort.bedGraph'],
+    "s1.bedGraph" : d['s1.rg.sort.bedGraph'],
+    "s1.bed" : d['s1.rg.sort.bed'],
+    "s1.dict" : d['ref.dict'],
     "s1.gtf" : d['ref-transcripts.gtf'],
     "s1.genePred" : d['ref-transcripts.genePred'],
-    "s1.fasta" : d['chr11.fa'],
-    "s1.fa" : d['chr11.fa'],
+    "s1.fasta" : d['ref.fa'],
+    "s1.fa" : d['ref.fa'],
     "s1.fastq.gz" : d['s1_1.fastq.gz'],
-    "s1.bed" : d['s1.sort.bed'],
-    "s2.sort.bam" : d['s1.sort.bam'],
-    "s2.sort.bam.bai" : d['s1.sort.bam.bai'],
-    "s1.bdg" : d['s1.sort.bedGraph'],
-    "s1.wig" : d['s1.sort.wig'],
-    "s1.bam.fofn" : d['bamfiles.fofn'],
     "s1.fofn" : d['bamfiles.fofn'],
     "s1.g.vcf.fofn" : d['s1.vcf.fofn'],
-    "s2.g.vcf" : d['s1.g.vcf'],
-    "s2.g.vcf.gz" : d['s1.g.vcf.gz'],
+    "s1.interval_list" : d['ref.interval_list'],
+    "s1.sam" : d['s1.rg.sort.sam'],
+    "s1.sort.bam" : d['s1.rg.sort.bam'],
+    "s1.sort.bai" : d['s1.rg.sort.bai'],
+    "s1.sort.bam.bai" : d['s1.rg.sort.bai'],
+    "s1.vcf" : d['s1.rg.sort.vcf'],
+    "s1.vcf.gz" : d['s1.rg.sort.g.vcf.gz'],
+    "s1.wig" : d['s1.rg.sort.wig'],
 })
 
 
@@ -157,6 +166,8 @@ def data(tmpdir_factory):
     p = tmpdir_factory.mktemp('data')
 
     for k, v in d.items():
+        if basename(v) in skipfiles:
+            continue
         if basename(v) in copyfiles:
             shutil.copyfile(v, str(p.join(k)))
         else:

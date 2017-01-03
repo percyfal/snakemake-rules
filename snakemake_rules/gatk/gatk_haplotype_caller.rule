@@ -24,7 +24,7 @@ rule gatk_haplotype_caller:
     params: cmd = cmd + " -T " + config['gatk']['haplotype_caller']['cmd'],
             options = config['gatk']['haplotype_caller']['options'],
             runtime = config['gatk']['haplotype_caller']['runtime'],
-    input: bam = "{prefix}.bam", bai = "{prefix}.bai", ref = config['gatk']['haplotype_caller']['ref'] 
+    input: bam = "{prefix}.bam", bai = "{prefix}.bai", ref = config['gatk']['haplotype_caller']['ref'], refidx = config['gatk']['haplotype_caller']['ref'] + ".fai" 
     output: gvcf = "{prefix}.g.vcf"
     threads: 1
     conda: "env.yaml"

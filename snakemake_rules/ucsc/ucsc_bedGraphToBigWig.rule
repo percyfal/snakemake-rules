@@ -24,9 +24,9 @@ rule ucsc_bedGraphToBigWig:
     params: cmd = config['ucsc']['bedGraphToBigWig']['cmd'],
             options = config['ucsc']['bedGraphToBigWig']['options'],
             runtime = config['ucsc']['bedGraphToBigWig']['runtime']
-    input: wig = "{prefix}.bdg",
+    input: wig = "{prefix}.bedGraph",
            sizes = "chrom.sizes"
-    output: bigwig = "{prefix}.bdg.bw"
+    output: bigwig = "{prefix}.bigWig"
     threads: 1
     conda: "envs/ucsc_bedgraphtobigwig.yaml"
     shell: "{params.cmd} {params.options} {input.wig} {input.sizes} {output.bigwig}"

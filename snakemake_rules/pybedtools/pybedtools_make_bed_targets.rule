@@ -26,14 +26,11 @@ rule pybedtools_make_bed_targets:
     run:
         regions = pybedtools.BedTool(input.targets)
         p = min(config['pybedtools']['make_bed_targets']['partitions'], len(regions))
-        print(regions)
-        print(type(regions))
         ll = [len(x) for x in regions]
         ix = sorted(range(len(regions)), key=lambda k: len(regions[k]), reverse=True)
         out = [[regions[i]] for i in ix[0:p]]
         for j in ix[p:len(ix)]:
             imin = sorted(range(len(out)), key=lambda k: sum(len(r) for r in out[k]))[0]
-            print(out[imin])
             out[imin].append(regions[j])
         for j in range(p):
             bedout = pybedtools.BedTool("\n".join(str(r) for r in out[j]), from_string=True)
