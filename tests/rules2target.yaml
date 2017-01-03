@@ -5,6 +5,8 @@ cutadapt:
   cutadapt_cut_single_end: s1.trimmed.fastq.gz
 emacs:
   emacs_org_to_reveal: s1.revealjs.html
+freebayes:
+  freebayes_targets: s1.freebayes.1.vcf
 jellyfish:
   jellyfish_count: s1_1.fastq.gz.mer_counts.jf
   jellyfish_histo: s1_1.fastq.gz.histo

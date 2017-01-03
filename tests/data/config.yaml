@@ -29,6 +29,8 @@ freebayes:
   freebayes_parallel:
     region_size: 100
     threads: 2
+  merge_targets:
+    options: "--force-samples"
   
 gatk:
   combine_variants:

@@ -132,7 +132,7 @@ d.update({
     "s1.bam.fofn" : d['bamfiles.fofn'],
     "s1.bdg" : d['s1.rg.sort.bedGraph'],
     "s1.bedGraph" : d['s1.rg.sort.bedGraph'],
-    "s1.bed" : d['s1.rg.sort.bed'],
+    "s1.bed" : d['ref.bed'],
     "s1.dict" : d['ref.dict'],
     "s1.gtf" : d['ref-transcripts.gtf'],
     "s1.genePred" : d['ref-transcripts.genePred'],
