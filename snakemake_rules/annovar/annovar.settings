@@ -22,3 +22,10 @@ config_default2 = {
 
 update_config(config_default2, config)
 config = config_default2
+
+
+_annovar_config_rule_default = {
+    'options' : '',
+    'runtime' : config['annovar']['runtime'],
+    'threads' : 1,
+}

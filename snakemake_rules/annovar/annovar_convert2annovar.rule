@@ -1,15 +1,12 @@
 # -*- snakemake -*-
 include: "annovar.settings"
 
-config_default = {
-    'annovar' : {
-        'convert2annovar' : {
-            'options' : "--includeinfo",
-            'vcf_format' : "vcf4",
-            'runtime' : config['annovar']['runtime'],
-        },
-    },
-}
+config_default = {'annovar' :{'convert2annovar' : _annovar_config_rule_default.copy()}}
+config_default['annovar']['convert2annovar'].update(
+    {
+        'options' : "--includeinfo",
+        'vcf_format' : "vcf4",
+    })
 
 update_config(config_default, config)
 config = config_default
@@ -23,5 +20,5 @@ rule annovar_convert2annovar:
             runtime = config['annovar']['convert2annovar']['runtime']
     input: "{prefix}.vcf"
     output: "{prefix}.avinput"
-    threads: 1
+    threads: config['annovar']['convert2annovar']['threads']
     shell: "{params.cmd} {params.options} -format {params.vcf_format} {input} > {output}"

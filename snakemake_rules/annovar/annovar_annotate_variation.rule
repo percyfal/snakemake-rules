@@ -1,14 +1,8 @@
 # -*- snakemake -*-
 include: "annovar.settings"
 
-config_default = {
-    'annovar' : {
-        'annotate_variation' : {
-            'options' : "",
-            'runtime' : config['annovar']['runtime'],
-        },
-    },
-}
+config_default = {'annovar' :{'annotate_variation' : _annovar_config_rule_default.copy()}}
+
 
 update_config(config_default, config)
 config = config_default
@@ -21,5 +15,5 @@ rule annovar_annotate_variation:
             runtime = config['annovar']['annotate_variation']['runtime'],
     #output: os.path.join(config['annovar']['home'], config['annovar']['db'], "{db}")
     output: db="{db}"
-    threads: 1
+    threads: config['annovar']['annotate_variation']['threads']
     shell: "{params.cmd} -buildver {params.buildver} -downdb {wildcards.db} {params.db}"

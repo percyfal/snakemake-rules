@@ -1,14 +1,8 @@
 # -*- snakemake -*-
 include: "annovar.settings"
 
-config_default = {
-    'annovar' : {
-        'table_annovar' : {
-            'options' : "--otherinfo",
-            'runtime' : config['annovar']['runtime'],
-        },
-    },
-}
+config_default = {'annovar' :{'table_annovar' : _annovar_config_rule_default.copy()}}
+config_default['annovar']['table_annovar'].update({'options' : "--otherinfo"})
 
 update_config(config_default, config)
 config = config_default
@@ -23,6 +17,6 @@ rule annovar_table_annovar:
             runtime=config['annovar']['table_annovar']['runtime'],
     input: "{prefix}.avinput"
     output: "{prefix}.avinput.hg19_multianno.txt"
-    threads: 1
+    threads: config['annovar']['table_annovar']['threads']
     shell: "{params.cmd} {input} {params.db} {params.options} --buildver hg19"
 
