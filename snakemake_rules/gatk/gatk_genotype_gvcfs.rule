@@ -1,18 +1,7 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
 
-config_default = {
-    'gatk' : {
-        'genotype_gvcfs' : {
-            'cmd' : 'GenotypeGVCFs',
-            'ref' : config['gatk']['ref'],
-            'threads' : config['gatk']['threads'],
-            'options' : '',
-            'java_mem' : config['gatk']['java_mem'],
-            'runtime' : "10-00:00:00",
-        },
-    },
-}
+config_default = {'gatk' : {'genotype_gvcfs' :  _config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
@@ -21,7 +10,7 @@ cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['genotype
 
 rule gatk_genotype_gvcfs:
     """Run GATK GenotypeGVCFs"""
-    params: cmd = cmd + " -T " + config['gatk']['genotype_gvcfs']['cmd'],
+    params: cmd = cmd + " -T " + GENOTYPE_GVCFS,
             options = config['gatk']['genotype_gvcfs']['options'],
             runtime = config['gatk']['genotype_gvcfs']['runtime']
     input: fofn = "{prefix}.g.vcf.fofn", ref = config['gatk']['genotype_gvcfs']['ref']

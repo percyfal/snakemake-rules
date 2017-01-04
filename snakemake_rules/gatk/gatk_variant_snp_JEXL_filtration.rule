@@ -2,18 +2,14 @@
 include: 'gatk.settings'
 include: 'gatk_select_snp_variants.rule'
 
-config_default = {
-    'gatk' : {
-        'variant_snp_JEXL_filtration' : {
-            'cmd' : 'VariantFiltration',
-            'ref' : config['gatk']['ref'],
-            'expressions' : ["QD < 2.0", "MQ < 40.0", "FS > 60.0",
+config_default = {'gatk' :{'variant_snp_JEXL_filtration' : _config_rule_default.copy()}}
+config_default['gatk']['variant_snp_JEXL_filtration'].update(
+    {
+        'expressions': ["QD < 2.0", "MQ < 40.0", "FS > 60.0",
                              "HaplotypeScore > 13.0", "MQRankSum < -12.5",
                              "ReadPosRankSum < -8.0"],
-            'runtime' : config['gatk']['runtime'],
-        },
-    },
-}
+    })
+
 
 update_config(config_default, config)
 config = config_default
@@ -24,7 +20,7 @@ rule gatk_variant_snp_JEXL_filtration:
 
     Perform hard filtering using JEXL expressions.
     """
-    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['variant_snp_JEXL_filtration']['cmd'],
+    params: cmd = config['gatk']['cmd'] + " -T " + VARIANT_FILTRATION,
             options = " ".join([
                 " ".join(["--filterName GATKStandard{e} --filterExpression \"{exp}\"".format(e=exp.split()[0], exp=exp) \
                                 for exp in config['gatk']['variant_snp_JEXL_filtration']['expressions']])
@@ -33,7 +29,7 @@ rule gatk_variant_snp_JEXL_filtration:
             runtime = config['gatk']['variant_snp_JEXL_filtration']['runtime']
     input: vcf = "{prefix}.vcf", ref = config['gatk']['variant_snp_JEXL_filtration']['ref']
     output: vcf = "{prefix}.filteredSNP.vcf"
-    threads: 1
+    threads: config['gatk']['variant_snp_JEXL_filtration']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.quote}{params.options}{params.quote} -R {input.ref} --variant {input.vcf} --out {output.vcf}"
 

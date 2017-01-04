@@ -1,21 +1,16 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
 
-config_default = {
-    'gatk' : {
-        'select_variants' : {
-            'cmd' : 'SelectVariants',
-            'ref' : config['gatk']['ref'],
-            'options' : " ".join(["--selectTypeToInclude SNP",
-                                  "--selectTypeToInclude", "INDEL",
-                                  "--selectTypeToInclude", "MIXED",
-                                  "--selectTypeToInclude", "MNP",
-                                  "--selectTypeToInclude", "SYMBOLIC",
-                                  "--selectTypeToInclude", "NO_VARIATION"]),
-            'runtime' : config['gatk']['runtime'],
-        },
-    },
-}
+config_default = {'gatk':{'select_variants' :_config_rule_default.copy()}}
+config_default['gatk']['select_variants'].update(
+    {
+        'options' : " ".join(["--selectTypeToInclude SNP",
+                              "--selectTypeToInclude", "INDEL",
+                              "--selectTypeToInclude", "MIXED",
+                              "--selectTypeToInclude", "MNP",
+                              "--selectTypeToInclude", "SYMBOLIC",
+                              "--selectTypeToInclude", "NO_VARIATION"]),
+    })
 
 update_config(config_default, config)
 config = config_default
@@ -23,13 +18,13 @@ config = config_default
 
 rule gatk_select_variants:
     """Run GATK SelectVariants to select variants"""
-    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['select_variants']['cmd'],
+    params: cmd = config['gatk']['cmd'] + " -T " + SELECT_VARIANTS,
             options = " ".join(["-R", config['gatk']['select_variants']['ref'],
                                 config['gatk']['select_variants']['options']]),
             runtime = config['gatk']['select_variants']['runtime']
     input: "{prefix}.vcf"
     output: "{prefix}.all.vcf"
-    threads: 1
+    threads: config['gatk']['select_variants']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} --variant {input} --out {output}"
 

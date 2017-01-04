@@ -1,20 +1,16 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
 
-config_default = {
-    'gatk' : {
-        'select_indel_variants' : {
-            'cmd' : 'SelectVariants',
-            'ref' : config['gatk']['ref'],
-            'options' : " ".join(["--selectTypeToInclude", "INDEL",
-                                  "--selectTypeToInclude", "MIXED",
-                                  "--selectTypeToInclude", "MNP",
-                                  "--selectTypeToInclude", "SYMBOLIC",
-                                  "--selectTypeToInclude", "NO_VARIATION"]),
-            'runtime' : config['gatk']['runtime'],
-        },
-    },
-}
+config_default = {'gatk' :{'select_indel_variants' : _config_rule_default.copy()}}
+config_default['gatk']['select_indel_variants'].update(
+    {
+        'options' : " ".join(["--selectTypeToInclude", "INDEL",
+                              "--selectTypeToInclude", "MIXED",
+                              "--selectTypeToInclude", "MNP",
+                              "--selectTypeToInclude", "SYMBOLIC",
+                              "--selectTypeToInclude", "NO_VARIATION"]),
+    })
+
 
 update_config(config_default, config)
 config = config_default
@@ -22,12 +18,12 @@ config = config_default
 
 rule gatk_select_indel_variants:
     """Run GATK SelectVariants to select INDELs"""
-    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['select_indel_variants']['cmd'],
+    params: cmd = config['gatk']['cmd'] + " -T " + SELECT_VARIANTS,
             options =  config['gatk']['select_indel_variants']['options'],
             runtime =  config['gatk']['select_indel_variants']['runtime']
     input: vcf = "{prefix}.vcf", ref = config['gatk']['select_indel_variants']['ref']
     output: vcf = "{prefix}.indel.vcf"
-    threads: 1
+    threads: config['gatk']['select_indel_variants']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} -R {input.ref} --variant {input.vcf} --out {output.vcf}"
 

@@ -2,20 +2,14 @@
 include: 'gatk.settings'
 include: '../picard/picard_build_bam_index.rule'
 
-config_default = {
-    'gatk' : {
-        'base_recalibrator' : {
-            'cmd' : 'BaseRecalibrator',
-            'ref' : config['gatk']['ref'],
-            'options' : " ".join([
+config_default = {'gatk' : {'base_recalibrator' : _config_rule_default.copy()}}
+config_default['gatk']['base_recalibrator'].update({
+                'options' : " ".join([
                 "-L {target}".format(target=config['gatk']['target_regions']) if not config['gatk']['target_regions'] == "" else "",
                 "-knownSites {known}".format(known=config['gatk']['known_sites'] if not config['gatk']['known_sites'] == "" else ""),
             ]),
-            'runtime' : config['gatk']['runtime'],
-            'threads' : config['gatk']['threads'],
-        },
-    },
-}
+})
+
 
 update_config(config_default, config)
 config = config_default
@@ -23,7 +17,7 @@ config = config_default
 
 rule gatk_base_recalibrator:
     """Run GATK BaseRecalibrator"""
-    params: cmd = config['gatk']['cmd'] + " -T " + config['gatk']['base_recalibrator']['cmd'],
+    params: cmd = config['gatk']['cmd'] + " -T " + BASE_RECALIBRATOR,
             options = " ".join(["-R", config['gatk']['base_recalibrator']['ref'],
             config['gatk']['base_recalibrator']['options']]),
             runtime = config['gatk']['base_recalibrator']['runtime']

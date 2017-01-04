@@ -4,14 +4,9 @@ include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../htslib/htslib_bgzip.rule"
 include: "../samtools/samtools_tabix_vcf.rule"
 
-config_default = {
-    'gatk' : {
-        'combine_target_variants': {
-            'options' : "--genotypemergeoption UNSORTED",
-            'runtime' : "01:00:00",
-        },
-    },
-}
+config_default = {'gatk' :{'combine_target_variants': _config_rule_default.copy()}}
+config_default['gatk']['combine_target_variants'].update({'options' : "--genotypemergeoption UNSORTED"})
+
 
 update_config(config_default, config)
 config = config_default
@@ -20,12 +15,12 @@ cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['java_mem
 
 rule gatk_combine_target_variants:
     """Combine target variants using CombineVariants"""
-    params:  cmd = cmd + " -T " + "CombineVariants",
+    params:  cmd = cmd + " -T " + COMBINE_VARIANTS,
              options = " ".join(["-R", config['gatk']['ref'],
                                  config['gatk']['combine_target_variants']['options']]),
              runtime = config['gatk']['combine_target_variants']['runtime']
     input: vcf = ["{{prefix}}.{{application}}.{partition}.vcf.gz".format(partition=p+1) for p in range(config['pybedtools']['make_bed_targets']['partitions'])],
            tbi = ["{{prefix}}.{{application}}.{partition}.vcf.gz.tbi".format(partition=p+1) for p in range(config['pybedtools']['make_bed_targets']['partitions'])]
     output: vcf = "{prefix}.{application}.combined.vcf.gz"
-    threads: 1
+    threads: config['gatk']['combine_target_variants']['threads']
     shell:  "command=\"{params.cmd} {params.options} $(echo {input.vcf} | sed -e 's/[^ ][^ ]*/-V &/g') -o {output.vcf}\"; eval \"${{command}}\""
