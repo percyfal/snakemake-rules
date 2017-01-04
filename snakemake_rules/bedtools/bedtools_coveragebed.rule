@@ -17,6 +17,6 @@ rule bedtools_coveragebed_bam:
             runtime = config['bedtools']['coveragebed']['runtime'],
     input: a = "{prefix}.bam", b = config['bedtools']['bfile']
     output: "{prefix}.coverage"
-    threads: 1
+    threads: config['bedtools']['coveragebed']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} -abam {input.a} -b {input.b} > {output}"

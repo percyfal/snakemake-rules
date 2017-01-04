@@ -14,7 +14,7 @@ rule bedtools_intersectbed_make_region_baits:
             runtime = config['bedtools']['intersectbed']['runtime'],
     input: a="{prefix}.region_{gene}.bed", b=config['bedtools']['sequence_capture']['bait_regions']
     output: "{prefix}.region_{gene}.baits.bed"
-    threads: 1
+    threads: config['bedtools']['intersectbed']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} -a {input.a} -b {input.b} > {output}"
 
@@ -25,7 +25,7 @@ rule bedtools_intersectbed_make_region_targets:
             runtime = config['bedtools']['intersectbed']['runtime'],
     input: a="{prefix}.region_{gene}.bed", b=config['bedtools']['sequence_capture']['target_regions']
     output: "{prefix}.region_{gene}.targets.bed"
-    threads: 1
+    threads: config['bedtools']['intersectbed']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} -a {input.a} -b {input.b} > {output}"
 
