@@ -2,7 +2,7 @@
 include: "ucsc.settings"
 include: "ucsc_fetchChromSizes.rule"
 
-config_default['ucsc']['bedGraphToBigWig'] = _ucsc_config_rule_default.copy()
+config_default = {'ucsc': {'bedGraphToBigWig' : _ucsc_config_rule_default.copy()}}
 config_default['ucsc']['bedGraphToBigWig'].update({'cmd' : 'bedGraphToBigWig'})
 
 update_config(config_default, config)

@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: "ucsc.settings"
 
-config_default['ucsc']['gtfToGenePred'] = _ucsc_config_rule_default.copy()
+config_default = {'ucsc': {'gtfToGenePred' : _ucsc_config_rule_default.copy()}}
 config_default['ucsc']['gtfToGenePred'].update(
     {
         'cmd' : 'gtfToGenePred',
