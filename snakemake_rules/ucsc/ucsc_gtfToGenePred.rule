@@ -1,15 +1,13 @@
 # -*- snakemake -*-
 include: "ucsc.settings"
 
-config_default = {
-    'ucsc' : {
-        'gtfToGenePred' : {
-            'cmd' : 'gtfToGenePred',
-            'options' : '-genePredExt -ignoreGroupsWithoutExons',
-            'runtime' : config['ucsc']['runtime'],
-        },
-    },
-}
+config_default['ucsc']['gtfToGenePred'] = _config_rule_default.copy()
+config_default['ucsc']['gtfToGenePred'].update(
+    {
+        'cmd' : 'gtfToGenePred',
+        'options' : '-genePredExt -ignoreGroupsWithoutExons',
+     })
+
 
 update_config(config_default, config)
 config = config_default

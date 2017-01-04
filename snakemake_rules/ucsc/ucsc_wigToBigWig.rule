@@ -2,15 +2,12 @@
 include: "ucsc.settings"
 include: "ucsc_fetchChromSizes.rule"
 
-config_default = {
-    'ucsc' : { 
-        'wigToBigWig' : {
-            'cmd' : 'wigToBigWig',
-            'options' : '-clip',
-            'runtime' : config['ucsc']['runtime'],
-        },
-    },
-}
+config_default['ucsc']['wigToBigWig'] = _config_rule_default.copy()
+config_default['ucsc']['wigToBigWig'].update(
+    {
+        'cmd' : 'wigToBigWig',
+        'options' : '-clip',
+    })
 
 update_config(config_default, config)
 config = config_default

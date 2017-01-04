@@ -14,3 +14,5 @@ rule ucsc_genepred_to_refFlat:
     output: refflat = "{prefix}.refFlat"
     threads: 1
     shell: "awk '{{printf(\"%s\\t%s\\n\", $1, $0)}}'  {input.genepred} > {output.refflat}"
+
+localrules: ucsc_genepred_to_refFlat           

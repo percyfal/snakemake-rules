@@ -2,15 +2,8 @@
 include: "ucsc.settings"
 include: "ucsc_fetchChromSizes.rule"
 
-config_default = {
-    'ucsc' : { 
-        'bedGraphToBigWig' : {
-            'cmd' : 'bedGraphToBigWig',
-            'options' : '',
-            'runtime' : config['ucsc']['runtime'],
-        },
-    },
-}
+config_default['ucsc']['bedGraphToBigWig'] = _config_rule_default.copy()
+config_default['ucsc']['bedGraphToBigWig'].update({'cmd' : 'bedGraphToBigWig'})
 
 update_config(config_default, config)
 config = config_default
@@ -27,6 +20,6 @@ rule ucsc_bedGraphToBigWig:
     input: wig = "{prefix}.bedGraph",
            sizes = "chrom.sizes"
     output: bigwig = "{prefix}.bigWig"
-    threads: 1
+    threads: config['ucsc']['bedGraphToBigWig']['threads']
     conda: "envs/ucsc_bedgraphtobigwig.yaml"
     shell: "{params.cmd} {params.options} {input.wig} {input.sizes} {output.bigwig}"
