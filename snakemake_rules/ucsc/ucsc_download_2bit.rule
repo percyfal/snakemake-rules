@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: "ucsc.settings"
 
-config_default['ucsc']['download_2bit'] = _config_rule_default.copy()
+config_default['ucsc']['download_2bit'] = _ucsc_config_rule_default.copy()
 update_config(config_default, config)
 config = config_default
 

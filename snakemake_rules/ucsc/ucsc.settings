@@ -14,7 +14,7 @@ config_default = {
 update_config(config_default, config)
 config = config_default
 
-_config_rule_default =  {
+_ucsc_config_rule_default =  {
     'options' : '',
     'runtime' : config['ucsc']['runtime'],
     'threads' : 1

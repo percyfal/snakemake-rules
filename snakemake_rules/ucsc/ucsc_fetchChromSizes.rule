@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: "ucsc.settings"
 
-config_default['ucsc']['fetchChromSizes'] = _config_rule_default.copy()
+config_default['ucsc']['fetchChromSizes'] = _ucsc_config_rule_default.copy()
 config_default['ucsc']['fetchChromSizes'].update(
     {'cmd' : 'fetchChromSizes',
      'options' : 'hg19',
