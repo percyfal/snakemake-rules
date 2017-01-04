@@ -1,18 +1,13 @@
 # -*- snakemake -*-
 include: 'angsd.settings'
 
-config_default = {
-    'angsd' : {
-        'domaf' : {
-            'options' : config['angsd']['options'],
-            'domaf' : 1,
-            'gl' : config['angsd']['gl'],
-	    'majorminor' : config['angsd']['majorminor'],
-            'threads' : config['angsd']['threads'],
-            'runtime' : config['angsd']['runtime'],
-            },
-    },
-}
+config_default = {'angsd' :{'domaf' : _angsd_config_rule_default.copy()}}
+config_default['angsd']['domaf'].update(
+    {
+        'domaf' : 1,
+        'gl' : config['angsd']['gl'],
+	'majorminor' : config['angsd']['majorminor'],
+    })
 
 update_config(config_default, config)
 config = config_default

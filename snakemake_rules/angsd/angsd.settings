@@ -17,3 +17,10 @@ config_default = {
 
 update_config(config_default, config)
 config = config_default
+
+
+_angsd_config_rule_default = {
+    'options' : '',
+    'runtime' : config['angsd']['runtime'],
+    'threads' : 1,
+}

@@ -1,17 +1,12 @@
 # -*- snakemake -*-
 include: 'angsd.settings'
 
-config_default = {
-    'angsd' : {
-        'dosaf' : {
-            'options' : config['angsd']['options'],
-            'dosaf' : 1,
-            'gl' : config['angsd']['gl'],
-            'threads' : config['angsd']['threads'],
-            'runtime' : config['angsd']['runtime'],
-            },
-    },
-}
+config_default = {'angsd' :{'dosaf' : _angsd_config_rule_default.copy()}}
+config_default['angsd']['dosaf'].update(
+    {
+        'dosaf' : 1,
+        'gl' : config['angsd']['gl'],
+    })
 
 update_config(config_default, config)
 config = config_default
@@ -26,7 +21,7 @@ rule angsd_dosaf:
                                 '-GL', str(config['angsd']['dosaf']['gl']),
                                 config['angsd']['dosaf']['options']]),
             runtime = config['angsd']['dosaf']['runtime']
-    threads: 1
+    threads: config['angsd']['dosaf']['threads']
     input: fofn = "{prefix}.fofn", anc = config['angsd']['anc']
     output: pos = "{prefix}.saf.pos.gz", saf = "{prefix}.saf.gz", idx = "{prefix}.saf.idx"
     conda: "env.yaml"

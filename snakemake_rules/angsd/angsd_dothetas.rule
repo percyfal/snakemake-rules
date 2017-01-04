@@ -2,19 +2,15 @@
 include: 'angsd.settings'
 include: 'angsd_realsfs.rule'
 
-config_default = {
-    'angsd' : {
-        'dothetas' : {
-            'options' : config['angsd']['options'],
-            'dothetas' : 1,
-            'gl' : config['angsd']['gl'],
-	    'majorminor' : config['angsd']['majorminor'],
-            'threads' : config['angsd']['threads'],
-            'dosaf' : config['angsd']['dosaf']['dosaf'],
-            'runtime' : config['angsd']['runtime'],
-            },
-    },
-}
+config_default = {'angsd' :{'dothetas' : _angsd_config_rule_default.copy()}}
+config_default['angsd']['dothetas'].update(
+    {
+        'dothetas' : 1,
+        'gl' : config['angsd']['gl'],
+	'majorminor' : config['angsd']['majorminor'],
+        'dosaf' : config['angsd']['dosaf']['dosaf'],
+    })
+
 
 update_config(config_default, config)
 config = config_default

@@ -2,15 +2,7 @@
 include: 'angsd.settings'
 include: 'angsd_dosaf.rule'
 
-config_default = {
-    'angsd' : {
-        'realsfs' : {
-            'options' : config['angsd']['options'],
-            'threads' : config['angsd']['threads'],
-            'runtime' : config['angsd']['runtime'],
-            },
-    },
-}
+config_default = {'angsd' :{'realsfs' : _angsd_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
