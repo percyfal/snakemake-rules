@@ -1,14 +1,7 @@
 # -*- snakemake -*-
 include: "bamtools.settings"
 
-config_default = {
-    'bamtools' : {
-        'filter_script' : {
-            'options' : "",
-            'runtime' : config['bamtools']['runtime'],
-        },
-    },
-}
+config_default = {'bamtools' :{'filter_script' : _bamtools_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
@@ -23,7 +16,7 @@ rule bamtools_filter_script:
     input: script = "{prefix}.script" if config['bamtools']['filter']['regions'] else [], bam = "{prefix}.bam"
     output: bam = "{prefix}.filter.bam"
     log: "{prefix}.filter.log"
-    threads: 1
+    threads: config['bamtools']['filter']['threads']
     conda: "env.yaml"
     shell:
         "{params.cmd} filter -in {input.bam} -out {output.bam} {params.options} {params.script} {input.script} > {log}"
