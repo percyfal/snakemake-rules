@@ -15,6 +15,6 @@ rule ucsc_genePredToBed:
             runtime = config['ucsc']['genePredToBed']['runtime']
     input: genepred = "{prefix}.genePred"
     output: bed = "{prefix}.bed"
-    threads: 1
+    threads: config['ucsc']['genePredToBed']['threads']
     conda: "envs/ucsc_genepredtobed.yaml"
     shell: "{params.cmd} {params.options} {input.genepred} {output.bed}"

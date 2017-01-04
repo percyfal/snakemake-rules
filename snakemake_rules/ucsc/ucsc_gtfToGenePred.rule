@@ -20,7 +20,7 @@ rule ucsc_gtfToGenepred:
             runtime = config['ucsc']['gtfToGenePred']['runtime']
     input: gtf = "{prefix}.gtf"
     output: genepred = "{prefix}.genePred"
-    threads: 1
+    threads: config['ucsc']['gtfToGenePred']['threads']
     conda:
         join("envs", "ucsc_gtftogenepred.yaml")
     shell: "{params.cmd} {params.options} {input.gtf} {output.genepred}"
