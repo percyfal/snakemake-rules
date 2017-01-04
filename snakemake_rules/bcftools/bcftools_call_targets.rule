@@ -1,18 +1,15 @@
 # -*- snakemake -*-
 include: "bcftools.settings"
 include: "../pybedtools/pybedtools_make_bed_targets.rule"
-include: "../samtools/samtools.settings"
 
-config_default = {
-    'bcftools' : {
-        'call_targets' : {
-            'options' : '-vmO z',
-	    'mpileup_options' : "-ug",
-            'runtime' : '100:00:00',
-            'threads' : 1,
-        },
-    },
-}
+config_default = {'bcftools' :{'call_targets' : _bcftools_config_rule_default.copy()}}
+config_default['bcftools']['call_targets'].update(
+    {
+        'options' : '-vmO z',
+        'runtime' : '100:00:00',
+        'mpileup_options' : "-ug",
+    })
+
 
 update_config(config_default, config)
 config = config_default
@@ -23,7 +20,7 @@ rule bcftools_call_targets:
             options = config['bcftools']['call_targets']['options'],
             mpileup_options = config['bcftools']['call_targets']['mpileup_options'],
             runtime = config['bcftools']['call_targets']['runtime']
-    input: fofn = "{prefix}.bam.fofn", ref = config['bcftools']['ref'], targets = "{prefix}.{targets}.bed"
+    input: fofn = "{prefix}.fofn", ref = config['bcftools']['ref'], targets = "{prefix}.{targets}.bed"
     output: vcf = "{prefix}.bcftools.{targets}.vcf.gz"
     threads: config['bcftools']['call_targets']['threads']
     conda: "env.yaml"

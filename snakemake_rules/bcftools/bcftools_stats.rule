@@ -2,16 +2,8 @@
 include: "bcftools.settings"
 include: "../htslib/htslib_bgzip.rule"
 
-config_default = {
-    'bcftools' : {
-        'stats' : {
-            'options' : '',
-            'B' : [],
-            'threads' : 1,
-            'runtime' : '01:00:00',
-        },
-    },
-}
+config_default = {'bcftools' :{'stats' : _bcftools_config_rule_default.copy()}}
+config_default['bcftools']['stats'].update({'B' : []})
 
 update_config(config_default, config)
 config = config_default
