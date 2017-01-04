@@ -36,17 +36,15 @@ def _picard_merge_sam_input_fn(wildcards):
         input. The function should return a list of bam files to
         be merged""")
 
+config_default = {'picard' :{'merge_sam' : _picard_config_rule_default.copy()}}
+config_default['picard']['merge_sam'].update(
+    {
+        'inputfun' : _picard_merge_sam_input_fn,
+        'options' : "CREATE_INDEX=true",
+        'runtime' : '24:00:00',
+        'source_suffix' : ".bam",
+    })
 
-config_default = {
-    'picard' : {
-        'merge_sam' : {
-            'source_suffix' : ".bam",
-            'options' : "CREATE_INDEX=true",
-            'inputfun' : _picard_merge_sam_input_fn,
-            'runtime' : '24:00:00', 
-        },
-    },
-}
 
 update_config(config_default, config)
 config = config_default
@@ -64,7 +62,7 @@ rule picard_merge_sam:
     input: config['picard']['merge_sam']['inputfun']
     output: merge="{prefix}.merge.bam"
     conda: "env.yaml"
-    threads: 1
+    threads: config['picard']['merge_sam']['threads']
     run:
       if (len(input) > 1):
           inputstr = " ".join(["INPUT={}".format(x) for x in input])
@@ -76,4 +74,4 @@ rule picard_merge_sam:
                                                                            cmd=SORT_SAM,
                                                                            infile=input[0], out=output.merge,
                                                                            opt=config['picard']['options'],
-                                                                           sortopt=config['picard']['sort_sam_options']))
+                                                                           sortopt=config['picard']['sort_sam']['options']))

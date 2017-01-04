@@ -45,3 +45,10 @@ config_default2 = {
 
 update_config(config_default2, config)
 config = config_default2
+
+
+_picard_config_rule_default = {
+    'options' : '',
+    'runtime' : config['picard']['runtime'],
+    'threads' : 1,
+}

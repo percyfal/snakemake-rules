@@ -30,15 +30,12 @@ def _add_rg(wildcards):
         to the function. The function should take a file name as its input parameter.""")
 
 
-config_default = {
-    'picard' : {
-        'add_or_replace_read_groups' : {
-            'options' : "sort_order=coordinate create_index=true",
-            'rgfun' : _add_rg,
-            'runtime' : config['picard']['runtime'],
-        },
-    },
-}
+config_default = {'picard' :{'add_or_replace_read_groups' : _picard_config_rule_default.copy()}}
+config_default['picard']['add_or_replace_read_groups'].update(
+    {
+        'options' : "sort_order=coordinate create_index=true",
+        'rgfun' : _add_rg,
+    })
 
 update_config(config_default, config)
 config = config_default
@@ -52,6 +49,6 @@ rule picard_add_or_replace_read_groups:
     input: bam = "{prefix}.bam"
     output: bam = "{prefix}.rg.bam"
     conda: "env.yaml"
-    threads: 1
+    threads: config['picard']['add_or_replace_read_groups']['threads']
     run:
         shell("{params.cmd} INPUT={input.bam} OUTPUT={output.bam} {params.custom_options} " + config['picard']['add_or_replace_read_groups']['rgfun'](wildcards))

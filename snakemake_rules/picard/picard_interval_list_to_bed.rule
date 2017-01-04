@@ -1,11 +1,13 @@
 # -*- snakemake -*-
 include: "picard.settings"
 
+config_default = {'picard' :{'interval_list_to_bed' : _picard_config_rule_default.copy()}}
+
 rule picard_interval_list_to_bed:
     """Picard: convert interval list to bed"""
     params: cmd = config['picard']['cmd'] + INTERVAL_LIST_TO_BED,
-            options = config['picard']['options'],
-            runtime = "00:10:00"
+            options = config['picard']['interval_list_to_bed']['options'],
+            runtime = config['picard']['interval_list_to_bed']['runtime'],
     input: interval_list = "{prefix}.interval_list"
     output: bed = "{prefix}.bed"
     conda: "env.yaml"

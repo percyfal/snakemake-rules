@@ -2,15 +2,8 @@
 include: "picard.settings"
 include: "picard_build_bam_index.rule"
 
-config_default = {
-    'picard' : {
-        'collect_alignment_summary_metrics' : {
-            'targets' : [],
-            'options' : config['picard']['options'],
-            'runtime' : config['picard']['runtime'],
-        },
-    },
-}
+config_default = {'picard' :{'collect_alignment_summary_metrics' : _picard_config_rule_default.copy()}}
+config_default['picard']['collect_alignment_summary_metrics'].update({'targets' : []})
 
 update_config(config_default, config)
 config = config_default
@@ -25,6 +18,6 @@ rule picard_collect_alignment_summary_metrics:
     input: bam = "{prefix}.bam", bai = "{prefix}.bai", ref = config['picard']['ref']
     output: metrics = "{prefix}.align_metrics"
     conda: "env.yaml"
-    threads: 1
+    threads: config['picard']['collect_alignment_summary_metrics']['threads']
     shell: "{params.cmd} {params.options} I={input.bam} O={output.metrics} R={input.ref}"
 

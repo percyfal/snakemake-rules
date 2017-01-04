@@ -1,17 +1,14 @@
 # -*- snakemake -*-
 include: "picard.settings"
 
-config_default = {
-    'picard' : {
-        'calculate_region_hs_metrics' : {
-            'targets' : [],
-            'bait_regions' : config['ngs.settings']['sequence_capture']['bait_regions'],
-            'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
-            'options' : config['picard']['options'],
-            'runtime' : "01:00:00",
-        },
-    },
-}
+config_default = {'picard' :{'calculate_region_hs_metrics' : _picard_config_rule_default.copy()}}
+config_default['picard']['calculate_region_hs_metrics'].update(
+    {
+        'targets' : [],
+        'bait_regions' : config['ngs.settings']['sequence_capture']['bait_regions'],
+        'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
+    })
+
 
 update_config(config_default, config)
 config = config_default
@@ -25,6 +22,6 @@ rule picard_calculate_region_hs_metrics:
     input: bam = "{prefix}.region_{gene}.{sfx}.bam", targets="{prefix}.region_{gene}.targets.dict", baits="{prefix}.region_{gene}.baits.dict", ref=config['picard']['ref']
     output: metrics = "{prefix}.region_{gene}.{sfx}.hs_metrics"
     conda: "env.yaml"
-    threads: 1
+    threads: config['picard']['calculate_region_hs_metrics']['threads']
     shell: "{params.cmd} {params.options} TI={input.targets} BI={input.baits} I={input.bam} O={output.metrics} R={input.ref}"
 

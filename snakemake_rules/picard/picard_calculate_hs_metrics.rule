@@ -2,17 +2,14 @@
 include: "picard.settings"
 include: "picard_build_bam_index.rule"
 
-config_default = {
-    'picard' : {
-        'calculate_hs_metrics' : {
-            'targets' : [],
-            'bait_regions' : config['ngs.settings']['sequence_capture']['bait_regions'],
-            'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
-            'options' : config['picard']['options'],
-            'runtime' : "01:00:00",
-        },
-    },
-}
+config_default = {'picard' :{'calculate_hs_metrics' : _picard_config_rule_default.copy()}}
+config_default['picard']['calculate_hs_metrics'].update(
+    {
+        'targets' : [],
+        'bait_regions' : config['ngs.settings']['sequence_capture']['bait_regions'],
+        'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
+    })
+
 
 update_config(config_default, config)
 config = config_default
@@ -30,6 +27,6 @@ rule picard_calculate_hs_metrics:
            target_regions = config['picard']['calculate_hs_metrics']['target_regions']
     output: metrics = "{prefix}.hs_metrics"
     conda: "env.yaml"
-    threads: 1
+    threads: config['picard']['calculate_hs_metrics']['threads']
     shell: "{params.cmd} {params.options} TI={input.target_regions} BI={input.bait_regions} I={input.bam} O={output.metrics} R={input.ref}"
 
