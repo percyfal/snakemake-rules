@@ -1,14 +1,7 @@
 # -*- snakemake -*-
 include: "samtools.settings"
 
-config_default = {
-    'samtools' : {
-        'index' : {
-            'options' : '',
-            'runtime' : '01:00:00',
-        },
-    },
-}
+config_default = {'samtools' :{'index' : _samtools_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
@@ -21,6 +14,6 @@ rule samtools_index:
             runtime = config['samtools']['index']['runtime']
     input: "{prefix}.bam"
     output: "{prefix}.bai"
-    threads: 1
+    threads: config['samtools']['index']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} index {input} {output}"

@@ -1,16 +1,8 @@
 # -*- snakemake -*-
 include: "samtools.settings"
 
-config_default = {
-    'samtools' : {
-        'tabix_vcf' : {
-            'options' : '',
-	    'cmd' : 'tabix',
-            'runtime' : '01:00:00',
-            'threads' : 1,
-        },
-    },
-}
+config_default = {'samtools' :{'tabix_vcf' : _samtools_config_rule_default.copy()}}
+config_default['samtools']['tabix_vcf'].update({'cmd' : 'tabix'})
 
 update_config(config_default, config)
 config = config_default
