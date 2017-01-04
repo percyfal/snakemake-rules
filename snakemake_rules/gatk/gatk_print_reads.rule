@@ -2,7 +2,7 @@
 include: 'gatk.settings'
 include: 'gatk_base_recalibrator.rule'
 
-config_default = {'gatk' : {'print_reads' : _config_rule_default.copy()}}
+config_default = {'gatk' : {'print_reads' : _gatk_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default

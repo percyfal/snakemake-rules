@@ -67,7 +67,7 @@ config_default3 = {
 update_config(config_default3, config)
 config = config_default3
 
-_config_rule_default = {
+_gatk_config_rule_default = {
     'java_mem' : config['gatk']['java_mem'],
     'options' : '',
     'ref' : config['gatk']['ref'],

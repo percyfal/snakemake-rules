@@ -2,7 +2,7 @@
 include: 'gatk.settings'
 include: '../picard/picard_build_bam_index.rule'
 
-config_default = {'gatk': {'haplotype_caller' : _config_rule_default.copy()}}
+config_default = {'gatk': {'haplotype_caller' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['haplotype_caller'].update({'options' : '-ERC GVCF'})
 
 update_config(config_default, config)

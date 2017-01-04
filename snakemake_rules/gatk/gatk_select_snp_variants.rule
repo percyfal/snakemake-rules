@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
 
-config_default = {'gatk': {'select_snp_variants': _config_rule_default.copy()}}
+config_default = {'gatk': {'select_snp_variants': _gatk_config_rule_default.copy()}}
 config_default['gatk']['select_snp_variants'].update({'options' : "--selectTypeToInclude SNP"})
 
 update_config(config_default, config)

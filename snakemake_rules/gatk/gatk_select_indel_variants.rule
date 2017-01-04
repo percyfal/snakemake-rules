@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
 
-config_default = {'gatk' :{'select_indel_variants' : _config_rule_default.copy()}}
+config_default = {'gatk' :{'select_indel_variants' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['select_indel_variants'].update(
     {
         'options' : " ".join(["--selectTypeToInclude", "INDEL",

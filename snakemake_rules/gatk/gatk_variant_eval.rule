@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
 
-config_default = {'gatk' :{'variant_eval': _config_rule_default.copy()}}
+config_default = {'gatk' :{'variant_eval': _gatk_config_rule_default.copy()}}
 config_default['gatk']['variant_eval'].update(
     {
         'options' : " ".join(["-ST Filter -l INFO --doNotUseAllStandardModules --evalModule CompOverlap --evalModule CountVariants --evalModule TiTvVariantEvaluator --evalModule ValidationReport"])

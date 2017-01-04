@@ -2,7 +2,7 @@
 include: 'gatk.settings'
 include: '../picard/picard_build_bam_index.rule'
 
-config_default = {'gatk' : {'base_recalibrator' : _config_rule_default.copy()}}
+config_default = {'gatk' : {'base_recalibrator' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['base_recalibrator'].update({
                 'options' : " ".join([
                 "-L {target}".format(target=config['gatk']['target_regions']) if not config['gatk']['target_regions'] == "" else "",

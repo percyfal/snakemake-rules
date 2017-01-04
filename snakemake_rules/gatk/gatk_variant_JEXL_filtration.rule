@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
 
-config_default = {'gatk': {'variant_JEXL_filtration' : _config_rule_default.copy()}}
+config_default = {'gatk': {'variant_JEXL_filtration' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['variant_JEXL_filtration'].update({'expressions': []})
 
 update_config(config_default, config)

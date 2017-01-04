@@ -2,7 +2,7 @@
 include: 'gatk.settings'
 include: 'gatk_select_snp_variants.rule'
 
-config_default = {'gatk' :{'variant_snp_JEXL_filtration' : _config_rule_default.copy()}}
+config_default = {'gatk' :{'variant_snp_JEXL_filtration' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['variant_snp_JEXL_filtration'].update(
     {
         'expressions': ["QD < 2.0", "MQ < 40.0", "FS > 60.0",

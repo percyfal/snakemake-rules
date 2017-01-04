@@ -4,7 +4,7 @@ include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../htslib/htslib_bgzip.rule"
 include: "../samtools/samtools_tabix_vcf.rule"
 
-config_default = {'gatk' :{'combine_target_variants': _config_rule_default.copy()}}
+config_default = {'gatk' :{'combine_target_variants': _gatk_config_rule_default.copy()}}
 config_default['gatk']['combine_target_variants'].update({'options' : "--genotypemergeoption UNSORTED"})
 
 

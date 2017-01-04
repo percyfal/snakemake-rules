@@ -3,7 +3,7 @@ include: 'gatk.settings'
 include: 'gatk_variant_snp_JEXL_filtration.rule'
 include: 'gatk_variant_indel_JEXL_filtration.rule'
 
-config_default = {'gatk': {'combine_variants': _config_rule_default.copy()}}
+config_default = {'gatk': {'combine_variants': _gatk_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default

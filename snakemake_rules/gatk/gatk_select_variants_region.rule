@@ -3,7 +3,7 @@ include: 'gatk.settings'
 include: "gatk_select_variants.rule"
 include: "gatk_unified_genotyper.rule"
 
-config_default = {'gatk' :{'select_variants_region' : _config_rule_default.copy()}}
+config_default = {'gatk' :{'select_variants_region' : _gatk_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
