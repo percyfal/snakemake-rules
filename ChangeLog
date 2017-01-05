@@ -4,6 +4,10 @@ Changelog
 0.1-beta.9 (2017-01-05)
 -----------------------
 
+- Updating conda version to 0.1-beta.9. [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
+
 - Fix failing conda build; add missing release notes for 0.1b9. [Per
   Unneberg]
 
