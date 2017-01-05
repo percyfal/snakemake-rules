@@ -1,14 +1,9 @@
 # -*- snakemake -*-
 include: "macs2.settings"
 
-config_default = {
-    'macs2' : {
-        'callpeak' : {
-            'options' : "-B",
-            'runtime' : config['macs2']['runtime'],
-        },
-    },
-}
+config_default = {'macs2' :{'callpeak' : _macs2_config_rule_default.copy()}}
+config_default['macs2']['callpeak'].update({'options': '-B'})
+
 
 update_config(config_default, config)
 config = config_default
@@ -25,6 +20,6 @@ rule macs2_callpeak_treatment_only_bam_pe:
             summits = "{prefix}_summits.bed",
             narrowPeak = "{prefix}_peaks.narrowPeak",
     log: "{prefix}.macs2.log"
-    threads: 1
+    threads: config['macs2']['callpeak']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} callpeak {params.options} -n {wildcards.prefix} -t {input.bam} -f BAMPE &> {log}"
