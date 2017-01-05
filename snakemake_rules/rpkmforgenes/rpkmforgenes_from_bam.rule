@@ -16,7 +16,7 @@ rule rpkmforgenes_from_bam:
            bam = "{prefix}.bam"
     output: rpkmforgenes = "{prefix}.rpkmforgenes"
     log: "{prefix}.rpkmforgenes.log"
-    threads: 1
+    threads: config['rpkmforgenes']['threads']
     conda: "env.yaml"
     shell:
         " ".join(["{params.cmd} {params.options} ",

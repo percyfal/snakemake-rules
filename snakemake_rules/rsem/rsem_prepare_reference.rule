@@ -10,6 +10,7 @@ config_default = {
             'options' : "",
             'reference_name' : "rsem",
             'runtime' : config['rsem']['runtime'],
+            'threads' : 1,
         },
     },
 }
@@ -31,7 +32,7 @@ rule rsem_prepare_reference:
            ref = config['rsem']['ref'],
     output: config['rsem']['index'] + config['rsem']['ref_sfx']
     log: config['rsem']['index'] + config['rsem']['ref_sfx'] + ".log"
-    threads: 1
+    threads: config['rsem']['prepare-reference']['threads']
     conda: "env.yaml"
     shell:
         "{params.cmd} {params.options} {input.ref}{params.extra_ref} {params.index} > {log}"

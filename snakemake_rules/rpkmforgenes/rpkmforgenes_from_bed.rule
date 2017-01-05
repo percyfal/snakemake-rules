@@ -15,7 +15,7 @@ rule rpkmforgenes_from_bed:
            bed = "{prefix}.bed" 
     output: rpkmforgenes = "{prefix}.rpkmforgenes"
     log: "{prefix}.rpkmforgenes.log"
-    threads: 1
+    threads: config['rpkmforgenes']['threads']
     conda: "env.yaml"
     shell:
         " ".join(["{params.cmd} {params.options} ",
