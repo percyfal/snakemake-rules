@@ -2,26 +2,19 @@
 include: "bwa.settings"
 include: "bwa_index.rule"
 
-config_default = {
-    'bwa': {
-        'aln' : {
-	    'threads' : config['bwa']['threads'],
-            'options': "",
-            'runtime': config['bwa']['runtime'],
+config_default = {'bwa' : {'aln' : _bwa_config_rule_default.copy(),
+                           'samse' : _bwa_config_rule_default.copy()}}
+config_default.update(
+    {
+        'samtools' : {
+            'view' : {
+                'options' : '-u',
+            },
+            'sort' : {
+                'options' : '',
+            },
         },
-        'samse' : {
-            'options' : "",
-        },
-    },
-    'samtools' : {
-        'view' : {
-            'options' : '-u',
-        },
-        'sort' : {
-            'options' : '',
-        },
-    },
-}
+    })
 
 update_config(config_default, config)
 config = config_default

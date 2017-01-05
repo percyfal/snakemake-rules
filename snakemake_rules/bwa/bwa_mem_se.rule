@@ -2,15 +2,7 @@
 include: "bwa.settings"
 include: "bwa_index.rule"
 
-config_default = {
-    'bwa': {
-        'mem_se' : {
-            'options': "",
-            'runtime': config['bwa']['runtime'],
-        },
-    },
-}
-
+config_default = {'bwa' :{'mem_se' : _bwa_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
