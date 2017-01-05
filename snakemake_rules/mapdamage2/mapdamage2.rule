@@ -57,7 +57,7 @@ rule mapdamage2:
             mcmc_correct_prob = join("{prefix}"+ "_" + folder, "Stats_out_MCMC_correct_prob.csv") if stats else [],
             dnacomp_genome = join("{prefix}"+ "_" + folder, "dnacomp_genome.csv") if stats else [],
             rescale_bam = join("{prefix}"+ "_" + folder, "{prefix}.rescaled.bam") if rescalebam else [],
-    threads: 1
+    threads: config["mapdamage2"]["threads"]
     conda: "env.yaml"
     run:
         cmd = "mapDamage " + params.options + " -i " + input.bam + " -r " + input.ref + " -d " + "{}_{}".format(wildcards.prefix, folder)

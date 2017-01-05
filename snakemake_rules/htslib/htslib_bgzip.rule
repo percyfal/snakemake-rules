@@ -1,15 +1,7 @@
 # -*- snakemake -*-
 include: "htslib.settings"
 
-config_default = {
-    'htslib' : {
-        'bgzip' : {
-            'options' : '',
-            'threads' : config['htslib']['threads'],
-            'runtime' : '01:00:00',
-        },
-    },
-}
+config_default = {'htslib' :{'bgzip' : _htslib_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default

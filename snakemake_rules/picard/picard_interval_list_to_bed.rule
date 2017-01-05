@@ -3,6 +3,9 @@ include: "picard.settings"
 
 config_default = {'picard' :{'interval_list_to_bed' : _picard_config_rule_default.copy()}}
 
+update_config(config_default, config)
+config = config_default
+
 rule picard_interval_list_to_bed:
     """Picard: convert interval list to bed"""
     params: cmd = config['picard']['cmd'] + INTERVAL_LIST_TO_BED,

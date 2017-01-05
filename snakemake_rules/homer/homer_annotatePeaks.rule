@@ -1,15 +1,8 @@
 # -*- snakemake -*-
 include: "homer.settings"
 
-config_default = {
-    'homer' : {
-        'annotatePeaks' : {
-            'options': "",
-            'gtf': None, # gtf annotation file
-            'runtime': config['homer']['runtime'],
-        },
-    },
-}
+config_default = {'homer' :{'annotatePeaks' : _homer_config_rule_default.copy()}}
+config_default['homer']['annotatePeaks'].update({'gtf': None})
 
 update_config(config_default, config)
 config = config_default
@@ -31,5 +24,5 @@ rule annotatePeaks:
     log: "{prefix}.annotatePeaks.log"
     output: tsv = "{prefix}.annotatePeaks.tsv",
             stats = "{prefix}.annotatePeaks.stats.tsv"
-    threads: 1
+    threads: config['homer']['annotatePeaks']['threads']
     shell: "{params.cmd} {input.bed} {params.build} -annStats {output.stats} {params.options} > {output.tsv} 2> {log}"

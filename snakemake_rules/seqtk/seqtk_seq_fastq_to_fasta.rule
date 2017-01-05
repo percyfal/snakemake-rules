@@ -1,14 +1,7 @@
 # -*- snakemake -*-
 include: "seqtk.settings"
 
-config_default = {
-    'seqtk' : {
-        'seq' : {
-            'options' : "",
-            'runtime' : "01:00:00",
-        },
-    },
-}
+config_default = {'seqtk' :{'seq' : _seqtk_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
@@ -20,7 +13,7 @@ rule seqtk_seq_fastq_to_fasta:
             runtime = config['seqtk']['seq']['runtime']
     input: reads = "{prefix}" + config['ngs.settings']['fastq_suffix']
     output: fasta = "{prefix}.fasta"
-    threads: 1
+    threads: config['seqtk']['seq']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} seq {params.options} -a {input.reads} > {output.fasta}"
 

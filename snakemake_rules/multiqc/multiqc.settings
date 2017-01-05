@@ -7,6 +7,7 @@ config_default = {
         'options' : "",
         'runtime' : '00:60:00',
         'inputs' : [],
+        'threads' : 1,
     },
 }
 

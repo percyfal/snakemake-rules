@@ -41,3 +41,11 @@ config_default3 = {
 
 update_config(config_default3, config)
 config = config_default3
+
+
+_snpeff_config_rule_default = {
+    'java_mem' : config['snpeff']['java_mem'],
+    'options' : '',
+    'runtime' : config['snpeff']['runtime'],
+    'threads' : 1,
+}

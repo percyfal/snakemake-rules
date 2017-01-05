@@ -4,12 +4,12 @@ from csv import DictReader
 
 include: "ercc.settings"
 
-config_default = {
-    'ercc' : {
+config_default = {'ercc' :{'create_ref' : _ercc_config_rule_default.copy()}}
+config_default['ercc']['create_ref'].update(
+    {
         'ref' : 'ERCC_spikes.fa',
         'retmax' : 100,
-    },
-}
+    })
 
 update_config(config_default, config)
 config = config_default
@@ -17,11 +17,11 @@ config = config_default
 
 rule ercc_create_ref:
     """Create ERCC reference file"""
-    params: runtime = config['ercc']['runtime']
+    params: runtime = config['ercc']['create_ref']['runtime']
     input: txt = os.path.basename(config['ercc']['source'])
-    output: gb = protected(re.sub("(.fa$|.fasta$)", ".gb", config['ercc']['ref'])),
-            fa = protected(config['ercc']['ref'])
-    threads: 1
+    output: gb = protected(re.sub("(.fa$|.fasta$)", ".gb", config['ercc']['create_ref']['ref'])),
+            fa = protected(config['ercc']['create_ref']['ref'])
+    threads: config['ercc']['create_ref']['threads']
     run:
         with open(input.txt, 'r') as fh:
             reader = DictReader(fh, delimiter='\t')

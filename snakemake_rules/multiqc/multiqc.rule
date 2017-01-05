@@ -9,7 +9,7 @@ rule multiqc:
     params: cmd = config['multiqc']['cmd'],
             options = config['multiqc']['options'],
             runtime = config['multiqc']['runtime']
-    threads: 1
+    threads: config['multiqc']['threads']
     input: config['multiqc']['inputs']
     output: html = os.path.join("multiqc", "multiqc_report.html")
     conda: "env.yaml"
