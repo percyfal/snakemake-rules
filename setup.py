@@ -54,6 +54,7 @@ REQUIRES = [
     'pytest',
     'pytest-cov',
     'pytest-runner',
+    'pytest-xdist',
 ]
 
 _version = versioneer.get_version()

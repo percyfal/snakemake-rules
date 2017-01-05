@@ -3,8 +3,10 @@ include: "ucsc.settings"
 
 rule ucsc_write_chromosome:
     """Generate chromosome-specific fasta file from reference."""
+    params: runtime = config['ucsc']['runtime']
     input: ref = config['ucsc']['ref']
     output: chrfa = os.path.join("{path}", "chr{chr}.fa")
+    threads: 1
     run:
         from Bio import SeqIO
         seqs = SeqIO.parse(open(input.ref), format='fasta')

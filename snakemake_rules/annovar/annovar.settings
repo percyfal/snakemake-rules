@@ -7,6 +7,7 @@ config_default = {
         'dblist' : ["dgv", "genomicSuperDups", "gwascatalog", "tfbs", "wgEncodeRegTfbsClustered", "wgEncodeRegDnaseClustered", "phastConsElements46way"],
         'dblist_webfrom_annovar' : ["1000g2012apr", "cosmic64", "esp6500si_all", "esp6500si_ea", "ljb_all", "snp137", "refGene", "avsift"],
         'home': os.curdir,
+        'runtime' : '01:00:00',
     },
 }
 
@@ -21,3 +22,10 @@ config_default2 = {
 
 update_config(config_default2, config)
 config = config_default2
+
+
+_annovar_config_rule_default = {
+    'options' : '',
+    'runtime' : config['annovar']['runtime'],
+    'threads' : 1,
+}

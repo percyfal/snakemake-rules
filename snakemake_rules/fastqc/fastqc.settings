@@ -5,6 +5,7 @@ config_default = {
     'fastqc' : {
         'cmd' : "fastqc",
         'options' : "",
+        'runtime' : "00:20:00",
         'threads' : config['settings']['threads'],
     },
 }

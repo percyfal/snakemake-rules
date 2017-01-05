@@ -3,9 +3,10 @@ include: "../main.settings"
 
 
 config_default = {
-    'bio.ngs.assemblyqc.jellyfish' : {
+    'jellyfish' : {
         'cmd': 'jellyfish',
-        'threads': config['settings']['threads']
+        'threads': config['settings']['threads'],
+        'runtime': "01:00:00",
     },
 }
 

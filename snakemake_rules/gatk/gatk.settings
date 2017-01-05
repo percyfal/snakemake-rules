@@ -1,7 +1,22 @@
 # -*- snakemake -*-
 include: '../ngs.settings'
 
+# Jar program
 GATK_JAR_PROGRAM = "GenomeAnalysisTK.jar"
+# Subprograms
+BASE_RECALIBRATOR = "BaseRecalibrator"
+CLIP_READS = "ClipReads"
+COMBINE_VARIANTS = 'CombineVariants'
+GENOTYPE_GVCFS = "GenotypeGVCFs"
+HAPLOTYPE_CALLER = 'HaplotypeCaller'
+INDEL_REALIGNER = "IndelRealigner"
+PRINT_READS = "PrintReads"
+READ_BACKED_PHASING = "ReadBackedPhasing"
+REALIGNER_TARGET_CREATOR = "RealignerTargetCreator"
+SELECT_VARIANTS = "SelectVariants"
+UNIFIED_GENOTYPER = "UnifiedGenotyper"
+VARIANT_FILTRATION = "VariantFiltration"
+VARIANT_EVAL = "VariantEval"
 
 config_default = { 
     'gatk' : {
@@ -13,6 +28,7 @@ config_default = {
         'java_mem' : config['settings']['java']['java_mem'],
         'java_tmpdir' : config['settings']['java']['java_tmpdir'],
         'ref' : config['ngs.settings']['db']['ref'],
+        'runtime' : "24:00:00",
         'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
         'threads' : config['settings']['threads'],
         'vcfsuffix' : ".vcf",
@@ -51,3 +67,10 @@ config_default3 = {
 update_config(config_default3, config)
 config = config_default3
 
+_gatk_config_rule_default = {
+    'java_mem' : config['gatk']['java_mem'],
+    'options' : '',
+    'ref' : config['gatk']['ref'],
+    'runtime' : config['gatk']['runtime'],
+    'threads' : 1,
+}

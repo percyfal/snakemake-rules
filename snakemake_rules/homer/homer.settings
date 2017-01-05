@@ -10,8 +10,16 @@ config_default = {
     'homer' : {
         'options' : '',
         'genome_build': 'hg38',
+        'runtime' : '01:00:00',
     },
 }
 
 update_config(config_default, config)
 config = config_default
+
+
+_homer_config_rule_default = {
+    'options' : '',
+    'runtime' : config['homer']['runtime'],
+    'threads' : 1,
+}

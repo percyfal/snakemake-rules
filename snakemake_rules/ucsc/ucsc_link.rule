@@ -17,3 +17,5 @@ rule ucsc_link:
         if not os.path.exists(tgt):
             os.symlink(input.ref, tgt)
 
+
+localrules: ucsc_link            

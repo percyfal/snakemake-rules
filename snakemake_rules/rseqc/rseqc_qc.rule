@@ -41,3 +41,5 @@ rule rseqc_qc:
     input: **{k:RULES[k][1] for k,v in config['rseqc']['rseqc_qc'].items() if v}
     output: "{prefix}_rseqc/rseqc_qc.txt"
     shell: "echo `date` > {output}"
+
+localrules: rseqc_qc

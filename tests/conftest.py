@@ -1,6 +1,6 @@
 # Copyright (C) 2016 by Per Unneberg
 import os
-from os.path import abspath, dirname, join, isdir
+from os.path import abspath, dirname, join, isdir, basename
 import sys
 import re
 import logging
@@ -16,10 +16,6 @@ logger = logging.getLogger(__name__)
 
 TESTDIR = abspath(dirname(__file__))
 RULEDIR = join(abspath(dirname(__file__)), os.pardir, "snakemake_rules")
-SNAKEFILE = join(TESTDIR, "Snakefile")
-SNAKEFILE_REGIONS = join(TESTDIR, "Snakefile_regions")
-CONFIG = join(TESTDIR, "config.yaml")
-CONFIG_REGIONS = join(TESTDIR, "config_regions.yaml")
 
 # Add test source path to pythonpath
 sys.path.insert(0, join(TESTDIR, os.pardir))
@@ -33,6 +29,9 @@ with open(os.path.join(TESTDIR, "rules2target.yaml")) as fh:
 
 
 def make_output(rule, prefix="s1"):
+    """Generate output file for rule. Assume target is based on prefix
+    's1'; else, use rules2targets dictionary"""
+
     rn = os.path.basename(rule).replace(".rule", "")
     app = os.path.basename(os.path.dirname(rule))
     target = rules2targets.get(app, {}).get(rn, None)
@@ -40,7 +39,12 @@ def make_output(rule, prefix="s1"):
         return target
     code, linemake, rulecount = parse(rule)
     m = re.search("@workflow.output\(\s+(?P<output>.*)", code)
-    output = m.group("output")
+    if m is None:
+        # return input case
+        m = re.search("@workflow.input\(\s+(?P<input>.*)", code)
+        output = m.group("input")
+    else:
+        output = m.group("output")
     m = re.search("\"[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})+(?P<ext>[_\/\.a-zA-Z0-9 ]+)\"", output)
     # Regular extension; use first one
     if m:
@@ -89,7 +93,7 @@ def pytest_runtest_setup(item):
     if not getattr(item.obj, 'slow', None) and item.config.getvalue('slow_only'):
         pytest.skip('run only slow tests')
 
-        
+
 def pytest_report_header(config):
     try:
         output = sp.check_output(['conda', 'env', 'list', '--json'])
@@ -108,10 +112,10 @@ def pytest_namespace():
     return {
         'testdir': TESTDIR,
         'ruledir': RULEDIR,
-        'snakefile': SNAKEFILE,
-        'snakefile_regions' : SNAKEFILE_REGIONS,
-        'config' : CONFIG,
-        'config_regions' : CONFIG_REGIONS,
+        'snakefile': join(TESTDIR, "Snakefile"),
+        'snakefile_regions' : join(TESTDIR, "Snakefile_regions"),
+        'config' : join(TESTDIR, "config.yaml"),
+        'config_regions' : join(TESTDIR, "config_regions.yaml"),
         'rules' : rules,
         'make_output' : make_output,
     }
@@ -119,51 +123,38 @@ def pytest_namespace():
 ##################################################
 # Setup test fixtures
 ##################################################
-# Input files
+d = {}
+for f in os.listdir(abspath(join(dirname(__file__), "data"))):
+    d[f] = abspath(join(dirname(__file__), "data", f))
 
-# metadata
-sampleinfo = abspath(join(dirname(__file__), "data", "sampleinfo.csv"))
-configfile = abspath(join(dirname(__file__), "data", "config.yaml"))
-
-# references
-chr11 = abspath(join(dirname(__file__), "data", "chr11.fa"))
-chr11fai = abspath(join(dirname(__file__), "data", "chr11.fa.fai"))
-chr11dict = abspath(join(dirname(__file__), "data", "chr11.dict"))
-chromsizes = abspath(join(dirname(__file__), "data", "chrom.sizes"))
-
-# annotation files
-dbsnp = abspath(join(dirname(__file__), "data", "dbsnp132_chr11.vcf"))
-ref_transcripts = abspath(join(dirname(__file__), "data", "ref-transcripts.gtf"))
-ref_transcripts_bed12 = abspath(join(dirname(__file__), "data", "ref-transcripts.bed12"))
-ref_transcripts_genepred = abspath(join(dirname(__file__), "data", "ref-transcripts.genePred"))
-targets = abspath(join(dirname(__file__), "data", "targets.bed"))
-targets_list = abspath(join(dirname(__file__), "data", "targets.interval_list"))
-
-# fastq files
-sample1_1 = abspath(join(dirname(__file__), "data", "s1_1.fastq.gz"))
-sample1_2 = abspath(join(dirname(__file__), "data", "s1_2.fastq.gz"))
-sample2_1 = abspath(join(dirname(__file__), "data", "s2_1.fastq.gz"))
-sample2_2 = abspath(join(dirname(__file__), "data", "s2_2.fastq.gz"))
-
-
-# alignment files
-sam = abspath(join(dirname(__file__), "data", "s1.sam"))
-bam = abspath(join(dirname(__file__), "data", "s1.bam"))
-sortbam = abspath(join(dirname(__file__), "data", "s1.sort.bam"))
-sortbed = abspath(join(dirname(__file__), "data", "s1.sort.bed"))
-sortwig = abspath(join(dirname(__file__), "data", "s1.sort.wig"))
-sortbedgraph = abspath(join(dirname(__file__), "data", "s1.sort.bedGraph"))
-sortbambai = abspath(join(dirname(__file__), "data", "s1.sort.bam.bai"))
-rgbam = abspath(join(dirname(__file__), "data", "s1.rg.bam"))
-rgsortbam = abspath(join(dirname(__file__), "data", "s1.rg.sort.bam"))
-bamfofn = abspath(join(dirname(__file__), "data", "bamfiles.fofn"))
-
-# vcf
-vcf = abspath(join(dirname(__file__), "data", "s1.vcf"))
-vcfgz = abspath(join(dirname(__file__), "data", "s1.vcf.gz"))
-vcffofn = abspath(join(dirname(__file__), "data", "s1.vcf.fofn"))
-gvcf = abspath(join(dirname(__file__), "data", "s1.g.vcf"))
-gvcfgz = abspath(join(dirname(__file__), "data", "s1.g.vcf.gz"))
+copyfiles = ['s1.revealjs.Rmd']
+skipfiles = ['Snakefile']
+    
+d.update({
+    "s1.bam" : d['s1.rg.sort.bam'],
+    "s1.bai" : d['s1.rg.sort.bai'],
+    "s1.fofn" : d['bamfiles.fofn'],
+    "s1.bam.fofn" : d['bamfiles.fofn'],
+    "s1.bdg" : d['s1.rg.sort.bedGraph'],
+    "s1.bedGraph" : d['s1.rg.sort.bedGraph'],
+    "s1.bed" : d['ref.bed'],
+    "s1.dict" : d['ref.dict'],
+    "s1.gtf" : d['ref-transcripts.gtf'],
+    "s1.genePred" : d['ref-transcripts.genePred'],
+    "s1.fasta" : d['ref.fa'],
+    "s1.fa" : d['ref.fa'],
+    "s1.fastq.gz" : d['s1_1.fastq.gz'],
+    "s1.fofn" : d['bamfiles.fofn'],
+    "s1.g.vcf.fofn" : d['s1.vcf.fofn'],
+    "s1.interval_list" : d['ref.interval_list'],
+    "s1.sam" : d['s1.rg.sort.sam'],
+    "s1.sort.bam" : d['s1.rg.sort.bam'],
+    "s1.sort.bai" : d['s1.rg.sort.bai'],
+    "s1.sort.bam.bai" : d['s1.rg.sort.bai'],
+    "s1.vcf" : d['s1.rg.sort.vcf'],
+    "s1.vcf.gz" : d['s1.rg.sort.g.vcf.gz'],
+    "s1.wig" : d['s1.rg.sort.wig'],
+})
 
 
 ##############################
@@ -171,63 +162,19 @@ gvcfgz = abspath(join(dirname(__file__), "data", "s1.g.vcf.gz"))
 ##############################
 @pytest.fixture(scope="function", autouse=False)
 def data(tmpdir_factory):
-    """
-    Setup input data
+    """Setup input data
+
+    FIXME: currently a test directory is setup for *every* atomic
+    test. However, setting it up only once will fail parallel tests.
+
     """
     p = tmpdir_factory.mktemp('data')
 
-    # metadata
-    p.join("sampleinfo.csv").mksymlinkto(sampleinfo)
-    p.join("config.yaml").mksymlinkto(configfile)
-
-    # references
-    p.join("chr11.fa").mksymlinkto(chr11)
-    p.join("chr11.fa.fai").mksymlinkto(chr11fai)
-    p.join("chr11.dict").mksymlinkto(chr11dict)
-    p.join("chrom.sizes").mksymlinkto(chromsizes)
-
-    # annotation files
-    p.join("dbsnp132_chr11.vcf").mksymlinkto(dbsnp)
-    p.join("ref-transcripts.gtf").mksymlinkto(ref_transcripts)
-    p.join("s1.gtf").mksymlinkto(ref_transcripts)
-    p.join("ref-transcripts.bed12").mksymlinkto(ref_transcripts_bed12)
-    p.join("ref-transcripts.genePred").mksymlinkto(ref_transcripts_genepred)
-    p.join("s1.genePred").mksymlinkto(ref_transcripts_genepred)
-    p.join("targets.bed").mksymlinkto(targets)
-    p.join("targets.interval_list").mksymlinkto(targets_list)
-
-    # fasta files
-    p.join("s1.fasta").mksymlinkto(chr11)
-    p.join("s1.fa").mksymlinkto(chr11)
-    
-    # fastq files
-    p.join("s1.fastq.gz").mksymlinkto(sample1_1)
-    p.join("s1_1.fastq.gz").mksymlinkto(sample1_1)
-    p.join("s1_2.fastq.gz").mksymlinkto(sample1_2)
-    p.join("s2_1.fastq.gz").mksymlinkto(sample2_1)
-    p.join("s2_2.fastq.gz").mksymlinkto(sample2_2)
-
-    # alignment files
-    p.join("s1.sam").mksymlinkto(sam)
-    p.join("s1.bam").mksymlinkto(bam)
-    p.join("s1.bed").mksymlinkto(sortbed)
-    p.join("s1.sort.bam").mksymlinkto(sortbam)
-    p.join("s2.sort.bam").mksymlinkto(sortbam)
-    p.join("s1.sort.bam.bai").mksymlinkto(sortbambai)
-    p.join("s2.sort.bam.bai").mksymlinkto(sortbambai)
-    p.join("s1.bdg").mksymlinkto(sortbedgraph)
-    p.join("s1.wig").mksymlinkto(sortwig)
-    p.join("s1.rg.bam").mksymlinkto(rgbam)
-    p.join("s1.rg.sort.bam").mksymlinkto(rgsortbam)
-    p.join("bamfiles.fofn").mksymlinkto(bamfofn)
-
-    # vcf files
-    p.join("s1.vcf").mksymlinkto(vcf)
-    p.join("s1.g.vcf").mksymlinkto(gvcf)
-    p.join("s1.g.vcf.gz").mksymlinkto(gvcfgz)
-    p.join("s1.vcf.fofn").mksymlinkto(vcffofn)
-    p.join("s1.g.vcf.fofn").mksymlinkto(vcffofn)
-    p.join("s2.g.vcf").mksymlinkto(gvcf)
-    p.join("s2.g.vcf.gz").mksymlinkto(gvcfgz)
-
+    for k, v in d.items():
+        if basename(v) in skipfiles:
+            continue
+        if basename(v) in copyfiles:
+            shutil.copyfile(v, str(p.join(k)))
+        else:
+            p.join(k).mksymlinkto(v)
     return p

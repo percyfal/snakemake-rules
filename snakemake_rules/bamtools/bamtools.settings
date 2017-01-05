@@ -8,12 +8,17 @@ config_default = {
         'home' : "",
         'threads' : config['settings']['threads'],
         'options' : "",
-        'filter' : {
-            'options' : {'mapQuality' : ">=255"},
-            'regions' : config['ngs.settings']['regions'],
-        },
+        'runtime' : "01:00:00",
     },
 }
 
 update_config(config_default, config)
 config = config_default
+
+
+_bamtools_config_rule_default = {
+    'options' : {'mapQuality' : ">=255"},
+    'regions' : config['ngs.settings']['regions'],
+    'runtime' : config['bamtools']['runtime'],
+    'threads' : 1,
+}
