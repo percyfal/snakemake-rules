@@ -6,6 +6,8 @@ config_default = {
         'common_options' : "--noweb",
         'cmd' : "plink",
         'chr' : "1",
+        'runtime' : "01:00:00",
+        'threads' : 1,
     },
 }
 

@@ -6,6 +6,8 @@ config_default = {
         'cmd' : "multiqc",
         'options' : "",
         'runtime' : '00:60:00',
+        'inputs' : [],
+        'threads' : 1,
     },
 }
 

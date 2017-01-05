@@ -4,7 +4,7 @@ settings:
   
 ngs.settings:
   db:
-    ref: chr11.fa
+    ref: ref.fa
     dbsnp: dbsnp132_chr11.vcf
   annotation:
     transcript_annot_gtf: ref-transcripts.gtf
@@ -14,19 +14,29 @@ ngs.settings:
 
 angsd:
   nChr: 4
-  
+
 bedtools:
   bfile: targets.bed
 
 bowtie:
-  index: chr11
+  index: ref.fa
 
 bowtie2:
-  index: chr11
+  index: ref.fa
 
+freebayes:
+  ref: ref.fa
+  freebayes_parallel:
+    region_size: 100
+    threads: 2
+  merge_targets:
+    options: "--force-samples"
+  
 gatk:
   combine_variants:
     options: --genotypemergeoption UNIQUIFY
+  unified_genotyper:
+    options: ""
 
 mapdamage2:
   options: --no-stats
@@ -40,4 +50,6 @@ star:
     
 vsearch:
   fastq_stats:
+    options: --fastq_qmax 50
+  fastq_filter:
     options: --fastq_qmax 50

@@ -8,3 +8,5 @@ rule rulegraph_png:
     input: rulegraph = "{prefix}_rulegraph.dot"
     output: png = "{prefix}_rulegraph.png"
     shell: "dot -T png {input.rulegraph} -o {output.png}"
+
+localrules: rulegraph_png

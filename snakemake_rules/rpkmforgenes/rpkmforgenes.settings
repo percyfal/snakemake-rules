@@ -9,6 +9,8 @@ config_default = {
         'unique' : None,
         'use_multimapped': False, # rpkmforgenes requires uniquely mapping reads
         'annot_format' : 'refFlat',
+        'runtime' : '01:00:00',
+        'threads' : 1,
     },
 }
 

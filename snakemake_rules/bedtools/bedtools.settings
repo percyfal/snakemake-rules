@@ -1,6 +1,12 @@
 # -*- snakemake -*-
 include: '../ngs.settings'
 
+# Programs
+BEDTOOLS_BAMTOBED = "bamToBed"
+BEDTOOLS_GENOMECOVERAGEBED = "genomeCoverageBed"
+BEDTOOLS_COVERAGEBED = "coverageBed"
+BEDTOOLS_INTERSECTBED = "intersectBed"
+
 config_default = { 
     'bedtools' : {
         'cmd' : "bedtools",
@@ -10,8 +16,15 @@ config_default = {
             'bait_regions' : config['ngs.settings']['sequence_capture']['bait_regions'],
             'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
         },
+        'runtime' : "01:00:00",
     },
 }
 
 update_config(config_default, config)
 config = config_default
+
+_bedtools_config_rule_default = {
+    'options' : '',
+    'runtime' : config['bedtools']['runtime'],
+    'threads' : 1,
+}

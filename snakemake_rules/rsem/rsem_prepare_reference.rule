@@ -9,6 +9,8 @@ config_default = {
             'cmd' : 'rsem-prepare-reference',
             'options' : "",
             'reference_name' : "rsem",
+            'runtime' : config['rsem']['runtime'],
+            'threads' : 1,
         },
     },
 }
@@ -24,10 +26,13 @@ rule rsem_prepare_reference:
             "--gtf {annot}".format(annot=config['rsem']['annot_gtf']) if config['rsem']['annot_gtf'] else ""]),
             ref = config['rsem']['ref'],
             index = config['rsem']['index'],
+            runtime = config['rsem']['prepare-reference']['runtime'],
             extra_ref = ",{}".format(",".join(x for x in config['ngs.settings']['db']['extra_ref'])) if config['ngs.settings']['db']['extra_ref'] else ""
     input: annot = config['rsem']['annot_gtf'] if config['rsem']['annot_gtf'] else [],
            ref = config['rsem']['ref'],
     output: config['rsem']['index'] + config['rsem']['ref_sfx']
     log: config['rsem']['index'] + config['rsem']['ref_sfx'] + ".log"
+    threads: config['rsem']['prepare-reference']['threads']
+    conda: "env.yaml"
     shell:
         "{params.cmd} {params.options} {input.ref}{params.extra_ref} {params.index} > {log}"

@@ -1,0 +1,15 @@
+# -*- snakemake -*-
+include: 'r.settings'
+
+config_default = {'r' :{'rmarkdown_revealjs' : _r_config_rule_default.copy()}}
+
+update_config(config_default, config)
+config = config_default
+
+rule rmarkdown_revealjs:
+    """Create revealjs presentation from Rmarkdown"""
+    params: runtime = config['r']['rmarkdown_revealjs']['runtime']
+    input: "{prefix}.Rmd"
+    output: "{prefix}.html"
+    threads: config['r']['rmarkdown_revealjs']['threads']
+    shell: "Rscript -e \"rmarkdown::render('{input}')\""

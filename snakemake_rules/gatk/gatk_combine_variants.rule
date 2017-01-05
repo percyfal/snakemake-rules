@@ -3,16 +3,7 @@ include: 'gatk.settings'
 include: 'gatk_variant_snp_JEXL_filtration.rule'
 include: 'gatk_variant_indel_JEXL_filtration.rule'
 
-config_default = {
-    'gatk' : {
-        'combine_variants' : {
-            'cmd' : 'CombineVariants',
-            'ref' : config['gatk']['ref'],
-            'options' : "",
-            'java_mem' : config['gatk']['java_mem'],
-        },
-    },
-}
+config_default = {'gatk': {'combine_variants': _gatk_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
@@ -26,11 +17,14 @@ rule gatk_combine_variants:
     filteredINDEL.vcf.
 
     """
-    params: cmd = cmd + " -T " + config['gatk']['combine_variants']['cmd'],
+    params: cmd = cmd + " -T " + COMBINE_VARIANTS,
             options = " ".join(["-R", config['gatk']['combine_variants']['ref'],
-                                config['gatk']['combine_variants']['options']])
+                                config['gatk']['combine_variants']['options']]),
+            runtime = config['gatk']['combine_variants']['runtime']
     input: "{prefix}.snp.filteredSNP.vcf", "{prefix}.indel.filteredINDEL.vcf"
     output: "{prefix}.variants.vcf"
+    threads: config['gatk']['combine_variants']['threads']
+    conda: "env.yaml"
     run: 
         inputstr = " ".join(["-V {}".format(x) for x in input])
         shell("{cmd} {ips} -o {out} {opt}".format(cmd=params.cmd, ips=inputstr, out=output, opt=params.options))

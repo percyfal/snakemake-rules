@@ -9,3 +9,5 @@ rule bamtools_create_filter_script:
     output: script = temporary("{prefix}.script")
     shell:
         """echo '{{"filters":[\n{params.script}\n    ]\n}}\n' > {output.script}"""
+
+localrules: bamtools_create_filter_script        

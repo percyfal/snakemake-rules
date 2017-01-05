@@ -16,8 +16,16 @@ config_default = {
         'index' : os.path.splitext(config['ngs.settings']['db']['ref'])[0],
         'ref' : config['ngs.settings']['db']['ref'],
         'rg_fn' : None,
+        'runtime' : "01:00:00",
     },
 }
 
 update_config(config_default, config)
 config = config_default
+
+
+_bowtie2_config_rule_default = {
+    'options' : '',
+    'runtime' : config['bowtie2']['runtime'],
+    'threads' : 1,
+}

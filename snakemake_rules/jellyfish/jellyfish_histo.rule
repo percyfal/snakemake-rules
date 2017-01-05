@@ -3,9 +3,10 @@ include: "jellyfish.settings"
 include: "jellyfish_count.rule"
 
 config_default = {
-    'bio.ngs.assemblyqc.jellyfish': {
+    'jellyfish': {
         'histo': {
             'options': "",
+            'runtime' : config['jellyfish']['runtime'],
         },
     },
 }
@@ -14,10 +15,12 @@ update_config(config_default, config)
 config = config_default
 
 rule jellyfish_histo:
-    params: cmd = config['bio.ngs.assemblyqc.jellyfish']['cmd'],
-            options = config['bio.ngs.assemblyqc.jellyfish']['histo']['options'],
+    params: cmd = config['jellyfish']['cmd'],
+            options = config['jellyfish']['histo']['options'],
+            runtime = config['jellyfish']['histo']['runtime'],
     input: counts = "{prefix}.mer_counts.jf"
     output: histo = "{prefix}.histo"
-    threads: config['bio.ngs.assemblyqc.jellyfish']['threads']
+    threads: config['jellyfish']['threads']
+    conda: "env.yaml"
     shell:
         "{params.cmd} histo {params.options} {input.counts} -o {output.histo}"

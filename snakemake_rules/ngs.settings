@@ -37,6 +37,7 @@ config_default = {
             'bait_regions' : "",
             'target_regions': "",
         },
+        'zip_re' : "(\.gz|\.zip|\.bz2)",
     },
 }
 

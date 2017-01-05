@@ -4,8 +4,15 @@ include: '../ngs.settings'
 config_default = {
     'vcf' : {
         'cmd' : 'vcf',
+        'runtime' : '01:00:00',
     },
 }
 
 update_config(config_default, config)
 config = config_default
+
+_vcf_config_rule_default = {
+    'options' : '',
+    'runtime' : config['vcf']['runtime'],
+    'threads' : 1,
+}

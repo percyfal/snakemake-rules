@@ -7,5 +7,6 @@ rule picard_create_sequence_dictionary_awk:
             options = config['picard']['options']
     input: bed="{prefix}.bed", dict=config['picard']['ref'].replace(".fa", ".dict")
     output: "{prefix}.dict"
+    conda: "env.yaml"
     shell: config['comp']['cat'] + " {input.dict} > {output}; " + config['comp']['awk'] + " '{{printf(\"%s\\t%s\\t%s\\t%s\\t%s\\n\", $1,$2,$3,\"+\",$4); FS=\"\t\"}}' {input.bed} >> {output}"
 

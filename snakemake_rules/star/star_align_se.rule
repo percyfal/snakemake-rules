@@ -8,6 +8,7 @@ config_default = {
             'threads' : config['settings']['threads'],
             'options' : "",
             'outSAMtype' : "Unsorted",
+            'runtime' : config['star']['runtime'],
         },
     },
 }
@@ -30,12 +31,14 @@ rule star_align_se:
                                 "--readFilesCommand {cmd}".format(cmd=config['comp']['compression']['prog_map'].get(os.path.splitext(config['ngs.settings']['fastq_suffix'])[1], "")),
                                 "--outSAMtype BAM {}".format(config['star']['align']['outSAMtype']),
                                 "--quantMode TranscriptomeSAM" if config['ngs.settings']['rnaseq']['_transcriptome_quantification'] else "",
-            ])
+            ]),
+            runtime = config['star']['align']['runtime']
     input: read1 = "{prefix}" + config['ngs.settings']['read1_label'] + config['ngs.settings']['fastq_suffix'],
            index = config['star']['index']
     output: bam = ["{prefix}" + _star_suffix()],
             txbam = ["{prefix}" + ".Aligned.toTranscriptome.out.bam"] if config['ngs.settings']['rnaseq']['_transcriptome_quantification'] else []
     log: "{prefix}.log"
     threads: config['star']['align']['threads']
+    conda: "env.yaml"
     shell: "{params.cmd} --runThreadN {threads} --genomeDir {params.genomedir} --readFilesIn {input.read1} {params.options} --outFileNamePrefix {wildcards.prefix}."
 

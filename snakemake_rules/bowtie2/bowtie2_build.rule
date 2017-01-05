@@ -1,20 +1,17 @@
 # -*- snakemake -*-
 include: "bowtie2.settings"
 
-config_default = {
-    'bowtie2' : {
-        'bowtie2_build': {
-            'cmd': 'bowtie2-build',
-        },
-    },
-}
+config_default = {'bowtie2' :{'bowtie2_build' : _bowtie2_config_rule_default.copy()}}
+config_default['bowtie2']['bowtie2_build'].update({'cmd': 'bowtie2-build'})
 
 update_config(config_default, config)
 config = config_default
 
 rule bowtie2_build:
     """Bowtie build index"""
-    params: cmd = config['bowtie2']['bowtie2_build']['cmd']
+    params: cmd = config['bowtie2']['bowtie2_build']['cmd'],
+            runtime = config['bowtie2']['bowtie2_build']['runtime'],
     input: config['bowtie2']['ref'] if config['bowtie2']['ref'] else "{prefix}"
     output: expand("{{prefix}}{ext}", ext=config['bowtie2']['build_ext'])
+    threads: config['bowtie2']['bowtie2_build']['threads']
     shell: "{params.cmd} {input} {wildcards.prefix}"

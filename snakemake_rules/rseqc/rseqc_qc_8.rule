@@ -26,3 +26,6 @@ rule rseqc_qc_8:
            read_distribution = "{prefix}_rseqc/read_distribution.txt"
     output: "{prefix}_rseqc/rseqc_qc_8.txt"
     shell: "echo `date` > {output}"
+
+
+localrules: rseqc_qc_8           

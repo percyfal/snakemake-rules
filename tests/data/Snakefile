@@ -1,0 +1,62 @@
+# -*- snakemake -*-
+configfile: "config.yaml"
+
+include: "../../snakemake_rules/bedtools/bedtools_bamtobed.rule"
+include: "../../snakemake_rules/bedtools/bedtools_bedToBedGraph.rule"
+include: "../../snakemake_rules/bwa/bwa_index.rule"
+include: "../../snakemake_rules/bwa/bwa_mem.rule"
+include: "../../snakemake_rules/gatk/gatk_unified_genotyper.rule"
+include: "../../snakemake_rules/gatk/gatk_haplotype_caller.rule"
+include: "../../snakemake_rules/htslib/htslib_bgzip.rule"
+include: "../../snakemake_rules/picard/picard_create_sequence_dictionary.rule"
+include: "../../snakemake_rules/picard/picard_interval_list_to_bed.rule"
+include: "../../snakemake_rules/picard/picard_sequence_dictionary_to_interval_list.rule"
+include: "../../snakemake_rules/picard/picard_add_or_replace_read_groups.rule"
+include: "../../snakemake_rules/samtools/samtools_faidx.rule"
+include: "../../snakemake_rules/samtools/samtools_index.rule"
+include: "../../snakemake_rules/samtools/samtools_sort.rule"
+include: "../../snakemake_rules/samtools/samtools_tabix_vcf.rule"
+include: "../../snakemake_rules/ucsc/ucsc_bedGraphToBigWig.rule"
+
+
+ruleorder: samtools_index > picard_build_bam_index
+
+TARGETS = [
+    "ref.dict",
+    "ref.fa.fai",
+    "ref.interval_list",
+    "s1.rg.sort.bam",
+    "s1.rg.sort.bed",
+    "s1.rg.sort.bedGraph",
+    "s1.rg.sort.bigWig",
+    "s1.rg.sort.sam",
+    "s1.rg.sort.wig",
+    "s1.rg.sort.bai",
+    "s1.rg.sort.g.vcf",
+    "s1.rg.sort.vcf",
+    "s2.rg.sort.bam",
+    "s2.rg.sort.bai",
+    "s2.rg.sort.g.vcf",
+]
+
+GZTARGETS = [
+    "s1.rg.sort.g.vcf.gz",
+    "s2.rg.sort.g.vcf.gz",
+    ]
+
+rule all:
+    input: TARGETS
+
+rule gz:
+    input: GZTARGETS
+
+
+rule bedGraph_to_wig:
+    input: "{prefix}.bedGraph"
+    output: "{prefix}.wig"
+    shell: "cp {input} {output}"
+
+rule bam_to_sam:
+    input: "{prefix}.bam"
+    output: "{prefix}.sam"
+    shell: "samtools view -h {input} > {output}"
