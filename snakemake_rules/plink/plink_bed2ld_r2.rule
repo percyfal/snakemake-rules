@@ -9,7 +9,7 @@ rule plink_bed2ld_r2:
             runtime = config['plink']['runtime']
     input: "{prefix}.bed"
     output: "{prefix}.r2.ld"
-    threads: 1
+    threads: config['plink']['threads']
     shell: "{params.cmd} {params.options} --bfile {wildcards.prefix} --r2 --out {wildcards.prefix}.r2"
 
 

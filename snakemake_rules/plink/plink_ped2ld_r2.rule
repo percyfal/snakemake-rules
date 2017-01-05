@@ -9,6 +9,6 @@ rule plink_ped2ld_r2:
             runtime = config['plink']['runtime']
     input: "{prefix}.ped"
     output: "{prefix}.r2.ld"
-    threads: 1
+    threads: config['plink']['threads']
     shell: "{params.cmd} {params.options}  --file {wildcards.prefix} --r2 --out {wildcards.prefix}.r2"
 

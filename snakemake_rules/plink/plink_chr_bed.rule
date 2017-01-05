@@ -10,5 +10,5 @@ rule plink_chr_bed:
             runtime = config['plink']['runtime'],
     input: "{prefix}.bed"
     output: "{prefix}.chr{params.chr}.bed"
-    threads: 1
+    threads: config['plink']['threads']
     shell: "{params.cmd} {params.options} --bfile {wildcards.prefix} --make-bed --out {wildcards.prefix}.chr{params.chr}"

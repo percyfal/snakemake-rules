@@ -9,6 +9,6 @@ rule plink_bed2ped:
             runtime = config['plink']['runtime']
     input: "{prefix}.ped"
     output: "{prefix}.bed"
-    threads: 1
+    threads: config['plink']['threads']
     shell: "{params.cmd} {params.options}  --file {wildcards.prefix} --make-bed --out {wildcards.prefix}"
 

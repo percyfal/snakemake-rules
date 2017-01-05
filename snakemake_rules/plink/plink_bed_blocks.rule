@@ -9,6 +9,6 @@ rule plink_bed_blocks:
             runtime = config['plink']['runtime']
     input: "{prefix}.bed"
     output: "{prefix}.blocks"
-    threads: 1
+    threads: config['plink']['threads']
     shell: "{params.cmd} {params.options}  --bfile {wildcards.prefix} --blocks --out {wildcards.prefix}"
 
