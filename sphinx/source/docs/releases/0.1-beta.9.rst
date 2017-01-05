@@ -1,0 +1,12 @@
+0.1-beta.9 (Jan 5 2017)
+=========================
+
+- add default configurations for most rules to reduce redundant option definitions
+- ensure threads for all rules can be configured; for single-threaded
+  programs serves as a proxy for increasing memory resources on
+  clusters
+
+Issues
+---------
+
+- fix #21, #25
