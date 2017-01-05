@@ -1,15 +1,8 @@
 # -*- snakemake -*-
 include: "kpal.settings"
 
-config_default = {
-    'kpal' : {
-        'matrix' : {
-            'options' : "-m -S",
-            'runtime' : "01:00:00",
-            'threads' : 1,
-        },
-    },
-}
+config_default = {'kpal' :{'matrix' : _kpal_config_rule_default.copy()}}
+config_default['kpal']['matrix'].update({'options' : "-m -S"})
 
 update_config(config_default, config)
 config = config_default

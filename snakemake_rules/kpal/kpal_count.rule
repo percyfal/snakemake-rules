@@ -1,14 +1,7 @@
 # -*- snakemake -*-
 include: "kpal.settings"
 
-config_default = {
-    'kpal' : {
-        'count' : {
-            'options' : "",
-            'runtime' : "01:00:00",
-        },
-    },
-}
+config_default = {'kpal' :{'count' : _kpal_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
@@ -22,7 +15,7 @@ rule kpal_count:
                           kmer = "[0-9]+"
     input: read = "{prefix}{read}" + config['ngs.settings']['fastq_suffix']
     output: kmer = "{prefix}{read}.k{kmer}"
-    threads: 1
+    threads: config['kpal']['count']['threads']
     conda: "env.yaml"
     shell:
         "if file --mime-type -b -L {input.read} | grep -q gzip; then zcat {input.read} | {params.cmd} count {params.options} -k {wildcards.kmer} - {output.kmer};"

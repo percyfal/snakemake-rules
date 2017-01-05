@@ -1,14 +1,8 @@
 # -*- snakemake -*-
 include: "kpal.settings"
 
-config_default = {
-    'kpal' : {
-        'distance' : {
-            'options' : "",
-            'runtime' : "00:10:00",
-        },
-    },
-}
+config_default = {'kpal' :{'distance' : _kpal_config_rule_default.copy()}}
+
 
 update_config(config_default, config)
 config = config_default
@@ -22,7 +16,7 @@ rule kpal_distance:
 
     input: left = "{prefix_left}.k{kmer_left}", right = "{prefix_right}.k{kmer_right}"
     output: res = "{prefix_left}_{prefix_right}.txt"
-    threads: 1
+    threads: config['kpal']['distance']['threads']
     conda: "env.yaml"
     shell:
         "{params.cmd} {params.options} distance {input.left} {input.right} > {output.res}"
