@@ -5,18 +5,18 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuration &#8212; snakemake_rules 0.1-beta.8 documentation</title>
+    <title>Configuration &#8212; snakemake_rules 0.1-beta.9 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1-beta.8',
+        VERSION:     '0.1-beta.9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,11 +28,11 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="snakemake_rules 0.1-beta.8 documentation" href="../index.html" />
+    <link rel="top" title="snakemake_rules 0.1-beta.9 documentation" href="../index.html" />
     <link rel="next" title="Examples" href="examples.html" />
     <link rel="prev" title="Quickstart" href="quickstart.html" />
 <meta charset='utf-8'>
@@ -58,7 +58,7 @@
         </button>
 
         <a class="navbar-brand" href="../index.html">snakemake_rules</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.9</b></span>
       </div>
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
@@ -194,7 +194,7 @@
 </form>
         </div>
       </div>
-    <div class="col-md-9">
+    <div class="col-md-9 content">
       
   <div class="section" id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
@@ -219,22 +219,22 @@ directly included in Snakefiles. Which rules are included in defined
 by a configuration parameter in the application rule file called
 <code class="docutils literal"><span class="pre">rules</span></code>. For instance, an excerpt from <code class="docutils literal"><span class="pre">bwa.rules</span></code> looks as
 follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">include</span><span class="p">:</span> <span class="s">&#39;../settings.rules&#39;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">include</span><span class="p">:</span> <span class="s1">&#39;../settings.rules&#39;</span>
 
-<span class="n">DEFAULT_RULES</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;bwa_index&#39;</span><span class="p">,</span> <span class="s">&#39;bwa_mem&#39;</span><span class="p">]</span>
+<span class="n">DEFAULT_RULES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bwa_index&#39;</span><span class="p">,</span> <span class="s1">&#39;bwa_mem&#39;</span><span class="p">]</span>
 
 <span class="n">config_default</span> <span class="o">=</span> <span class="p">{</span>
-   <span class="s">&#39;bio.ngs.align.bwa&#39;</span> <span class="p">:</span> <span class="p">{</span>
+   <span class="s1">&#39;bio.ngs.align.bwa&#39;</span> <span class="p">:</span> <span class="p">{</span>
        <span class="o">...</span>
-       <span class="s">&#39;rules&#39;</span> <span class="p">:</span> <span class="n">DEFAULT_RULES</span><span class="p">,</span>
+       <span class="s1">&#39;rules&#39;</span> <span class="p">:</span> <span class="n">DEFAULT_RULES</span><span class="p">,</span>
        <span class="p">},</span>
 <span class="p">}</span>
 
 <span class="n">update_config</span><span class="p">(</span><span class="n">config_default</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 <span class="n">config</span> <span class="o">=</span> <span class="n">config_default</span>
 
-<span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;bio.ngs.align.bwa&#39;</span><span class="p">][</span><span class="s">&#39;rules&#39;</span><span class="p">]:</span>
-    <span class="n">include</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;_bwa&quot;</span><span class="p">,</span> <span class="n">rule</span> <span class="o">+</span> <span class="s">&quot;.rule&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bio.ngs.align.bwa&#39;</span><span class="p">][</span><span class="s1">&#39;rules&#39;</span><span class="p">]:</span>
+    <span class="n">include</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;_bwa&quot;</span><span class="p">,</span> <span class="n">rule</span> <span class="o">+</span> <span class="s2">&quot;.rule&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The rules <code class="docutils literal"><span class="pre">bwa_index</span></code> and <code class="docutils literal"><span class="pre">bwa_mem</span></code> are loaded (included) by
@@ -248,7 +248,7 @@ how this is done.</p>
 configuration</em> that ensures that all rules have sensible defaults set,
 regardless whether the user decides to modify them or not. The basic
 configuration structure looks like</p>
-<div class="highlight-text"><div class="highlight"><pre>namespace
+<div class="highlight-text"><div class="highlight"><pre><span></span>namespace
     section/parameter
         parameter
 </pre></div>
@@ -262,14 +262,14 @@ corresponding levels in the snakemake global <em>config</em> dictionary
 object.</p>
 <p>As an example, consider the default configuration for
 bwa once again:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">config_default</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;bio.ngs.align.bwa&#39;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;cmd&#39;</span> <span class="p">:</span> <span class="s">&quot;bwa&quot;</span><span class="p">,</span>
-        <span class="s">&#39;ref&#39;</span> <span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;bio.ngs.settings&#39;</span><span class="p">][</span><span class="s">&#39;db&#39;</span><span class="p">][</span><span class="s">&#39;ref&#39;</span><span class="p">],</span>
-        <span class="s">&#39;index&#39;</span> <span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
-        <span class="s">&#39;index_ext&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;.amb&#39;</span><span class="p">,</span> <span class="s">&#39;.ann&#39;</span><span class="p">,</span> <span class="s">&#39;.bwt&#39;</span><span class="p">,</span> <span class="s">&#39;.pac&#39;</span><span class="p">,</span> <span class="s">&#39;.sa&#39;</span><span class="p">],</span>
-        <span class="s">&#39;threads&#39;</span> <span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;settings&#39;</span><span class="p">][</span><span class="s">&#39;threads&#39;</span><span class="p">],</span>
-        <span class="s">&#39;rules&#39;</span> <span class="p">:</span> <span class="n">DEFAULT_RULES</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">config_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;bio.ngs.align.bwa&#39;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;cmd&#39;</span> <span class="p">:</span> <span class="s2">&quot;bwa&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;ref&#39;</span> <span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bio.ngs.settings&#39;</span><span class="p">][</span><span class="s1">&#39;db&#39;</span><span class="p">][</span><span class="s1">&#39;ref&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;index&#39;</span> <span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;index_ext&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;.amb&#39;</span><span class="p">,</span> <span class="s1">&#39;.ann&#39;</span><span class="p">,</span> <span class="s1">&#39;.bwt&#39;</span><span class="p">,</span> <span class="s1">&#39;.pac&#39;</span><span class="p">,</span> <span class="s1">&#39;.sa&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;threads&#39;</span> <span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">][</span><span class="s1">&#39;threads&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;rules&#39;</span> <span class="p">:</span> <span class="n">DEFAULT_RULES</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
 <span class="n">update_config</span><span class="p">(</span><span class="n">config_default</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
@@ -299,10 +299,10 @@ of the <code class="docutils literal"><span class="pre">threads</span></code> pa
 However, each bwa rule can have additional configuration defaults
 that are defined in the rule file itself. The top section of
 <code class="docutils literal"><span class="pre">bwa_mem.rule</span></code> reads as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">config_default</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;bio.ngs.align.bwa&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;mem&#39;</span> <span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;options&#39;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">config_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;bio.ngs.align.bwa&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;mem&#39;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">},</span>
 <span class="p">}</span>
@@ -325,35 +325,35 @@ configuration exists, the default values are applied.</p>
 <p>The following example shows two ways to configure the number of
 <code class="docutils literal"><span class="pre">threads</span></code> and <code class="docutils literal"><span class="pre">options</span></code> for the <code class="docutils literal"><span class="pre">mem</span></code> rule. First, one can
 initialize the config object in the Snakefile:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">snakemake_rules</span> <span class="kn">import</span> <span class="n">SNAKEMAKE_RULES_PATH</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;bio.ngs.align.bwa&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;mem&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;options&#39;</span><span class="p">:</span> <span class="s">&quot;-M&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;bio.ngs.align.bwa&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;mem&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="s2">&quot;-M&quot;</span><span class="p">,</span>
          <span class="p">}</span>
-         <span class="s">&#39;threads&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+         <span class="s1">&#39;threads&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
      <span class="p">}</span>
 <span class="p">}</span>
-<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s">&quot;bio/ngs/align/bwa.rules&quot;</span><span class="p">)</span>
+<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bio/ngs/align/bwa.rules&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Alternatively, the configuration can be put in a yaml-file (e.g.
 <code class="docutils literal"><span class="pre">config.yaml</span></code>):</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">bio.ngs.align.bwa</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">mem</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">options</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">-M</span>
-  <span class="l-Scalar-Plain">threads</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">2</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">bio.ngs.align.bwa</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">mem</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">options</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">-M</span>
+  <span class="l l-Scalar l-Scalar-Plain">threads</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
 </pre></div>
 </div>
 <p>and loaded in the Snakefile via the <code class="docutils literal"><span class="pre">configfile</span></code> directive:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">snakemake_rules</span> <span class="kn">import</span> <span class="n">SNAKEMAKE_RULES_PATH</span>
 
-<span class="n">configfile</span><span class="p">:</span> <span class="s">&quot;config.yaml&quot;</span>
+<span class="n">configfile</span><span class="p">:</span> <span class="s2">&quot;config.yaml&quot;</span>
 
-<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s">&quot;bio/ngs/align/bwa.rules&quot;</span><span class="p">)</span>
+<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bio/ngs/align/bwa.rules&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
