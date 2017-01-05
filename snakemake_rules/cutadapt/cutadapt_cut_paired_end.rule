@@ -1,13 +1,7 @@
 # -*- snakemake -*-
 include: "cutadapt.settings"
 
-config_default = {
-    'cutadapt' : {
-        'paired_end' : {
-            'options' : "",
-        },
-    },
-}
+config_default = {'cutadapt' :{'paired_end' : _cutadapt_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
@@ -31,6 +25,6 @@ rule cutadapt_cut_paired_end:
         read2 = "{prefix}.trimmed" + config['cutadapt']['read2_label'] + "{fastq}",
         log = "{prefix}{fastq}.cutadapt_metrics"
     conda: "env.yaml"
-    threads: 1
+    threads: config['cutadapt']['threads']
     log: "{prefix}{fastq}.cutadapt_metrics"
     shell: "{params.cmd} {params.options} {input.read1} {input.read2} -a {params.threeprime} -A {params.fiveprime} -o {output.read1} -p {output.read2} > {log}"

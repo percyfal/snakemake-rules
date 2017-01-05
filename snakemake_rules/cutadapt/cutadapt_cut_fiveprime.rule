@@ -13,7 +13,7 @@ rule cutadapt_cut_fiveprime:
     output: read = "{prefix}.trimmed{read}{fastq}",
             log = "{prefix}.trimmed{read}{fastq}.cutadapt_metrics"
     conda: "env.yaml"
-    threads: 1
+    threads: config['cutadapt']['threads']
     log: "{prefix}.trimmed{read}{fastq}.cutadapt_metrics"
     shell: "{params.cmd} {params.options} -a {params.fiveprime} {input.read} -o {output.read} > {log}"
 
