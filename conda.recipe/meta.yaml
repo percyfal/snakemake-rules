@@ -3,7 +3,7 @@
 
 package:
   name: {{ name|lower }}
-  version: {{ version }}
+  version: "0.1b.9"
 source:
   fn: snakemake_rules-{{version}}.tar.gz
   url: https://github.com/percyfal/snakemake-rules/archive/0.1-beta.9.tar.gz
