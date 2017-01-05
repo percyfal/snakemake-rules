@@ -2,15 +2,8 @@
 include: "bowtie.settings"
 include: "bowtie_build.rule"
 
-config_default = {
-    'bowtie' : {
-        'align' : {
-            'threads': config['settings']['threads'],
-            'options': '--chunkmbs 200',
-            'runtime' : config['bowtie']['runtime'],
-        },
-    },
-}
+config_default = {'bowtie' :{'align' : _bowtie_config_rule_default.copy()}}
+config_default['bowtie']['align'].update({'options': '--chunkmbs 200'})
 
 update_config(config_default, config)
 config = config_default

@@ -1,15 +1,8 @@
 # -*- snakemake -*-
 include: "blat.settings"
 
-config_default = {
-    'blat': {
-        'faToTwoBit' : {
-            'cmd' : 'faToTwoBit',
-            'options' : "",
-            'runtime' : config['blat']['runtime'],
-        },
-    },
-}
+config_default = {'blat' :{'faToTwoBit' : _blat_config_rule_default.copy()}}
+config_default['blat']['faToTwoBit'].update({'cmd' : BLAT_FATOTWOBIT})
 
 update_config(config_default, config)
 config = config_default
@@ -28,5 +21,5 @@ rule blat_faToTwoBit:
     input: fa = "{prefix}.fa"
     output: twobit = "{prefix}.2bit"
     conda: "env.yaml"
-    threads: 1
+    threads: config['blat']['faToTwoBit']['threads']
     shell: "{params.cmd} {params.options} {input.fa} {output.twobit}"

@@ -2,15 +2,7 @@
 include: "bowtie2.settings"
 include: "bowtie2_build.rule"
 
-config_default = {
-    'bowtie2' : {
-        'align' : {
-            'threads' : config['settings']['threads'],
-            'options' : '',
-            'runtime' : '24:00:00',
-        },
-    },
-}
+config_default = {'bowtie2' :{'align' : _bowtie2_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default

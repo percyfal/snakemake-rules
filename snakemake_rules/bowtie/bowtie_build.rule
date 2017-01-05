@@ -1,15 +1,8 @@
 # -*- snakemake -*-
 include: "bowtie.settings"
 
-config_default = {
-    'bowtie' : {
-        'bowtie_build': {
-            'cmd': 'bowtie-build',
-            'runtime' : config['bowtie']['runtime'],
-            'threads': config['settings']['threads'],
-        },
-    },
-}
+config_default = {'bowtie' :{'bowtie_build' : _bowtie_config_rule_default.copy()}}
+config_default['bowtie']['bowtie_build'].update({'cmd': 'bowtie-build'})
 
 update_config(config_default, config)
 config = config_default
@@ -20,6 +13,6 @@ rule bowtie_build:
             runtime = config['bowtie']['bowtie_build']['runtime'],
     input: config['bowtie']['ref'] if config['bowtie']['ref'] else "{prefix}"
     output: expand("{{prefix}}{ext}", ext=config['bowtie']['build_ext'])
-    threads: 1
+    threads: config['bowtie']['bowtie_build']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {input} {wildcards.prefix}"
