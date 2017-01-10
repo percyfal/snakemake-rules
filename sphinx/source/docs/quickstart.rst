@@ -61,9 +61,9 @@ with the following content:
    import os
    from snakemake_rules import SNAKEMAKE_RULES_PATH
 
-   include: os.path.join(SNAKEMAKE_RULES__PATH, "bio/ngs/align/bwa.rules")
+   include: os.path.join(SNAKEMAKE_RULES__PATH, "bwa/bwa_mem.rule")
 
-will add the rules in `bwa.rules`. If you haven't installed
+will add the ``bwa_mem`` rule. If you haven't installed
 snakemake-rules, you can include the files via urls:
 
 .. code:: python

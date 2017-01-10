@@ -1,8 +1,27 @@
 Changelog
 =========
 
+0.1-beta.10 (2017-01-10)
+------------------------
+
+- Readd merging. [Per Unneberg]
+
+- Add checking for release branch. [Per Unneberg]
+
+- Updating conda version to 0.1-beta.10 (0.1b.10). [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
+
+- Add error checking to deploy. [Per Unneberg]
+
+- Use jinja templates for name and release. [Per Unneberg]
+
+- Update docs for 0.1-beta.10. [Per Unneberg]
+
 0.1-beta.9 (2017-01-05)
 -----------------------
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Updating ChangeLog. [Per Unneberg]
 

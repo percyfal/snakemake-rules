@@ -1,13 +1,13 @@
 {% set name = "snakemake_rules" %}
-{% set version = "0.1b9" %}
+{% set release = "0.1-beta.10" %}
+{% set release_short = "0.1b.10" %}
 
 package:
   name: {{ name|lower }}
-  version: "0.1b.9"
+  version: {{ release_short }}
 source:
-  fn: snakemake_rules-{{version}}.tar.gz
-  url: https://github.com/percyfal/snakemake-rules/archive/0.1-beta.9.tar.gz
-  md5: d9073de71de91bc032d40ffc84714c57
+  git_rev: {{ release }}
+  git_url: https://github.com/percyfal/snakemake-rules
 requirements:
   build:
     - python >=3.3

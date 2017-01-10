@@ -11,7 +11,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 RECIPE_DIR=$DIR/../conda.recipe
 CONDAMETA=$RECIPE_DIR/meta.yaml
 
-
 # a simple help
 if [ "$1" == "-h" ]; then
     usage="$(basename "$0") [-h] -- program to trigger the deployment of releases and devel pkgs
@@ -35,13 +34,27 @@ done
 
 # release tags
 release_short=$( echo $release | sed 's|\([^\^.]*\)\(\^0\)$|\1|g' | sed 's/-alpha/a/g' | sed 's/-beta/b/g' )
+release_branch=release_$release
 
 # main
 if [[ -z "$devel" && ! -z "$release" ]]; then
     echo "You have triggered the release process"
 
+    # First check that tag doesn't exist
+    if git rev-parse $release > /dev/null 2>&1
+    then
+	echo "Tag $release already exists; aborting release"
+	exit 1
+    fi
+    # Then check that release doesn't exist
+    if git rev-parse $release_branch > /dev/null 2>&1
+    then
+	echo "Release branch $release_branch already exists; aborting release"
+	exit 1
+    fi
+    
     # create a new branch
-    git checkout -b release_$release
+    git checkout -b $release_branch
 
     # Add version tag
     git tag -a $release -m "Version $release"
@@ -49,8 +62,8 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
     # CHANGELOG generation
     gitchangelog > $DIR/../ChangeLog
     ret=$?
-    if [ ! -e $DIR/../sphinx/source/docs/releases/$release.rst ]; then ret=0; fi;
-    if [ ! `grep $release $DIR/../sphinx/source/docs/release_notes.rst` ]; then ret=0; fi;
+    if [ ! -e $DIR/../sphinx/source/docs/releases/$release.rst ]; then ret=1; fi;
+    if [ ! `grep $release $DIR/../sphinx/source/docs/release_notes.rst` ]; then ret=1; fi;
     if [ $ret -ne 0 ]; then
         echo "Exiting because ChangeLog generation failed."
         echo "Check you actually have a $DIR/../sphinx/source/docs/releases/<tag>/.rst file."
@@ -61,19 +74,18 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
     git commit -m "Updating ChangeLog."
 
     # conda version number updates
-    # Get latest release for conda
-    sed -i "s/version:.*/version: \"$release_short\"/g" $CONDAMETA
-    sed -i "s/git_rev:.*/git_rev: \"$release\"/g" $CONDAMETA
+    sed -i "s/release = .*/release = \"$release\" %}/g" $CONDAMETA
+    sed -i "s/release_short = .*/release_short = \"$release_short\" %}/g" $CONDAMETA
     git add $CONDAMETA
     echo "Wrote $CONDAMETA"
-    git commit -m "Updating conda version to $release."
+    git commit -m "Updating conda version to $release ($release_short)."
 
     # Merge branch into master and push to origin
     git checkout master
     git pull origin
-    git merge --no-ff release_$release -m "Merge branch release_$release"
+    git merge --no-ff $release_branch -m "Merge branch $release_branch"
     git push origin master
-    git branch -d release_$release
+    git branch -d $release_branch
 
     git tag -a $release -f
     git push origin $release
@@ -81,6 +93,15 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
     git checkout develop
     git merge master
     make -f sphinx/Makefile gh-pages
+
+    # Trigger conda build
+    conda build conda.recipe
+    CONDA_OUTPUT=`conda build conda.recipe/ --output`
+    if [ -e $CONDA_OUTPUT ]; then
+	echo anaconda upload $CONDA_OUTPUT
+    else
+	echo "Failed to upload $CONDA_OUTPUT: $?"
+    fi
 
 elif [[ ! -z "$devel" && -z "$release" ]]; then
     echo "You have triggered the devel build process"
