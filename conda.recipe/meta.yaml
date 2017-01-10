@@ -13,14 +13,14 @@ requirements:
     - python >=3.3
     - setuptools
     - snakemake >=3.4.2
-    - pytest
+    - pytest >=3.0
     - pytest-runner
 
   run:
     - python >=3.3
     - snakemake
     - pyyaml
-    - pytest
+    - pytest >=3.0
 
 test:
   requires:
@@ -30,7 +30,7 @@ test:
 
     # tests
     - coverage
-    - pytest
+    - pytest >=3.0
     - pytest-cov
 
   imports:
