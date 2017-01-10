@@ -120,12 +120,13 @@ elif [[ ! -z "$devel" && -z "$release" ]]; then
     if [[ ! $current_branch == feature* ]] && [[ ! $current_branch == develop ]]; then
 	echo "Branch '$current_branch' is neither the develop or a feature branch; aborting devel build"
 	exit 1
+    else
+	git push origin $current_branch
     fi
 
     # tag it locally
     git tag -a $devel -m "New devel[rc] build $devel."
 
-    
     # and push the tag
     git push origin $devel
     echo "The new devel build was triggered."
