@@ -34,6 +34,7 @@ done
 
 # release tags
 release_short=$( echo $release | sed 's|\([^\^.]*\)\(\^0\)$|\1|g' | sed 's/-alpha/a/g' | sed 's/-beta/b/g' )
+release_branch=release_$release
 
 # main
 if [[ -z "$devel" && ! -z "$release" ]]; then
@@ -45,9 +46,15 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
 	echo "Tag $release already exists; aborting release"
 	exit 1
     fi
+    # Then check that release doesn't exist
+    if git rev-parse $release_branch > /dev/null 2>&1
+    then
+	echo "Release branch $release_branch already exists; aborting release"
+	exit 1
+    fi
     
     # create a new branch
-    git checkout -b release_$release
+    git checkout -b $release_branch
 
     # Add version tag
     git tag -a $release -m "Version $release"
@@ -76,9 +83,9 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
     # Merge branch into master and push to origin
     #git checkout master
     #git pull origin
-    #git merge --no-ff release_$release -m "Merge branch release_$release"
+    #git merge --no-ff $release_branch -m "Merge branch $release_branch"
     #git push origin master
-    #git branch -d release_$release
+    #git branch -d $release_branch
 
     #git tag -a $release -f
     #git push origin $release
