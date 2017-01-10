@@ -92,13 +92,14 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
 
     git checkout develop
     git merge master
+    git push origin develop
     make -f sphinx/Makefile gh-pages
 
     # Trigger conda build
     conda build conda.recipe
     CONDA_OUTPUT=`conda build conda.recipe/ --output`
     if [ -e $CONDA_OUTPUT ]; then
-	echo anaconda upload $CONDA_OUTPUT
+	anaconda upload $CONDA_OUTPUT
     else
 	echo "Failed to upload $CONDA_OUTPUT: $?"
     fi
@@ -107,12 +108,10 @@ elif [[ ! -z "$devel" && -z "$release" ]]; then
     echo "You have triggered the devel build process"
 
     # Check the tag
-    taglist=`git tag --list --sort=version:refname`
-    tagarray=($taglist)
-    lasttag=${tagarray[-1]}
-    if [[ "$lasttag" == "$devel" ]]; then
-	echo "The latest tag detected is $lasttag and you are trying to use the same tag, please bump your dev/rc tag."
-        exit 1
+    if git rev-parse $devel > /dev/null 2>&1
+    then
+	echo "Tag $devel already exists; aborting devel build"
+	exit 1
     fi
 
     # tag it locally

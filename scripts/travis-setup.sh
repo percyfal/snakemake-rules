@@ -29,10 +29,11 @@ DEPS_TEST=$(cat <<EOF | python -
 from conda_build.metadata import MetaData
 print(" ".join([s.replace(" ", "") for s in MetaData("conda.recipe").get_value("test/requires")]))
 EOF
-)
-echo $DEPS_TEST
-
-conda install --yes $DEPS_TEST
+	 )
+if [ $DEPS_TEST ]; then
+    echo Installing $DEPS_TEST
+    conda install --yes $DEPS_TEST
+fi
 
 # Manual install needed
 conda install --yes snakemake
