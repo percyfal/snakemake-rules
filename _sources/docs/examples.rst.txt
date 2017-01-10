@@ -30,7 +30,8 @@ with the following content:
 
    configfile: "config_bwa.yaml"
    
-   include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/align/bwa.rules")
+   include: join(SNAKEMAKE_RULES_PATH, "bwa/bwa_index.rule")
+   include: join(SNAKEMAKE_RULES_PATH, "bwa/bwa_mem.rule")
 
    
 Briefly, in this file we set a **working directory**, load the
@@ -46,7 +47,7 @@ content:
 
 .. code-block:: yaml
 
-   bio.ngs.bwa.align:
+   bwa:
      index: data/chr11.fa
 
 Here, we indicate that the bwa index file ``chr11.fa`` is located in a
@@ -71,8 +72,8 @@ which should generate the following output:
    bwa_mem
 	Run bwa mem
 
-So, by including ``bwa.rules``, we have actually defined three
-`snakemake rules
+So, by including ``bwa_mem.rule`` and ``bwa_index.rule``, we have
+actually defined three `snakemake rules
 <https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-rules>`_.
 The bwa rule has the output suffix ``.bam`` and input suffix
 ``.fastq.gz``. Therefore, we can align the input files by issuing
@@ -204,12 +205,12 @@ below:
 
 .. code-block:: python
 
-   input: config['bio.ngs.qc.picard']['merge_sam']['inputfun']
-   output: merge="{prefix}." + config['bio.ngs.qc.picard']['merge_sam']['label'] + ".bam"
+   input: config['picard']['merge_sam']['inputfun']
+   output: merge="{prefix}." + config['picard']['merge_sam']['label'] + ".bam"
 
 
 The configuration entry
-``config['bio.ngs.qc.picard']['merge_sam']['inputfun']`` should be set
+``config['picard']['merge_sam']['inputfun']`` should be set
 to the function in question. There is one wildcard ``prefix`` which in
 the function is accessible through ``wildcards.prefix``.
 
@@ -224,7 +225,7 @@ file names and sets the relevant configuration section:
        return [wildcards.prefix + "1.bam", wildcards.prefix + "2.bam"] 
 
 
-   config = {'bio.ngs.qc.picard': {'merge_sam': {'inputfun': merge_inputs}}}
+   config = {'picard': {'merge_sam': {'inputfun': merge_inputs}}}
 
 
 See the test file for full examples.

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Examples &#8212; snakemake_rules 0.1-beta.9 documentation</title>
+    <title>Examples &#8212; snakemake_rules 0.1-beta.10 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1-beta.9',
+        VERSION:     '0.1-beta.10',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,7 +58,7 @@
         </button>
 
         <a class="navbar-brand" href="../index.html">snakemake_rules</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.9</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.10</b></span>
       </div>
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
@@ -107,6 +107,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="release_notes.html#pre-releases">Pre-releases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.10.html">0.1-beta.10 (Jan 10 2017)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.9.html">0.1-beta.9 (Jan 5 2017)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.8.html">0.1-beta.8 (Nov 30 2016)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.7.html">0.1-beta.7 (Nov 23 2016)</a></li>
@@ -219,7 +220,8 @@ with the following content:</p>
 
 <span class="n">configfile</span><span class="p">:</span> <span class="s2">&quot;config_bwa.yaml&quot;</span>
 
-<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bio/ngs/align/bwa.rules&quot;</span><span class="p">)</span>
+<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bwa/bwa_index.rule&quot;</span><span class="p">)</span>
+<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bwa/bwa_mem.rule&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Briefly, in this file we set a <strong>working directory</strong>, load the
@@ -231,7 +233,7 @@ directory here, we can place the Snakefile anywhere we like; the
 commands will still be executed in the working directory.</p>
 <p>Create the configuration file <code class="docutils literal"><span class="pre">config_bwa.yaml</span></code> with the following
 content:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">bio.ngs.bwa.align</span><span class="p p-Indicator">:</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">bwa</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">index</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">data/chr11.fa</span>
 </pre></div>
 </div>
@@ -252,8 +254,8 @@ directory also contains a pair of sequence input files,
      <span class="n">Run</span> <span class="n">bwa</span> <span class="n">mem</span>
 </pre></div>
 </div>
-<p>So, by including <code class="docutils literal"><span class="pre">bwa.rules</span></code>, we have actually defined three
-<a class="reference external" href="https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-rules">snakemake rules</a>.
+<p>So, by including <code class="docutils literal"><span class="pre">bwa_mem.rule</span></code> and <code class="docutils literal"><span class="pre">bwa_index.rule</span></code>, we have
+actually defined three <a class="reference external" href="https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-rules">snakemake rules</a>.
 The bwa rule has the output suffix <code class="docutils literal"><span class="pre">.bam</span></code> and input suffix
 <code class="docutils literal"><span class="pre">.fastq.gz</span></code>. Therefore, we can align the input files by issuing</p>
 <div class="code shell highlight-default"><div class="highlight"><pre><span></span>$ snakemake data/test.bam
@@ -360,12 +362,12 @@ analysis); the rule needs to generate file names that are produced by
 some upstream rule.</p>
 <p>The <code class="docutils literal"><span class="pre">input</span></code> and <code class="docutils literal"><span class="pre">output</span></code> section of <code class="docutils literal"><span class="pre">picard_merge_sam</span></code> is shown
 below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bio.ngs.qc.picard&#39;</span><span class="p">][</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">][</span><span class="s1">&#39;inputfun&#39;</span><span class="p">]</span>
-<span class="n">output</span><span class="p">:</span> <span class="n">merge</span><span class="o">=</span><span class="s2">&quot;{prefix}.&quot;</span> <span class="o">+</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bio.ngs.qc.picard&#39;</span><span class="p">][</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.bam&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;picard&#39;</span><span class="p">][</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">][</span><span class="s1">&#39;inputfun&#39;</span><span class="p">]</span>
+<span class="n">output</span><span class="p">:</span> <span class="n">merge</span><span class="o">=</span><span class="s2">&quot;{prefix}.&quot;</span> <span class="o">+</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;picard&#39;</span><span class="p">][</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.bam&quot;</span>
 </pre></div>
 </div>
 <p>The configuration entry
-<code class="docutils literal"><span class="pre">config['bio.ngs.qc.picard']['merge_sam']['inputfun']</span></code> should be set
+<code class="docutils literal"><span class="pre">config['picard']['merge_sam']['inputfun']</span></code> should be set
 to the function in question. There is one wildcard <code class="docutils literal"><span class="pre">prefix</span></code> which in
 the function is accessible through <code class="docutils literal"><span class="pre">wildcards.prefix</span></code>.</p>
 <p>Suppose for instance we have a merge target <code class="docutils literal"><span class="pre">data/s.merge.bam</span></code> that
@@ -376,7 +378,7 @@ file names and sets the relevant configuration section:</p>
     <span class="k">return</span> <span class="p">[</span><span class="n">wildcards</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;1.bam&quot;</span><span class="p">,</span> <span class="n">wildcards</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;2.bam&quot;</span><span class="p">]</span>
 
 
-<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bio.ngs.qc.picard&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;inputfun&#39;</span><span class="p">:</span> <span class="n">merge_inputs</span><span class="p">}}}</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;picard&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;inputfun&#39;</span><span class="p">:</span> <span class="n">merge_inputs</span><span class="p">}}}</span>
 </pre></div>
 </div>
 <p>See the test file for full examples.</p>

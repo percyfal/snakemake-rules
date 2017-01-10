@@ -49,7 +49,7 @@ Features
 
    .. code-block:: python
 
-      include: "https://raw.githubusercontent.com/percyfal/snakemake-rules/master/snakemake_rules/bio/ngs/align/bwa.rules"
+      include: "https://raw.githubusercontent.com/percyfal/snakemake-rules/master/snakemake_rules/bwa/bwa_mem.rule"
 
 
 
