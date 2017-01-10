@@ -21,7 +21,7 @@ branches:
   only:
     - master
     - develop
-    - feature/.+
+    - /^feature.*$/
     - /^\d+.\d+.\d+$/
     - /^\d+.\d+.\d+dev\d+$/
     - /^\d+.\d+.\d+alpha\.\d+$/
