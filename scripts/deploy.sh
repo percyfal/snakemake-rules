@@ -56,12 +56,15 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
     fi
     
     # create a new branch
+    echo "Creating release branch $release_branch..."
     git checkout -b $release_branch
 
     # Add version tag
+    echo "Adding version tag $release..."
     git tag -a $release -m "Version $release"
 
     # CHANGELOG generation
+    echo "Updating ChangeLog..."
     gitchangelog > $DIR/../ChangeLog
     ret=$?
     if [ ! -e $DIR/../sphinx/source/docs/releases/$release.rst ]; then ret=1; fi;
@@ -83,18 +86,22 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
     git commit -m "Updating conda version to $release ($release_short)."
 
     # Merge branch into master and push to origin
+    echo "Merging release branch $release_branch into master..."
     git checkout master
     git pull origin
     git merge --no-ff $release_branch -m "Merge branch $release_branch"
     git push origin master
     git branch -d $release_branch
 
+    echo "Adding release tag $release..."
     git tag -a $release -f
     git push origin $release
 
+    echo "Merging changes into develop..."
     git checkout develop
     git merge master
     git push origin develop
+    echo "Building sphinx documentation..."
     make -f sphinx/Makefile gh-pages
 
     # Trigger conda build
@@ -121,17 +128,23 @@ elif [[ ! -z "$devel" && -z "$release" ]]; then
 	echo "Branch '$current_branch' is neither the develop or a feature branch; aborting devel build"
 	exit 1
     else
+	echo "Pushing $current_branch to origin..."
 	git push origin $current_branch
     fi
 
     # tag it locally
+    echo "Adding tag $devel..."
     git tag -a $devel -m "New devel[rc] build $devel."
 
     # and push the tag
+    echo "Pushing $devel to origin..."
     git push origin $devel
-    echo "The new devel build was triggered."
+    echo "Making the sphinx dev documentation..."
     make -f sphinx/Makefile gh-pages-dev
 
+    # checkout the current branch
+    echo "Switching back to local original branch $current_branch"
+    git checkout $current_branch
 else
     echo "You have to pass a -d tag (dev build) OR -r tag for release."
     echo "Run ./deploy.sh -h to get some more help with the args to pass."
