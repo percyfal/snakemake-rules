@@ -81,18 +81,18 @@ if [[ -z "$devel" && ! -z "$release" ]]; then
     git commit -m "Updating conda version to $release ($release_short)."
 
     # Merge branch into master and push to origin
-    #git checkout master
-    #git pull origin
-    #git merge --no-ff $release_branch -m "Merge branch $release_branch"
-    #git push origin master
-    #git branch -d $release_branch
+    git checkout master
+    git pull origin
+    git merge --no-ff $release_branch -m "Merge branch $release_branch"
+    git push origin master
+    git branch -d $release_branch
 
-    #git tag -a $release -f
-    #git push origin $release
+    git tag -a $release -f
+    git push origin $release
 
-    #git checkout develop
-    #git merge master
-    #make -f sphinx/Makefile gh-pages
+    git checkout develop
+    git merge master
+    make -f sphinx/Makefile gh-pages
 
     # Trigger conda build
     conda build conda.recipe
