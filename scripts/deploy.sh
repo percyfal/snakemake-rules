@@ -10,6 +10,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Variables
 RECIPE_DIR=$DIR/../conda.recipe
 CONDAMETA=$RECIPE_DIR/meta.yaml
+# Current branch
+current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 # a simple help
 if [ "$1" == "-h" ]; then
@@ -114,9 +116,16 @@ elif [[ ! -z "$devel" && -z "$release" ]]; then
 	exit 1
     fi
 
+    # Push the current branch; should be develop or a feature branch
+    if [[ ! $current_branch == feature* ]] && [[ ! $current_branch == develop ]]; then
+	echo "Branch '$current_branch' is neither the develop or a feature branch; aborting devel build"
+	exit 1
+    fi
+
     # tag it locally
     git tag -a $devel -m "New devel[rc] build $devel."
 
+    
     # and push the tag
     git push origin $devel
     echo "The new devel build was triggered."
