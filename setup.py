@@ -52,9 +52,7 @@ scripts = []
 REQUIRES = [
     'snakemake>=3.9.0',
     'pytest',
-    'pytest-cov',
     'pytest-runner',
-    'pytest-xdist',
 ]
 
 _version = versioneer.get_version()
