@@ -30,7 +30,7 @@ from conda_build.metadata import MetaData
 print(" ".join([s.replace(" ", "") for s in MetaData("conda.recipe").get_value("test/requires")]))
 EOF
 	 )
-if [ ! $DEPS_TEST == "" ]; then
+if [ ! "$DEPS_TEST" == "" ]; then
     echo Installing $DEPS_TEST
     conda install --yes $DEPS_TEST
 fi
