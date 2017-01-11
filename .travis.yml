@@ -14,8 +14,9 @@ env:
 
 
 script:
-  - java -version
   - pytest --cov-report=term --cov=tests tests/test_rules.py
+  - java -version
+  - picard
   - pytest -V tests/test_workflows.py
   
 branches:
