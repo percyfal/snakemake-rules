@@ -1,6 +1,6 @@
 {% set name = "snakemake_rules" %}
-{% set release = "0.1-beta.10" %}
-{% set release_short = "0.1b.10" %}
+{% set release = "0.1-beta.11" %}
+{% set release_short = "0.1b.11" %}
 
 package:
   name: {{ name|lower }}
