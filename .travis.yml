@@ -14,9 +14,12 @@ env:
 
 
 script:
-  - pytest --cov-report=term --cov=tests tests/test_rules.py
+  - # pytest --cov-report=term --cov=tests tests/test_rules.py
   - java -version
   - picard
+  - echo $JAVA_HOME
+  - cat `which picard`
+  - which java
   - pytest -V tests/test_workflows.py
   
 branches:
