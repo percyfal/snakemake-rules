@@ -1,6 +1,6 @@
 {% set name = "snakemake_rules" %}
-{% set release = "0.1-beta.10" %}
-{% set release_short = "0.1b.10" %}
+{% set release = "0.1-beta.11" %}
+{% set release_short = "0.1b.11" %}
 
 package:
   name: {{ name|lower }}
@@ -13,22 +13,31 @@ requirements:
     - python >=3.3
     - setuptools
     - snakemake >=3.4.2
-    - pytest
+    - pytest >=3.0
     - pytest-runner
 
   run:
     - python >=3.3
     - snakemake
     - pyyaml
-    - pytest
+    - pytest >=3.0
 
 test:
+  requires:
+    # docs
+    - sphinx >=1.3.1
+    - sphinx-bootstrap-theme
+
+    # tests
+    - coverage
+    - pytest >=3.0
+    - pytest-cov
+
   imports:
     - snakemake_rules
-    
+
 about:
   home: https://github.com/percyfal/snakemake-rules.git
   license: MIT License
 
   summary: 'Library of snakemake rules. The rules can be used as-is without installing snakemakelib itself.'
-  

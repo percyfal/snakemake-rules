@@ -1,24 +1,25 @@
-Examples
+==========
+ Examples
 ==========
 
-snakemake-rules is shipped with some simple tests, including test
-data files and Snakefiles with auxiliary rules to run simple
-pipelines. The following examples are based on the example Snakefiles,
-located in the directory ``snakemake_rules/tests``. In the examples,
-we will use yaml configuration files that are loaded via the
-``configfile`` directive.
+snakemake-rules is shipped with some simple tests, including test data
+files and Snakefiles with auxiliary rules to run simple pipelines. The
+following examples are based on the example Snakefiles, located in the
+``/tests/examples`` subdirectory of the ``snakemake_rules``
+installation directory . In the examples, we will use yaml
+configuration files that are loaded via the command line.
 
 
 Bwa alignment
----------------
+=============
 
 .. note:: To actually run this example requires `bwa
           <http://bio-bwa.sourceforge.net/>`_ and `samtools
           <http://www.htslib.org/>`_.
 
-First, create a `Snakefile
+First, cd to the test directory. It contains a `Snakefile
 <https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-writing-snakefiles>`_
-with the following content:
+called ``Snakefile_regions`` with the following content:
 
 .. code:: python
 
@@ -26,34 +27,31 @@ with the following content:
    from os.path import join
    from snakemake_rules import SNAKEMAKE_RULES_PATH
 
-   workdir: join(SNAKEMAKE_RULES_PATH, "tests")
-
-   configfile: "config_bwa.yaml"
-   
    include: join(SNAKEMAKE_RULES_PATH, "bwa/bwa_index.rule")
    include: join(SNAKEMAKE_RULES_PATH, "bwa/bwa_mem.rule")
+   include: join(SNAKEMAKE_RULES_PATH, "samtools/samtools_sort.rule")
+   include: join(SNAKEMAKE_RULES_PATH, "samtools/samtools_index.rule")
 
+   rule all:
+       input: "s1.sort.bai"
    
-Briefly, in this file we set a **working directory**, load the
-**configuration file** and **include** rules for bwa. In this minimal
-example, we make use of the internal snakemake variable
+Briefly, in this file we **include** rules for bwa and samtools. In
+this minimal example, we make use of the internal snakemake variable
 ``SNAKEMAKE_RULES_PATH`` to locate the rules, but could as well have
 included the rules by supplying the full path. By setting the working
-directory here, we can place the Snakefile anywhere we like; the
-commands will still be executed in the working directory.
+directory via the command line, we can place the Snakefile anywhere we
+like; the commands will still be executed in the working directory.
 
-Create the configuration file ``config_bwa.yaml`` with the following
-content:
+In the same directory there is also the configuration file
+``config_regions.yaml`` with the following content:
 
 .. code-block:: yaml
 
    bwa:
-     index: data/chr11.fa
+     index: ref.fa
 
-Here, we indicate that the bwa index file ``chr11.fa`` is located in a
-directory ``data`` relative to the working directory. The ``data``
-directory also contains a pair of sequence input files,
-``test_1.fastq.gz`` and ``test_2.fastq.gz``.
+Here, we indicate that the bwa index file ``ref.fa`` is located in the
+working directory. 
 
 Now, to see which rules are included, you can type:
 
@@ -66,21 +64,21 @@ which should generate the following output:
 .. code:: shell
 
    bwa_index
-	bwa index a reference
-   samtools_index
-	Run samtools index
+       bwa index a reference
    bwa_mem
-	Run bwa mem
-
-So, by including ``bwa_mem.rule`` and ``bwa_index.rule``, we have
-actually defined three `snakemake rules
-<https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-rules>`_.
+       Run bwa mem
+   samtools_sort
+       Run samtools sort
+   samtools_index
+       Run samtools index
+   all
+    
 The bwa rule has the output suffix ``.bam`` and input suffix
 ``.fastq.gz``. Therefore, we can align the input files by issuing
 
 .. code:: shell
 
-   $ snakemake data/test.bam
+   $ snakemake -d ../data --configfile config_regions.yaml -s Snakefile_regions
 
 Prior to running a command, it is advisable to use the flags ``-n``
 (dry run) and ``-p`` (print commands) to actually see what will
@@ -89,43 +87,46 @@ rerun rules, even if output files should exist. Then,
 
 .. code:: shell
 
-   $ snakemake -n -p -F data/test.bam
+   $ snakemake -s Snakefile_regions -n -p -F s1.bam --configfile config_regions.yaml -d ../data
 
 generates the output
 
 .. code:: shell
 
    rule bwa_index:
-	input: data/chr11.fa
-	output: data/chr11.fa.amb, data/chr11.fa.ann, data/chr11.fa.bwt, data/chr11.fa.pac, data/chr11.fa.sa
-   bwa index data/chr11.fa
+       input: ref.fa
+       output: ref.fa.amb, ref.fa.ann, ref.fa.bwt, ref.fa.pac, ref.fa.sa
+       wildcards: prefix=ref, ext=.fa
+
+   bwa index ref.fa
    rule bwa_mem:
-	input: data/chr11.fa.amb, data/chr11.fa.ann, data/chr11.fa.bwt, data/chr11.fa.pac, data/chr11.fa.sa, data/test_1.fastq.gz, data/test_2.fastq.gz
-	output: data/test.bam
-	log: data/test.log
-   bwa mem -t 1  data/chr11.fa data/test_1.fastq.gz data/test_2.fastq.gz | samtools view -Sb - > data/test.bam
+       input: ref.fa.amb, ref.fa.ann, ref.fa.bwt, ref.fa.pac, ref.fa.sa, s1_2.fastq.gz, s1_1.fastq.gz
+       output: s1.bam
+       log: s1.log
+       wildcards: prefix=s1
+
+   bwa mem -t 1  ref.fa s1_1.fastq.gz s1_2.fastq.gz 2> s1.log |  samtools view -Sb - > s1.bam
    Job counts:
-           count    jobs
-	   1	    bwa_index
-	   1	    bwa_mem
+	   count	jobs
+	   1	bwa_index
+	   1	bwa_mem
 	   2
 
-Consequently, ``bwa index`` will first be run on ``data/chr11.fa``,
-followed by ``bwa mem`` on the input sequence files.
+Consequently, ``bwa index`` will first be run on ``ref.fa``, followed
+by ``bwa mem`` on the input sequence files, and so on.
 
 
 Variant calling
-----------------
+===============
 
-A slightly more complicated example is given in the Snakefile in
-tests. However, the only major difference to the previous example is
-that more applications (rules files) have been included, and a rule
-``all`` has been added:
+A slightly more complicated example is given in the ``Snakefile``.
+However, the only major difference to the previous example is that
+more rules have been included, and there is an  ``all`` rule:
 
 .. code-block:: python
 
    rule all:
-       input: "data/test.sort.rg.dup.realign.recal.annotated.vcf"
+       input: "s1.sort.rg.dup.bcftools.vcf.gz"
 
 By combining suffixes in the right order and defining a desired output
 file, we generate a pipeline on the fly. The workflow can be
@@ -140,44 +141,31 @@ with the following result
 .. graphviz::
 
    digraph snakemake_dag {
-    graph[bgcolor=white, margin=0];
-    node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
-    edge[penwidth=2, color=grey];
-	0[label = "bwa_mem", color = "0.58 0.6 0.85", style="rounded"];
-	1[label = "bwa_index", color = "0.19 0.6 0.85", style="rounded"];
-	2[label = "picard_mark_duplicates", color = "0.59 0.6 0.85", style="rounded"];
-	3[label = "gatk_unified_genotyper", color = "0.41 0.6 0.85", style="rounded"];
-	4[label = "gatk_realigner_target_creator", color = "0.44 0.6 0.85", style="rounded"];
-	5[label = "gatk_print_reads", color = "0.06 0.6 0.85", style="rounded"];
-	6[label = "picard_add_or_replace_read_groups", color = "0.43 0.6 0.85", style="rounded"];
-	7[label = "snpeff_annotate_variants", color = "0.24 0.6 0.85", style="rounded"];
-	8[label = "all", color = "0.09 0.6 0.85", style="rounded"];
-	9[label = "gatk_indel_realigner", color = "0.28 0.6 0.85", style="rounded"];
-	10[label = "picard_build_bam_index", color = "0.30 0.6 0.85", style="rounded"];
-	11[label = "gatk_base_recalibrator", color = "0.52 0.6 0.85", style="rounded"];
-	12[label = "samtools_sort", color = "0.53 0.6 0.85", style="rounded"];
-	1 -> 0
-	6 -> 2
-	10 -> 2
-	5 -> 3
-	2 -> 4
-	10 -> 4
-	9 -> 5
-	11 -> 5
-	12 -> 6
-	3 -> 7
-	7 -> 8
-	2 -> 9
-	4 -> 9
-	2 -> 10
-	6 -> 10
-	9 -> 11
-	0 -> 12
-   }  
-       
+       graph[bgcolor=white, margin=0];
+       node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+       edge[penwidth=2, color=grey];
+	   0[label = "bwa_mem", color = "0.40 0.6 0.85", style="rounded"];
+	   1[label = "samtools_sort", color = "0.13 0.6 0.85", style="rounded"];
+	   2[label = "all", color = "0.00 0.6 0.85", style="rounded"];
+	   3[label = "bam_fofn", color = "0.20 0.6 0.85", style="rounded"];
+	   4[label = "picard_add_or_replace_read_groups", color = "0.53 0.6 0.85", style="rounded"];
+	   5[label = "bwa_index", color = "0.07 0.6 0.85", style="rounded"];
+	   6[label = "bcftools_call", color = "0.33 0.6 0.85", style="rounded"];
+	   7[label = "picard_build_bam_index", color = "0.27 0.6 0.85", style="rounded"];
+	   8[label = "picard_mark_duplicates", color = "0.60 0.6 0.85", style="rounded"];
+	   5 -> 0
+	   0 -> 1
+	   6 -> 2
+	   8 -> 3
+	   1 -> 4
+	   3 -> 6
+	   4 -> 7
+	   7 -> 8
+	   4 -> 8
+   }                 
 
 Merging files
---------------
+=============
 
 Some rules require some additional tinkering; ``picard_merge_sam`` is
 one such rule. It falls into the class of rules that depend on input
@@ -214,8 +202,8 @@ The configuration entry
 to the function in question. There is one wildcard ``prefix`` which in
 the function is accessible through ``wildcards.prefix``.
 
-Suppose for instance we have a merge target ``data/s.merge.bam`` that
-takes as input files ``data/s1.bam`` and ``data/s2.bam``. Then the
+Suppose for instance we have a merge target ``s.merge.bam`` that
+takes as input files ``s1.bam`` and ``s2.bam``. Then the
 following python code defines a function that generates the correct
 file names and sets the relevant configuration section:
 
@@ -226,6 +214,3 @@ file names and sets the relevant configuration section:
 
 
    config = {'picard': {'merge_sam': {'inputfun': merge_inputs}}}
-
-
-See the test file for full examples.

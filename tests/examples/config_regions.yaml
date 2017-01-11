@@ -1,11 +1,2 @@
-bio.ngs.align.bwa:
-  index: data/chr11.fa
-
-bio.ngs.tools.samtools:
-  rules:
-    - samtools_sort
-    - samtools_index
-
-bio.ngs.settings:
-  regions:
-    - chr11
+bwa:
+  index: ref.fa

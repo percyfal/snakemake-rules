@@ -1,8 +1,40 @@
 Changelog
 =========
 
+0.1-beta.11 (2017-01-11)
+------------------------
+
+- Add 0.1-beta.11 release notes. [Per Unneberg]
+
+- Add simple workflow tests. [Per Unneberg]
+
+  Fixes #27
+
+- Add filter rule to filter_script, remove redundant filter option. [Per
+  Unneberg]
+
+- Add dependency for pytest. [Per Unneberg]
+
+- Add missing quotes. [Per Unneberg]
+
+- Use python 3.5. [Per Unneberg]
+
+- Add missing test file. [Per Unneberg]
+
+- Update regular expression for feature. [Per Unneberg]
+
+- Add echo statements. [Per Unneberg]
+
+- Push the current branch. [Per Unneberg]
+
+- Add check for feature and develop branches. [Per Unneberg]
+
+- Fix failing test setup. [Per Unneberg]
+
 0.1-beta.10 (2017-01-10)
 ------------------------
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Readd merging. [Per Unneberg]
 
