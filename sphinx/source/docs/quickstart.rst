@@ -94,14 +94,15 @@ of snakemake.
 Running the tests
 ------------------
 
-snakemake-rules is shipped with some simple tests designed to run
-with `py.test <https://pytest.org>`_. To run the tests, simply issue
+The snakemake-rules source is shipped with some simple tests designed
+to run with `py.test <https://pytest.org>`_. To run the tests, simply
+issue
 
 .. code:: shell
 
-   $ py.test
+   $ pytest
 
-in the snakemake-rules installation directory or
+in the snakemake-rules source directory or
 
 .. code:: shell
 
@@ -113,6 +114,6 @@ installed snakemake-rules in a conda environment, simply run
 
 .. code:: shell
 
-   $ conda install -c bioconda bwa==0.7.12 samtools==1.3
+   $ conda install -c bioconda bwa==0.7.12 samtools==1.3 bcftools==1.3.1 picard==2.7.1
 
 

@@ -31,9 +31,6 @@ called ``Snakefile_regions`` with the following content:
    include: join(SNAKEMAKE_RULES_PATH, "bwa/bwa_mem.rule")
    include: join(SNAKEMAKE_RULES_PATH, "samtools/samtools_sort.rule")
    include: join(SNAKEMAKE_RULES_PATH, "samtools/samtools_index.rule")
-
-   rule all:
-       input: "s1.sort.bai"
    
 Briefly, in this file we **include** rules for bwa and samtools. In
 this minimal example, we make use of the internal snakemake variable

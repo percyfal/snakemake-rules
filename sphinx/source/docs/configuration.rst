@@ -52,16 +52,16 @@ bwa once again:
 
    
 The application is ``bwa``, reflecting the fact that the rule files
- are located in the folder ``bwa``. ``config`` is the global snakemake
- configuration object. The ``config_default`` dictionary is mapped to
- the ``config`` object by use of the function
- :meth:`snakemake.utils.update_config`. First, ``config_default`` is
- updated with the current state of ``config``. Should ``config``
- define any of the parameters in ``config_default``, the latter are
- overwritten; if not, the default values are used. The updated
- ``config_default`` dictionary is then set to ``config``. After the
- configuration has been updated, the ``threads`` parameter above would
- be accessible via ``config['bwa']['threads']``.
+are located in the folder ``bwa``. ``config`` is the global snakemake
+configuration object. The ``config_default`` dictionary is mapped to
+the ``config`` object by use of the function
+:meth:`snakemake.utils.update_config`. First, ``config_default`` is
+updated with the current state of ``config``. Should ``config`` define
+any of the parameters in ``config_default``, the latter are
+overwritten; if not, the default values are used. The updated
+``config_default`` dictionary is then set to ``config``. After the
+configuration has been updated, the ``threads`` parameter above would
+be accessible via ``config['bwa']['threads']``.
 
 Incidentally, this example shows another key idea of the
 configuration, namely that some options inherit from rules files
