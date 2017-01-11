@@ -1,0 +1,11 @@
+0.1-beta.11 (Jan 11 2017)
+=========================
+
+Fix buggy travis test setup
+
+Add simple workflow tests
+
+Issues
+------
+
+Fix #26, #27

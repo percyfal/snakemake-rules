@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Examples &#8212; snakemake_rules 0.1-beta.11dev9 documentation</title>
+    <title>Examples &#8212; snakemake_rules 0.1-beta.11 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1-beta.11dev9',
+        VERSION:     '0.1-beta.11',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,7 +58,7 @@
         </button>
 
         <a class="navbar-brand" href="../index.html">snakemake_rules</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.11dev9</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.11</b></span>
       </div>
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
@@ -107,6 +107,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="release_notes.html#pre-releases">Pre-releases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.11.html">0.1-beta.11 (Jan 11 2017)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.10.html">0.1-beta.10 (Jan 10 2017)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.9.html">0.1-beta.9 (Jan 5 2017)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="releases/0.1-beta.8.html">0.1-beta.8 (Nov 30 2016)</a></li>
@@ -198,104 +199,106 @@
       
   <div class="section" id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<p>snakemake-rules is shipped with some simple tests, including test
-data files and Snakefiles with auxiliary rules to run simple
-pipelines. The following examples are based on the example Snakefiles,
-located in the directory <code class="docutils literal"><span class="pre">snakemake_rules/tests</span></code>. In the examples,
-we will use yaml configuration files that are loaded via the
-<code class="docutils literal"><span class="pre">configfile</span></code> directive.</p>
+<p>snakemake-rules is shipped with some simple tests, including test data
+files and Snakefiles with auxiliary rules to run simple pipelines. The
+following examples are based on the example Snakefiles, located in the
+<code class="docutils literal"><span class="pre">/tests/examples</span></code> subdirectory of the <code class="docutils literal"><span class="pre">snakemake_rules</span></code>
+installation directory . In the examples, we will use yaml
+configuration files that are loaded via the command line.</p>
 <div class="section" id="bwa-alignment">
 <h2>Bwa alignment<a class="headerlink" href="#bwa-alignment" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">To actually run this example requires <a class="reference external" href="http://bio-bwa.sourceforge.net/">bwa</a> and <a class="reference external" href="http://www.htslib.org/">samtools</a>.</p>
 </div>
-<p>First, create a <a class="reference external" href="https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-writing-snakefiles">Snakefile</a>
-with the following content:</p>
+<p>First, cd to the test directory. It contains a <a class="reference external" href="https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-writing-snakefiles">Snakefile</a>
+called <code class="docutils literal"><span class="pre">Snakefile_regions</span></code> with the following content:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- snakemake -*-</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">snakemake_rules</span> <span class="k">import</span> <span class="n">SNAKEMAKE_RULES_PATH</span>
 
-<span class="n">workdir</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">)</span>
-
-<span class="n">configfile</span><span class="p">:</span> <span class="s2">&quot;config_bwa.yaml&quot;</span>
-
 <span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bwa/bwa_index.rule&quot;</span><span class="p">)</span>
 <span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;bwa/bwa_mem.rule&quot;</span><span class="p">)</span>
+<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;samtools/samtools_sort.rule&quot;</span><span class="p">)</span>
+<span class="n">include</span><span class="p">:</span> <span class="n">join</span><span class="p">(</span><span class="n">SNAKEMAKE_RULES_PATH</span><span class="p">,</span> <span class="s2">&quot;samtools/samtools_index.rule&quot;</span><span class="p">)</span>
+
+<span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;s1.sort.bai&quot;</span>
 </pre></div>
 </div>
-<p>Briefly, in this file we set a <strong>working directory</strong>, load the
-<strong>configuration file</strong> and <strong>include</strong> rules for bwa. In this minimal
-example, we make use of the internal snakemake variable
+<p>Briefly, in this file we <strong>include</strong> rules for bwa and samtools. In
+this minimal example, we make use of the internal snakemake variable
 <code class="docutils literal"><span class="pre">SNAKEMAKE_RULES_PATH</span></code> to locate the rules, but could as well have
 included the rules by supplying the full path. By setting the working
-directory here, we can place the Snakefile anywhere we like; the
-commands will still be executed in the working directory.</p>
-<p>Create the configuration file <code class="docutils literal"><span class="pre">config_bwa.yaml</span></code> with the following
-content:</p>
+directory via the command line, we can place the Snakefile anywhere we
+like; the commands will still be executed in the working directory.</p>
+<p>In the same directory there is also the configuration file
+<code class="docutils literal"><span class="pre">config_regions.yaml</span></code> with the following content:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">bwa</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">index</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">data/chr11.fa</span>
+  <span class="l l-Scalar l-Scalar-Plain">index</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ref.fa</span>
 </pre></div>
 </div>
-<p>Here, we indicate that the bwa index file <code class="docutils literal"><span class="pre">chr11.fa</span></code> is located in a
-directory <code class="docutils literal"><span class="pre">data</span></code> relative to the working directory. The <code class="docutils literal"><span class="pre">data</span></code>
-directory also contains a pair of sequence input files,
-<code class="docutils literal"><span class="pre">test_1.fastq.gz</span></code> and <code class="docutils literal"><span class="pre">test_2.fastq.gz</span></code>.</p>
+<p>Here, we indicate that the bwa index file <code class="docutils literal"><span class="pre">ref.fa</span></code> is located in the
+working directory.</p>
 <p>Now, to see which rules are included, you can type:</p>
 <div class="code shell highlight-default"><div class="highlight"><pre><span></span>$ snakemake -l
 </pre></div>
 </div>
 <p>which should generate the following output:</p>
 <div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">bwa_index</span>
-     <span class="n">bwa</span> <span class="n">index</span> <span class="n">a</span> <span class="n">reference</span>
-<span class="n">samtools_index</span>
-     <span class="n">Run</span> <span class="n">samtools</span> <span class="n">index</span>
+    <span class="n">bwa</span> <span class="n">index</span> <span class="n">a</span> <span class="n">reference</span>
 <span class="n">bwa_mem</span>
-     <span class="n">Run</span> <span class="n">bwa</span> <span class="n">mem</span>
+    <span class="n">Run</span> <span class="n">bwa</span> <span class="n">mem</span>
+<span class="n">samtools_sort</span>
+    <span class="n">Run</span> <span class="n">samtools</span> <span class="n">sort</span>
+<span class="n">samtools_index</span>
+    <span class="n">Run</span> <span class="n">samtools</span> <span class="n">index</span>
+<span class="nb">all</span>
 </pre></div>
 </div>
-<p>So, by including <code class="docutils literal"><span class="pre">bwa_mem.rule</span></code> and <code class="docutils literal"><span class="pre">bwa_index.rule</span></code>, we have
-actually defined three <a class="reference external" href="https://bitbucket.org/johanneskoester/snakemake/wiki/Documentation#markdown-header-rules">snakemake rules</a>.
-The bwa rule has the output suffix <code class="docutils literal"><span class="pre">.bam</span></code> and input suffix
+<p>The bwa rule has the output suffix <code class="docutils literal"><span class="pre">.bam</span></code> and input suffix
 <code class="docutils literal"><span class="pre">.fastq.gz</span></code>. Therefore, we can align the input files by issuing</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span>$ snakemake data/test.bam
+<div class="code shell highlight-default"><div class="highlight"><pre><span></span>$ snakemake -d ../data --configfile config_regions.yaml -s Snakefile_regions
 </pre></div>
 </div>
 <p>Prior to running a command, it is advisable to use the flags <code class="docutils literal"><span class="pre">-n</span></code>
 (dry run) and <code class="docutils literal"><span class="pre">-p</span></code> (print commands) to actually see what will
 happen. Optionally, one can add <code class="docutils literal"><span class="pre">-F</span></code> which will force snakemake to
 rerun rules, even if output files should exist. Then,</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span>$ snakemake -n -p -F data/test.bam
+<div class="code shell highlight-default"><div class="highlight"><pre><span></span>$ snakemake -s Snakefile_regions -n -p -F s1.bam --configfile config_regions.yaml -d ../data
 </pre></div>
 </div>
 <p>generates the output</p>
 <div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">bwa_index</span><span class="p">:</span>
-     <span class="nb">input</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span>
-     <span class="n">output</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">amb</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">ann</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">bwt</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">pac</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">sa</span>
-<span class="n">bwa</span> <span class="n">index</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">amb</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">ann</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">bwt</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">pac</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">sa</span>
+    <span class="n">wildcards</span><span class="p">:</span> <span class="n">prefix</span><span class="o">=</span><span class="n">ref</span><span class="p">,</span> <span class="n">ext</span><span class="o">=.</span><span class="n">fa</span>
+
+<span class="n">bwa</span> <span class="n">index</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span>
 <span class="n">rule</span> <span class="n">bwa_mem</span><span class="p">:</span>
-     <span class="nb">input</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">amb</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">ann</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">bwt</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">pac</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">sa</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">test_1</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">test_2</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
-     <span class="n">output</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">bam</span>
-     <span class="n">log</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">log</span>
-<span class="n">bwa</span> <span class="n">mem</span> <span class="o">-</span><span class="n">t</span> <span class="mi">1</span>  <span class="n">data</span><span class="o">/</span><span class="n">chr11</span><span class="o">.</span><span class="n">fa</span> <span class="n">data</span><span class="o">/</span><span class="n">test_1</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span> <span class="n">data</span><span class="o">/</span><span class="n">test_2</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span> <span class="o">|</span> <span class="n">samtools</span> <span class="n">view</span> <span class="o">-</span><span class="n">Sb</span> <span class="o">-</span> <span class="o">&gt;</span> <span class="n">data</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">bam</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">amb</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">ann</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">bwt</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">pac</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">sa</span><span class="p">,</span> <span class="n">s1_2</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span><span class="p">,</span> <span class="n">s1_1</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">s1</span><span class="o">.</span><span class="n">bam</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">s1</span><span class="o">.</span><span class="n">log</span>
+    <span class="n">wildcards</span><span class="p">:</span> <span class="n">prefix</span><span class="o">=</span><span class="n">s1</span>
+
+<span class="n">bwa</span> <span class="n">mem</span> <span class="o">-</span><span class="n">t</span> <span class="mi">1</span>  <span class="n">ref</span><span class="o">.</span><span class="n">fa</span> <span class="n">s1_1</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span> <span class="n">s1_2</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="n">s1</span><span class="o">.</span><span class="n">log</span> <span class="o">|</span>  <span class="n">samtools</span> <span class="n">view</span> <span class="o">-</span><span class="n">Sb</span> <span class="o">-</span> <span class="o">&gt;</span> <span class="n">s1</span><span class="o">.</span><span class="n">bam</span>
 <span class="n">Job</span> <span class="n">counts</span><span class="p">:</span>
-        <span class="n">count</span>    <span class="n">jobs</span>
-        <span class="mi">1</span>        <span class="n">bwa_index</span>
-        <span class="mi">1</span>        <span class="n">bwa_mem</span>
+        <span class="n">count</span>        <span class="n">jobs</span>
+        <span class="mi">1</span>    <span class="n">bwa_index</span>
+        <span class="mi">1</span>    <span class="n">bwa_mem</span>
         <span class="mi">2</span>
 </pre></div>
 </div>
-<p>Consequently, <code class="docutils literal"><span class="pre">bwa</span> <span class="pre">index</span></code> will first be run on <code class="docutils literal"><span class="pre">data/chr11.fa</span></code>,
-followed by <code class="docutils literal"><span class="pre">bwa</span> <span class="pre">mem</span></code> on the input sequence files.</p>
+<p>Consequently, <code class="docutils literal"><span class="pre">bwa</span> <span class="pre">index</span></code> will first be run on <code class="docutils literal"><span class="pre">ref.fa</span></code>, followed
+by <code class="docutils literal"><span class="pre">bwa</span> <span class="pre">mem</span></code> on the input sequence files, and so on.</p>
 </div>
 <div class="section" id="variant-calling">
 <h2>Variant calling<a class="headerlink" href="#variant-calling" title="Permalink to this headline">¶</a></h2>
-<p>A slightly more complicated example is given in the Snakefile in
-tests. However, the only major difference to the previous example is
-that more applications (rules files) have been included, and a rule
-<code class="docutils literal"><span class="pre">all</span></code> has been added:</p>
+<p>A slightly more complicated example is given in the <code class="docutils literal"><span class="pre">Snakefile</span></code>.
+However, the only major difference to the previous example is that
+more rules have been included, and there is an  <code class="docutils literal"><span class="pre">all</span></code> rule:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="nb">all</span><span class="p">:</span>
-    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;data/test.sort.rg.dup.realign.recal.annotated.vcf&quot;</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;s1.sort.rg.dup.bcftools.vcf.gz&quot;</span>
 </pre></div>
 </div>
 <p>By combining suffixes in the right order and defining a desired output
@@ -305,40 +308,28 @@ visualized with the command</p>
 </pre></div>
 </div>
 <p>with the following result</p>
-<img src="../_images/graphviz-f24189af7efeda0b15d59c6ce772c4534fb051d9.png" alt="digraph snakemake_dag {
- graph[bgcolor=white, margin=0];
- node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
- edge[penwidth=2, color=grey];
-     0[label = &quot;bwa_mem&quot;, color = &quot;0.58 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     1[label = &quot;bwa_index&quot;, color = &quot;0.19 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     2[label = &quot;picard_mark_duplicates&quot;, color = &quot;0.59 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     3[label = &quot;gatk_unified_genotyper&quot;, color = &quot;0.41 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     4[label = &quot;gatk_realigner_target_creator&quot;, color = &quot;0.44 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     5[label = &quot;gatk_print_reads&quot;, color = &quot;0.06 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     6[label = &quot;picard_add_or_replace_read_groups&quot;, color = &quot;0.43 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     7[label = &quot;snpeff_annotate_variants&quot;, color = &quot;0.24 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     8[label = &quot;all&quot;, color = &quot;0.09 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     9[label = &quot;gatk_indel_realigner&quot;, color = &quot;0.28 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     10[label = &quot;picard_build_bam_index&quot;, color = &quot;0.30 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     11[label = &quot;gatk_base_recalibrator&quot;, color = &quot;0.52 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     12[label = &quot;samtools_sort&quot;, color = &quot;0.53 0.6 0.85&quot;, style=&quot;rounded&quot;];
-     1 -&gt; 0
-     6 -&gt; 2
-     10 -&gt; 2
-     5 -&gt; 3
-     2 -&gt; 4
-     10 -&gt; 4
-     9 -&gt; 5
-     11 -&gt; 5
-     12 -&gt; 6
-     3 -&gt; 7
-     7 -&gt; 8
-     2 -&gt; 9
-     4 -&gt; 9
-     2 -&gt; 10
-     6 -&gt; 10
-     9 -&gt; 11
-     0 -&gt; 12
+<img src="../_images/graphviz-520af161abc7b5b4e477b0037a6dc9f3512fdf23.png" alt="digraph snakemake_dag {
+    graph[bgcolor=white, margin=0];
+    node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+    edge[penwidth=2, color=grey];
+        0[label = &quot;bwa_mem&quot;, color = &quot;0.40 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        1[label = &quot;samtools_sort&quot;, color = &quot;0.13 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        2[label = &quot;all&quot;, color = &quot;0.00 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        3[label = &quot;bam_fofn&quot;, color = &quot;0.20 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        4[label = &quot;picard_add_or_replace_read_groups&quot;, color = &quot;0.53 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        5[label = &quot;bwa_index&quot;, color = &quot;0.07 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        6[label = &quot;bcftools_call&quot;, color = &quot;0.33 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        7[label = &quot;picard_build_bam_index&quot;, color = &quot;0.27 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        8[label = &quot;picard_mark_duplicates&quot;, color = &quot;0.60 0.6 0.85&quot;, style=&quot;rounded&quot;];
+        5 -&gt; 0
+        0 -&gt; 1
+        6 -&gt; 2
+        8 -&gt; 3
+        1 -&gt; 4
+        3 -&gt; 6
+        4 -&gt; 7
+        7 -&gt; 8
+        4 -&gt; 8
 }" />
 </div>
 <div class="section" id="merging-files">
@@ -370,8 +361,8 @@ below:</p>
 <code class="docutils literal"><span class="pre">config['picard']['merge_sam']['inputfun']</span></code> should be set
 to the function in question. There is one wildcard <code class="docutils literal"><span class="pre">prefix</span></code> which in
 the function is accessible through <code class="docutils literal"><span class="pre">wildcards.prefix</span></code>.</p>
-<p>Suppose for instance we have a merge target <code class="docutils literal"><span class="pre">data/s.merge.bam</span></code> that
-takes as input files <code class="docutils literal"><span class="pre">data/s1.bam</span></code> and <code class="docutils literal"><span class="pre">data/s2.bam</span></code>. Then the
+<p>Suppose for instance we have a merge target <code class="docutils literal"><span class="pre">s.merge.bam</span></code> that
+takes as input files <code class="docutils literal"><span class="pre">s1.bam</span></code> and <code class="docutils literal"><span class="pre">s2.bam</span></code>. Then the
 following python code defines a function that generates the correct
 file names and sets the relevant configuration section:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">merge_inputs</span><span class="p">(</span><span class="n">wildcards</span><span class="p">):</span>
@@ -381,7 +372,6 @@ file names and sets the relevant configuration section:</p>
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;picard&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;merge_sam&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;inputfun&#39;</span><span class="p">:</span> <span class="n">merge_inputs</span><span class="p">}}}</span>
 </pre></div>
 </div>
-<p>See the test file for full examples.</p>
 </div>
 </div>
 
