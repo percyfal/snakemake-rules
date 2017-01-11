@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuration &#8212; snakemake_rules 0.1-beta.11 documentation</title>
+    <title>Configuration &#8212; snakemake_rules 0.1-beta.12dev1 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1-beta.11',
+        VERSION:     '0.1-beta.12dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,7 +58,7 @@
         </button>
 
         <a class="navbar-brand" href="../index.html">snakemake_rules</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.11</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1-beta.12dev1</b></span>
       </div>
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
@@ -241,19 +241,17 @@ bwa once again:</p>
 <span class="n">config</span> <span class="o">=</span> <span class="n">config_default</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>The application is <code class="docutils literal"><span class="pre">bwa</span></code>, reflecting the fact that the rule files</dt>
-<dd>are located in the folder <code class="docutils literal"><span class="pre">bwa</span></code>. <code class="docutils literal"><span class="pre">config</span></code> is the global snakemake
+<p>The application is <code class="docutils literal"><span class="pre">bwa</span></code>, reflecting the fact that the rule files
+are located in the folder <code class="docutils literal"><span class="pre">bwa</span></code>. <code class="docutils literal"><span class="pre">config</span></code> is the global snakemake
 configuration object. The <code class="docutils literal"><span class="pre">config_default</span></code> dictionary is mapped to
 the <code class="docutils literal"><span class="pre">config</span></code> object by use of the function
 <code class="xref py py-meth docutils literal"><span class="pre">snakemake.utils.update_config()</span></code>. First, <code class="docutils literal"><span class="pre">config_default</span></code> is
-updated with the current state of <code class="docutils literal"><span class="pre">config</span></code>. Should <code class="docutils literal"><span class="pre">config</span></code>
-define any of the parameters in <code class="docutils literal"><span class="pre">config_default</span></code>, the latter are
+updated with the current state of <code class="docutils literal"><span class="pre">config</span></code>. Should <code class="docutils literal"><span class="pre">config</span></code> define
+any of the parameters in <code class="docutils literal"><span class="pre">config_default</span></code>, the latter are
 overwritten; if not, the default values are used. The updated
 <code class="docutils literal"><span class="pre">config_default</span></code> dictionary is then set to <code class="docutils literal"><span class="pre">config</span></code>. After the
 configuration has been updated, the <code class="docutils literal"><span class="pre">threads</span></code> parameter above would
-be accessible via <code class="docutils literal"><span class="pre">config['bwa']['threads']</span></code>.</dd>
-</dl>
+be accessible via <code class="docutils literal"><span class="pre">config['bwa']['threads']</span></code>.</p>
 <p>Incidentally, this example shows another key idea of the
 configuration, namely that some options inherit from rules files
 higher up in the file hierarchy. The settings file <code class="docutils literal"><span class="pre">main.settings</span></code>
