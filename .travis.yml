@@ -11,7 +11,7 @@ python:
 env:
   global:
     - MINICONDA_VERSION="latest"
-    - JAVA_HOME=$(dirname $(which java))
+    - JAVA_HOME="$(dirname $(which java))"
 
 
 script:
