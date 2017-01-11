@@ -41,7 +41,4 @@ conda install --yes snakemake
 # Install coveralls
 pip install coveralls
 
-# Set JAVA_HOME
-export JAVA_HOME=$(dirname $(which java))
-
 python setup.py install

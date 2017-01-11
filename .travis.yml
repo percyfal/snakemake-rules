@@ -11,16 +11,14 @@ python:
 env:
   global:
     - MINICONDA_VERSION="latest"
+    - JAVA_HOME=$(dirname $(which java))
 
 
 script:
-  - # pytest --cov-report=term --cov=tests tests/test_rules.py
-  - java -version
-  - picard
   - echo $JAVA_HOME
-  - cat `which picard`
-  - which java
   - pytest -V tests/test_workflows.py
+  - pytest --cov-report=term --cov=tests tests/test_rules.py
+
   
 branches:
   only:
