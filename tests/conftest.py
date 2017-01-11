@@ -178,3 +178,28 @@ def data(tmpdir_factory):
         else:
             p.join(k).mksymlinkto(v)
     return p
+
+##############################
+# Snakefile data
+##############################
+@pytest.fixture(scope="function", autouse=False)
+def snakefile_data(tmpdir_factory):
+    """Setup input data for snakefiles"""
+    p = tmpdir_factory.mktemp('snakefile_data')
+    data = abspath(join(dirname(__file__), "data"))
+    p.join("ref.fa").mksymlinkto(join(data, "ref.fa"))
+    p.join("s1_1.fastq.gz").mksymlinkto(join(data, "s1_1.fastq.gz"))
+    p.join("s1_2.fastq.gz").mksymlinkto(join(data, "s1_2.fastq.gz"))
+    
+    path = abspath(join(dirname(__file__), "examples"))
+    config = join(path, "config.yaml")
+    snakefile = join(path, "Snakefile")
+    p.join("config2.yaml").mksymlinkto(config)
+    p.join("Snakefile2").mksymlinkto(snakefile)
+
+    config = join(path, "config_regions.yaml")
+    snakefile = join(path, "Snakefile_regions")
+    p.join("config1.yaml").mksymlinkto(config)
+    p.join("Snakefile1").mksymlinkto(snakefile)
+
+    return p

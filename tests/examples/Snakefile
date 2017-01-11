@@ -3,28 +3,36 @@ from os.path import join
 from snakemake.utils import set_temporary_output, update_config
 from snakemake_rules import SNAKEMAKE_RULES_PATH
 
-workdir: join(SNAKEMAKE_RULES_PATH, "tests")
+def _add_rg(wildcards):
+    current_sample = wildcards.prefix
+    rg = {'ID': current_sample,
+          'SM': current_sample,
+          'LIB': 'lib',
+          'PU': 'pu',
+          'PL': 'Illumina'
+    }
+    rg_str = "RGID={ID} RGSM={SM} RGLB={LIB} RGPL={PL} RGPU={PU}".format(**rg)
+    logger.info("setting read group information to " + rg_str)
+    return rg_str
 
-def merge_inputs(wildcards):
-    return [wildcards.prefix + "1.bam", wildcards.prefix + "2.bam"]
 
-config = {'bio.ngs.qc.picard': {'merge_sam': {'inputfun': merge_inputs}}}
-
-configfile: join(SNAKEMAKE_RULES_PATH, "tests", "config.yaml")
+config.update({'picard':{'add_or_replace_read_groups': {'rgfun': _add_rg}}})
 
 rule all:
-    input: "data/test.sort.rg.dup.realign.recal.annotated.vcf"
+    input: "s1.sort.rg.dup.bcftools.vcf.gz"
+
+rule bam_fofn:
+    input: "s1.sort.rg.dup.bam"
+    output: "s1.sort.rg.dup.bam.fofn"
+    shell: "echo '{input}' > {output}"
 
 
-include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/align/bwa.rules")
-include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/align/star.rules")
-include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/samtools.rules")
-include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/bamtools.rules")
-include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/tools/gatk.rules")
-include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/qc/picard.rules")
-include: join(SNAKEMAKE_RULES_PATH, "bio/ngs/variation/snpeff.rules")
+include: join(SNAKEMAKE_RULES_PATH, "bwa/bwa_index.rule")
+include: join(SNAKEMAKE_RULES_PATH, "bwa/bwa_mem.rule")
+include: join(SNAKEMAKE_RULES_PATH, "samtools/samtools_sort.rule")
+include: join(SNAKEMAKE_RULES_PATH, "bcftools/bcftools_call.rule")
+include: join(SNAKEMAKE_RULES_PATH, "picard/picard_add_or_replace_read_groups.rule")
+include: join(SNAKEMAKE_RULES_PATH, "picard/picard_mark_duplicates.rule")
+include: join(SNAKEMAKE_RULES_PATH, "picard/picard_build_bam_index.rule")
 
 set_temporary_output(*[workflow.get_rule(x) for x in config['settings']['temporary_rules']])
-
-
-ruleorder: snpeff_annotate_variants > gatk_unified_genotyper

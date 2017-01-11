@@ -1,29 +1,16 @@
+ngs.settings:
+  db:
+    ref: ref.fa
+
 settings:
   temporary_rules:
     - bwa_index
     - bwa_mem
+    - samtools_sort
+    - bam_fofn
+    - picard_add_or_replace_read_groups
 
-bio.ngs.align.bwa:
-  index: data/chr11.fa
+bwa:
   mem:
     options: -M
   threads: 2
-
-bio.ngs.align.star:
-  ref: data/chr11.fa
-  index: data/Genome
-  rules:
-    - star_index
-    - star_align_pe
-    - star_align_log
-
-bio.ngs.tools.samtools:
-  rules:
-    - samtools_sort
-    - samtools_index
-
-bio.ngs.qc.picard:
-  rules:
-    - picard_build_bam_index
-    - picard_mark_duplicates
-    - picard_merge_sam
