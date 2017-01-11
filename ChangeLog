@@ -1,8 +1,39 @@
 Changelog
 =========
 
+0.1 (2017-01-11)
+----------------
+
+- Add release notes for 0.1. [Per Unneberg]
+
+- Update JAVA_HOME statement. [Per Unneberg]
+
+- Add JAVA_HOME to .travis.yml. [Per Unneberg]
+
+- Add JAVA_HOME. [Per Unneberg]
+
+- Add some debugging statements. [Per Unneberg]
+
+- Add picard statement. [Per Unneberg]
+
+- Add java version output. [Per Unneberg]
+
+- Separate rules and workflow tests. [Per Unneberg]
+
+- Add workflow dependencies to conda meta. [Per Unneberg]
+
+- Add workflow dependencies. [Per Unneberg]
+
+- Add statement on resources, add dependencies. [Per Unneberg]
+
+- Minor documentation fixes. [Per Unneberg]
+
 0.1-beta.11 (2017-01-11)
 ------------------------
+
+- Updating conda version to 0.1-beta.11 (0.1b.11). [Per Unneberg]
+
+- Updating ChangeLog. [Per Unneberg]
 
 - Add 0.1-beta.11 release notes. [Per Unneberg]
 
