@@ -1,6 +1,9 @@
 Additional resources
 =====================
 
+.. note:: This information is currently slightly outdated as the
+          libraries are being reworked.
+
 `snakemakelib-core <http://percyfal.github.io/snakemakelib-core>`_
 -----------------------------------------------------------------------------
 
