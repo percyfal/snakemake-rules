@@ -13,8 +13,8 @@ rule bedtools_min_genomecov_bam:
     The minimum coverage is defined by the mincov wildcard in the
     output file name.
     """
-    params: cmd = BEDTOOLS_GENOMECOVERAGEBED,
-            mergecmd = BEDTOOLS_MERGE,
+    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_GENOMECOVERAGEBED]),
+            mergecmd = " ".join([BEDTOOLS, BEDTOOLS_MERGE]),
             options=config['bedtools']['min_genomecov_bam']['options'],
             runtime=config['bedtools']['min_genomecov_bam']['runtime'],
     input: bam = "{prefix}.bam"

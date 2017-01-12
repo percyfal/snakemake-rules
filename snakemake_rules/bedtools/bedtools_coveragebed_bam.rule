@@ -12,7 +12,7 @@ rule bedtools_coveragebed_bam:
 
     Input: {prefix}.bam; output: {prefix}.coverage
     """
-    params: cmd = BEDTOOLS_COVERAGEBED,
+    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_COVERAGEBED]),
             options=config['bedtools']['coveragebed_bam']['options'],
             runtime = config['bedtools']['coveragebed_bam']['runtime'],
     input: a = "{prefix}.bam", b = config['bedtools']['coveragebed_bam']['bfile']

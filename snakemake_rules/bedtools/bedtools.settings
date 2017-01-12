@@ -2,11 +2,12 @@
 include: '../ngs.settings'
 
 # Programs
-BEDTOOLS_BAMTOBED = "bamToBed"
-BEDTOOLS_COVERAGEBED = "coverageBed"
-BEDTOOLS_GENOMECOVERAGEBED = "genomeCoverageBed"
-BEDTOOLS_INTERSECTBED = "intersectBed"
-BEDTOOLS_MERGE = "mergeBed"
+BEDTOOLS = "bedtools"
+BEDTOOLS_BAMTOBED = "bamtobed"
+BEDTOOLS_COVERAGEBED = "coverage"
+BEDTOOLS_GENOMECOVERAGEBED = "genomecov"
+BEDTOOLS_INTERSECTBED = "intersect"
+BEDTOOLS_MERGE = "merge"
 
 config_default = { 
     'bedtools' : {
