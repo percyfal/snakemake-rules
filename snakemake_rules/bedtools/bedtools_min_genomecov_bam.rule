@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+include: "bedtools.settings"
+
+config_default = {'bedtools' :{'min_genomecov_bam' : _bedtools_config_rule_default.copy()}}
+
+update_config(config_default, config)
+config = config_default
+
+
+rule bedtools_min_genomecov_bam:
+    """bedtools: extract regions with minimum coverage from bam file
+
+    The minimum coverage is defined by the mincov wildcard in the
+    output file name.
+    """
+    params: cmd = BEDTOOLS_GENOMECOVERAGEBED,
+            mergecmd = BEDTOOLS_MERGE,
+            options=config['bedtools']['min_genomecov_bam']['options'],
+            runtime=config['bedtools']['min_genomecov_bam']['runtime'],
+    input: bam = "{prefix}.bam"
+    output: bed = "{prefix}.{mincov,\d+}.coverage.bedGraph"
+    threads: config['bedtools']['min_genomecov_bam']['threads']
+    conda: "env.yaml"
+    shell: "{params.cmd} {params.options} -bga -ibam {input.bam} | awk -v t={wildcards.mincov} '$4>t' | {params.mergecmd} -i -  > {output.bed}"

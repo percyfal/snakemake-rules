@@ -1,6 +1,8 @@
 bcftools:
   bcftools_call_targets: s1.bcftools.1.vcf.gz
   bcftools_index: s1.vcf.gz.csi
+bedtools:
+  bedtools_min_genomecov_bam: s1.10.coverage.bedGraph
 cutadapt:
   cutadapt_cut_fiveprime: s1.trimmed_1.fastq.gz
   cutadapt_cut_threeprime: s1.trimmed_1.fastq.gz

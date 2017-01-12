@@ -3,9 +3,10 @@ include: '../ngs.settings'
 
 # Programs
 BEDTOOLS_BAMTOBED = "bamToBed"
-BEDTOOLS_GENOMECOVERAGEBED = "genomeCoverageBed"
 BEDTOOLS_COVERAGEBED = "coverageBed"
+BEDTOOLS_GENOMECOVERAGEBED = "genomeCoverageBed"
 BEDTOOLS_INTERSECTBED = "intersectBed"
+BEDTOOLS_MERGE = "mergeBed"
 
 config_default = { 
     'bedtools' : {
@@ -24,6 +25,7 @@ update_config(config_default, config)
 config = config_default
 
 _bedtools_config_rule_default = {
+    'bfile' : config['bedtools']['bfile'],
     'options' : '',
     'runtime' : config['bedtools']['runtime'],
     'threads' : 1,
