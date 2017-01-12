@@ -23,6 +23,8 @@ pybedtools:
   pybedtools_make_bed_targets: ref.1.bed
 r:
   r_rmarkdown_revealjs: s1.revealjs.html
+samtools:
+  samtools_min_depth: s1.above13.bed
 snpeff:
   snpeff_annotate_variants: s1.annotated.vcf
 ucsc:
