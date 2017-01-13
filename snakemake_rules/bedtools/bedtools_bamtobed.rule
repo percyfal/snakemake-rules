@@ -9,7 +9,7 @@ config = config_default
 
 rule bedtools_bamtobed:
     """Convert a bam file to bed format"""
-    params: cmd = BEDTOOLS_BAMTOBED,
+    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_BAMTOBED]),
             options = config['bedtools']['bamtobed']['options'],
             runtime = config['bedtools']['bamtobed']['runtime'],
     input: "{prefix}.bam"

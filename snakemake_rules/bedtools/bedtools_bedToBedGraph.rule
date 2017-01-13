@@ -11,7 +11,7 @@ config = config_default
 rule bedtools_bedToBedGraph:
     """Convert bed to bedGraph
     """
-    params: cmd = BEDTOOLS_GENOMECOVERAGEBED,
+    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_GENOMECOVERAGEBED]),
             options=config['bedtools']['genomecov']['options'],
             runtime=config['bedtools']['genomecov']['runtime'],
     input: infile = "{prefix}.bed",

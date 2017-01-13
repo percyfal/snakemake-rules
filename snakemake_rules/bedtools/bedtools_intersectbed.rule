@@ -9,7 +9,7 @@ config = config_default
 
 rule bedtools_intersectbed_make_region_baits:
     """Generate overlapping bed file for bait definition file"""
-    params: cmd = BEDTOOLS_INTERSECTBED,
+    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_INTERSECTBED]),
             options = config['bedtools']['intersectbed']['options'],
             runtime = config['bedtools']['intersectbed']['runtime'],
     input: a="{prefix}.region_{gene}.bed", b=config['bedtools']['sequence_capture']['bait_regions']
@@ -20,7 +20,7 @@ rule bedtools_intersectbed_make_region_baits:
 
 rule bedtools_intersectbed_make_region_targets:
     """Generate overlapping bed file for target definition file"""
-    params: cmd = BEDTOOLS_INTERSECTBED,
+    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_INTERSECTBED]),
             options = config['bedtools']['intersectbed']['options'],
             runtime = config['bedtools']['intersectbed']['runtime'],
     input: a="{prefix}.region_{gene}.bed", b=config['bedtools']['sequence_capture']['target_regions']
