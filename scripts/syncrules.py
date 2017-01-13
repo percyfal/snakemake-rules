@@ -13,7 +13,7 @@ logger = logging.getLogger(__file__)
 
 def sync_file(source, dest, dryrun=False):
     """Sync file source to dest"""
-    if not os.path.exists(v):
+    if not os.path.exists(dest):
         if dryrun:
             logger.info("DRY_RUN: Copying rule '{}' to '{}'".format(source, dest))
         else:
@@ -36,6 +36,15 @@ def sync_file(source, dest, dryrun=False):
             else:
                 logger.info("rule '{}' up to date".format(dest))
 
+# Snakemake rules dictionary
+path = SNAKEMAKE_RULES_PATH
+filters = ('.rules', '.rule', '.settings')
+snakemake_rule_dict = {}
+for path, dirs, files in os.walk(path):
+    for f in files:
+        if f.endswith(filters):
+            snakemake_rule_dict[os.path.splitext(os.path.basename(f))[0]] = os.path.join(path, f)
+
 
 parser = argparse.ArgumentParser("Copy/sync rules to a given directory")
 parser.add_argument('Snakefile', help="Snakefile to import")
@@ -57,11 +66,20 @@ except (Exception, BaseException) as ex:
     print_exception(ex, workflow.linemaps)
     success = False
 
-
 # Map the rules included from snakemake_rules
 DEST=args.outdir
-rules = {x:os.path.join(DEST, os.path.relpath(x, SNAKEMAKE_RULES_PATH)) for x in workflow.included if x.startswith(SNAKEMAKE_RULES_PATH)}
 
+included_rules = {x:os.path.join(DEST, os.path.relpath(x, SNAKEMAKE_RULES_PATH)) for x in workflow.included if x.startswith(SNAKEMAKE_RULES_PATH)}
 # Copy rules to outdir
-for k, v in rules.items():
+for k, v in included_rules.items():
     sync_file(k, v, args.dry_run)
+
+workflow_rules = {r.name:r for r in workflow.rules}
+
+leftover_rules = set(workflow_rules.keys()).difference(included_rules.keys())
+for r in leftover_rules:
+    if r in list(snakemake_rule_dict.keys()):
+        dest = os.path.join(DEST, os.path.relpath(snakemake_rule_dict[r], SNAKEMAKE_RULES_PATH))
+        sync_file(snakemake_rule_dict[r], dest, args.dry_run)
+    else:
+        logger.warn("No such rule '{}' in snakemake_rule_dict".format(r))
