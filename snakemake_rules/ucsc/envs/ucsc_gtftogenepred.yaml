@@ -1,4 +1,4 @@
 channels:
   - bioconda
 dependencies:
-  - ucsc-gtftogenepred
+  - ucsc-gtftogenepred>=332

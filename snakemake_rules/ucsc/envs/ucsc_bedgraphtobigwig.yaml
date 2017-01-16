@@ -1,4 +1,4 @@
 channels:
   - bioconda
 dependencies:
-  - ucsc-bedgraphtobigwig
+  - ucsc-bedgraphtobigwig>=332

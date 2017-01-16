@@ -1,4 +1,4 @@
 channels:
   - bioconda
 dependencies:
-  - ucsc-fetchchromsizes
+  - ucsc-fetchchromsizes>=332
