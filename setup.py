@@ -47,7 +47,7 @@ package_path(join(ROOT, 'tests', 'examples', 'config.yaml'))
 package_path(join(ROOT, 'tests', 'examples', 'config_regions.yaml'))
 package_path(join(ROOT, 'tests', 'data'))
 
-scripts = []
+scripts = ["scripts/syncrules.py"]
 
 REQUIRES = [
     'snakemake>=3.9.0',
