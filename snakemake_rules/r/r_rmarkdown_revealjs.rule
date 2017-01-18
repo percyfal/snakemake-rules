@@ -9,10 +9,10 @@ config = config_default
 rule rmarkdown_revealjs:
     """Create revealjs presentation from Rmarkdown"""
     params: runtime = config['r']['rmarkdown_revealjs']['runtime'],
-            xvfb = "" if config['r']['X11'] else "xfvb-run"
+            xvfb = "" if config['r']['X11'] else "xvfb-run"
     input: "{prefix}.Rmd"
     output: "{prefix}{standalone, (|.standalone)}.html"
     threads: config['r']['rmarkdown_revealjs']['threads']
     shell:
-        "if [ \"{wildcards.standalone}\"=\".standalone\" ]; then sed -e \"s/self_contained:\s+false/self_contained: true/\" {input} > {wildcards.prefix}.standalone.Rmd ; fi; "
+        "if [ \"{wildcards.standalone}\" = \".standalone\" ]; then sed -e \"s/self_contained:\s+false/self_contained: true/\" {input} > {wildcards.prefix}.standalone.Rmd ; fi; "
         "{params.xvfb} Rscript -e \"rmarkdown::render('{wildcards.prefix}{wildcards.standalone}.Rmd')\""
