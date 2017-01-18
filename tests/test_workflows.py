@@ -10,8 +10,9 @@ logger = logging.getLogger(__name__)
 
 stderr = None if pytest.config.getoption("--show-workflow-output") else sp.STDOUT
 THREADS = pytest.config.getoption("--threads")
+skip_workflow = any([pytest.config.getoption("--application"), pytest.config.getoption("--rule")])
 
-
+@pytest.mark.skipif(skip_workflow, reason="skipping workflow since --application or --rule passed")
 def test_workflow1(snakefile_data):
     wd = str(snakefile_data)
     snakefile = join(wd, 'Snakefile1')
@@ -20,7 +21,8 @@ def test_workflow1(snakefile_data):
             wd, '--configfile', config, 's1.sort.bai']
     output = sp.check_output(args, stderr=stderr)
 
-    
+
+@pytest.mark.skipif(skip_workflow, reason="skipping workflow since --application or --rule passed")    
 def test_workflow2(snakefile_data):
     wd = str(snakefile_data)
     snakefile = join(wd, 'Snakefile2')

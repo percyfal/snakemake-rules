@@ -74,6 +74,7 @@ def pytest_addoption(parser):
                      help="name of python2 conda environment [default: py2.7]",
                      dest="python2_conda")
     parser.addoption("-A", "--application", action="store",
+                     default=False,
                      help="application to test",
                      dest="application")
     parser.addoption("-T", "--threads", action="store",
@@ -81,7 +82,7 @@ def pytest_addoption(parser):
                      help="number of threads to use",
                      dest="threads")
     parser.addoption("-R", "--rule", action="store",
-                     default=None,
+                     default=False,
                      help="run a specific rule",
                      dest="rule")
 
