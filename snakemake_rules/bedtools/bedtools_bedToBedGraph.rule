@@ -11,11 +11,11 @@ config = config_default
 rule bedtools_bedToBedGraph:
     """Convert bed to bedGraph
     """
-    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_GENOMECOVERAGEBED]),
+    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_GENOMECOV]),
             options=config['bedtools']['genomecov']['options'],
             runtime=config['bedtools']['genomecov']['runtime'],
     input: infile = "{prefix}.bed",
-           chrom = "chrom.sizes"
+           chrom = config['bedtools']['chromsizes']
     output: bedgraph = "{prefix}.bedGraph"
     threads: config['bedtools']['genomecov']['threads']
     conda: "env.yaml"

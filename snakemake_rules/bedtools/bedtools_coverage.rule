@@ -10,7 +10,7 @@ rule bedtools_coverage:
     """Returns the depth and breadth of coverage of features from B
     on the intervals in A.
     """
-    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_COVERAGEBED]),
+    params: cmd = " ".join([BEDTOOLS, BEDTOOLS_COVERAGE]),
             windowcmd = " ".join([BEDTOOLS, BEDTOOLS_MAKEWINDOWS]),
             options=config['bedtools']['coverage']['options'],
             runtime = config['bedtools']['coverage']['runtime'],
