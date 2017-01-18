@@ -14,6 +14,7 @@ applications = [pytest.config.getoption("--application")] if pytest.config.getop
 rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
 THREADS = pytest.config.getoption("--threads")
 
+
 if not set(applications).issubset(pytest.rules.__all__):
     raise Exception("No such application '{}'".format(applications[0]))
 
@@ -103,6 +104,7 @@ def test_snakemake_run(x, data):
     cmdfile = join(str(data), "command.sh")
     with open(cmdfile, "w") as fh:
         fh.write("#!/bin/bash\n")
+        fh.write("PATH={}\n".format(os.environ["PATH"]))
         fh.write("args=$*\n")
         fh.write(" ".join(args) + " ${args}\n")
     make_executable(cmdfile)
