@@ -1,5 +1,6 @@
 # Copyright (C) 2016 by Per Unneberg
 import re
+import os
 from os.path import abspath, dirname, join, basename
 import logging
 import shutil
@@ -34,7 +35,7 @@ for x in applications:
                 continue
         rules.append((x,y))
 
-        
+
 @pytest.mark.parametrize("x", sorted(rules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(rules)])
 def test_snakemake_list(x):
     app, rule = x
@@ -82,6 +83,12 @@ for x in applications:
         slow_rules.append((x,y))
 
 
+# Helper function to make output executable
+def make_executable(path):
+    mode = os.stat(path).st_mode
+    mode |= (mode & 0o444) >> 2    # copy R bits to X
+    os.chmod(path, mode)
+
 @pytest.mark.skipif(not applications, reason="application '{}' in blacklist".format(pytest.config.getoption("--application")))
 @pytest.mark.slow
 @pytest.mark.parametrize("x", sorted(slow_rules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(slow_rules)])
@@ -93,4 +100,11 @@ def test_snakemake_run(x, data):
     args = ['snakemake', '-f', '-s', rule, '-j', THREADS, '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
     if not target == "config":
         args = args + [target]
+    cmdfile = join(str(data), "command.sh")
+    with open(cmdfile, "w") as fh:
+        fh.write("#!/bin/bash\n")
+        fh.write("args=$*\n")
+        fh.write(" ".join(args) + " ${args}\n")
+    make_executable(cmdfile)
+
     output = sp.check_output(args, stderr=stderr)
