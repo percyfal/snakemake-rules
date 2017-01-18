@@ -23,7 +23,7 @@ rule rseqc_geneBody_coverage:
     params: cmd = GENEBODY_COVERAGE,
             options = config['rseqc']['geneBody_coverage']['options'],
             runtime = config['rseqc']['geneBody_coverage']['runtime'],
-    input: bam = "{prefix}.sort.bam", bai = "{prefix}.sort.bam.bai", refgene = config['rseqc']['refgene']
+    input: bam = "{prefix}.sort.bam", bai = "{prefix}.sort.bai", refgene = config['rseqc']['refgene']
     output: txt = "{prefix}_rseqc/geneBody_coverage.geneBodyCoverage.txt"
     threads: config['rseqc']['geneBody_coverage']['threads']
     conda: "env.yaml"
