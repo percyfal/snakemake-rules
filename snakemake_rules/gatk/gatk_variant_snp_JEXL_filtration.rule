@@ -25,7 +25,7 @@ rule gatk_variant_snp_JEXL_filtration:
                 " ".join(["--filterName GATKStandard{e} --filterExpression \"{exp}\"".format(e=exp.split()[0], exp=exp) \
                                 for exp in config['gatk']['variant_snp_JEXL_filtration']['expressions']])
                 ]),
-            quote = "'" if config['gatk']['cmd'].startswith("gatk") else "",
+            quote = "" if config['gatk']['cmd'].startswith("gatk") else "",
             runtime = config['gatk']['variant_snp_JEXL_filtration']['runtime']
     input: vcf = "{prefix}.vcf", ref = config['gatk']['variant_snp_JEXL_filtration']['ref']
     output: vcf = "{prefix}.filteredSNP.vcf"
