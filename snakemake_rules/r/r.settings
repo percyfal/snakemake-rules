@@ -6,6 +6,7 @@ config_default = {
         'cmd' : 'R',
         'script' : 'Rcript',
         'runtime' : "01:00:00",
+        'X11' : True,
     },
 }
 
