@@ -68,8 +68,9 @@ try:
                 if not row['SM'] in _ignored:
                     logger.info("[snakemake_rules.settings]: ignoring sample {SM} in current run".format(**row))
                     _ignored.append(row['SM'])
+    logger.info("[snakemake_rules.settings]: successfully loaded {} entries from '{}'".format(len(config['_sampleinfo']), config['settings']['sampleinfo']))
 except:
-    logger.info("snakemake_rules.settings: no sampleinfo provided; not setting config['_sampleinfo']")
+    logger.info("[snakemake_rules.settings]: no sampleinfo provided; not setting config['_sampleinfo']")
 
 # Add python 2 path if possbile
 try:
