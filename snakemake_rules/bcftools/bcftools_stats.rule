@@ -3,7 +3,6 @@ include: "bcftools.settings"
 include: "../htslib/htslib_bgzip.rule"
 
 config_default = {'bcftools' :{'stats' : _bcftools_config_rule_default.copy()}}
-config_default['bcftools']['stats'].update({'B' : []})
 
 update_config(config_default, config)
 config = config_default
@@ -24,7 +23,7 @@ rule bcftools_stats:
     shell:
         "ref=\"\"; if [[ {input.ref} != \"\" ]]; then ref=\"-F {input.ref}\"; fi;\n"
         "if [[ {wildcards.suffix} == \"fofn\" ]]; then\n"
-        "command=\"{params.cmd} stats {params.options} ${{ref}} $(cat {input.fofn} | tr \"\\n\", \" \") > {output.stats}\"; eval ${{command}};\n"
+        "command=\"{params.cmd} stats {params.options} ${{ref}} $(cat {input.vcf} | tr \"\\n\", \" \") > {output.stats}\"; eval ${{command}};\n"
         "else\n"
         "{params.cmd} stats {params.options} ${{ref}} {input.vcf} > {output.stats}\n"
         "fi"
