@@ -11,6 +11,9 @@ import ast
 import yaml
 from snakemake.parser import parse
 
+# Add helper module
+sys.path.append(os.path.join(os.path.dirname(__file__), 'helpers'))
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -26,7 +29,6 @@ applications = {x:join(RULEDIR, x) for x in os.listdir(RULEDIR) if isdir(join(RU
 rules = {k: [join(RULEDIR, k, x) for x in os.listdir(v) if x.endswith(".rule")] for k,v in applications.items() }
 with open(os.path.join(TESTDIR, "rules2target.yaml")) as fh:
     rules2targets = yaml.load(fh)
-
 
 def make_output(rule, prefix="s1"):
     """Generate output file for rule. Assume target is based on prefix

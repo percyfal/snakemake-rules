@@ -101,12 +101,5 @@ def test_snakemake_run(x, data):
     args = ['snakemake', '-f', '-s', rule, '-j', THREADS, '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
     if not target == "config":
         args = args + [target]
-    cmdfile = join(str(data), "command.sh")
-    with open(cmdfile, "w") as fh:
-        fh.write("#!/bin/bash\n")
-        fh.write("PATH={}\n".format(os.environ["PATH"]))
-        fh.write("args=$*\n")
-        fh.write(" ".join(args) + " ${args}\n")
-    make_executable(cmdfile)
-
+    save_command(join(str(data), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)
