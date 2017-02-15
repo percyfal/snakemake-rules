@@ -10,7 +10,7 @@ config = config_default
 rule rmarkdown_revealjs:
     """Create revealjs presentation from Rmarkdown"""
     params: runtime = config['r']['rmarkdown_revealjs']['runtime'],
-            xvfb = "" if config['r']['X11'] else "xvfb-run"
+            xvfb = "" if config['r']['X11'] else "xvfb-run -a "
     input: rmd = "{prefix}.Rmd",
            css = "{prefix}.css" if config_default['r']['rmarkdown_revealjs']['css'] else []
     output: html = "{prefix}{standalone, (|.standalone)}.html"
