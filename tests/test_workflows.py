@@ -36,3 +36,8 @@ def test_workflow2(snakefile_data):
     save_command(join(str(wd), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)
     
+# loop different 
+def test_samples_include(snakefile_data):
+    wd = str(snakefile_data)
+    snakefile = join(wd, 'Snakefile1')
+    config = join(wd, 'config1.yaml')

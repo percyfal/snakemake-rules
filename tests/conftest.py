@@ -189,7 +189,9 @@ def data(tmpdir_factory):
 def snakefile_data(tmpdir_factory):
     """Setup input data for snakefiles"""
     p = tmpdir_factory.mktemp('snakefile_data')
+    
     data = abspath(join(dirname(__file__), "data"))
+    p.join("sampleinfo.csv").mksymlinkto(join(data, "sampleinfo.csv"))
     p.join("ref.fa").mksymlinkto(join(data, "ref.fa"))
     p.join("s1_1.fastq.gz").mksymlinkto(join(data, "s1_1.fastq.gz"))
     p.join("s1_2.fastq.gz").mksymlinkto(join(data, "s1_2.fastq.gz"))
