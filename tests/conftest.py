@@ -64,26 +64,23 @@ def make_output(rule, prefix="s1"):
 
 # Add option to run slow tests; by default these are turned off
 def pytest_addoption(parser):
-    parser.addoption("--slow", action="store_true",
+    group = parser.getgroup("snakemake_rules", "snakemake rule library")
+    group.addoption("--slow", action="store_true",
                      help="run slow tests", dest="slow")
-    parser.addoption("--slow-only", action="store_true",
+    group.addoption("--slow-only", action="store_true",
                      help="run slow tests only", dest="slow_only")
-    parser.addoption("-V", "--show-workflow-output", action="store_true",
+    group.addoption("-V", "--show-workflow-output", action="store_true",
                      help="show workflow output",
                      dest="show_workflow_output")
-    parser.addoption("-P", "--python2-conda", action="store",
+    group.addoption("-P", "--python2-conda", action="store",
                      default="py2.7",
                      help="name of python2 conda environment [default: py2.7]",
                      dest="python2_conda")
-    parser.addoption("-A", "--application", action="store",
+    group.addoption("-A", "--application", action="store",
                      default=False,
                      help="application to test",
                      dest="application")
-    parser.addoption("-T", "--threads", action="store",
-                     default="1",
-                     help="number of threads to use",
-                     dest="threads")
-    parser.addoption("-R", "--rule", action="store",
+    group.addoption("-R", "--rule", action="store",
                      default=False,
                      help="run a specific rule",
                      dest="rule")
