@@ -24,13 +24,13 @@ s3,pu1,fastq3
 @pytest.fixture(scope="function", autouse=False,
                 params=[None, "sampleinfo", "wrong sampleinfo", "no include"])
 def config(request, sampleinfo):
-    config = {'settings': {'samples': ['s1', 's2'], 'ignore_samples': ['s3']}}
+    config = {'samples': ['s1', 's2'], 'ignore_samples': ['s3'], 'settings': {}}
     if request.param in ["sampleinfo", "no include"]:
         config['settings']['sampleinfo'] = str(sampleinfo)
     if request.param == "wrong sampleinfo":
         config['settings']['sampleinfo'] = "foo.csv"
     if request.param == "no include":
-        config['settings']['samples'] = []
+        config['samples'] = []
     return config, request.param
 
 
@@ -43,6 +43,7 @@ def test_config(config):
     elif param in ["sampleinfo", "no include"]:
         assert conf.get('_sampleinfo') is not None
         assert len(conf['_sampleinfo']) == 3
+        assert len(conf['samples']) == 2
     else:
         assert conf['settings']['sampleinfo'] == 'foo.csv'
     

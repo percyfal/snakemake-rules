@@ -11,9 +11,11 @@ def get_samples(config, logger):
         return
     try:
         ## Get the sample information
-        _include = config['settings'].get('samples', [])
-        _exclude = config['settings'].get('ignore_samples', [])
+        _include = config.get('samples', [])
+        _exclude = config.get('ignore_samples', [])
         _ignored = []
+        if len(_include) == 0:
+            config['samples'] = []
         with open(config['settings']['sampleinfo']) as csvfile:
             dialect = csv.Sniffer().sniff(csvfile.read(1024))
             csvfile.seek(0)
@@ -24,6 +26,7 @@ def get_samples(config, logger):
                 # Only excluded samples listed
                 if len(_include) == 0 and row['SM'] not in _exclude:
                     config['_sampleinfo'].append(row)
+                    config['samples'].append(row['SM'])
                 # include takes precedence over exclude
                 elif row['SM'] in _include:
                     config['_sampleinfo'].append(row)
@@ -33,6 +36,9 @@ def get_samples(config, logger):
                     logger.warning("[snakemake_rules.settings]: {} neither in include or exclude section of sampleinfo file".format(row['SM']))
             for s in _ignored:
                 logger.info("[snakemake_rules.settings]: ignoring sample {} in current run".format(s))
+        if len(_include) == 0:
+            config['samples'] = sorted(list(set(config['samples'])))
+            logger.info("[snakemake_rules.settings]: no samples listed in config; added {} samples to config['samples']".format(len(config['samples'])))
         logger.info("[snakemake_rules.settings]: successfully loaded {} entries from '{}'".format(len(config['_sampleinfo']), config['settings']['sampleinfo']))
     except Exception as e:
         logger.info("[snakemake_rules.settings]: parsing sampleinfo failed; not setting config['_sampleinfo']: {}".format(e))
