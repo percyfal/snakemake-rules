@@ -6,23 +6,20 @@ import psutil
 import subprocess as sp
 
 def get_samples(config, logger):
+    if config['settings'].get('sampleinfo') is None:
+        logger.info("[snakemake_rules.settings]: no sampleinfo provided; not setting config['_sampleinfo']")
+        return
     try:
         ## Get the sample information
+        _include = config['settings'].get('samples', [])
+        _exclude = config['settings'].get('ignore_samples', [])
         _ignored = []
-        _include = []
-        _exclude = []
         with open(config['settings']['sampleinfo']) as csvfile:
-            print(config)
             dialect = csv.Sniffer().sniff(csvfile.read(1024))
             csvfile.seek(0)
             reader = csv.DictReader(csvfile, dialect=dialect)
             rows = [row for row in reader]
             config['_sampleinfo'] = []
-            if config.get('samples', None):
-                _include = config['samples'].get('include', [])
-                _exclude = config['samples'].get('exclude', [])
-            print("Include: ", _include)
-            print("Exclude: ", _exclude)
             for row in rows:
                 # Only excluded samples listed
                 if len(_include) == 0 and row['SM'] not in _exclude:
@@ -37,10 +34,10 @@ def get_samples(config, logger):
             for s in _ignored:
                 logger.info("[snakemake_rules.settings]: ignoring sample {} in current run".format(s))
         logger.info("[snakemake_rules.settings]: successfully loaded {} entries from '{}'".format(len(config['_sampleinfo']), config['settings']['sampleinfo']))
-    except:
-        logger.info("[snakemake_rules.settings]: no sampleinfo provided; not setting config['_sampleinfo']")
+    except Exception as e:
+        logger.info("[snakemake_rules.settings]: parsing sampleinfo failed; not setting config['_sampleinfo']: {}".format(e))
 
-
+        
 def python2_path(config, logger):
     """Add python 2 path if possible"""
     try:
