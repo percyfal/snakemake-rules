@@ -6,13 +6,14 @@ import logging
 import shutil
 import subprocess as sp
 import pytest
+from helpers import utils
 
 logger = logging.getLogger(__name__)
 
 stderr = None if pytest.config.getoption("--show-workflow-output") else sp.STDOUT
 applications = [pytest.config.getoption("--application")] if pytest.config.getoption("--application") else pytest.rules.__all__
 rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
-THREADS = pytest.config.getoption("--threads")
+THREADS = pytest.config.getoption("--ngs-threads", "1")
 
 
 if not set(applications).issubset(pytest.rules.__all__):

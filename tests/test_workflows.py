@@ -6,12 +6,12 @@ import logging
 import shutil
 import subprocess as sp
 import pytest
-from utils import save_command
+from helpers import utils
 
 logger = logging.getLogger(__name__)
 
 stderr = None if pytest.config.getoption("--show-workflow-output") else sp.STDOUT
-THREADS = pytest.config.getoption("--threads")
+THREADS = pytest.config.getoption("--ngs-threads", "1")
 skip_workflow = any([pytest.config.getoption("--application"), pytest.config.getoption("--rule")])
 
     
@@ -22,7 +22,7 @@ def test_workflow1(snakefile_data):
     config = join(wd, 'config1.yaml')
     args = ['snakemake', '-s', snakefile, '-j', THREADS, '-d',
             wd, '--configfile', config, 's1.sort.bai']
-    save_command(join(str(wd), "command.sh"), args)
+    utils.save_command(join(str(wd), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)
 
 
@@ -33,7 +33,7 @@ def test_workflow2(snakefile_data):
     config = join(wd, 'config2.yaml')
     args = ['snakemake', '-s', snakefile, '-j', THREADS, '-d',
             wd, '--configfile', config]#, 'all']
-    save_command(join(str(wd), "command.sh"), args)
+    utils.save_command(join(str(wd), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)
     
 # loop different 
