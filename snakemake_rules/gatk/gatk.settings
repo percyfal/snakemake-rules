@@ -6,6 +6,7 @@ GATK_JAR_PROGRAM = "GenomeAnalysisTK.jar"
 # Subprograms
 BASE_RECALIBRATOR = "BaseRecalibrator"
 CLIP_READS = "ClipReads"
+COMBINE_GVCFS = "CombineGVCFs"
 COMBINE_VARIANTS = 'CombineVariants'
 GENOTYPE_GVCFS = "GenotypeGVCFs"
 HAPLOTYPE_CALLER = 'HaplotypeCaller'
