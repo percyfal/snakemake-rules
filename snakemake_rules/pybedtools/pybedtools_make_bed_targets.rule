@@ -24,7 +24,6 @@ rule pybedtools_make_bed_targets:
     input: targets = "{prefix}.bed"
     output: targets = ["{{prefix}}.{partition}.bed".format(partition=p+1) for p in range(config['pybedtools']['make_bed_targets']['partitions'])]
     threads: 1
-    conda: "env.yaml"
     run:
         regions = pybedtools.BedTool(input.targets)
         p = min(config['pybedtools']['make_bed_targets']['partitions'], len(regions))
