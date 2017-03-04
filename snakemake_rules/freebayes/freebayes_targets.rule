@@ -3,14 +3,12 @@ include: "freebayes.settings"
 include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../samtools/samtools_faidx.rule"
 
-config_default = {
-    'freebayes' : {
-        'options' : '-O',
-    },
-}
+config_default = {'freebayes' : {'freebayes_targets' : _freebayes_config_rule_default.copy()}}
+config_default['freebayes']['freebayes_targets']['options'] = config['freebayes']['options']
 
 update_config(config_default, config)
 config = config_default
+
 
 rule freebayes_targets:
     """Run freebayes on a set of bam files on targets given in bed file.
@@ -23,14 +21,14 @@ rule freebayes_targets:
 
     """
     params: cmd = config['freebayes']['cmd'],
-            options = config['freebayes']['options'],
-            runtime = config['freebayes']['runtime']
+            options = config['freebayes']['freebayes_targets']['options'],
+            runtime = config['freebayes']['freebayes_targets']['runtime']
     input: fofn = "{prefix}.fofn",
-           ref = config['freebayes']['ref'],
-           fai = config['freebayes']['ref'] + ".fai",
+           ref = config['freebayes']['freebayes_targets']['ref'],
+           fai = config['freebayes']['freebayes_targets']['ref'] + ".fai",
            targets = "{prefix}.{targets}.bed"
     output: vcf = "{prefix}.freebayes.{targets}.vcf"
-    threads: config['freebayes']['threads']
+    threads: config['freebayes']['freebayes_targets']['threads']
     shell: "{params.cmd} {params.options} -f {input.ref} -L {input.fofn} -t {input.targets} > {output.vcf}"
 
 

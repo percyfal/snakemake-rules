@@ -15,3 +15,8 @@ config_default = {
 update_config(config_default, config)
 config = config_default
 
+_freebayes_config_rule_default = {
+    'ref': config['freebayes']['ref'],
+    'runtime': config['freebayes']['runtime'],
+    'threads': 1,
+}
