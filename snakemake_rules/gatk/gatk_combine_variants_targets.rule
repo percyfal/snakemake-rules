@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "gatk.settings"
-include: "../pybedtools/pybedtools_make_bed_windows.rule"
+include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../htslib/htslib_bgzip.rule"
 include: "../samtools/samtools_tabix_vcf.rule"
 
