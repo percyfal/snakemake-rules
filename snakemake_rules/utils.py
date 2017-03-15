@@ -17,7 +17,7 @@ def get_samples(config, logger):
         if len(_include) == 0:
             config['samples'] = []
         with open(config['settings']['sampleinfo']) as csvfile:
-            dialect = csv.Sniffer().sniff(csvfile.read(1024))
+            dialect = csv.Sniffer().sniff(csvfile.read(10240), delimiters=[',',';'])
             csvfile.seek(0)
             reader = csv.DictReader(csvfile, dialect=dialect)
             rows = [row for row in reader]
