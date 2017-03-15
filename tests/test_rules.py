@@ -6,13 +6,14 @@ import logging
 import shutil
 import subprocess as sp
 import pytest
+from helpers import utils
 
 logger = logging.getLogger(__name__)
 
 stderr = None if pytest.config.getoption("--show-workflow-output") else sp.STDOUT
 applications = [pytest.config.getoption("--application")] if pytest.config.getoption("--application") else pytest.rules.__all__
 rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
-THREADS = pytest.config.getoption("--threads")
+THREADS = pytest.config.getoption("--ngs-threads", "1")
 
 
 if not set(applications).issubset(pytest.rules.__all__):
@@ -101,12 +102,5 @@ def test_snakemake_run(x, data):
     args = ['snakemake', '-f', '-s', rule, '-j', THREADS, '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
     if not target == "config":
         args = args + [target]
-    cmdfile = join(str(data), "command.sh")
-    with open(cmdfile, "w") as fh:
-        fh.write("#!/bin/bash\n")
-        fh.write("PATH={}\n".format(os.environ["PATH"]))
-        fh.write("args=$*\n")
-        fh.write(" ".join(args) + " ${args}\n")
-    make_executable(cmdfile)
-
+    save_command(join(str(data), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)

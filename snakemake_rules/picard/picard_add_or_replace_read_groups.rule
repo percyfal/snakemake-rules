@@ -48,7 +48,6 @@ rule picard_add_or_replace_read_groups:
             runtime = config['picard']['add_or_replace_read_groups']['runtime']
     input: bam = "{prefix}.bam"
     output: bam = "{prefix}.rg.bam"
-    conda: "env.yaml"
     threads: config['picard']['add_or_replace_read_groups']['threads']
     run:
         shell("{params.cmd} INPUT={input.bam} OUTPUT={output.bam} {params.custom_options} " + config['picard']['add_or_replace_read_groups']['rgfun'](wildcards))

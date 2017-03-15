@@ -3,7 +3,7 @@ include: "freebayes.settings"
 
 config_default = {
     'freebayes' : {
-        'options' : '--gvcf -O',
+        'options' : '',
     },
 }
 

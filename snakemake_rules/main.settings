@@ -6,11 +6,9 @@ import sys
 import os
 from os.path import join, basename, dirname
 import re
-import csv
 import shutil
 import glob
-import subprocess as sp
-import ast
+from utils import get_samples, python2_path
 from snakemake.utils import update_config
 from snakemake.exceptions import RuleException
 from snakemake.logging import logger
@@ -45,43 +43,13 @@ config_default = {
             'python2' : 'py2.7',
         }, 
     },
-    'samples': [],
+    'samples': {'include': [], 'exclude': []},
 }
 
 update_config(config_default, config)
 config = config_default
 
-# Parse sampleinfo if present
-try:
-    ## Get the sample information
-    _ignored = []
-    with open(config['settings']['sampleinfo']) as csvfile:
-        dialect = csv.Sniffer().sniff(csvfile.read(1024))
-        csvfile.seek(0)
-        reader = csv.DictReader(csvfile, dialect=dialect)
-        rows = [row for row in reader]
-        config['_sampleinfo'] = []
-        for row in rows:
-            if config['samples'] and row['SM'] in config['samples'] or len(config['samples']) == 0:
-                config['_sampleinfo'].append(row)
-            else:
-                if not row['SM'] in _ignored:
-                    logger.info("[snakemake_rules.settings]: ignoring sample {SM} in current run".format(**row))
-                    _ignored.append(row['SM'])
-    logger.info("[snakemake_rules.settings]: successfully loaded {} entries from '{}'".format(len(config['_sampleinfo']), config['settings']['sampleinfo']))
-except:
-    logger.info("[snakemake_rules.settings]: no sampleinfo provided; not setting config['_sampleinfo']")
-
-# Add python 2 path if possbile
-try:
-    output = sp.check_output(['conda', 'env', 'list', '--json'])
-    envs = ast.literal_eval(output.decode("utf-8"))
-    py2 = [x for x  in envs['envs'] if re.search("{}{}$".format(os.sep, config['settings']['conda']['python2']), x)][0]
-    py2bin = os.path.join(py2, "bin")
-    os.environ["PATH"] = ":".join([os.environ["PATH"], py2bin])
-    logger.info("[snakemake_rules.settings]: Add python2 bin path '{}' to PATH".format(py2bin))
-except:
-    logger.info("[snakemake_rules.settings]: failed to add conda python2 environment '{py2}' to PATH".format(py2=config['settings']['conda']['python2']))
-
+get_samples(config, logger)
+python2_path(config, logger)
     
 config['_snakemake_rules_version'] = get_versions()

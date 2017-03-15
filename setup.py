@@ -53,6 +53,7 @@ REQUIRES = [
     'snakemake>=3.9.0',
     'pytest',
     'pytest-runner',
+    'psutil',
 ]
 
 _version = versioneer.get_version()

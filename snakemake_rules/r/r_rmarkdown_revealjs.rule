@@ -2,6 +2,7 @@
 include: 'r.settings'
 
 config_default = {'r' :{'rmarkdown_revealjs' : _r_config_rule_default.copy()}}
+config_default['r']['rmarkdown_revealjs']['css'] = False
 
 update_config(config_default, config)
 config = config_default
@@ -9,10 +10,11 @@ config = config_default
 rule rmarkdown_revealjs:
     """Create revealjs presentation from Rmarkdown"""
     params: runtime = config['r']['rmarkdown_revealjs']['runtime'],
-            xvfb = "" if config['r']['X11'] else "xvfb-run"
-    input: "{prefix}.Rmd"
-    output: "{prefix}{standalone, (|.standalone)}.html"
+            xvfb = "" if config['r']['X11'] else "xvfb-run -a "
+    input: rmd = "{prefix}.Rmd",
+           css = "{prefix}.css" if config_default['r']['rmarkdown_revealjs']['css'] else []
+    output: html = "{prefix}{standalone, (|.standalone)}.html"
     threads: config['r']['rmarkdown_revealjs']['threads']
     shell:
-        "if [ \"{wildcards.standalone}\" = \".standalone\" ]; then sed -e \"s/self_contained:\s+false/self_contained: true/\" {input} > {wildcards.prefix}.standalone.Rmd ; fi; "
-        "{params.xvfb} Rscript -e \"rmarkdown::render('{wildcards.prefix}{wildcards.standalone}.Rmd')\""
+        "standalone=\"false\"; if [  \"{wildcards.standalone}\" = \".standalone\" ]; then standalone=\"true\"; fi\n"
+        "{params.xvfb} Rscript -e 'rmarkdown::render(\"{wildcards.prefix}{wildcards.standalone}.Rmd\", output_options=(standalone=\"${{standalone}}\"))'"

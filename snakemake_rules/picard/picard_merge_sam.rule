@@ -61,7 +61,6 @@ rule picard_merge_sam:
             runtime = config['picard']['merge_sam']['runtime']
     input: config['picard']['merge_sam']['inputfun']
     output: merge="{prefix}.merge.bam"
-    conda: "env.yaml"
     threads: config['picard']['merge_sam']['threads']
     run:
       if (len(input) > 1):

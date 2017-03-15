@@ -4,8 +4,10 @@ include: '../ngs.settings'
 # Jar program
 GATK_JAR_PROGRAM = "GenomeAnalysisTK.jar"
 # Subprograms
+APPLY_RECALIBRATION = "ApplyRecalibration"
 BASE_RECALIBRATOR = "BaseRecalibrator"
 CLIP_READS = "ClipReads"
+COMBINE_GVCFS = "CombineGVCFs"
 COMBINE_VARIANTS = 'CombineVariants'
 GENOTYPE_GVCFS = "GenotypeGVCFs"
 HAPLOTYPE_CALLER = 'HaplotypeCaller'
@@ -17,6 +19,7 @@ SELECT_VARIANTS = "SelectVariants"
 UNIFIED_GENOTYPER = "UnifiedGenotyper"
 VARIANT_FILTRATION = "VariantFiltration"
 VARIANT_EVAL = "VariantEval"
+VARIANT_RECALIBRATOR = "VariantRecalibrator"
 
 config_default = { 
     'gatk' : {

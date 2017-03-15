@@ -1,0 +1,9 @@
+# -*- snakemake -*-
+include: "gatk.settings"
+include: "gatk_haplotype_caller_targets.rule"
+include: "../htslib/htslib_bgzip.rule"
+include: "../pybedtools/pybedtools_make_bed_targets.rule"
+include: "../gatk/gatk_combine_gvcfs_targets.rule"
+
+rule gatk_haplotype_caller_combine_target_variants:
+    input: vcf = "{prefix}.haplotype_caller.combined.g.vcf.gz"
