@@ -29,8 +29,10 @@ rule pybedtools_make_bed_windows:
     output: targets = ["{{prefix}}.{partition}.bed".format(partition="window-{}".format(p+1)) for p in range(config['pybedtools']['make_bed_windows']['partitions'])]
     threads: 1
     run:
+        logger.info("loading targets {}".format(input.targets))
         targets = pybedtools.BedTool(input.targets)
         w = config['pybedtools']['make_bed_windows']['window_size']
+        logger.info("creating windows")
         regions = targets.window_maker(w=w, g=input.chrom_sizes).intersect(targets)
         p = config['pybedtools']['make_bed_windows']['partitions']
         try:
@@ -39,12 +41,16 @@ rule pybedtools_make_bed_windows:
             logger.warning("Number of regions smaller than number of partitions: '{} < {}': lower the number of partitions (config['pybedtools']['make_bed_windows']['partitions']) ".format(len(regions), p))
             raise
         ll = [len(x) for x in regions]
+        logger.info("sorting regions")
         ix = sorted(range(len(regions)), key=lambda k: len(regions[k]), reverse=True)
         out = [[regions[i]] for i in ix[0:p]]
+        logger.info("grouping regions")
         for j in ix[p:len(ix)]:
             imin = sorted(range(len(out)), key=lambda k: sum(len(r) for r in out[k]))[0]
             out[imin].append(regions[j])
+        logger.info("printing regions")
         for j in range(p):
+            logger.info("  region {}".format(j))
             b = pybedtools.BedTool("\n".join(str(r) for r in out[j]), from_string=True)
             bedout = pybedtools.BedTool("\n".join(str(r) for r in out[j]), from_string=True)
             bedout.saveas(output.targets[j])
