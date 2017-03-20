@@ -10,6 +10,8 @@ cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['genotype
 
 rule gatk_genotype_gvcfs:
     """Run GATK GenotypeGVCFs"""
+    wildcard_constraints:
+        prefix = ".+[^\.g]$"
     params: cmd = cmd + " -T " + GENOTYPE_GVCFS,
             options = config['gatk']['genotype_gvcfs']['options'],
             runtime = config['gatk']['genotype_gvcfs']['runtime']
