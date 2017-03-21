@@ -15,7 +15,8 @@ rule gatk_genotype_gvcfs:
     params: cmd = cmd + " -T " + GENOTYPE_GVCFS,
             options = config['gatk']['genotype_gvcfs']['options'],
             runtime = config['gatk']['genotype_gvcfs']['runtime']
-    input: fofn = "{prefix}.g.vcf.fofn", ref = config['gatk']['genotype_gvcfs']['ref']
+    input: fofn = "{prefix}.g.vcf.fofn", ref = config['gatk']['genotype_gvcfs']['ref'],
+           dict = re.sub("(\.fasta$|\.fa$)", ".dict", config['gatk']['genotype_gvcfs']['ref'])
     output: "{prefix}.vcf"
     threads: config['gatk']['genotype_gvcfs']['threads']
     conda: "env.yaml"
