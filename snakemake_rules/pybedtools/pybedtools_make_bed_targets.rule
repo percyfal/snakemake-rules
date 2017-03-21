@@ -41,6 +41,3 @@ rule pybedtools_make_bed_targets:
         for j in range(p):
             bedout = pybedtools.BedTool("\n".join(str(r) for r in out[j]), from_string=True)
             bedout.saveas(output.targets[j])
-
-
-localrules: pybedtools_make_bed_targets
