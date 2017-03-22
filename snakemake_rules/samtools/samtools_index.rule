@@ -13,7 +13,7 @@ rule samtools_index:
             cmd = config['samtools']['cmd'],
             runtime = config['samtools']['index']['runtime']
     input: "{prefix}.bam"
-    output: "{prefix}.bai"
+    output: "{prefix}.bam.bai"
     threads: config['samtools']['index']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} index {input} {output}"
