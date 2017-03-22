@@ -11,11 +11,14 @@ cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['genotype
 
 rule gatk_genotype_gvcfs:
     """Run GATK GenotypeGVCFs"""
+    wildcard_constraints:
+        prefix = ".+[^\.g]$"
     params: cmd = cmd + " -T " + GENOTYPE_GVCFS,
             options = config['gatk']['genotype_gvcfs']['options'],
             runtime = config['gatk']['genotype_gvcfs']['runtime'],
             bcftools = config['bcftools']['cmd']
-    input: fofn = "{prefix}.g.vcf.fofn", ref = config['gatk']['genotype_gvcfs']['ref']
+    input: fofn = "{prefix}.g.vcf.fofn", ref = config['gatk']['genotype_gvcfs']['ref'],
+           dict = re.sub("(\.fasta$|\.fa$)", ".dict", config['gatk']['genotype_gvcfs']['ref'])
     output: "{prefix}.vcf.gz"
     threads: config['gatk']['genotype_gvcfs']['threads']
     conda: "env.yaml"

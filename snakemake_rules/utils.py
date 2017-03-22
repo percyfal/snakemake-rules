@@ -1,8 +1,7 @@
-# Copyright (C) 2017 by Per Unneberg
+# -*- coding: utf-8 -*-
 import os
 import csv
 import ast
-import psutil
 import subprocess as sp
 
 def get_samples(config, logger):
