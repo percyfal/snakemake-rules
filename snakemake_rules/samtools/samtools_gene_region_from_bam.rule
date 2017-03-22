@@ -11,7 +11,8 @@ rule samtools_gene_region_from_bam:
     params: options = config['samtools']['gene_region_from_bam']['options'],
             cmd = config['samtools']['cmd'],
             runtime = config['samtools']['gene_region_from_bam']['runtime']
-    input: bam = "{prefix}.bam", bed = "{prefix}.region_{region}.{sfx}.bed"
+    input: bam = "{prefix}.bam", bed = "{prefix}.region_{region}.{sfx}.bed",
+           bai = "{prefix}.bam.bai"
     output: temp("{prefix}.region_{region}.{sfx}.bam")
     threads: config['samtools']['gene_region_from_bam']['threads']
     conda: "env.yaml"

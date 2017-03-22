@@ -1,5 +1,6 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
+include: '../bcftools/bcftools.settings'
 
 config_default = {'gatk' : {'genotype_gvcfs' :  _gatk_config_rule_default.copy()}}
 
@@ -12,10 +13,11 @@ rule gatk_genotype_gvcfs:
     """Run GATK GenotypeGVCFs"""
     params: cmd = cmd + " -T " + GENOTYPE_GVCFS,
             options = config['gatk']['genotype_gvcfs']['options'],
-            runtime = config['gatk']['genotype_gvcfs']['runtime']
+            runtime = config['gatk']['genotype_gvcfs']['runtime'],
+            bcftools = config['bcftools']['cmd']
     input: fofn = "{prefix}.g.vcf.fofn", ref = config['gatk']['genotype_gvcfs']['ref']
-    output: "{prefix}.vcf"
+    output: "{prefix}.vcf.gz"
     threads: config['gatk']['genotype_gvcfs']['threads']
     conda: "env.yaml"
     log: "{prefix}.vcf.log"
-    shell: "{params.cmd} {params.options} -nt {threads} -R {input.ref} -o {output} -log {log} $(cat {input.fofn} | sed -e \"s/^\(.*\)/--variant \\1/g\" | tr \"\\n\", \" \")"
+    shell: "{params.cmd} {params.options} -nt {threads} -R {input.ref} -o /dev/stdout -log {log} $(cat {input.fofn} | sed -e \"s/^\(.*\)/--variant \\1/g\" | tr \"\\n\", \" \") | {params.bcftools} view - -O z -o {output}"
