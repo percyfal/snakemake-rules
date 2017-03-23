@@ -17,15 +17,14 @@ rule gatk_combine_variants:
     filteredINDEL.vcf.
 
     """
+    wildcard_constraints:
+        suffix = "(.vcf|.vcf.gz)"
     params: cmd = cmd + " -T " + COMBINE_VARIANTS,
             options = " ".join(["-R", config['gatk']['combine_variants']['ref'],
                                 config['gatk']['combine_variants']['options']]),
             runtime = config['gatk']['combine_variants']['runtime']
-    input: "{prefix}.snp.filteredSNP.vcf", "{prefix}.indel.filteredINDEL.vcf"
-    output: "{prefix}.variants.vcf"
+    input: "{prefix}.snp.filteredSNP{suffix}", "{prefix}.indel.filteredINDEL{suffix}"
+    output: "{prefix}.variants{suffix}"
     threads: config['gatk']['combine_variants']['threads']
     conda: "env.yaml"
-    run: 
-        inputstr = " ".join(["-V {}".format(x) for x in input])
-        shell("{cmd} {ips} -o {out} {opt}".format(cmd=params.cmd, ips=inputstr, out=output, opt=params.options))
-
+    shell: "command=\"{params.cmd} {params.options} $(echo {input} | sed -e 's/[^ ][^ ]*/-V &/g') -o {output}\"; eval \"${{command}}\""

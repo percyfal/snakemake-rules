@@ -18,11 +18,13 @@ config = config_default
 
 rule gatk_select_indel_variants:
     """Run GATK SelectVariants to select INDELs"""
+    wildcard_constraints:
+        suffix = "(.vcf|.vcf.gz)"
     params: cmd = config['gatk']['cmd'] + " -T " + SELECT_VARIANTS,
             options =  config['gatk']['select_indel_variants']['options'],
             runtime =  config['gatk']['select_indel_variants']['runtime']
-    input: vcf = "{prefix}.vcf", ref = config['gatk']['select_indel_variants']['ref']
-    output: vcf = "{prefix}.indel.vcf"
+    input: vcf = "{prefix}{suffix}", ref = config['gatk']['select_indel_variants']['ref']
+    output: vcf = "{prefix}.indel{suffix}"
     threads: config['gatk']['select_indel_variants']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} -R {input.ref} --variant {input.vcf} --out {output.vcf}"

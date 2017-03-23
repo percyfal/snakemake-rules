@@ -20,6 +20,8 @@ rule gatk_variant_snp_JEXL_filtration:
 
     Perform hard filtering using JEXL expressions.
     """
+    wildcard_constraints:
+        suffix = "(.vcf|.vcf.gz)"
     params: cmd = config['gatk']['cmd'] + " -T " + VARIANT_FILTRATION,
             options = " ".join([
                 " ".join(["--filterName GATKStandard{e} --filterExpression \"{exp}\"".format(e=exp.split()[0], exp=exp) \
@@ -27,8 +29,8 @@ rule gatk_variant_snp_JEXL_filtration:
                 ]),
             quote = "" if config['gatk']['cmd'].startswith("gatk") else "",
             runtime = config['gatk']['variant_snp_JEXL_filtration']['runtime']
-    input: vcf = "{prefix}.vcf", ref = config['gatk']['variant_snp_JEXL_filtration']['ref']
-    output: vcf = "{prefix}.filteredSNP.vcf"
+    input: vcf = "{prefix}{suffix}", ref = config['gatk']['variant_snp_JEXL_filtration']['ref']
+    output: vcf = "{prefix}.filteredSNP{suffix}"
     threads: config['gatk']['variant_snp_JEXL_filtration']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.quote}{params.options}{params.quote} -R {input.ref} --variant {input.vcf} --out {output.vcf}"
