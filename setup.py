@@ -71,6 +71,7 @@ setup(
     scripts=scripts,
     packages=[
         'snakemake_rules',
+        'snakemake_rules.core',
     ],
     package_data={'snakemake_rules': package_data},
     install_requires=REQUIRES,
