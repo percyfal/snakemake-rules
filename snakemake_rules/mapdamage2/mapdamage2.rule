@@ -50,7 +50,6 @@ rule mapdamage2:
             lgdist = "{prefix}_{folder}/lgdistribution.txt",
             #rescale = "{prefix}.rescaled.bam" if rescale else []
     threads: config["mapdamage2"]["threads"]
-    conda: "env.yaml"
     run:
         cmd = "mapDamage " + params.options + " -i " + input.bam + " -r " + input.ref + " -d " + "{}_{}".format(wildcards.prefix, wildcards.folder)
         if rescale:
