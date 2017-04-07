@@ -8,20 +8,24 @@ import yaml
 from snakemake.parser import parse
 
 
-regex_ft = re.compile("\"[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})+(?P<ext>[_\/\.a-zA-Z0-9 ]+)\"[ ]*")
+regex_ft = re.compile("[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})(?P<ext>[_\/\.a-zA-Z0-9 ]+)[ ]*")
 
-def _determine_filetypes(io):
+def determine_filetype(io):
     """Determine filetype from pattern.
     
     Params:
       io (str): string representation of input/output
+
+    Returns:
+      str: file type extension
     """
-    m = regex_ft.findall(io)
+    m = regex_ft.search(io)
     # Regular extensions
     if m:
-        return [x[1].lstrip(".") for x in m]
+        return m.groupdict().get('ext').lstrip(".")
     else:
-        return [None]
+        # Could be just prefix string
+        return None
         
 # Map file extension to file extension fixture; keys are concatenated
 # with | and compiled to regular expression
@@ -41,64 +45,40 @@ re_filetypes = {
 }
 
 
-regex = re.compile("\.({})\"".format("|".join("{}".format(x) for x in sorted(re_filetypes.keys()))))
-regex_input = re.compile("@workflow\.input\(\s+(?P<input>.*)")
-regex_output = re.compile("@workflow.output\(\s+(?P<output>.*)")
-regex_output_list = re.compile("[\"\'][ ]*(?P<target>\{[a-zA-Z_0-9]+\}[\._\/a-zA-Z0-9]+)[\"\']")
+regex = re.compile(r"\.({})\"".format("|".join("{}".format(x) for x in sorted(re_filetypes.keys()))))
+regex_name = re.compile(r"[ ]*name=\'(?P<name>[a-zA-Z_0-9]+)[ ]*'")
+regex_target_list = re.compile(r"[\"\'][ ]*(?P<target>[^=]+)[ ]*[\"\']")
+regex_wildcard_constraints = re.compile(r"(?P<key>[a-zA-z0-9_]+)[ ]*=[ ]*[\"\'](?P<constraint>[^=]+)[ ]*[\"\']")
+# The tacit assumption is that @workflow() always ends with a newline
+regex_workflow = re.compile(r"@workflow\.(?P<block>[a-zA-z0-9]+)\((?P<content>[\s\S]*?)\)\n")
 
 def parse_rule(rule, prefix=None):
-    """Generate input/output information for rule.
+    """Generate information for rule stored in a dictionary.
 
     Params:
       rule (str): file containing a snakemake rule 
     
     Results:
-      input (list): list of input filetypes
+      input (list): list of input files
       output (list): list of output targets
     """
+    d = {}
+    codemap = {'rule': "", 'input': "", 'output': "", 'wildcard_constraints': ""}
     rn = os.path.basename(rule).replace(".rule", "")
     app = os.path.basename(os.path.dirname(rule))
     code, linemake, rulecount = parse(rule)
 
-    # Regular input/output
-    m_out = regex_output.search(code)
-    if not m_out is None:
-        output = regex_output_list.findall(m_out.group("output"))
-    m_in = regex_input.search(code)
-    if not m_in is None: 
-        input = _determine_filetypes(m_in.group("input"))
+    l = regex_workflow.findall(code)
+    for k, v in l:
+        codemap[k] = re.sub("[\n\t ]", "", v)
+
+    m_name = regex_name.search(codemap['rule'])
+    d['name'] = m_name.group("name")
+    d['output'] = regex_target_list.findall(codemap["output"])
+    d['input'] = regex_target_list.findall(codemap["input"])
+    d['wildcard_constraints'] = {k:v for k, v in regex_wildcard_constraints.findall(codemap["wildcard_constraints"])}
 
     # Output missing; return input case if possible
-    if m_out is None and not m_in is None:
-        output = []
-    # else:
-    #     if m_out:
-    #         # Return 
-    
-    return input, output
-        # if m is None:
-        # return input case
-    #     m = regex_input.search(code)
-    #     output = m.group("input")
-    # else:
-    #     output = m.group("output")
-    # m = regex.findall(input)
-    # if m:
-    #     print(m)
-    #     #print(minput.groups())
-    # else:
-    #     print("no match")
-    # m = re.search("\"[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})+(?P<ext>[_\/\.a-zA-Z0-9 ]+)\"", output)
-    # # Regular extension; use first one
-    # if m:
-    #     return "{prefix}{ext}".format(prefix=prefix, ext=m.group("ext"))
-    # # expand case; skip for now
-    # m = re.search("expand", output)
-    # if m:
-    #     return None, None
-    # Config case
-    # m = re.search("[a-zA-Z =]*(?P<config>config[^\)]+)", output)
-    # if m:
-    #     return "config"
-    return None, None
+    return d
+
 
