@@ -8,7 +8,7 @@ import yaml
 from snakemake.parser import parse
 
 regex_name = re.compile(r"[ ]*name=\'(?P<name>[a-zA-Z_0-9]+)[ ]*'")
-regex_target_list = re.compile(r"(?P<key>[a-zA-Z0-9_]+)?=?(?P<target>[^,]+)")
+regex_target_list = re.compile(r"(?P<key>[a-zA-Z0-9_]+=)?(?P<target>[^,]+)")
 regex_wildcard_constraints = re.compile(r"(?P<key>[a-zA-Z0-9_]+)[ ]*=[ ]*[\"\'](?P<constraint>[^=]+)[ ]*[\"\']")
 # The tacit assumption is that @workflow() always ends with a newline
 regex_workflow = re.compile(r"@workflow\.(?P<block>[a-zA-z0-9]+)\((?P<content>[\s\S]*?)\)\n")
@@ -20,7 +20,7 @@ def get_targets(targets):
         if k == "":
             d['_list'].append(v)
         else:
-            d[k] = v
+            d[k.rstrip("=")] = v
     return d
 
 
@@ -42,7 +42,7 @@ def parse_rule(rule, prefix=None):
 
     l = regex_workflow.findall(code)
     for k, v in l:
-        codemap[k] = re.sub("[\n ]", "", v)
+        codemap[k] = re.sub("[\t\n ]", "", v)
 
     m_name = regex_name.search(codemap['rule'])
     d['name'] = m_name.group("name")
