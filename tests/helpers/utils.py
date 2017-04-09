@@ -102,46 +102,53 @@ def run(cmd, stdout=sp.PIPE, stderr=sp.STDOUT):
     output, err = proc.communicate()
     return output, err
 
-def snakemake_list(snakemakedata, results, snakefile=None, **kwargs):
+def snakemake_list(fixture, results, **kwargs):
     """Run snakemake list"""
-    
-    d = snakemakedata
-    if snakefile is None:
-        snakefile = str(d.join("Snakefile"))
-    cmd = " ".join(['snakemake', '-l', '-d', str(d), '-s',
-                    snakefile])
-    save_command(join(str(fixture), "command.sh"), cmd)
-    output, err = run(cmd, sp.PIPE, sp.PIPE)
+    snakefile = kwargs.get("snakefile", str(fixture.join("Snakefile")))
+    args = ['snakemake', '-l', '-d', str(fixture), '-s',
+            snakefile]
+    save_command(join(str(fixture), "command.sh"), args)
+    cmd = " ".join(args)
+    output, err = run(cmd, kwargs.get("stdout", sp.PIPE), kwargs.get("stderr", sp.PIPE))
     if not err is None:
-        assert(err.decode("utf-8").find("RuleException") == -1), print(err.decode("utf-8"))
+        assert(err.decode("utf-8").find("RuleException") == -1), logger.error(err.decode("utf-8"))
+        assert(err.decode("utf-8").find("Error:") == -1), logger.error(err.decode("utf-8"))
+    if pytest.config.getoption("--show-workflow-output"):
+        if not output is None:
+            print(output.decode("utf-8"))
+        if not err is None:
+            print(err.decode("utf-8"))
     return output, err
 
 
-def snakemake_run(d, results, snakefile=None, **kwargs):
+def snakemake_run(fixture, results, **kwargs):
     """Run snakemake workflow"""
-    if snakefile is None:
-        snakefile = str(d.join("Snakefile"))
-    options = ['-j', kwargs.get("threads", "1"), '-d', str(d),
-               '-s', snakefile]
-    save_command(join(str(fixture), "command.sh"), cmd)
-    output, err = run(cmd, sp.PIPE, sp.PIPE)
-    # if kwargs.get("use_conda", False):
-    #     options = options + ["--use-conda"]
-    cmd = " ".join(['snakemake'] + options + [kwargs.get('target', 'all')])
-    cmdfile = os.path.join(str(d), "command.sh")
-    with open(cmdfile, "w") as fh:
-        fh.write("#!/bin/bash\n")
-        fh.write("PATH={}\n".format(os.environ["PATH"]))
-        fh.write("args=$*\n")
-        fh.write(cmd + " ${args}\n")
-    make_executable(cmdfile)
+    snakefile = kwargs.get("snakefile", str(fixture.join("Snakefile")))
+    targets = kwargs.get("targets", ["all"])
+    options = ['-j', kwargs.get("threads", "1"), '-d', str(fixture),
+               '-s', snakefile, '--configfile', str(fixture.join('config.yaml'))]
 
-    output, err = run(cmd, kwargs.get("stdout", None), kwargs.get("stderr", None))
+    args = ['snakemake'] + options + targets
+    save_command(join(str(fixture), "command.sh"), args)
+    cmd = " ".join(args)
+    output, err = run(cmd, kwargs.get("stdout", sp.PIPE), kwargs.get("stderr", sp.PIPE))
+
+    if not err is None:
+        assert(err.decode("utf-8").find("RuleException") == -1), logger.error(err.decode("utf-8"))
+        assert(err.decode("utf-8").find("Error:") == -1), logger.error(err.decode("utf-8"))
+    if not output is None:
+        print(output.decode("utf-8"))
+    if pytest.config.getoption("--show-workflow-output"):
+        if not output is None:
+            print(output.decode("utf-8"))
+        if not err is None:
+            print(err.decode("utf-8"))
+
     # Rerun to get assert statement
-    cmd = " ".join(['snakemake'] + options + ['-n'] + [kwargs.get('target', 'all')])
+    cmd = " ".join(['snakemake'] + options + ['-n'] + targets)
     output, err = run(cmd)
     assert (output.decode("utf-8").find(kwargs.get("results", "Nothing to be done")) >  -1)
-    
+    return output, err
 
 # context manager for cd
 @contextlib.contextmanager
@@ -171,3 +178,32 @@ def save_command(fn, args):
         fh.write(" ".join(args) + " ${args}\n")
     _make_executable(fn)
 
+
+def get_wildcards(inputmap, wildcard_constraints):
+    """Given a list of snakemake IO filenames, extract the wildcards.
+
+    Params:
+      inputmap (list): list of input wildcard/filename tuples
+    """
+    d = {}
+    for wc, filename in inputmap:
+        wc = update_wildcard_constraints(wc, wildcard_constraints, {})
+        if filename is None:
+            continue
+        wildcards = glob_wildcards(wc, [os.path.basename(filename)])
+        for k, v in wildcards._asdict().items():
+            d[k] = v[0]
+    return d
+
+
+def determine_inputs():
+    """Determine the input files.
+
+    Strategy:
+
+    1. try to determine the filetypes, and if successful, see if they
+    are mapped to a file
+    2. lookup predetermined files in a lookup dictionary
+    3. fail, so skip test
+    """
+    pass
