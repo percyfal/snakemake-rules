@@ -3,7 +3,8 @@ import os
 import re
 from os.path import basename, realpath
 import pytest
-from snakemake_rules.core.ruleinfo import determine_filetype, parse_rule
+from snakemake_rules.core.ruleinfo import parse_rule, regex_target_list, get_targets
+
 
 @pytest.fixture(scope="function")
 def rule1(tmpdir_factory):
@@ -17,11 +18,11 @@ rule foo:
     p = p.join("rule1.rule")
     p.write(rule)
     return p
-        
+
 def test_parse_rule1(rule1):
     d = parse_rule(str(rule1))
-    assert d['input'] == ['{prefix}.foo']
-    assert d['output'] == ['{prefix}.bar']
+    assert d['input']['_list'] == ['"{prefix}.foo"']
+    assert d['output']['_list'] == ['"{prefix}.bar"']
 
 
 @pytest.fixture(scope="function")
@@ -40,9 +41,9 @@ rule foo:
 
 def test_parse_rule2(rule2):
     d = parse_rule(str(rule2))
-    assert sorted(d['input']) == ['{prefix}.bar', '{prefix}.foo']
-    assert sorted(d['output']) == sorted(['{prefix}.foobar', '{prefix}.barfoo'])
-    
+    assert d['input'] == {'bar': '"{prefix}.bar"', 'foo': '"{prefix}.foo"', '_list': []}
+    assert d['output'] == {'foobar': '"{prefix}.foobar"', 'barfoo': '"{prefix}.barfoo"', '_list': []}
+
 
 @pytest.fixture(scope="function")
 def rule3(tmpdir_factory):
@@ -59,8 +60,8 @@ rule foo:
 
 def test_parse_rule3(rule3):
     d = parse_rule(str(rule3))
-    assert sorted(d['input']) == ['{prefix}.bar', '{prefix}.foo']
-    assert d['output'] == []
+    assert d['input'] == {'bar': '"{prefix}.bar"', 'foo': '"{prefix}.foo"', '_list': []}
+    assert d['output'] == {'_list': []}
 
 
 
@@ -79,8 +80,8 @@ rule foo:
 
 def test_parse_rule4(rule4):
     d = parse_rule(str(rule4))
-    assert d['input'] == ['{prefix}{ext}']
-    assert d['output'] == ['{prefix}(.foo|.bar)']
+    assert d['input'] == {'foo': '"{prefix}{ext}"', '_list': []}
+    assert d['output'] == {'bar': '"{prefix}(.foo|.bar)"', '_list': []}
 
 
 
@@ -99,11 +100,14 @@ rule foo:
     p.write(rule)
     return p
 
+
 def test_parse_rule5(rule5):
     d = parse_rule(str(rule5))
-    assert sorted(d['input']) == sorted(['{prefix}{ext}', '{prefix}.foobar'])
-    assert sorted(d['output']) == sorted(['{prefix}(.foo|.bar)', '{prefix}.foo', '{prefix}.barfoo'])
-    
+    assert d['input'] == {'foo': '"{prefix}{ext}"', 'foobar': '"{prefix}.foobar"', '_list': []}
+    assert d['output'] == {'bar': '"{prefix}(.foo|.bar)"', 'foo': '"{prefix}.foo"',
+                           'barfoo': '"{prefix}.barfoo"', '_list': []}
+
+
 @pytest.fixture(scope="function")
 def rule6(tmpdir_factory):
     rule = """
@@ -125,14 +129,44 @@ rule foo:
 
 def test_parse_rule6(rule6):
     d = parse_rule(str(rule6))
-    assert sorted(d['input']) == sorted(['{prefix}{ext}', '{prefix}.foobar'])
-    assert sorted(d['output']) == sorted(['{prefix}{ext}', '{prefix}.foo', '{prefix}.barfoo'])
+    assert d['input'] ==  {'foo': '"{prefix}{ext}"', 'foobar': '"{prefix}.foobar"', '_list': []}
+    assert d['output'] == {'bar': '"{prefix}{ext}"', 'foo': '"{prefix}.foo"',
+                           'barfoo': '"{prefix}.barfoo"', '_list': []}
     assert d['wildcard_constraints'] == {'ext': '(.foo|.bar)', 'prefix': '(foobar|barfoo)'}
-    
-
-    
-def test_determine_filetype():
-    m = determine_filetype('{prefix}.foo')
-    assert m == 'foo'
 
 
+@pytest.fixture(scope="function")
+def rule7(tmpdir_factory):
+    rule = """
+rule foo:
+    wildcard_constraints:
+      ext = "(.foo|.bar)",
+      prefix = "(foobar|barfoo)"
+    input: foo="{prefix}{ext}",
+           foobar="{prefix}.foobar",
+           ref = config['foo']['ref'],
+           fai = config['foo']['ref'] + ".fai",
+    output: bar="{prefix}{ext}", foo="{prefix}.foo",
+            barfoo = "{prefix}.barfoo"
+    shell: "foo bar {input} {output}"
+"""
+    p = tmpdir_factory.mktemp("rule7")
+    p = p.join("rule7.rule")
+    p.write(rule)
+    return p
+
+
+def test_parse_rule7(rule7):
+    d = parse_rule(str(rule7))
+    assert d['input'] ==  {'foo': '"{prefix}{ext}"', 'foobar': '"{prefix}.foobar"', '_list': [],
+                           'ref': 'config[\'foo\'][\'ref\']', 'fai': 'config[\'foo\'][\'ref\']+".fai"'}
+
+
+def test_get_targets():
+    d = get_targets("\"{prefix}.bar\",foo=\"{prefix}.foo\"")
+    assert d['_list'] == ['"{prefix}.bar"']
+    assert d['foo'] == '"{prefix}.foo"'
+    d = get_targets("foo=config['foo']['bar']")
+    assert d['foo'] == "config['foo']['bar']"
+    d = get_targets("foo=os.path.splitext(config['foo']['bar'])[0]+\".bar\"")
+    assert d['foo'] == 'os.path.splitext(config[\'foo\'][\'bar\'])[0]+".bar"'
