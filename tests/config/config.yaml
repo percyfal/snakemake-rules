@@ -5,38 +5,32 @@ settings:
 samples:
   - PUR.HG00731
   - PUR.HG00733
-  
+
 ngs.settings:
   db:
-    ref: ../../ref.fa
-    dbsnp: ../../known.ref.vcf
+    ref: ../../scaffolds/scaffolds.fa
+    dbsnp: ../../scaffolds/known.scaffolds.vcf
   annotation:
-    transcript_annot_gtf: ../../ref-transcripts-tiny.gtf
+    transcript_annot_gtf: ../../scaffolds/scaffolds-transcripts-tiny.gtf
   sequence_capture:
-    bait_regions: ../../ref-targets.interval_list
-    target_regions: ../../ref-targets.interval_list
+    bait_regions: ../../scaffolds/scaffolds-targets.interval_list
+    target_regions: ../../scaffolds/scaffolds-targets.interval_list
 
 angsd:
   nChr: 4
 
 bedtools:
-  afile: ../../ref-targets.bed
-  bfile: ../../ref-targets.bed
-  
-bowtie:
-  index: ../../ref.fa
-
-bowtie2:
-  index: ../../ref.fa
+  afile: ../../scaffolds/scaffolds-targets.bed
+  bfile: ../../scaffolds/scaffolds-targets.bed
+  chromsizes: ../../scaffolds/chrom.sizes
 
 freebayes:
-  ref: ../../ref.fa
   freebayes_parallel:
     region_size: 100
     threads: 2
   merge_targets:
     options: "--force-samples"
-  
+
 gatk:
   combine_variants:
     options: --genotypemergeoption UNIQUIFY
@@ -47,12 +41,12 @@ mapdamage2:
   options: --no-stats
 
 rseqc:
-  refgene: ../../ref-transcripts.bed12
+  refgene: ../../scaffolds/scaffolds-transcripts.bed12
 
 star:
   star_index:
     options: --genomeSAindexNbases 9
-    
+
 vsearch:
   fastq_stats:
     options: --fastq_qmax 50
