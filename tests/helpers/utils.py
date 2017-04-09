@@ -70,7 +70,9 @@ def snakemake_run(fixture, results, **kwargs):
     snakefile = kwargs.get("snakefile", str(fixture.join("Snakefile")))
     targets = kwargs.get("targets", ["all"])
     options = ['-j', kwargs.get("threads", "1"), '-d', str(fixture),
-               '-s', snakefile, '--configfile', str(fixture.join('config.yaml'))]
+               '-s', snakefile]
+    if fixture.join("config.yaml").exists():
+        options = options + ['--configfile', str(fixture.join('config.yaml'))]
 
     args = ['snakemake'] + options + targets
     save_command(join(str(fixture), "command.sh"), args)
@@ -130,24 +132,28 @@ def get_wildcards(inputmap, wildcard_constraints):
       inputmap (list): list of input wildcard/filename tuples
     """
     d = {}
-    for wc, filename in inputmap:
-        wc = update_wildcard_constraints(wc, wildcard_constraints, {})
-        if filename is None:
-            continue
-        wildcards = glob_wildcards(wc, [os.path.basename(filename)])
-        for k, v in wildcards._asdict().items():
-            d[k] = v[0]
+    try:
+        all_wc = []
+        all_files = []
+        for wc, filename in inputmap:
+            try:
+                wc = eval(wc)
+            except:
+                pass
+            wc = update_wildcard_constraints(wc, wildcard_constraints, {})
+            all_wc.append(wc)
+            if filename is None:
+                continue
+            if isinstance(filename, str):
+                filename = [filename]
+            all_files = all_files + filename
+        for f in all_files:
+            for wc in all_wc:
+                wildcards = glob_wildcards(wc, [os.path.basename(f)])
+                for k, v in wildcards._asdict().items():
+                    if len(v) > 0:
+                        d[k] = v[0]
+    except:
+        logger.debug("Failed to get wildcards for inputmap ", inputmap)
+        raise
     return d
-
-
-def determine_inputs():
-    """Determine the input files.
-
-    Strategy:
-
-    1. try to determine the filetypes, and if successful, see if they
-    are mapped to a file
-    2. lookup predetermined files in a lookup dictionary
-    3. fail, so skip test
-    """
-    pass

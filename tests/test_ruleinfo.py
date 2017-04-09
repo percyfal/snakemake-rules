@@ -162,6 +162,26 @@ def test_parse_rule7(rule7):
                            'ref': 'config[\'foo\'][\'ref\']', 'fai': 'config[\'foo\'][\'ref\']+".fai"'}
 
 
+@pytest.fixture(scope="function")
+def rule8(tmpdir_factory):
+    rule = """
+rule foo:
+    input: "{prefix}.bar", config['foo']['bar']
+    output: foo="{prefix}.foo",
+    shell: "foo bar {input} {output}"
+"""
+    p = tmpdir_factory.mktemp("rule8")
+    p = p.join("rule8.rule")
+    p.write(rule)
+    return p
+
+
+def test_parse_rule8(rule8):
+    d = parse_rule(str(rule8))
+    assert d['input'] ==  {'_list': ['"{prefix}.bar"', 'config[\'foo\'][\'bar\']']}
+
+
+
 def test_get_targets():
     d = get_targets("\"{prefix}.bar\",foo=\"{prefix}.foo\"")
     assert d['_list'] == ['"{prefix}.bar"']
