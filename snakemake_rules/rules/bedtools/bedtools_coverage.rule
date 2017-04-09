@@ -10,12 +10,15 @@ rule bedtools_coverage:
     """Returns the depth and breadth of coverage of features from B
     on the intervals in A.
     """
+    wildcard_constraints:
+        suffix = "(bam|fofn)",
+        window = "\d*"
     params: cmd = " ".join([BEDTOOLS, BEDTOOLS_COVERAGE]),
             windowcmd = " ".join([BEDTOOLS, BEDTOOLS_MAKEWINDOWS]),
             options=config['bedtools']['coverage']['options'],
             runtime = config['bedtools']['coverage']['runtime'],
     input: a = config['bedtools']['coverage']['afile'], b = "{prefix}.{suffix}"
-    output: bed = "{prefix}.{suffix,(bam|fofn)}.coverage{window,\d*}.bed"
+    output: bed = "{prefix}.{suffix}.coverage{window}.bed"
     threads: config['bedtools']['coverage']['threads']
     conda: "env.yaml"
     shell:
