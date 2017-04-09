@@ -9,6 +9,7 @@ config = config_default
 
 
 rule annovar_annotate_variation:
+    """Download annovar databases"""
     params: cmd='annotate_variation.pl',
             buildver=config['annovar']['buildver'],
             db = config['annovar']['db'],
