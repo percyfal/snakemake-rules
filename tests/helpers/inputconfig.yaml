@@ -1,0 +1,39 @@
+bcftools:
+  bcftools_index:
+    ft: ['.vcf.gz']
+  bcftools_isec:
+    ft: ['.vcf.gz']
+  bcftools_stats:
+    ft: ['.vcf.gz']
+
+bedtools:
+  bedtools_coverage:
+    ft: ['.bed', '.bam']
+    output: [PUR.HG00731.tiny.sort.bam.coverage10.bed]
+  bedtools_min_genomecov:
+    ft: ['.bam']
+    output: [PUR.HG00731.tiny.sort.bam.10.coverage.bed]
+
+bowtie:
+  bowtie_build:
+    ft: ['.fa']
+    output: ['scaffolds.fa.1.ebwt']
+
+bowtie2:
+  bowtie2_build:
+    ft: ['.fa']
+    output: ['scaffolds.fa.1.bt2']
+
+    
+picard:
+  picard_add_or_replace_read_groups:
+    ft: ['config', 'sampleinfo']
+  picard_bed_to_interval_list:
+    ft: ['sampleinfo']
+  picard_calculate_hs_metrics:
+    ft: ['sampleinfo']
+  picard_collect_insert_size_metrics:
+    ft: ['sampleinfo']
+  picard_collect_alignment_summary_metrics:
+    ft: ['sampleinfo']
+  
