@@ -20,7 +20,6 @@ try:
     import pytest_ngsfixtures
     has_ngsfixtures = True
     from pytest_ngsfixtures import factories
-    #from pytest_ngsfixtures import filetypes
 except ImportError as e:
     print("\n\n   pytest-ngsfixtures not installed; install with 'conda install -c percyfal pytest-ngsfixtures'\n\n")
 

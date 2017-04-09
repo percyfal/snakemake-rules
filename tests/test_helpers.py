@@ -33,7 +33,5 @@ def test_determine_fixture():
     assert ft is None
     ft = fixture.determine_fixture('"{prefix}.bam"')
     assert basename(ft) == "PUR.HG00731.tiny.sort.bam"
-    ft = fixture.determine_fixture('"config[\'foo\'][\'bar\']"')
-    assert basename(ft) == "config.yaml"
     ft = fixture.determine_fixture('config[\'foo\'] + ".dict"')
-    assert basename(ft) == "ref.dict"
+    assert basename(ft) == "scaffolds.dict"
