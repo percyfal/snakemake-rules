@@ -51,7 +51,9 @@ Features
 
       include: "https://raw.githubusercontent.com/percyfal/snakemake-rules/master/snakemake_rules/bwa/bwa_mem.rule"
 
-
+   However, this option should only be used as a last resort as the
+   support for relative includes via urls is limited (see `snakemake
+   pull request #131`_)
 
 .. toctree::
    :hidden:
@@ -67,3 +69,4 @@ Features
    docs/troubleshooting
    docs/release_notes
 
+.. _snakemake pull request #131: https://bitbucket.org/snakemake/snakemake/pull-requests/131/wip-normalize-included-paths-and-check-url/diff

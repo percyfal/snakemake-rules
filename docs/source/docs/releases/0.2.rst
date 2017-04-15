@@ -1,0 +1,15 @@
+0.2 (Apr 15 2017)
+=========================
+
+Version 0.2 release
+
+New features:
+
+- add conda versions to environment files (#28)
+- inclusion/exclusion of samples has been improved (#30)
+- a core python module has been added, prompting the move of rules to
+  a rules subdirectory (#35)
+- add tests dependending on pytest-ngsfixtures (#36)
+- improve test infrastructure
+- new rules
+- minor modifications to rules
