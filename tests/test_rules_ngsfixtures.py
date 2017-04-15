@@ -44,7 +44,7 @@ def create_testrules(applications, blacklist):
             continue
         for y in getattr(pytest.rules, x):
             if not rule is None:
-                if not rule in y:
+                if not re.sub(".rule", "", basename(y)) == rule:
                     continue
             else:
                 if re.sub(".rule", "", basename(y)) in blacklist:
@@ -73,7 +73,10 @@ def data(request, tmpdir_factory):
 
         inputmap = set_inputmap(d)
         wildcards = utils.get_wildcards(inputmap, d['wildcard_constraints'])
-        output = set_output(d, wildcards)
+        try:
+            output = set_output(d, wildcards)
+        except:
+            output = None
         for wc, src in inputmap:
             if src:
                 if isinstance(src, str):
@@ -98,26 +101,21 @@ def test_list(data):
 
 
 blacklist_slow = [
-    'angsd_realsfs',
-    'ansgd_thetastat_dostat',
-    'ansgd_thetastat_makebed',
-    'annovar_annotate_variation',
-    'annovar_table_annovar',
-    'bamtools_create_filter_script',
-    'bcftools_call_targets',
-    'bcftools_combine_target_variants',
     'bcftools_isec',
-    'bedtools_intersect',
-    'bedtools_intersect_make_region_baits',
-    'bedtools_intersect_make_region_targets',
-    'bowtie_align_pe',
-    'bowtie2_align_se',
-    'bowtie2_align_pe',
-    'bwa',
-    'picard_calculate_hs_metrics_regions',
+    'bwa_link_ref',
+    'cloudbiolinux_update_annotation_gtf',
+    'dbutils_make_transcript_annot_gtf',
+    'dfilter',
+    'ercc',
+    'freebayes_parallel',
+    'homer',
     'picard_do_qc',
-    'picard_mark_duplicates',
     'picard_merge_sam',
+    'plink',
+    'snpeff_download_database',
+    'tuxedo',
+    'ucsc_link',
+    'ucsc_pseudo',
 ]
 testrules = create_testrules(applications, blacklist_slow)
 
@@ -126,6 +124,6 @@ testrules = create_testrules(applications, blacklist_slow)
 @pytest.mark.parametrize("data", sorted(testrules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(testrules)], indirect=["data"])
 def test_run(data, ref, scaffolds):
     app, rule, targets, fixture = data
-    if targets is None:
+    if targets is None or len(targets) == 0:
         pytest.skip("Unable to parse target for rule {}".format(basename(rule)))
     output, err = utils.snakemake_run(fixture, "", snakefile=rule, targets=targets)
