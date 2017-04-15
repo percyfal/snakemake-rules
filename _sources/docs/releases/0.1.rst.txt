@@ -1,0 +1,14 @@
+0.1 (Jan 11 2017)
+=========================
+
+Version 0.1 release
+
+First official release with features including:
+
+- rules live in application-specific directories
+- mostly one rule per rule file, enabling fine-grained include
+  statements
+- automated tests of most rules
+- tests of two small workflows
+- most rules include default configuration settings for running on a
+  cluster and doing conda installs

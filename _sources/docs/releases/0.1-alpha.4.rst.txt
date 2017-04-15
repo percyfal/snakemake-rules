@@ -1,0 +1,6 @@
+0.1-alpha.4 (Nov 10 2015)
+==========================
+
+- add atac-seq rules
+- simplify command calls
+- use smllogger in db rules

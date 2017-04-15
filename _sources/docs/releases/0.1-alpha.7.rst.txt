@@ -1,0 +1,8 @@
+0.1-alpha.7 (Feb 7 2016)
+==========================
+
+Add rules and new application emboss.
+
+Update tests.
+
+Update rules in STAR, ercc, utils.
