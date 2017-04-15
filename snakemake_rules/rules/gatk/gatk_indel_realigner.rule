@@ -15,7 +15,9 @@ rule gatk_indel_realigner:
             options = " ".join(["-R", config['gatk']['indel_realigner']['ref'],
             config['gatk']['indel_realigner']['options']]),
             runtime  = config['gatk']['indel_realigner']['runtime']
-    input: bam = "{prefix}.bam", intervals = "{prefix}.intervals"
+    input: bam = "{prefix}.bam",
+           bai = "{prefix}.bai",
+           intervals = "{prefix}.intervals"
     output: bam = "{prefix}.realign.bam", bai = "{prefix}.realign.bai"
     threads: config['gatk']['indel_realigner']['threads']
     conda: "env.yaml"
