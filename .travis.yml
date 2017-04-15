@@ -18,7 +18,7 @@ script:
   - echo $JAVA_HOME
   - pytest -V tests/test_workflows.py
   - pytest --cov-report=term --cov=tests tests/test_rules_ngsfixtures.py
-  - pytest --cov-report=term --cov=tests tests/test_helpers.py tests/test_ruleinfo.py tests/test_utils.py
+  - pytest --cov-report=term --cov=tests tests/test_helpers.py tests/test_ruleinfo.py tests/test_core_utils.py
 
   
 branches:

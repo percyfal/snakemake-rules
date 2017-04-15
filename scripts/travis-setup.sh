@@ -37,7 +37,7 @@ if [ ! "$DEPS_TEST" == "" ]; then
 fi
 
 # Manual install needed
-conda install --yes snakemake
+conda install --yes snakemake pytest-cov
 # Install coveralls
 pip install coveralls
 
