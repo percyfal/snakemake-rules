@@ -1,5 +1,5 @@
 # Copyright (C) 2016 by Per Unneberg
-# Helper functions for parsning and for making output executable
+# Helper functions for parsing and for making output executable
 import os
 from os.path import abspath, dirname, join
 import re
@@ -8,72 +8,16 @@ import pytest
 import subprocess as sp
 import contextlib
 import yaml
+import logging
 from snakemake.parser import parse
+from snakemake.io import glob_wildcards, update_wildcard_constraints
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 TESTDIR = join(abspath(dirname(__file__)), os.pardir)
 with open(os.path.join(TESTDIR, "rules2target.yaml")) as fh:
     rules2targets = yaml.load(fh)
-
-# Map file extension to file extension fixture; keys are concatenated
-# with | and compiled to regular expression
-re_filetypes = {
-    "bam" : "bam",
-    "bai" : "bai",
-    "bed" : "bed",
-    "fa" : "fasta",
-    "fasta" : "fasta",
-    "fai" : "fastaindex",
-    "fofn" : "fofn",
-    "sam" : "sam",
-    "samtools_stats.txt" : "samtools_stats",
-    "vcf" : "vcf",
-    "vcf.gz" : "vcf",
-    "tbi" : "tabix",
-}
-regex = re.compile("\.({})\"".format("|".join("{}".format(x) for x in sorted(re_filetypes.keys()))))
-regex_input = re.compile("@workflow\.input\(\s+(?P<input>.*)")
-regex_output = re.compile("@workflow.output\(\s+(?P<output>.*)")
-
-def parse_rule(rule, prefix=None):
-    """Generate input/output information for rule.
-
-    Params:
-      rule (str): file containing a snakemake rule """
-    rn = os.path.basename(rule).replace(".rule", "")
-    app = os.path.basename(os.path.dirname(rule))
-    target = rules2targets.get(app, {}).get(rn, None)
-    if target:
-        return target
-    code, linemake, rulecount = parse(rule)
-    m = regex_input.search(code)
-    if m:
-        input = m.group("input")
-    m = regex_output.search(code)
-    if m is None:
-        # return input case
-        m = regex_input.search(code)
-        output = m.group("input")
-    else:
-        output = m.group("output")
-    m = regex.findall(input)
-    if m:
-        print(m)
-        #print(minput.groups())
-    else:
-        print("no match")
-    m = re.search("\"[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})+(?P<ext>[_\/\.a-zA-Z0-9 ]+)\"", output)
-    # Regular extension; use first one
-    if m:
-        return "{prefix}{ext}".format(prefix=prefix, ext=m.group("ext"))
-    # expand case; skip for now
-    m = re.search("expand", output)
-    if m:
-        return None
-    # Config case
-    m = re.search("[a-zA-Z =]*(?P<config>config[^\)]+)", output)
-    if m:
-        return "config"
-    return None
 
 
 def run(cmd, stdout=sp.PIPE, stderr=sp.STDOUT):
@@ -102,46 +46,58 @@ def run(cmd, stdout=sp.PIPE, stderr=sp.STDOUT):
     output, err = proc.communicate()
     return output, err
 
-def snakemake_list(snakemakedata, results, snakefile=None, **kwargs):
+
+def snakemake_list(fixture, results, **kwargs):
     """Run snakemake list"""
-    
-    d = snakemakedata
-    if snakefile is None:
-        snakefile = str(d.join("Snakefile"))
-    cmd = " ".join(['snakemake', '-l', '-d', str(d), '-s',
-                    snakefile])
-    save_command(join(str(fixture), "command.sh"), cmd)
-    output, err = run(cmd, sp.PIPE, sp.PIPE)
+    snakefile = kwargs.get("snakefile", str(fixture.join("Snakefile")))
+    args = ['snakemake', '-l', '-d', str(fixture), '-s',
+            snakefile]
+    save_command(join(str(fixture), "command.sh"), args)
+    cmd = " ".join(args)
+    output, err = run(cmd, kwargs.get("stdout", sp.PIPE), kwargs.get("stderr", sp.PIPE))
     if not err is None:
-        assert(err.decode("utf-8").find("RuleException") == -1), print(err.decode("utf-8"))
+        assert(err.decode("utf-8").find("RuleException") == -1), logger.error(err.decode("utf-8"))
+        assert(err.decode("utf-8").find("Error:") == -1), logger.error(err.decode("utf-8"))
+    if pytest.config.getoption("--show-workflow-output"):
+        if not output is None:
+            print(output.decode("utf-8"))
+        if not err is None:
+            print(err.decode("utf-8"))
     return output, err
 
 
-def snakemake_run(d, results, snakefile=None, **kwargs):
+def snakemake_run(fixture, results, **kwargs):
     """Run snakemake workflow"""
-    if snakefile is None:
-        snakefile = str(d.join("Snakefile"))
-    options = ['-j', kwargs.get("threads", "1"), '-d', str(d),
+    snakefile = kwargs.get("snakefile", str(fixture.join("Snakefile")))
+    targets = kwargs.get("targets", ["all"])
+    options = ['-j', kwargs.get("threads", "1"), '-d', str(fixture),
                '-s', snakefile]
-    save_command(join(str(fixture), "command.sh"), cmd)
-    output, err = run(cmd, sp.PIPE, sp.PIPE)
-    # if kwargs.get("use_conda", False):
-    #     options = options + ["--use-conda"]
-    cmd = " ".join(['snakemake'] + options + [kwargs.get('target', 'all')])
-    cmdfile = os.path.join(str(d), "command.sh")
-    with open(cmdfile, "w") as fh:
-        fh.write("#!/bin/bash\n")
-        fh.write("PATH={}\n".format(os.environ["PATH"]))
-        fh.write("args=$*\n")
-        fh.write(cmd + " ${args}\n")
-    make_executable(cmdfile)
+    if fixture.join("config.yaml").exists():
+        options = options + ['--configfile', str(fixture.join('config.yaml'))]
 
-    output, err = run(cmd, kwargs.get("stdout", None), kwargs.get("stderr", None))
-    # Rerun to get assert statement
-    cmd = " ".join(['snakemake'] + options + ['-n'] + [kwargs.get('target', 'all')])
+    args = ['snakemake'] + options + targets
+    save_command(join(str(fixture), "command.sh"), args)
+    cmd = " ".join(args)
+    output, err = run(cmd, kwargs.get("stdout", sp.PIPE), kwargs.get("stderr", sp.PIPE))
+
+    if not err is None:
+        assert(err.decode("utf-8").find("RuleException") == -1), logger.error(err.decode("utf-8"))
+        assert(err.decode("utf-8").find("Error:") == -1), logger.error(err.decode("utf-8"))
+    if not output is None:
+        print(output.decode("utf-8"))
+    if pytest.config.getoption("--show-workflow-output"):
+        if not output is None:
+            print(output.decode("utf-8"))
+        if not err is None:
+            print(err.decode("utf-8"))
+
+    # Rerun to get assert statement; either nothing is to be done, or
+    # in some cases, the input file is missing due to a conversion
+    cmd = " ".join(['snakemake'] + options + ['-n'] + targets)
     output, err = run(cmd)
-    assert (output.decode("utf-8").find(kwargs.get("results", "Nothing to be done")) >  -1)
-    
+    assert ((output.decode("utf-8").find(kwargs.get("results", "Nothing to be done")) >  -1) or
+            (output.decode("utf-8").find(kwargs.get("results", "Missing input files")) >  -1))
+    return output, err
 
 # context manager for cd
 @contextlib.contextmanager
@@ -158,10 +114,12 @@ def cd(path):
         print("Changing directory back to {}".format(CWD), file=sys.stderr)
         os.chdir(CWD)
 
+
 def _make_executable(path):
     mode = os.stat(path).st_mode
     mode |= (mode & 0o444) >> 2    # copy R bits to X
     os.chmod(path, mode)
+
 
 def save_command(fn, args):
     with open(fn, "w") as fh:
@@ -171,3 +129,36 @@ def save_command(fn, args):
         fh.write(" ".join(args) + " ${args}\n")
     _make_executable(fn)
 
+
+def get_wildcards(inputmap, wildcard_constraints):
+    """Given a list of snakemake IO filenames, extract the wildcards.
+
+    Params:
+      inputmap (list): list of input wildcard/filename tuples
+    """
+    d = {}
+    try:
+        all_wc = []
+        all_files = []
+        for wc, filename in inputmap:
+            try:
+                wc = eval(wc)
+            except:
+                pass
+            wc = update_wildcard_constraints(wc, wildcard_constraints, {})
+            all_wc.append(wc)
+            if filename is None:
+                continue
+            if isinstance(filename, str):
+                filename = [filename]
+            all_files = all_files + filename
+        for f in all_files:
+            for wc in all_wc:
+                wildcards = glob_wildcards(wc, [os.path.basename(f)])
+                for k, v in wildcards._asdict().items():
+                    if len(v) > 0:
+                        d[k] = v[0]
+    except:
+        logger.debug("Failed to get wildcards for inputmap ", inputmap)
+        raise
+    return d

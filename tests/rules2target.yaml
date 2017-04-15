@@ -13,6 +13,8 @@ emacs:
   emacs_org_to_reveal: s1.revealjs.html
 freebayes:
   freebayes_targets: s1.freebayes.1.vcf
+gatk:
+  gatk_variant_recalibrator: s1.SNP.recal
 jellyfish:
   jellyfish_count: s1_1.fastq.gz.mer_counts.jf
   jellyfish_histo: s1_1.fastq.gz.histo

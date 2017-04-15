@@ -1,0 +1,58 @@
+settings:
+  sampleinfo: sampleinfo.csv
+  runfmt: "{SM}"
+
+samples:
+  - PUR.HG00731
+  - PUR.HG00733
+
+ngs.settings:
+  db:
+    ref: ../../scaffolds/scaffolds.fa
+    dbsnp: ../../scaffolds/known.scaffolds.vcf.gz
+  annotation:
+    transcript_annot_gtf: ../../scaffolds/scaffolds-transcripts-tiny.gtf
+  sequence_capture:
+    bait_regions: ../../scaffolds/scaffolds-targets.interval_list
+    target_regions: ../../scaffolds/scaffolds-targets.interval_list
+
+angsd:
+  nChr: 4
+
+bedtools:
+  afile: ../../scaffolds/scaffolds-targets.bed
+  bfile: ../../scaffolds/scaffolds-targets.bed
+  chromsizes: ../../scaffolds/chrom.sizes
+
+freebayes:
+  freebayes_parallel:
+    region_size: 100
+    threads: 2
+  merge_targets:
+    options: "--force-samples"
+
+gatk:
+  combine_variants:
+    options: --genotypemergeoption UNIQUIFY
+  unified_genotyper:
+    options: ""
+
+mapdamage2:
+  options: --no-stats
+
+multiqc:
+  inputs:
+    - medium.stats.txt
+
+rseqc:
+  refgene: ../../scaffolds/scaffolds-transcripts.bed12
+
+star:
+  star_index:
+    options: --genomeSAindexNbases 9
+
+vsearch:
+  fastq_stats:
+    options: --fastq_qmax 50
+  fastq_filter:
+    options: --fastq_qmax 50

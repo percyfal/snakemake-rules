@@ -10,6 +10,7 @@ import subprocess as sp
 import ast
 import yaml
 from snakemake.parser import parse
+from snakemake_rules import SNAKEMAKE_RULES_PATH
 
 # Add helper module
 sys.path.append(os.path.join(os.path.dirname(__file__), 'helpers'))
@@ -18,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 TESTDIR = abspath(dirname(__file__))
-RULEDIR = join(abspath(dirname(__file__)), os.pardir, "snakemake_rules")
+RULEDIR = SNAKEMAKE_RULES_PATH
 
 # Add test source path to pythonpath
 sys.path.insert(0, join(TESTDIR, os.pardir))

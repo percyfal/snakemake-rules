@@ -20,8 +20,8 @@ def test_workflow1(snakefile_data):
     wd = str(snakefile_data)
     snakefile = join(wd, 'Snakefile1')
     config = join(wd, 'config1.yaml')
-    args = ['snakemake', '-s', snakefile, '-j', THREADS, '-d',
-            wd, '--configfile', config, 's1.sort.bai']
+    args = ['snakemake', '-s', snakefile, '-j', str(THREADS), '-d',
+            wd, '--configfile', config, "s1.sort.bam.bai"]
     utils.save_command(join(str(wd), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)
 
@@ -31,8 +31,8 @@ def test_workflow2(snakefile_data):
     wd = str(snakefile_data)
     snakefile = join(wd, 'Snakefile2')
     config = join(wd, 'config2.yaml')
-    args = ['snakemake', '-s', snakefile, '-j', THREADS, '-d',
-            wd, '--configfile', config]#, 'all']
+    args = ['snakemake', '-s', snakefile, '-j', str(THREADS), '-d',
+            wd, '--configfile', config]
     utils.save_command(join(str(wd), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)
     

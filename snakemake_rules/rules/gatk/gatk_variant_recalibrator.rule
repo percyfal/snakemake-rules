@@ -4,8 +4,10 @@ include: 'gatk.settings'
 config_default = {'gatk' :{'variant_recalibrator': _gatk_config_rule_default.copy()}}
 config_default['gatk']['variant_recalibrator'].update(
     {
-        'options' : " ".join([""]),
-        'resources' : " ".join([""])
+        'options': "",
+        'resources': {},
+        'annotations': ["DP", "QD", "FS", "SOR", "MQ", "MQRankSum", "ReadPosRankSum", "InbreedingCoeff"],
+        'tranches': [100.0, 99.9, 99.0, 90.0]
     })
 
 update_config(config_default, config)
@@ -13,17 +15,33 @@ config = config_default
 
 
 rule gatk_variant_recalibrator:
-    """Run GATK VariantRecalibrator"""
+    """Run GATK VariantRecalibrator.
+
+    This rule contains a lot of options. For clarity, the options
+    configuration has been partitioned into four different
+    configuration settings:
+
+    options (str): regular options
+    annotations (list): list of annotations to use
+    tranches (list): list of tranches
+    resources (dict): dictionary of resource file:option pairs where
+      the options specify truth/training/known status along with a label
+      and prior
+
+    """
+    wildcard_constraints:
+        mode = "(SNP|INDEL)"
     params: cmd = config['gatk']['cmd'] + " -T " + VARIANT_RECALIBRATOR,
-            options = " ".join(["-R", config['gatk']['variant_recalibrator']['ref'],
-                                config['gatk']['variant_recalibrator']['options']]),
-            resources = " ".join(["-resource", config['gatk']['variant_recalibrator']['options']]),
+            options =  config['gatk']['variant_recalibrator']['options'],
+            resources = " ".join("-resource:{} {}".format(k, v) for k,v in config['gatk']['variant_recalibrator']['resources'].items()),
+            annotations = " ".join("-an {}".format(x) for x in config['gatk']['variant_recalibrator']['annotations']),
+            tranches = " ".join("-tranche {}".format(x) for x in config['gatk']['variant_recalibrator']['tranches']),
             runtime = config['gatk']['variant_recalibrator']['runtime']
     input: vcf = "{prefix}.vcf.gz", tbi = "{prefix}.vcf.gz.tbi",
            ref = config['gatk']['variant_recalibrator']['ref'],
-           #refidx = config['gatk']['variant_recalibrator']['ref'] + ".fai",
-    output: "{prefix}.eval_metrics"
+           fai = config['gatk']['variant_recalibrator']['ref'] + ".fai",
+    output: recal="{prefix}.{mode}.recal", tranches="{prefix}.{mode}.tranches", rscript="{prefix}.{mode}.R"
     threads: config['gatk']['variant_recalibrator']['threads']
     conda: "env.yaml"
-    shell: "{params.cmd} {params.options} --eval {input} -o {output}"
+    shell: "{params.cmd} -R {input.ref} -input {input.vcf} {params.resources} {params.annotations} -mode {wildcards.mode} {params.tranches} {params.options} -recalFile {output.recal} -tranchesFile {output.tranches} -rscriptFile {output.rscript}"
 

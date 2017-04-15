@@ -3,7 +3,7 @@ import os
 import re
 from os.path import basename, realpath
 import pytest
-from snakemake_rules import utils
+from snakemake_rules.core import utils
 from snakemake.logging import logger
 
 
@@ -46,4 +46,3 @@ def test_config(config):
         assert len(conf['samples']) == 2
     else:
         assert conf['settings']['sampleinfo'] == 'foo.csv'
-    

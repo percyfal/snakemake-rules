@@ -1,0 +1,73 @@
+bcftools:
+  bcftools_index:
+    ft: ['.vcf.gz']
+  bcftools_isec:
+    ft: ['.vcf.gz']
+  bcftools_stats:
+    ft: ['.vcf.gz']
+
+bedtools:
+  bedtools_coverage:
+    ft: ['.bed', '.bam']
+    output: [PUR.HG00731.tiny.sort.bam.coverage10.bed]
+  bedtools_min_genomecov:
+    ft: ['.bam']
+    output: [PUR.HG00731.tiny.sort.bam.10.coverage.bed]
+
+bowtie:
+  bowtie_build:
+    ft: ['.fa']
+    output: ['scaffolds.fa.1.ebwt']
+
+bowtie2:
+  bowtie2_build:
+    ft: ['.fa']
+    output: ['scaffolds.fa.1.bt2']
+
+
+gatk:
+  gatk_haplotype_caller:
+    output: ['PUR.HG00731.tiny.sort.vcf']
+  gatk_indel_realigner:
+    ft: ['config']
+  gatk_variant_eval:
+    ft: ['config']
+  gatk_variant_JEXL_filtration:
+    ft: ['config']
+
+macs2:
+  macs2_callpeak_treatment_only_bam_pe:
+    output: ['PUR.HG00731.tiny.sort_peaks.xls']
+
+multiqc:
+  multiqc:
+    ft: ['.stats.txt']
+    output: ['multiqc/multiqc_report.html']
+
+picard:
+  picard_add_or_replace_read_groups:
+    ft: ['config', 'sampleinfo']
+  picard_bed_to_interval_list:
+    ft: ['sampleinfo']
+  picard_calculate_hs_metrics:
+    ft: ['sampleinfo']
+  picard_collect_insert_size_metrics:
+    ft: ['sampleinfo']
+  picard_collect_alignment_summary_metrics:
+    ft: ['sampleinfo']
+
+qualimap:
+  qualimap_bamqc:
+    output: ['PUR.HG00731.tiny.sort.bam.qualimap/genome_results.txt']
+
+rsem:
+  rsem_prepare_reference:
+    output: ['rsem_index.transcripts.fa']
+
+rseqc:
+  rseqc_clipping_profile:
+    output: ['PUR.HG00731.tiny.sort_rseqc/clippingprofile_PE.clipping_profile.xls']
+
+star:
+  star_index:
+    output: ['../../scaffolds/SA']

@@ -12,9 +12,11 @@ rule rseqc_clipping_profile:
     params: cmd = CLIPPING_PROFILE,
             options = config['rseqc']['clipping_profile']['options'],
             runtime = config['rseqc']['clipping_profile']['runtime'],
+    wildcard_constraints:
+        mode = "(SE|PE)"
     input: bam = "{prefix}.bam"
-    output: xls = "{prefix}_rseqc/clippingprofile.clipping_profile.xls",
+    output: xls = "{prefix}_rseqc/clippingprofile_{mode}.clipping_profile.xls",
     threads: config['rseqc']['clipping_profile']['threads']
     conda: "env.yaml"
-    shell: " {params.cmd} {params.options} -i {input.bam} -o $(dirname {output.xls})/clippingprofile"
+    shell: " {params.cmd} {params.options} -i {input.bam} -o $(dirname {output.xls})/clippingprofile_{wildcards.mode} -s {wildcards.mode}"
 

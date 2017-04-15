@@ -1,6 +1,5 @@
 # -*- snakemake -*-
 include: 'gatk.settings'
-include: join(os.pardir, 'picard', 'picard_build_bam_index.rule')
 
 config_default = {'gatk': {'realigner_target_creator': _gatk_config_rule_default.copy()}}
 
@@ -14,7 +13,10 @@ rule gatk_realigner_target_creator:
             options = " ".join(["-R", config['gatk']['realigner_target_creator']['ref'],
             config['gatk']['realigner_target_creator']['options']]),
             runtime = config['gatk']['realigner_target_creator']['runtime']
-    input: bam="{prefix}.bam", bai="{prefix}.bai", d=config['gatk']['realigner_target_creator']['ref'].replace(".fa", ".dict"), fai="{}.fai".format(config['gatk']['realigner_target_creator']['ref'])
+    input: bam="{prefix}.bam",
+           bai="{prefix}.bai",
+           d=config['gatk']['realigner_target_creator']['ref'].replace(".fa", ".dict"),
+           fai="{}.fai".format(config['gatk']['realigner_target_creator']['ref'])
     output: intervals = "{prefix}.intervals"
     threads: config['gatk']['realigner_target_creator']['threads']
     conda: "env.yaml"

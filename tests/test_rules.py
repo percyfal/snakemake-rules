@@ -99,8 +99,8 @@ def test_snakemake_run(x, data):
     target = pytest.make_output(rule)
     if target is None:
         pytest.skip("Unable to parse target for rule {}".format(basename(rule)))
-    args = ['snakemake', '-f', '-s', rule, '-j', THREADS, '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
+    args = ['snakemake', '-f', '-s', rule, '-j', str(THREADS), '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
     if not target == "config":
         args = args + [target]
-    save_command(join(str(data), "command.sh"), args)
+    utils.save_command(join(str(data), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)
