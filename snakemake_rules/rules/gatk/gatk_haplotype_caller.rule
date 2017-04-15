@@ -20,7 +20,7 @@ rule gatk_haplotype_caller:
     input: bam = "{prefix}.bam", bai = "{prefix}.bai",
            ref = config['gatk']['haplotype_caller']['ref'],
            refidx = config['gatk']['haplotype_caller']['ref'] + ".fai",
-           dict = config['gatk']['haplotype_caller']['ref'] + ".dict",
+           dict = os.path.splitext(config['gatk']['haplotype_caller']['ref'])[0] + ".dict",
     output: gvcf = "{prefix}{mode}.vcf"
     threads: config['gatk']['haplotype_caller']['threads']
     conda: "env.yaml"
