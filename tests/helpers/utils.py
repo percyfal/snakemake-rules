@@ -46,6 +46,7 @@ def run(cmd, stdout=sp.PIPE, stderr=sp.STDOUT):
     output, err = proc.communicate()
     return output, err
 
+
 def snakemake_list(fixture, results, **kwargs):
     """Run snakemake list"""
     snakefile = kwargs.get("snakefile", str(fixture.join("Snakefile")))
@@ -90,10 +91,12 @@ def snakemake_run(fixture, results, **kwargs):
         if not err is None:
             print(err.decode("utf-8"))
 
-    # Rerun to get assert statement
+    # Rerun to get assert statement; either nothing is to be done, or
+    # in some cases, the input file is missing due to a conversion
     cmd = " ".join(['snakemake'] + options + ['-n'] + targets)
     output, err = run(cmd)
-    assert (output.decode("utf-8").find(kwargs.get("results", "Nothing to be done")) >  -1)
+    assert ((output.decode("utf-8").find(kwargs.get("results", "Nothing to be done")) >  -1) or
+            (output.decode("utf-8").find(kwargs.get("results", "Missing input files")) >  -1))
     return output, err
 
 # context manager for cd
@@ -111,10 +114,12 @@ def cd(path):
         print("Changing directory back to {}".format(CWD), file=sys.stderr)
         os.chdir(CWD)
 
+
 def _make_executable(path):
     mode = os.stat(path).st_mode
     mode |= (mode & 0o444) >> 2    # copy R bits to X
     os.chmod(path, mode)
+
 
 def save_command(fn, args):
     with open(fn, "w") as fh:
