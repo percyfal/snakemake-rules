@@ -9,7 +9,7 @@ samples:
 ngs.settings:
   db:
     ref: ../../scaffolds/scaffolds.fa
-    dbsnp: ../../scaffolds/known.scaffolds.vcf
+    dbsnp: ../../scaffolds/known.scaffolds.vcf.gz
   annotation:
     transcript_annot_gtf: ../../scaffolds/scaffolds-transcripts-tiny.gtf
   sequence_capture:
@@ -39,6 +39,10 @@ gatk:
 
 mapdamage2:
   options: --no-stats
+
+multiqc:
+  inputs:
+    - medium.stats.txt
 
 rseqc:
   refgene: ../../scaffolds/scaffolds-transcripts.bed12
