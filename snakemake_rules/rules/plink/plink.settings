@@ -4,7 +4,7 @@ include: "../ngs.settings"
 config_default = { 
     'plink' : {
         'common_options' : "--noweb",
-        'cmd' : "plink",
+        'cmd' : "plink2",
         'chr' : "1",
         'runtime' : "01:00:00",
         'threads' : 1,
