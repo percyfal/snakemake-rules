@@ -27,7 +27,7 @@ bowtie2:
 
 gatk:
   gatk_haplotype_caller:
-    output: ['PUR.HG00731.tiny.sort.vcf']
+    output: ['PUR.HG00731.tiny.sort.vcf.gz']
   gatk_indel_realigner:
     ft: ['config']
   gatk_variant_eval:
