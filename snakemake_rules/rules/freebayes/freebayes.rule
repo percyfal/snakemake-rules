@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+include: "freebayes.settings"
+
+config_default = {
+    'freebayes' : {
+        'options' : '',
+    },
+}
+
+update_config(config_default, config)
+config = config_default
+
+rule freebayes:
+    """Run freebayes on a set of bam files"""
+    params: cmd = config['freebayes']['cmd'],
+            options = config['freebayes']['options'],
+            runtime = config['freebayes']['runtime']
+    input: fofn = "{prefix}.bam.fofn", ref = config['freebayes']['ref']
+    output: vcf = "{prefix}.freebayes.vcf"
+    threads: config['freebayes']['threads']
+    conda: "env.yaml"
+    shell: "{params.cmd} {params.options} -f {input.ref} -L {input.fofn} > {output.vcf}"
+
+

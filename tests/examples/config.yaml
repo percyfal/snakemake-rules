@@ -3,6 +3,7 @@ ngs.settings:
     ref: ref.fa
 
 settings:
+  sampleinfo: sampleinfo.csv
   temporary_rules:
     - bwa_index
     - bwa_mem
@@ -14,3 +15,11 @@ bwa:
   mem:
     options: -M
   threads: 2
+
+samples:
+  include: []
+  exclude:
+    - s1
+  
+
+    

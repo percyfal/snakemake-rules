@@ -1,0 +1,24 @@
+# -*- snakemake -*-
+include: "bowtie2.settings"
+
+config_default = {'bowtie2' :{'align' : _bowtie2_config_rule_default.copy()}}
+
+update_config(config_default, config)
+config = config_default
+
+rule bowtie2_align_se:
+    """Bowtie single end alignment"""
+    params: cmd = config['bowtie2']['cmd'],
+            options = config['bowtie2']['align']['options'],
+            index = str(config['bowtie2']['index']),
+            samtools = config['samtools']['cmd'],
+            runtime = config['bowtie2']['align']['runtime']
+    input: read = "{prefix}" + config['ngs.settings']['read1_label'] + config['ngs.settings']['fastq_suffix'],
+           index = expand("{index}{ext}", index=config['bowtie2']['index'], ext=config['bowtie2']['build_ext'])
+    output: bam = "{prefix}.bwt2.bam"
+    benchmark: "{prefix}.bwt2.json"
+    threads: config['bowtie2']['align']['threads']
+    log: "{prefix}.bwt2.log"
+    conda: "env.yaml"
+    shell:
+        "{params.cmd} -p {threads} {params.options} -x {params.index} -U {input.read} 2> {log} | {params.samtools} view -bS - > {output.bam}"

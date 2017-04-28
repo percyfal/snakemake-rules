@@ -1,6 +1,9 @@
 bcftools:
   bcftools_call_targets: s1.bcftools.1.vcf.gz
   bcftools_index: s1.vcf.gz.csi
+bedtools:
+  bedtools_min_genomecov: s1.bam.10.coverage.bed
+  bedtools_coverage: s1.bam.coverage10.bed
 cutadapt:
   cutadapt_cut_fiveprime: s1.trimmed_1.fastq.gz
   cutadapt_cut_threeprime: s1.trimmed_1.fastq.gz
@@ -10,6 +13,8 @@ emacs:
   emacs_org_to_reveal: s1.revealjs.html
 freebayes:
   freebayes_targets: s1.freebayes.1.vcf
+gatk:
+  gatk_variant_recalibrator: s1.SNP.recal
 jellyfish:
   jellyfish_count: s1_1.fastq.gz.mer_counts.jf
   jellyfish_histo: s1_1.fastq.gz.histo
@@ -21,6 +26,8 @@ pybedtools:
   pybedtools_make_bed_targets: ref.1.bed
 r:
   r_rmarkdown_revealjs: s1.revealjs.html
+samtools:
+  samtools_min_depth: s1.above13.bed
 snpeff:
   snpeff_annotate_variants: s1.annotated.vcf
 ucsc:

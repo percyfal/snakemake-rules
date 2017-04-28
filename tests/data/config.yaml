@@ -16,8 +16,9 @@ angsd:
   nChr: 4
 
 bedtools:
+  afile: targets.bed
   bfile: targets.bed
-
+  
 bowtie:
   index: ref.fa
 

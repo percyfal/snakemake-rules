@@ -1,17 +1,20 @@
 # Copyright (C) 2016 by Per Unneberg
 import re
+import os
 from os.path import abspath, dirname, join, basename
 import logging
 import shutil
 import subprocess as sp
 import pytest
+from helpers import utils
 
 logger = logging.getLogger(__name__)
 
 stderr = None if pytest.config.getoption("--show-workflow-output") else sp.STDOUT
 applications = [pytest.config.getoption("--application")] if pytest.config.getoption("--application") else pytest.rules.__all__
 rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
-THREADS = pytest.config.getoption("--threads")
+THREADS = pytest.config.getoption("--ngs-threads", "1")
+
 
 if not set(applications).issubset(pytest.rules.__all__):
     raise Exception("No such application '{}'".format(applications[0]))
@@ -34,7 +37,7 @@ for x in applications:
                 continue
         rules.append((x,y))
 
-        
+
 @pytest.mark.parametrize("x", sorted(rules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(rules)])
 def test_snakemake_list(x):
     app, rule = x
@@ -82,6 +85,12 @@ for x in applications:
         slow_rules.append((x,y))
 
 
+# Helper function to make output executable
+def make_executable(path):
+    mode = os.stat(path).st_mode
+    mode |= (mode & 0o444) >> 2    # copy R bits to X
+    os.chmod(path, mode)
+
 @pytest.mark.skipif(not applications, reason="application '{}' in blacklist".format(pytest.config.getoption("--application")))
 @pytest.mark.slow
 @pytest.mark.parametrize("x", sorted(slow_rules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(slow_rules)])
@@ -90,7 +99,8 @@ def test_snakemake_run(x, data):
     target = pytest.make_output(rule)
     if target is None:
         pytest.skip("Unable to parse target for rule {}".format(basename(rule)))
-    args = ['snakemake', '-f', '-s', rule, '-j', THREADS, '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
+    args = ['snakemake', '-f', '-s', rule, '-j', str(THREADS), '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
     if not target == "config":
         args = args + [target]
+    utils.save_command(join(str(data), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)

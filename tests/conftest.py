@@ -10,12 +10,16 @@ import subprocess as sp
 import ast
 import yaml
 from snakemake.parser import parse
+from snakemake_rules import SNAKEMAKE_RULES_PATH
+
+# Add helper module
+sys.path.append(os.path.join(os.path.dirname(__file__), 'helpers'))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 TESTDIR = abspath(dirname(__file__))
-RULEDIR = join(abspath(dirname(__file__)), os.pardir, "snakemake_rules")
+RULEDIR = SNAKEMAKE_RULES_PATH
 
 # Add test source path to pythonpath
 sys.path.insert(0, join(TESTDIR, os.pardir))
@@ -26,7 +30,6 @@ applications = {x:join(RULEDIR, x) for x in os.listdir(RULEDIR) if isdir(join(RU
 rules = {k: [join(RULEDIR, k, x) for x in os.listdir(v) if x.endswith(".rule")] for k,v in applications.items() }
 with open(os.path.join(TESTDIR, "rules2target.yaml")) as fh:
     rules2targets = yaml.load(fh)
-
 
 def make_output(rule, prefix="s1"):
     """Generate output file for rule. Assume target is based on prefix
@@ -62,26 +65,24 @@ def make_output(rule, prefix="s1"):
 
 # Add option to run slow tests; by default these are turned off
 def pytest_addoption(parser):
-    parser.addoption("--slow", action="store_true",
+    group = parser.getgroup("snakemake_rules", "snakemake rule library")
+    group.addoption("--slow", action="store_true",
                      help="run slow tests", dest="slow")
-    parser.addoption("--slow-only", action="store_true",
+    group.addoption("--slow-only", action="store_true",
                      help="run slow tests only", dest="slow_only")
-    parser.addoption("-V", "--show-workflow-output", action="store_true",
+    group.addoption("-V", "--show-workflow-output", action="store_true",
                      help="show workflow output",
                      dest="show_workflow_output")
-    parser.addoption("-P", "--python2-conda", action="store",
+    group.addoption("-P", "--python2-conda", action="store",
                      default="py2.7",
                      help="name of python2 conda environment [default: py2.7]",
                      dest="python2_conda")
-    parser.addoption("-A", "--application", action="store",
+    group.addoption("-A", "--application", action="store",
+                     default=False,
                      help="application to test",
                      dest="application")
-    parser.addoption("-T", "--threads", action="store",
-                     default="1",
-                     help="number of threads to use",
-                     dest="threads")
-    parser.addoption("-R", "--rule", action="store",
-                     default=None,
+    group.addoption("-R", "--rule", action="store",
+                     default=False,
                      help="run a specific rule",
                      dest="rule")
 
@@ -186,7 +187,9 @@ def data(tmpdir_factory):
 def snakefile_data(tmpdir_factory):
     """Setup input data for snakefiles"""
     p = tmpdir_factory.mktemp('snakefile_data')
+    
     data = abspath(join(dirname(__file__), "data"))
+    p.join("sampleinfo.csv").mksymlinkto(join(data, "sampleinfo.csv"))
     p.join("ref.fa").mksymlinkto(join(data, "ref.fa"))
     p.join("s1_1.fastq.gz").mksymlinkto(join(data, "s1_1.fastq.gz"))
     p.join("s1_2.fastq.gz").mksymlinkto(join(data, "s1_2.fastq.gz"))

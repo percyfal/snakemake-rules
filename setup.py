@@ -47,12 +47,14 @@ package_path(join(ROOT, 'tests', 'examples', 'config.yaml'))
 package_path(join(ROOT, 'tests', 'examples', 'config_regions.yaml'))
 package_path(join(ROOT, 'tests', 'data'))
 
-scripts = []
+scripts = ["scripts/syncrules.py"]
 
 REQUIRES = [
     'snakemake>=3.9.0',
     'pytest',
     'pytest-runner',
+    'psutil',
+    'sphinx-rtd-theme',
 ]
 
 _version = versioneer.get_version()
@@ -70,6 +72,7 @@ setup(
     scripts=scripts,
     packages=[
         'snakemake_rules',
+        'snakemake_rules.core',
     ],
     package_data={'snakemake_rules': package_data},
     install_requires=REQUIRES,
