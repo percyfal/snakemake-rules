@@ -21,6 +21,8 @@ cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['unified_
 
 rule gatk_unified_genotyper:
     """Run GATK UnifiedGenotyper"""
+    wildcard_constraints:
+        suffix = "(.vcf|.vcf.gz)"
     params: cmd = cmd + " -T " + UNIFIED_GENOTYPER,
             options = config['gatk']['unified_genotyper']['options'],
             runtime = config['gatk']['unified_genotyper']['runtime']
@@ -28,7 +30,7 @@ rule gatk_unified_genotyper:
            ref = config['gatk']['unified_genotyper']['ref'],
            fai = config['gatk']['unified_genotyper']['ref'] + '.fai',
            dict = os.path.splitext(config['gatk']['unified_genotyper']['ref'])[0] + '.dict',
-    output: vcf = "{prefix}.vcf"
+    output: vcf = "{prefix}{suffix}"
     threads: config['gatk']['unified_genotyper']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} -R {input.ref} -I {input.bam} -o {output.vcf}"

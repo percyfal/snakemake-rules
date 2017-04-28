@@ -13,13 +13,15 @@ config = config_default
 
 rule gatk_variant_eval:
     """Run GATK VariantEval"""
+    wildcard_constraints:
+        suffix = "(.vcf|.vcf.gz)"
     params: cmd = config['gatk']['cmd'] + " -T " + VARIANT_EVAL,
             options = " ".join(["-R", config['gatk']['variant_eval']['ref'],
                                 config['gatk']['variant_eval']['options'],
                                 "--dbsnp {known}".format(known=config['gatk']['known_sites'] if not config['gatk']['known_sites'] == "" else "")]),
             runtime = config['gatk']['variant_eval']['runtime']
-    input: "{prefix}.vcf"
-    output: "{prefix}.eval_metrics"
+    input: "{prefix}{suffix}"
+    output: "{prefix}{suffix}.eval_metrics"
     threads: config['gatk']['variant_eval']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} --eval {input} -o {output}"

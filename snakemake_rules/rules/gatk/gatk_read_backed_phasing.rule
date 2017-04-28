@@ -14,12 +14,14 @@ config = config_default
 
 rule gatk_read_backed_phasing:
     """Run GATK ReadBackedPhasing"""
+    wildcard_constraints:
+        suffix = "(.vcf|.vcf.gz)"
     params: cmd = config['gatk']['cmd'] + " -T " + READ_BACKED_PHASING,
             options = " ".join(["-R", config['gatk']['read_backed_phasing']['ref'],
                                 config['gatk']['read_backed_phasing']['options']]),
             runtime = config['gatk']['read_backed_phasing']['runtime'],
     input: config['gatk']['read_backed_phasing']['inputfun']
-    output: "{prefix}.phased.vcf"
+    output: "{prefix}.phased{suffix}"
     threads: config['gatk']['read_backed_phasing']['threads']
     conda: "env.yaml"
     shell: "{params.cmd} {params.options} -I {input[1]} -o {output} --variant {input[0]}"

@@ -1,10 +1,11 @@
-0.2 (Apr 15 2017)
+0.2 (Apr 28 2017)
 =========================
 
 Version 0.2 release
 
 New features:
 
+- add support for .vcf.gz for all gatk rules (#37)
 - add conda versions to environment files (#28)
 - inclusion/exclusion of samples has been improved (#30)
 - a core python module has been added, prompting the move of rules to

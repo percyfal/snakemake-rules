@@ -43,6 +43,7 @@ fixture_ext = {
     ".stats.txt" : "data/applications/samtools/1.3.1/pe/medium.stats.txt",
     ".vcf" : "data/ref/known.scaffolds.vcf",
     ".vcf.gz" : "data/applications/gatk/3.7/pe/medium.haplotype_caller.vcf.gz",
+    ".vcf.gz.tbi" : "data/applications/gatk/3.7/pe/medium.haplotype_caller.vcf.gz.tbi",
     #"tbi" : "tabix",
 }
 for k, v in fixture_ext.items():

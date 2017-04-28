@@ -34,7 +34,7 @@ config_default = {
         'runtime' : "24:00:00",
         'target_regions' : config['ngs.settings']['sequence_capture']['target_regions'],
         'threads' : config['settings']['threads'],
-        'vcfsuffix' : ".vcf",
+        'vcfsuffix' : "(.vcf|.vcf.gz)",
     },
 }
 
