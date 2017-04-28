@@ -1,2 +1,2 @@
 include versioneer.py
-include snakemakelib_rules/_version.py
+include snakemake_rules/_version.py

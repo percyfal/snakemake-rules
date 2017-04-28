@@ -6,8 +6,10 @@ package:
   name: {{ name|lower }}
   version: {{ release_short }}
 source:
-  git_rev: {{ release }}
-  git_url: https://github.com/percyfal/snakemake-rules
+  path: ../../snakemake-rules
+build:
+  number: 1
+
 requirements:
   build:
     - python >=3.3
@@ -15,6 +17,7 @@ requirements:
     - snakemake >=3.4.2
     - pytest >=3.0
     - pytest-runner
+    - psutil
 
   run:
     - python >=3.3
@@ -45,5 +48,4 @@ test:
 about:
   home: https://github.com/percyfal/snakemake-rules.git
   license: MIT License
-
   summary: 'Library of snakemake rules. The rules can be used as-is without installing snakemakelib itself.'

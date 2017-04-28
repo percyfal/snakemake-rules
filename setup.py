@@ -54,7 +54,6 @@ REQUIRES = [
     'pytest',
     'pytest-runner',
     'psutil',
-    'sphinx-rtd-theme',
 ]
 
 _version = versioneer.get_version()
