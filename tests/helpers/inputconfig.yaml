@@ -27,13 +27,21 @@ bowtie2:
 
 gatk:
   gatk_haplotype_caller:
-    output: ['PUR.HG00731.tiny.sort.vcf.gz']
+    output: ['PUR.HG00731.tiny.sort.haplotype_caller.vcf.gz']
   gatk_indel_realigner:
     ft: ['config']
   gatk_variant_eval:
+    output: ['medium.haplotype_caller.vcf.gz.eval_metrics']
     ft: ['config']
   gatk_variant_JEXL_filtration:
-    ft: ['config']
+    output: ['medium.haplotype_caller.filtered.vcf.gz']
+    ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
+  gatk_variant_snp_JEXL_filtration:
+    output: ['medium.haplotype_caller.filteredSNP.vcf.gz']
+    ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
+  gatk_variant_indel_JEXL_filtration:
+    output: ['medium.haplotype_caller.filteredINDEL.vcf.gz']
+    ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
 
 macs2:
   macs2_callpeak_treatment_only_bam_pe:
