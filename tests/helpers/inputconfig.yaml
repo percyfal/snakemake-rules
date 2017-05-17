@@ -43,7 +43,7 @@ gatk:
     output: ['medium.haplotype_caller.filteredINDEL.vcf.gz']
     ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
   gatk_variants_to_table:
-    output: ['medium.haplotype_caller.vcf.gz.table']
+    output: ['medium.haplotype_caller.vcf.gz.table.gz']
     ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
 
 macs2:

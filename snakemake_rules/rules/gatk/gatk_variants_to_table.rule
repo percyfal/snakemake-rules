@@ -27,5 +27,5 @@ rule gatk_variants_to_table:
     input: vcf = "{prefix}{suffix}",
            ref = config['gatk']['variants_to_table']['ref'],
            refidx = config['gatk']['variants_to_table']['ref'] + ".fai",
-    output: tab = "{prefix}{suffix}.table"
-    shell: "{params.cmd} {params.options} -V {input.vcf} -o {output.tab}"
+    output: tab = "{prefix}{suffix}.table.gz"
+    shell: "{params.cmd} {params.options} -V {input.vcf} | gzip > {output.tab}"
