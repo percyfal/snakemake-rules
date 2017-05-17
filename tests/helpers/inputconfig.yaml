@@ -42,6 +42,9 @@ gatk:
   gatk_variant_indel_JEXL_filtration:
     output: ['medium.haplotype_caller.filteredINDEL.vcf.gz']
     ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
+  gatk_variants_to_table:
+    output: ['medium.haplotype_caller.vcf.gz.table']
+    ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
 
 macs2:
   macs2_callpeak_treatment_only_bam_pe:

@@ -20,6 +20,7 @@ UNIFIED_GENOTYPER = "UnifiedGenotyper"
 VARIANT_FILTRATION = "VariantFiltration"
 VARIANT_EVAL = "VariantEval"
 VARIANT_RECALIBRATOR = "VariantRecalibrator"
+VARIANTS_TO_TABLE = "VariantsToTable"
 
 config_default = { 
     'gatk' : {
