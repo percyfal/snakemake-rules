@@ -4,7 +4,7 @@ include: 'gatk.settings'
 config_default = {'gatk' : {'variants_to_table' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['variants_to_table'].update({
     'options': "--allowMissingData",
-    'fields' : ["CHROM", "POS", "QUAL", "AC", "QD", "FS", "SOR", "MQ", "MQRankSum", "ReadPosRankSum"],
+    'fields' : ["CHROM", "POS", "FILTER", "QUAL", "AC", "QD", "FS", "SOR", "MQ", "MQRankSum", "ReadPosRankSum"],
 })
 
 
