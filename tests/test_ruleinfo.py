@@ -6,6 +6,9 @@ import pytest
 from snakemake_rules.core.ruleinfo import parse_rule, regex_target_list, get_targets
 
 
+pytestmark = pytest.mark.skipif(pytest.config.getoption("--application") is not False, reason="application passed; skipping ruleinfo tests")
+
+
 @pytest.fixture(scope="function")
 def rule1(tmpdir_factory):
     rule = """
@@ -18,6 +21,7 @@ rule foo:
     p = p.join("rule1.rule")
     p.write(rule)
     return p
+
 
 def test_parse_rule1(rule1):
     d = parse_rule(str(rule1))

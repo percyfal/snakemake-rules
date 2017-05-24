@@ -27,6 +27,7 @@ THREADS = pytest.config.getoption("--ngs-threads", "1")
 applications = [pytest.config.getoption("--application")] if pytest.config.getoption("--application") else pytest.rules.__all__
 rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
 
+
 def create_testrules(applications, blacklist):
     """Generate list of test rules.
 
