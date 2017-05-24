@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-from os.path import basename, realpath, join
+from os.path import basename, realpath
 import logging
-import yaml
 import pytest
-import subprocess as sp
 from snakemake_rules.core import ruleinfo
 from helpers import utils
 from helpers.fixture import set_inputmap, set_output
@@ -25,7 +23,7 @@ except ImportError as e:
 
 THREADS = pytest.config.getoption("--ngs-threads", "1")
 applications = [pytest.config.getoption("--application")] if pytest.config.getoption("--application") else pytest.rules.__all__
-rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
+rule = pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
 
 
 def create_testrules(applications, blacklist):
