@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-import os
-import re
-from os.path import basename, realpath
 import pytest
+from os.path import basename
 from helpers import utils, fixture
-from snakemake.io import update_wildcard_constraints
+
+pytestmark = pytest.mark.skipif(pytest.config.getoption("--application") is not False, reason="application passed; skipping base module tests")
 
 
 def test_wildcards1():
@@ -26,7 +25,7 @@ def test_wildcards4():
     d = utils.get_wildcards([('config[\'foo\'] + ".bar"', "config.yaml")], {})
     assert d == {}
 
-    
+
 def test_determine_fixture():
     # Non-existent filetype
     ft = fixture.determine_fixture('"{prefix}.bar"')

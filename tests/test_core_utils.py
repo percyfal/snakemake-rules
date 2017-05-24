@@ -34,6 +34,7 @@ def config(request, sampleinfo):
     return config, request.param
 
 
+@pytest.mark.skipif(pytest.config.getoption("--application") is not False, reason="application passed; skipping core utils tests")
 def test_config(config):
     conf, param = config
     utils.get_samples(conf, logger)

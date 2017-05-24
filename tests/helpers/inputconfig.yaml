@@ -79,6 +79,14 @@ rseqc:
   rseqc_clipping_profile:
     output: ['PUR.HG00731.tiny.sort_rseqc/clippingprofile_PE.clipping_profile.xls']
 
+sga:
+  sga_preprocess:
+    ft: ['_1.fastq.gz']
+    output: ['CHS.preprocess.fastq.gz']
+  sga_preprocess_pe:
+    ft: ['_1.fastq.gz', '_2.fastq.gz']
+    output: ['CHS_2.preprocess.fastq.gz']
+
 star:
   star_index:
     output: ['../../scaffolds/SA']
