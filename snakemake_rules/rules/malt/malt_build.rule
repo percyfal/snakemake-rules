@@ -29,4 +29,4 @@ rule malt_build:
             table = expand(os.path.join(config['malt']['index'], "table{num}.{ext}"), num=[0, 1, 2, 3], ext=["db", "idx"]),
     threads: config['malt']['build']['threads']
     shell:
-        "{params.xvfb} malt-build {params.options} -s {params.sequenceType} -i {input.fa} -d {params.indexdir}"
+        "{params.xvfb} malt-build {params.options} -t {threads} -s {params.sequenceType} -i {input.fa} -d {params.indexdir}"

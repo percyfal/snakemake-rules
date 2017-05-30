@@ -6,8 +6,8 @@ config_default = {'gatk' :{'variant_snp_JEXL_filtration' : _gatk_config_rule_def
 config_default['gatk']['variant_snp_JEXL_filtration'].update(
     {
         'expressions': ["QD < 2.0", "MQ < 40.0", "FS > 60.0",
-                             "HaplotypeScore > 13.0", "MQRankSum < -12.5",
-                             "ReadPosRankSum < -8.0"],
+                        "MQRankSum < -12.5",
+                        "ReadPosRankSum < -8.0", "SOR > 3.0"],
     })
 
 
