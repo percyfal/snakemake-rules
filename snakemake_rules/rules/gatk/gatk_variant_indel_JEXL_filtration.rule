@@ -7,7 +7,7 @@ config_default['gatk']['variant_indel_JEXL_filtration'].update(
     {
         'expressions':
         ["QD < 2.0", "ReadPosRankSum < -20.0", "FS > 200.0",
-         "InbreedingCoeff < -0.8", "SOR > 10"]
+         "SOR > 10.0"]
     })
 
 update_config(config_default, config)
