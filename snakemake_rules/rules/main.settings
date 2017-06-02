@@ -8,7 +8,7 @@ from os.path import join, basename, dirname
 import re
 import shutil
 import glob
-from snakemake_rules.core.utils import get_samples, python2_path
+from snakemake_rules.core.utils import get_samples, python2_path, available_mem
 from snakemake.utils import update_config
 from snakemake.exceptions import RuleException
 from snakemake.logging import logger
@@ -28,11 +28,14 @@ m = re.search("(-j|--jobs|--cores)\s+(?P<threads>\d+)", " ".join(sys.argv))
 if m:
     _threads = int(m.group("threads"))
 
+# Set the available memory to memory per core
+_mem = available_mem(1, "8g")
+
 config_default = {
     'settings' : {
         'email' : os.getenv("USER_EMAIL", None),
         'java' : {
-            'java_mem' : "8g",
+            'java_mem' : _mem,
             'java_tmpdir' : "/tmp",
         },
         'threads' : _threads,
