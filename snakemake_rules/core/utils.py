@@ -4,27 +4,37 @@ import re
 import csv
 import ast
 import subprocess as sp
+import psutil
+import math
+from snakemake import available_cpu_count
+
+BYTE = 1024
+
 
 def get_samples(config, logger):
     if config['settings'].get('sampleinfo') is None:
         logger.info("[snakemake_rules.settings]: no sampleinfo provided; not setting config['_sampleinfo']")
         return
     try:
-        ## Get the sample information
+        # Get the sample information
         _include = config.get('samples', [])
         if _include is None:
             _include = []
-        assert isinstance(_include, list), print("config['samples'] should be a list")
+        assert isinstance(_include, list), \
+            print("config['samples'] should be a list")
         _exclude = config.get('ignore_samples', [])
         if _exclude is None:
             _exclude = []
-        assert isinstance(_exclude, list), print("config['ignore_samples] should be a list")
+        assert isinstance(_exclude, list), \
+            print("config['ignore_samples] should be a list")
         _ignored = []
         if len(_include) == 0:
             config['samples'] = []
         with open(config['settings']['sampleinfo']) as csvfile:
-            dialect = csv.Sniffer().sniff(csvfile.read(10240), delimiters=[',',';'])
-            config['_sampleinfo_delim'] = dialect.delimiter # save for later use by QC rules
+            dialect = csv.Sniffer().sniff(csvfile.read(10240),
+                                          delimiters=[',', ';'])
+            # save for later use by QC rules
+            config['_sampleinfo_delim'] = dialect.delimiter
             csvfile.seek(0)
             reader = csv.DictReader(csvfile, dialect=dialect)
             rows = [row for row in reader]
@@ -60,7 +70,7 @@ def get_samples(config, logger):
     except Exception as e:
         logger.info("[snakemake_rules.settings]: parsing sampleinfo failed; not setting config['_sampleinfo']: {}".format(e))
 
-        
+
 def python2_path(config, logger):
     """Add python 2 path if possible"""
     try:
@@ -90,3 +100,40 @@ def bytes2human(n):
             value = float(n) / prefix[s]
             return '%.1f%s' % (value, s)
     return "%sB" % n
+
+
+def mem_per_core(prefix="G"):
+    """Calculate available memory per core"""
+    conversion = 1e6
+    if prefix == "G" or prefix == "g":
+        conversion = 1e6
+    elif prefix == "M" or prefix == "m":
+        conversion = 1e3
+    else:
+        pass
+    cores = psutil.cpu_count()
+    mem = psutil.virtual_memory().total
+    return math.floor(mem / BYTE / conversion / cores)
+
+
+def available_mem(cores, mem, fmtstring=True):
+    """Calculate available memory for a process
+
+    Params:
+      cores (int): number of cores
+      mem (str): set memory as string with conversion (M, G, g)
+    fmtstring (bool): return memory as formatted string
+    """
+    prefix = "G"
+    m = re.match("[0-9]+([a-zA-Z]*)", str(mem))
+    if m:
+        prefix = m.groups()[0]
+    requested_mem_per_core = int(re.sub("[a-zA-Z]*", "", str(mem)))
+    core_mem = mem_per_core(prefix)
+    requested_cores = min(cores, available_cpu_count())
+    mem = min(requested_cores * core_mem,
+              requested_cores * requested_mem_per_core)
+    if fmtstring:
+        return "{}{}".format(mem, prefix)
+    else:
+        return mem
