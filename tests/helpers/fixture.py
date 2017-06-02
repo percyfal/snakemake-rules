@@ -19,6 +19,7 @@ with open(os.path.join(os.path.dirname(__file__), "inputconfig.yaml")) as fh:
 # compiled to regular expression
 # 1. pytest_ngsfixtures
 fixture_ext = {
+    ".bamse": "data/applications/se/PUR.HG00731.tiny.sort.bam",
     ".bam": "data/applications/pe/PUR.HG00731.tiny.sort.bam",
     ".bai": "data/applications/pe/PUR.HG00731.tiny.sort.bai",
     ".bam.bai": "data/applications/pe/PUR.HG00731.tiny.sort.bam.bai",

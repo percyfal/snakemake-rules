@@ -69,7 +69,11 @@ picard:
 
 qualimap:
   qualimap_bamqc:
-    output: ['PUR.HG00731.tiny.sort.bam.pe.qualimap/genome_results.txt']
+    ft: ['.bam']
+    output: ['PUR.HG00731.tiny.sort.bam.qualimap/genome_results.txt']
+  qualimap_bamqc_se:
+    ft: ['.bamse']
+    output: ['PUR.HG00731.tiny.sort.bam.qualimap/genome_results.txt']
 
 rsem:
   rsem_prepare_reference:
