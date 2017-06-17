@@ -1,6 +1,7 @@
 # -*- snakemake -*-
 include: "freebayes.settings"
 include: "../samtools/samtools_faidx.rule"
+include: "../htslib/htslib_bgzip.rule"
 
 config_default = {'freebayes' : {'freebayes_targets' : _freebayes_config_rule_default.copy()}}
 config_default['freebayes']['freebayes_targets']['options'] = config['freebayes']['options']
@@ -28,14 +29,23 @@ rule freebayes_targets:
     """
     wildcard_constraints:
         window = "(|window-)",
-        targets = "\d+"
+        targets = "\d+",
+        suffix = "(.vcf.gz|.vcf)"
     params: cmd = config['freebayes']['cmd'],
             options = config['freebayes']['freebayes_targets']['options'],
-            runtime = config['freebayes']['freebayes_targets']['runtime']
+            runtime = config['freebayes']['freebayes_targets']['runtime'],
+            bgzip = 'bgzip'
     input: fofn = "{prefix}.fofn",
            ref = config['freebayes']['freebayes_targets']['ref'],
            fai = config['freebayes']['freebayes_targets']['ref'] + ".fai",
            targets = "{prefix}.{window}{targets}.bed"
-    output: vcf = "{prefix}.freebayes.{window}{targets}.vcf"
+    output: vcf = "{prefix}.freebayes.{window}{targets}{suffix}"
     threads: config['freebayes']['freebayes_targets']['threads']
-    shell: "{params.cmd} {params.options} -f {input.ref} -L {input.fofn} -t {input.targets} > {output.vcf}"
+    shell:
+        "if [[ '{wildcards.suffix}' == '.vcf.gz' ]]; then \n"
+        "  {params.cmd} {params.options} -f {input.ref} -L {input.fofn} -t {input.targets} | {params.bgzip} > {output.vcf}\n"
+        "else\n"
+        "  {params.cmd} {params.options} -f {input.ref} -L {input.fofn} -t {input.targets} > {output.vcf}\n"
+        "fi"
+
+ruleorder: freebayes_targets > htslib_bgzip
