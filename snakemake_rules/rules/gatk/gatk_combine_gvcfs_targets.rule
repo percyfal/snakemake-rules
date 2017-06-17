@@ -37,6 +37,7 @@ rule gatk_combine_gvcfs_targets:
              runtime = config['gatk']['combine_gvcfs_targets']['runtime']
     input: vcf = ["{{prefix}}.{{application}}.{partition}.g.vcf.gz".format(partition=p+1) for p in range(config['pybedtools']['make_bed_targets']['partitions'])],
            tbi = ["{{prefix}}.{{application}}.{partition}.g.vcf.gz.tbi".format(partition=p+1) for p in range(config['pybedtools']['make_bed_targets']['partitions'])]
-    output: vcf = "{prefix}.{application}.combined.g.vcf.gz"
+    output: vcf = "{prefix}.{application}.combined.g.vcf.gz",
+            tbi = "{prefix}.{application}.combined.g.vcf.gz.tbi"
     threads: config['gatk']['combine_gvcfs_targets']['threads']
     shell:  "command=\"{params.cmd} {params.options} $(echo {input.vcf} | sed -e 's/[^ ][^ ]*/-V &/g') -o {output.vcf}\"; eval \"${{command}}\""

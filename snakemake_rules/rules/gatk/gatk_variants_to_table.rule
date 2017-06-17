@@ -32,6 +32,7 @@ rule gatk_variants_to_table:
     threads: config['gatk']['variants_to_table']['threads']
     conda: "env.yaml"
     input: vcf = "{prefix}{suffix}",
+           vcftbi = "{prefix}{suffix}.tbi",
            ref = config['gatk']['variants_to_table']['ref'],
            refidx = config['gatk']['variants_to_table']['ref'] + ".fai",
     output: tab = "{prefix}{suffix}.table.gz"

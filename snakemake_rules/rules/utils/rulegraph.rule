@@ -25,3 +25,5 @@ rule rulegraph:
         sys.stdout = backup
         with open (output.rulegraph, "w") as fh:
             fh.write(out)
+
+localrules: rulegraph

@@ -4,12 +4,12 @@ include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../samtools/samtools_faidx.rule"
 include: '../picard/picard_build_bam_index.rule'
 
-config_default = {'gatk': {'haplotype_caller' : _gatk_config_rule_default.copy()}}
+config_default = {'gatk': {'haplotype_caller_targets' : _gatk_config_rule_default.copy()}}
 
 update_config(config_default, config)
 config = config_default
 
-cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['haplotype_caller']['java_mem']), config['gatk']['cmd'])
+cmd = re.sub("-Xmx[0-9a-zA-Z]+", "-Xmx{mem}".format(mem=config['gatk']['haplotype_caller_targets']['java_mem']), config['gatk']['cmd'])
 
 rule gatk_haplotype_caller_targets:
     """Run GATK HaplotypeCaller on a bam file given targets in a bed file
@@ -27,17 +27,16 @@ rule gatk_haplotype_caller_targets:
         targets = "\d+",
         suffix = "(.vcf.gz|.vcf)"
     params: cmd = cmd + " -T " + HAPLOTYPE_CALLER,
-            options = config['gatk']['haplotype_caller']['options'],
-            runtime = config['gatk']['haplotype_caller']['runtime'],
+            options = config['gatk']['haplotype_caller_targets']['options'],
+            runtime = config['gatk']['haplotype_caller_targets']['runtime'],
     input: bam = "{prefix}.bam",
            bai = "{prefix}.bai",
-           ref = config['gatk']['haplotype_caller']['ref'],
-           fai = config['gatk']['haplotype_caller']['ref'] + ".fai",
+           ref = config['gatk']['haplotype_caller_targets']['ref'],
+           fai = config['gatk']['haplotype_caller_targets']['ref'] + ".fai",
            targets = "{prefix}.{targets}.bed"
     output: vcf = "{prefix}.haplotype_caller.{targets}{mode}{suffix}",
             tbi = "{prefix}.haplotype_caller.{targets}{mode}{suffix}.tbi"
-    threads: config['gatk']['haplotype_caller']['threads']
+    threads: config['gatk']['haplotype_caller_targets']['threads']
     conda: "env.yaml"
     log: "{prefix}.haplotype_caller.{targets}{mode}.vcf.log"
     shell: "mode=''; if [[ '{wildcards.mode}' == '.g' ]]; then mode='-ERC GVCF'; fi; {params.cmd} {params.options} ${{mode}} -I {input.bam} -L {input.targets} -R {input.ref} -o {output.vcf} -log {log}"
-
