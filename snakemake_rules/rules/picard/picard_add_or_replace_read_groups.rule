@@ -50,4 +50,4 @@ rule picard_add_or_replace_read_groups:
     output: bam = "{prefix}.rg.bam"
     threads: config['picard']['add_or_replace_read_groups']['threads']
     run:
-        shell("{params.cmd} INPUT={input.bam} OUTPUT={output.bam} {params.custom_options} " + config['picard']['add_or_replace_read_groups']['rgfun'](wildcards))
+        shell("{params.cmd} INPUT={input.bam} OUTPUT={output.bam} {params.options} {params.custom_options} " + config['picard']['add_or_replace_read_groups']['rgfun'](wildcards))
