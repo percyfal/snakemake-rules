@@ -22,17 +22,20 @@ def sync_file(source, dest, dryrun=False, diff=False):
     """Sync file source to dest"""
     if diff:
         if not exists(dest):
-            logger.info("Destination '{}' does not exist: skipping diff".format(dest))
+            logger.info(("Destination '{}' does not exist:".format(dest),
+                         " skipping diff"))
             return
         with open(source) as a:
             with open(dest) as b:
                 s1 = a.readlines()
                 s2 = b.readlines()
-                sys.stdout.writelines(difflib.unified_diff(s1, s2, fromfile=source, tofile=dest))
+                sys.stdout.writelines(
+                    difflib.unified_diff(s1, s2, fromfile=source, tofile=dest))
         return
     if not exists(dest):
         if dryrun:
-            logger.info("DRY_RUN: Copying rule '{}' to '{}'".format(source, dest))
+            logger.info("DRY_RUN: Copying rule '{}' to '{}'".format(
+                source, dest))
         else:
             if not exists(dirname(dest)):
                 os.makedirs(dirname(dest))
@@ -42,7 +45,8 @@ def sync_file(source, dest, dryrun=False, diff=False):
         equal = filecmp.cmp(source, dest)
         if (not equal):
             if dryrun:
-                logger.info("DRY_RUN: Updating rule '{}' to '{}'".format(source, dest))
+                logger.info("DRY_RUN: Updating rule '{}' to '{}'".format(
+                    source, dest))
             else:
                 logger.info("Updating rule '{}' to '{}'".format(source, dest))
                 shutil.copy2(source, dest)
@@ -65,7 +69,7 @@ def create_workflow(snakefile):
         print_exception(ex, workflow.linemaps)
         success = False
 
-    return workflow
+    return workflow, success
 
 
 # Snakemake rules dictionary
@@ -78,7 +82,8 @@ for path, dirs, files in os.walk(path):
             if f.endswith(".settings"):
                 snakemake_rule_dict[f] = join(path, f)
             elif f.endswith(".py"):
-                mod = ".".join(relpath(join(path, f), SNAKEMAKE_RULES_PATH).split(os.sep))
+                mod = ".".join(relpath(
+                    join(path, f), SNAKEMAKE_RULES_PATH).split(os.sep))
                 snakemake_rule_dict[mod] = join(path, f)
             else:
                 rule = splitext(f)[0]
@@ -100,11 +105,16 @@ parser.add_argument('Snakefile', help="Snakefile to import")
 parser.add_argument('-n', '--dry-run', action="store_true", help="Dry run")
 parser.add_argument('-d', '--outdir', action="store", default=os.curdir,
                     help="output directory")
-parser.add_argument('-r', '--rule', action="store", default=None, help="rule to sync")
-parser.add_argument('-m', '--module', action="store", default=None, help="python module to sync")
-parser.add_argument('-s', '--settings', action="store", default=None, help="settings file to sync")
-parser.add_argument('-D', '--diff', action="store_true", default=False, help="do diff only")
-parser.add_argument('-v', '--verbose', action="store_true", default=False, help="increase verbosity")
+parser.add_argument('-r', '--rule', action="store", default=None,
+                    help="rule to sync")
+parser.add_argument('-m', '--module', action="store", default=None,
+                    help="python module to sync")
+parser.add_argument('-s', '--settings', action="store", default=None,
+                    help="settings file to sync")
+parser.add_argument('-D', '--diff', action="store_true", default=False,
+                    help="do diff only")
+parser.add_argument('-v', '--verbose', action="store_true",
+                    default=False, help="increase verbosity")
 args = parser.parse_args()
 
 if args.verbose:
@@ -119,7 +129,9 @@ workflow_rules = {r.name: r for r in workflow.rules}
 
 # Sync python module
 if args.module:
-    assert args.module.endswith(".py"), "the supplied module argument '{}' misses the suffix '.py'".format(args.module)
+    assert args.module.endswith(".py"),\
+        ("the supplied module argument '{}' ".format(args.module),
+         "misses the suffix '.py'")
     try:
         source = snakemake_rule_dict[args.module]
     except KeyError as e:
@@ -159,10 +171,14 @@ for r in workflow_rules:
             continue
     if r in list(snakemake_rule_dict.keys()):
         source = snakemake_rule_dict[r]
-        dest = join(DEST, relpath(snakemake_rule_dict[r], SNAKEMAKE_RULES_PATH))
+        dest = join(DEST, relpath(snakemake_rule_dict[r],
+                                  SNAKEMAKE_RULES_PATH))
         sync_file(source, dest, args.dry_run, args.diff)
         rule = create_workflow(snakemake_rule_dict[r]).get_rule(r)
-        env = join(dirname(snakemake_rule_dict[r]), "env.yaml") if exists(join(dirname(snakemake_rule_dict[r]), "env.yaml")) else rule.conda_env
+        if exists(join(dirname(snakemake_rule_dict[r]), "env.yaml")):
+            env = join(dirname(snakemake_rule_dict[r]), "env.yaml")
+        else:
+            env = rule.conda_env
         if env in envfiles:
             continue
         if env:

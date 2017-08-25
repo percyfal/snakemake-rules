@@ -2,14 +2,12 @@
 # Helper functions for parsing and for making output executable
 import os
 from os.path import abspath, dirname, join
-import re
 import sys
 import pytest
 import subprocess as sp
 import contextlib
 import yaml
 import logging
-from snakemake.parser import parse
 from snakemake.io import glob_wildcards, update_wildcard_constraints
 
 logging.basicConfig(level=logging.INFO)
@@ -32,17 +30,18 @@ def run(cmd, stdout=sp.PIPE, stderr=sp.STDOUT):
     close_fds = sys.platform != 'win32'
 
     proc_prefix = "set -euo pipefail;"
-    proc = sp.Popen("{} {} {} {}".format(
-        "",
-        proc_prefix,
-        "",
-        cmd),
-                    bufsize=-1,
-                    shell=True,
-                    stdout=stdout,
-                    stderr=stderr,
-                    close_fds=close_fds,
-                    executable="/bin/bash")
+    proc = sp.Popen(
+        "{} {} {} {}".format(
+            "",
+            proc_prefix,
+            "",
+            cmd),
+        bufsize=-1,
+        shell=True,
+        stdout=stdout,
+        stderr=stderr,
+        close_fds=close_fds,
+        executable="/bin/bash")
     output, err = proc.communicate()
     return output, err
 
@@ -54,14 +53,17 @@ def snakemake_list(fixture, results, **kwargs):
             snakefile]
     save_command(join(str(fixture), "command.sh"), args)
     cmd = " ".join(args)
-    output, err = run(cmd, kwargs.get("stdout", sp.PIPE), kwargs.get("stderr", sp.PIPE))
-    if not err is None:
-        assert(err.decode("utf-8").find("RuleException") == -1), logger.error(err.decode("utf-8"))
-        assert(err.decode("utf-8").find("Error:") == -1), logger.error(err.decode("utf-8"))
+    output, err = run(cmd, kwargs.get("stdout", sp.PIPE),
+                      kwargs.get("stderr", sp.PIPE))
+    if err is not None:
+        assert(err.decode("utf-8").find("RuleException") == -1),\
+            logger.error(err.decode("utf-8"))
+        assert(err.decode("utf-8").find("Error:") == -1),\
+            logger.error(err.decode("utf-8"))
     if pytest.config.getoption("--show-workflow-output"):
-        if not output is None:
+        if output is not None:
             print(output.decode("utf-8"))
-        if not err is None:
+        if err is not None:
             print(err.decode("utf-8"))
     return output, err
 
@@ -78,38 +80,46 @@ def snakemake_run(fixture, results, **kwargs):
     args = ['snakemake'] + options + targets
     save_command(join(str(fixture), "command.sh"), args)
     cmd = " ".join(args)
-    output, err = run(cmd, kwargs.get("stdout", sp.PIPE), kwargs.get("stderr", sp.PIPE))
+    output, err = run(cmd, kwargs.get("stdout", sp.PIPE),
+                      kwargs.get("stderr", sp.PIPE))
 
-    if not err is None:
-        assert(err.decode("utf-8").find("RuleException") == -1), logger.error(err.decode("utf-8"))
-        assert(err.decode("utf-8").find("Error:") == -1), logger.error(err.decode("utf-8"))
-    if not output is None:
+    if err is not None:
+        assert(err.decode("utf-8").find("RuleException") == -1),\
+            logger.error(err.decode("utf-8"))
+        assert(err.decode("utf-8").find("Error:") == -1),\
+            logger.error(err.decode("utf-8"))
+    if output is not None:
         print(output.decode("utf-8"))
     if pytest.config.getoption("--show-workflow-output"):
-        if not output is None:
+        if output is not None:
             print(output.decode("utf-8"))
-        if not err is None:
+        if err is not None:
             print(err.decode("utf-8"))
 
     # Rerun to get assert statement; either nothing is to be done, or
     # in some cases, the input file is missing due to a conversion
     cmd = " ".join(['snakemake'] + options + ['-n'] + targets)
     output, err = run(cmd)
-    assert ((output.decode("utf-8").find(kwargs.get("results", "Nothing to be done")) >  -1) or
-            (output.decode("utf-8").find(kwargs.get("results", "Missing input files")) >  -1))
+    assert (
+        (output.decode("utf-8").find(
+            kwargs.get("results", "Nothing to be done")) > -1) or
+        (output.decode("utf-8").find(
+            kwargs.get("results", "Missing input files")) > -1))
     return output, err
+
 
 # context manager for cd
 @contextlib.contextmanager
 def cd(path):
     CWD = os.getcwd()
-    print("Changing directory from {} to {}".format(CWD, path), file=sys.stderr)
+    print("Changing directory from {} to {}".format(CWD, path),
+          file=sys.stderr)
 
     os.chdir(path)
     try:
         yield
     except:
-        print ('Exception caught: ',sys.exc_info()[0], file=sys.stderr)
+        print('Exception caught: ', sys.exc_info()[0], file=sys.stderr)
     finally:
         print("Changing directory back to {}".format(CWD), file=sys.stderr)
         os.chdir(CWD)
