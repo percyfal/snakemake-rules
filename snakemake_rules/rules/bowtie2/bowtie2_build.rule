@@ -11,7 +11,8 @@ rule bowtie2_build:
     """Bowtie build index"""
     params: cmd = config['bowtie2']['bowtie2_build']['cmd'],
             runtime = config['bowtie2']['bowtie2_build']['runtime'],
+            options = config['bowtie2']['bowtie_build']['options'],
     input: config['bowtie2']['ref'] if config['bowtie2']['ref'] else "{prefix}"
     output: expand("{{prefix}}{ext}", ext=config['bowtie2']['build_ext'])
     threads: config['bowtie2']['bowtie2_build']['threads']
-    shell: "{params.cmd} {input} {wildcards.prefix}"
+    shell: "{params.cmd} {params.options} --threads {threads} {input} {wildcards.prefix}"
