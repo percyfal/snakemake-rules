@@ -6,7 +6,12 @@ config_default = {
         'bamqc' : {
             'options' : [],
             'threads' : 4,
-            'runtime' : '01:00:00'
+            'runtime' : '01:00:00',
+            'outputs' : ['coverage_across_reference', 'coverage_histogram',
+                         'duplication_rate_histogram', 'genome_fraction_coverage',
+                         'homopolymer_indels', 'mapped_reads_clipping_profile',
+                         'mapped_reads_gc-content_distribution', 'mapped_reads_nucleotide_content',
+                         'mapping_quality_across_reference', 'mapping_quality_histogram'],
         },
     },
 }
@@ -29,7 +34,7 @@ if re.search("(?P<os>-os|--outside-stats)", " ".join(config['qualimap']['bamqc']
                     'outside_windows': "{prefix}.bam.qualimap/outside_windows.txt",
                     'outside_html': "{prefix}.bam.qualimap/qualimapReportOutsideRegions.html"})
 
-_output.update({
+output_map = {
     'coverage_across_reference': "{prefix}.bam.qualimap/raw_data_qualimapReport/coverage_across_reference.txt",
     'coverage_histogram': "{prefix}.bam.qualimap/raw_data_qualimapReport/coverage_histogram.txt",
     'duplication_rate_histogram': "{prefix}.bam.qualimap/raw_data_qualimapReport/duplication_rate_histogram.txt",
@@ -40,8 +45,9 @@ _output.update({
     'mapped_reads_nucleotide_content': "{prefix}.bam.qualimap/raw_data_qualimapReport/mapped_reads_nucleotide_content.txt",
     'mapping_quality_across_reference': "{prefix}.bam.qualimap/raw_data_qualimapReport/mapping_quality_across_reference.txt",
     'mapping_quality_histogram': "{prefix}.bam.qualimap/raw_data_qualimapReport/mapping_quality_histogram.txt",
-})
+}
 
+_output.update({k:output_map[k] for k in config['qualimap']['bamqc']['outputs']})
 
 rule qualimap_bamqc_se:
     """Qualimap: run bamqc on bam file"""
