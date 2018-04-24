@@ -4,7 +4,7 @@ include: '../ngs.settings'
 config_default = {
     'r' : {
         'cmd' : 'R',
-        'script' : 'Rcript',
+        'script' : 'Rscript',
         'runtime' : "01:00:00",
         'X11' : True,
     },
