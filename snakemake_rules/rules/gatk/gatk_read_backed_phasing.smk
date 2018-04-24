@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 
 def _gatk_read_backed_phasing_inputs_fn(wildcards):
     raise RuleException(

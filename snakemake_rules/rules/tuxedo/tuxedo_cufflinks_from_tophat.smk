@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "tuxedo.settings"
+include: "tuxedo.settings.smk"
 
 rule tuxedo_cufflinks_from_tophat:
     """Run cufflinks based on tophat output directory"""

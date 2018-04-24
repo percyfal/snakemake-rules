@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 # Currently just write down explicit dependencies
-include: "rsem.settings"
+include: "rsem.settings.smk"
 
 rule rsem_pca:
     input: csv = join("{path}", "{prefix}.{type}.csv"), samples="samples.txt"

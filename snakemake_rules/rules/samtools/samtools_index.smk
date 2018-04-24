@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "samtools.settings"
+include: "samtools.settings.smk"
 
 config_default = {'samtools' :{'index' : _samtools_config_rule_default.copy()}}
 

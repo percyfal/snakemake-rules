@@ -12,7 +12,7 @@
 # Memory ~ (genome_size/step_size) x ( replicate_count + max(2,
 # comparison_count) ) x 8 bits.
 #
-include: "../ngs.settings"
+include: "../ngs.settings.smk"
 
 
 config_default = {

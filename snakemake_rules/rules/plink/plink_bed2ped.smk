@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "plink.settings"
+include: "plink.settings.smk"
 
 rule plink_bed2ped:
     """convert ped file to binary ped. 

@@ -4,7 +4,7 @@
 #
 # http://homer.salk.edu/homer/motif/
 #
-include: '../ngs.settings'
+include: '../ngs.settings.smk'
 
 config_default = {
     'homer' : {

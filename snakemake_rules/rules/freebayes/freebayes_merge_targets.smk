@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "freebayes.settings"
+include: "freebayes.settings.smk"
 include: "freebayes_targets.rule"
 include: "../bcftools/bcftools_index.rule"
 include: "../pybedtools/pybedtools_make_bed_targets.rule"

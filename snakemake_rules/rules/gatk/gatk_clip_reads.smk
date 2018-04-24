@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: '../picard/picard_build_bam_index.rule'
 
 config_default = {'gatk': {'clip_reads' : _gatk_config_rule_default.copy()}}

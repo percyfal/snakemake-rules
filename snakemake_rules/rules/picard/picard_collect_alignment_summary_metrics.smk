@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 include: "picard_build_bam_index.rule"
 
 config_default = {'picard' :{'collect_alignment_summary_metrics' : _picard_config_rule_default.copy()}}

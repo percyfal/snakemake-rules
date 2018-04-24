@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "homer.settings"
+include: "homer.settings.smk"
 
 config_default = {'homer' :{'annotatePeaks' : _homer_config_rule_default.copy()}}
 config_default['homer']['annotatePeaks'].update({'gtf': None})

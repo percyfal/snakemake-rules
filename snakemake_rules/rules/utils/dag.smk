@@ -2,7 +2,7 @@
 import io
 from snakemake.io import Wildcards, Namedlist
 
-include: "utils.settings"
+include: "utils.settings.smk"
 
 rule dag:
     """Print dag

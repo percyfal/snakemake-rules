@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "ucsc.settings"
+include: "ucsc.settings.smk"
 
 rule ucsc_write_chromosome:
     """Generate chromosome-specific fasta file from reference."""

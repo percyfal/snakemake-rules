@@ -1,6 +1,6 @@
 # -*- snakemake -*-
-include: "tuxedo.settings"
-include: "../samtools/samtools.settings"
+include: "tuxedo.settings.smk"
+include: "../samtools/samtools.settings.smk"
 
 config_default = {
     'tuxedo' : {

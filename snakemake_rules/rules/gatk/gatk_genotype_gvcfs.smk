@@ -1,6 +1,6 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
-include: '../bcftools/bcftools.settings'
+include: 'gatk.settings.smk'
+include: '../bcftools/bcftools.settings.smk'
 
 config_default = {'gatk' : {'genotype_gvcfs' :  _gatk_config_rule_default.copy()}}
 

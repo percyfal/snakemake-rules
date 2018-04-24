@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 # Rule to remove soft-clipping
-include: "rsem.settings"
+include: "rsem.settings.smk"
 
 rule rsem_remove_soft_clipping:
     """Remove soft clipping from alignments. 

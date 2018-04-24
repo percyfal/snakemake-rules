@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "samtools.settings"
+include: "samtools.settings.smk"
 
 config_default = {'samtools' :{'tabix_vcf' : _samtools_config_rule_default.copy()}}
 config_default['samtools']['tabix_vcf'].update({'cmd' : 'tabix'})

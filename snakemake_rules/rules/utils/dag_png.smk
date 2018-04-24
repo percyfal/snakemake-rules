@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "utils.settings"
+include: "utils.settings.smk"
 include: "dag.rule"
 
 rule dag_png:

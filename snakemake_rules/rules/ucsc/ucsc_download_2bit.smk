@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "ucsc.settings"
+include: "ucsc.settings.smk"
 
 config_default = {'ucsc': {'download_2bit': _ucsc_config_rule_default.copy()}}
 

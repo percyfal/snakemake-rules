@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "tuxedo.settings"
+include: "tuxedo.settings.smk"
 
 config_default = {
     'tuxedo' : {

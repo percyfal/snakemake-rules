@@ -2,7 +2,7 @@
 #
 # Install with pip; use recent version of gcc (>=4.9)
 #
-include: "../ngs.settings"
+include: "../ngs.settings.smk"
 
 config_default = {
     'macs2' : {

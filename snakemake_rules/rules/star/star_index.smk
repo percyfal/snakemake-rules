@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "star.settings"
+include: "star.settings.smk"
 
 config_default = {
     'star' : {

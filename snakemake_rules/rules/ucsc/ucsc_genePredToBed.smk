@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "ucsc.settings"
+include: "ucsc.settings.smk"
 
 config_default = {'ucsc': {'genePredToBed' : _ucsc_config_rule_default.copy()}}
 config_default['ucsc']['genePredToBed'].update({'cmd' : 'genePredToBed'})

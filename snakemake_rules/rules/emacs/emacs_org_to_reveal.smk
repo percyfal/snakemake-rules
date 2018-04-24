@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "emacs.settings"
+include: "emacs.settings.smk"
 
 config_default = {
     'emacs' : {

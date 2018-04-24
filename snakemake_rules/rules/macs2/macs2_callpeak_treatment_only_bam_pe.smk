@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "macs2.settings"
+include: "macs2.settings.smk"
 
 config_default = {'macs2' :{'callpeak' : _macs2_config_rule_default.copy()}}
 config_default['macs2']['callpeak'].update({'options': '-B'})

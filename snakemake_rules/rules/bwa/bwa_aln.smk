@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bwa.settings"
+include: "bwa.settings.smk"
 include: "bwa_index.rule"
 
 config_default = {'bwa' :{'aln' : _bwa_config_rule_default.copy()}}

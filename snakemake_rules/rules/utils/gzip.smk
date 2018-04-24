@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "utils.settings"
+include: "utils.settings.smk"
 
 rule gzip:
     """gzip"""

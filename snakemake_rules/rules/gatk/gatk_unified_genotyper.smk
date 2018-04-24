@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: join(os.pardir, "samtools", "samtools_faidx.rule")
 include: join(os.pardir, "picard", "picard_create_sequence_dictionary.rule")
 include: join(os.pardir, "picard", "picard_build_bam_index.rule")

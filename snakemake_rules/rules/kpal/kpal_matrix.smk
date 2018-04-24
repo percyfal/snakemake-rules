@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "kpal.settings"
+include: "kpal.settings.smk"
 
 config_default = {'kpal' :{'matrix' : _kpal_config_rule_default.copy()}}
 config_default['kpal']['matrix'].update({'options' : "-m -S"})

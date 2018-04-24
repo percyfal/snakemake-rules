@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "star.settings"
+include: "star.settings.smk"
 include: "star_align_pe.rule"
 
 rule star_align_log:

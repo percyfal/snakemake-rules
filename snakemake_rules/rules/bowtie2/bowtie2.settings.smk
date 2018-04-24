@@ -5,8 +5,8 @@
 
 Bowtie 2 - Fast and sensitive read alignment
 """
-include: '../ngs.settings'
-include: '../samtools/samtools.settings'
+include: '../ngs.settings.smk'
+include: '../samtools/samtools.settings.smk'
 
 
 config_default = {

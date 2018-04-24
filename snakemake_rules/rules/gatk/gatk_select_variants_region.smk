@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: "gatk_select_variants.rule"
 include: "gatk_unified_genotyper.rule"
 

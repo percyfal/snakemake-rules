@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "emboss.settings"
+include: "emboss.settings.smk"
 
 config_default = {'emboss' :{'seqret_fasta_to_genbank' : _emboss_config_rule_default.copy()}}
 

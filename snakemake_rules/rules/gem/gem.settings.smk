@@ -5,7 +5,7 @@
 
 The GEM library
 """
-include: "../ngs.settings"
+include: "../ngs.settings.smk"
 
 config_default = {
     'gem' : {

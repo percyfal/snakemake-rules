@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 
 config_default = {'picard' :{'build_bam_index' : _picard_config_rule_default.copy()}}
 

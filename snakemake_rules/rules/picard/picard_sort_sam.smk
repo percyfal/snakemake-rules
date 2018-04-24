@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 
 config_default = {'picard' :{'sort_sam' : _picard_config_rule_default.copy()}}
 config_default['picard']['sort_sam'].update({'options' : "SORT_ORDER=coordinate"})

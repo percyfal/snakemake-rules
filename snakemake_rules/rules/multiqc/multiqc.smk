@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "multiqc.settings"
+include: "multiqc.settings.smk"
 
 rule multiqc:
     """multiqc: run multiqc in a directory

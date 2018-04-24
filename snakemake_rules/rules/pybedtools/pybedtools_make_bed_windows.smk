@@ -2,7 +2,7 @@
 # Simplest greedy algorithm: see https://en.wikipedia.org/wiki/Partition_problem#The_greedy_algorithm
 # 1. choose the p largest regions to initial partitions
 # 2. for each remaining element, add it to the smallest set
-include: "pybedtools.settings"
+include: "pybedtools.settings.smk"
 
 config_default = {
     'pybedtools' : {

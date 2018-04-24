@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "snpeff.settings"
+include: "snpeff.settings.smk"
 
 config_default = {'snpeff' :{'download_database' : _snpeff_config_rule_default.copy()}}
 

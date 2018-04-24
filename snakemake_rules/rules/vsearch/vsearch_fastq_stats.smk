@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "vsearch.settings"
+include: "vsearch.settings.smk"
 
 config_default = {
     'vsearch' : {

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bcftools.settings"
+include: "bcftools.settings.smk"
 
 config_default = {'bcftools' :{'view_sample' : _bcftools_config_rule_default.copy()}}
 

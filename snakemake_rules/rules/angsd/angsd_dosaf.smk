@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'angsd.settings'
+include: 'angsd.settings.smk'
 
 config_default = {'angsd' :{'dosaf' : _angsd_config_rule_default.copy()}}
 config_default['angsd']['dosaf'].update(

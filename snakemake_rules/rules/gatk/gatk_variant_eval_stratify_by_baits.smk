@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: "gatk_variant_eval.rule"
 
 rule gatk_variant_eval_stratify_by_baits:

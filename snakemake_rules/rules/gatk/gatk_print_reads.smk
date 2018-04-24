@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: 'gatk_base_recalibrator.rule'
 
 config_default = {'gatk' : {'print_reads' : _gatk_config_rule_default.copy()}}

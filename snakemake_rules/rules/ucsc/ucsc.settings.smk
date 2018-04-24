@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 #
-include: "../ngs.settings"
+include: "../ngs.settings.smk"
 
 config_default = {
     'ucsc' : { 

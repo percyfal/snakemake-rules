@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "rseqc.settings"
+include: "rseqc.settings.smk"
 
 RULES = {
     'rseqc_clipping_profile': (True, "{prefix}_rseqc/clippingprofile.clipping_profile.xls"),

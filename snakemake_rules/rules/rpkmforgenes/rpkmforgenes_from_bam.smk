@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 # rpkmforgenes.py -readcount -fulltranscript -mRNAnorm -rmnameoverlap -bothendsceil -n 15_115 -i unique.bam -p 1 -a refGene_140508_norandom_egfp.txt -u MULTo1.0/mm10_20-255/ -o test_refseq_rpkms.txt
-include: "rpkmforgenes.settings"
+include: "rpkmforgenes.settings.smk"
 
 rule rpkmforgenes_from_bam:
     """Run rpkmforgenes from bam input"""

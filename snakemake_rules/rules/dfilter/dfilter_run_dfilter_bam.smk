@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "dfilter.settings"
+include: "dfilter.settings.smk"
 
 rule dfilter_run_dfilter_bam:
     """Run run_dfilter command. Currently only works on one file."""

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 include: "picard_sort_sam.rule"
 
 def _picard_merge_sam_input_fn(wildcards):

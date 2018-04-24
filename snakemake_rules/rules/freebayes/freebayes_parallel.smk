@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "freebayes.settings"
+include: "freebayes.settings.smk"
 
 config_default = {
     'freebayes' : {

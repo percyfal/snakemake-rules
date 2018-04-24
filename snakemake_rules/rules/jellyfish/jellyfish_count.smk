@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "jellyfish.settings"
+include: "jellyfish.settings.smk"
 
 config_default = {
     'jellyfish': {

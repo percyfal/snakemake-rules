@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "utils.settings"
+include: "utils.settings.smk"
 
 rule dbutils_make_transcript_annot_gtf:
     """Database utilities: make transcript annotation file from entries

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "gem.settings"
+include: "gem.settings.smk"
 
 config_default = {'gem' :{'indexer' : _gem_config_rule_default.copy()}}
 config_default['gem']['indexer'].update({'cmd': 'gem-indexer', 'options' : "-T 7"})

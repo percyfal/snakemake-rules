@@ -2,7 +2,7 @@
 # See http://sandberg.cmb.ki.se/multo/
 #
 include: '../main'
-include: '../comp/comp.settings'
+include: '../comp/comp.settings.smk'
 
 config_default = {
     'bio.ngs.tools.multo' : {

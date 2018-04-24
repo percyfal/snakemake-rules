@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 # Qualimap: http://qualimap.bioinfo.cipf.es/
 #
-include: '../ngs.settings'
+include: '../ngs.settings.smk'
 
 config_default = {
     'qualimap' : {

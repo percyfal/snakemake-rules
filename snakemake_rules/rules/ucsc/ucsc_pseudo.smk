@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "ucsc.settings"
+include: "ucsc.settings.smk"
 
 rule ucsc_pseudo:
     """Pseudo rule; eliminates circular rule dependency of autosome.fa -> fa -> autosome.fa"""

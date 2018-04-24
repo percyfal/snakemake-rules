@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "plink.settings"
+include: "plink.settings.smk"
 
 rule plink_chr_bed:
     """generate chromosome-wise bed files. 

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: '../ngs.settings'
+include: '../ngs.settings.smk'
 
 # Jar program
 GATK_JAR_PROGRAM = "GenomeAnalysisTK.jar"

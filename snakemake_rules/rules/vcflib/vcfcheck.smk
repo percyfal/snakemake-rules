@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "vcflib.settings"
+include: "vcflib.settings.smk"
 
 config_default = {'vcflib' :{'check' : _vcflib_config_rule_default.copy()}}
 

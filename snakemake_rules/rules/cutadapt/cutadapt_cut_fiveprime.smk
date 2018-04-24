@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "cutadapt.settings"
+include: "cutadapt.settings.smk"
 
 rule cutadapt_cut_fiveprime:
     """Cutadapt: cut fiveprime adapter"""

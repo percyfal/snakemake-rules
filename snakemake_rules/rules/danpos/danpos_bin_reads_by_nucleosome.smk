@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "danpos.settings"
+include: "danpos.settings.smk"
 
 config_default = {
     'danpos' : {

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bwa.settings"
+include: "bwa.settings.smk"
 
 rule bwa_link_ref:
     """bwa link reference file to bwa index directory"""

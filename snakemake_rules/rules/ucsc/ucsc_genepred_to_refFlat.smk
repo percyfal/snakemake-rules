@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "ucsc.settings"
+include: "ucsc.settings.smk"
 
 rule ucsc_genepred_to_refFlat:
     """Convert genepred to refFlat.

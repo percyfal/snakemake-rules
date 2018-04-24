@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "vcftools.settings"
+include: "vcftools.settings.smk"
 
 config_default = {'vcftools' :{'vcf_freq' : _vcftools_config_rule_default.copy()}}
 

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bowtie2.settings"
+include: "bowtie2.settings.smk"
 
 config_default = {'bowtie2' :{'align' : _bowtie2_config_rule_default.copy()}}
 

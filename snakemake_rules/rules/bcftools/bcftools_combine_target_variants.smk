@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bcftools.settings"
+include: "bcftools.settings.smk"
 include: "bcftools_call_targets.rule"
 include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../gatk/gatk_combine_variants_targets.rule"

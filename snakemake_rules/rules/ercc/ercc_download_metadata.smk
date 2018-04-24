@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "ercc.settings"
+include: "ercc.settings.smk"
 
 config_default = {'ercc' :{'download_metadata' : _ercc_config_rule_default.copy()}}
 

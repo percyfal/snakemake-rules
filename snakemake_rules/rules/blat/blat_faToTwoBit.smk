@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "blat.settings"
+include: "blat.settings.smk"
 
 config_default = {'blat' :{'faToTwoBit' : _blat_config_rule_default.copy()}}
 config_default['blat']['faToTwoBit'].update({'cmd' : BLAT_FATOTWOBIT})

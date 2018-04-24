@@ -1,7 +1,7 @@
 # -*- snakemake -*-
-include: "freebayes.settings"
+include: "freebayes.settings.smk"
 include: "freebayes_targets.rule"
-include: "../bcftools/bcftools.settings"
+include: "../bcftools/bcftools.settings.smk"
 include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../htslib/htslib_bgzip.rule"
 include: "../samtools/samtools_tabix_vcf.rule"

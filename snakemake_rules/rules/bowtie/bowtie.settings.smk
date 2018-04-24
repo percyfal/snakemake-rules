@@ -6,8 +6,8 @@
 Bowtie - An ultrafast memory-efficient short read aligner
 
 """
-include: '../ngs.settings'
-include: '../samtools/samtools.settings'
+include: '../ngs.settings.smk'
+include: '../samtools/samtools.settings.smk'
 
 config_default = {
     'bowtie' : {

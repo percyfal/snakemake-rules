@@ -1,6 +1,6 @@
 # -*- snakemake -*-
-include: "sga.settings"
-include: "../seqtk/seqtk.settings"
+include: "sga.settings.smk"
+include: "../seqtk/seqtk.settings.smk"
 
 config_default = {'sga' :{'preprocess' : _sga_config_rule_default.copy()}}
 

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "star.settings"
+include: "star.settings.smk"
 include: "star_index.rule"
 
 config_default = { 

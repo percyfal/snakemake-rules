@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 
 rule picard_create_region_dict_awk:
     """Picard: create interval list dict for region using awk"""

@@ -4,7 +4,7 @@
 #
 # Requires manual install
 #
-include: '../ngs.settings'
+include: '../ngs.settings.smk'
 
 
 config_default = {

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'diamond.settings'
+include: 'diamond.settings.smk'
 
 rule diamond:
     """diamond

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: 'gatk_realigner_target_creator.rule'
 
 config_default = {'gatk' : {'indel_realigner' : _gatk_config_rule_default.copy()}}

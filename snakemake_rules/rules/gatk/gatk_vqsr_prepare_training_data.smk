@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: '../bcftools/bcftools_stats.rule'
 
 config_default = {'gatk' : {'vqsr_prepare_training_data' :  _gatk_config_rule_default.copy()}}

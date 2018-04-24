@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "fastqc.settings"
+include: "fastqc.settings.smk"
 
 
 rule fastqc:

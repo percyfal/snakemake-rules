@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "sga.settings"
+include: "sga.settings.smk"
 
 config_default = {'sga' :{'preprocess' : _sga_config_rule_default.copy()}}
 

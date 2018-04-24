@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'rpkmforgenes.settings'
+include: 'rpkmforgenes.settings.smk'
 
 rule rpkmforgenes_from_bed:
     """Run rpkmforgenes from bed input"""

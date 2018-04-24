@@ -7,7 +7,7 @@ Rules for blat aligner.
 
 """
 
-include: '../ngs.settings'
+include: '../ngs.settings.smk'
 
 # Programs
 BLAT_FATOTWOBIT = 'faToTwoBit'

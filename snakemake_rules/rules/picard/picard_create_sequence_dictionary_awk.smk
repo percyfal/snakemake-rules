@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 
 rule picard_create_sequence_dictionary_awk:
     """Picard: create interval list dict using awk"""

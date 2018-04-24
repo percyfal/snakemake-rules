@@ -1,4 +1,4 @@
-include: 'r.settings'
+include: 'r.settings.smk'
 
 config_default = {'r' :{'rmarkdown_bookdown' : _r_config_rule_default.copy()}}
 config_default['r']['rmarkdown_bookdown']['gitbook'] = {'options': "split_by=\"chapter\""}

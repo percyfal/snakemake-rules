@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'angsd.settings'
+include: 'angsd.settings.smk'
 include: 'angsd_dothetas.rule'
 include: 'angsd_thetastat_makebed.rule'
 

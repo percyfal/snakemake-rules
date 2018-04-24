@@ -1,4 +1,4 @@
 # -*- snakemake -*-
-include: "../ngs.settings"
+include: "../ngs.settings.smk"
 
 import pybedtools

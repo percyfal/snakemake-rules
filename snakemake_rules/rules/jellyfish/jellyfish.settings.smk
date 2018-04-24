@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "../main.settings"
+include: "../main.settings.smk"
 
 
 config_default = {

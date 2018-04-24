@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "annovar.settings"
+include: "annovar.settings.smk"
 
 config_default = {'annovar' :{'convert2annovar' : _annovar_config_rule_default.copy()}}
 config_default['annovar']['convert2annovar'].update(

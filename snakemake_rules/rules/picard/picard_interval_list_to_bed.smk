@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 
 config_default = {'picard' :{'interval_list_to_bed' : _picard_config_rule_default.copy()}}
 

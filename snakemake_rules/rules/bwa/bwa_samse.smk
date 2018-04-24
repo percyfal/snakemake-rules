@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bwa.settings"
+include: "bwa.settings.smk"
 include: "bwa_index.rule"
 include: "bwa_aln.rule"
 

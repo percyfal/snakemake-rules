@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bcftools.settings"
+include: "bcftools.settings.smk"
 
 config_default = {'bcftools' :{'isec' : _bcftools_config_rule_default.copy()}}
 config_default['bcftools']['isec']['options'] = "-O z"

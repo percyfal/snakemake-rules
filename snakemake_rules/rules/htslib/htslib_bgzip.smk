@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "htslib.settings"
+include: "htslib.settings.smk"
 
 config_default = {'htslib' :{'bgzip' : _htslib_config_rule_default.copy()}}
 

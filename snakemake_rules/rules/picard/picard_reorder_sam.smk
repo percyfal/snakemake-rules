@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 
 config_default = {'picard' :{'reorder_sam' : _picard_config_rule_default.copy()}}
 

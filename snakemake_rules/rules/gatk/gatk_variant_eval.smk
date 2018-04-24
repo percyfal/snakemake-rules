@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 
 config_default = {'gatk' :{'variant_eval': _gatk_config_rule_default.copy()}}
 config_default['gatk']['variant_eval'].update(

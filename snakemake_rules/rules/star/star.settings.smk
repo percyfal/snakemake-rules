@@ -1,6 +1,6 @@
 # -*- snakemake -*-
-include: '../ngs.settings'
-include: '../comp/comp.settings'
+include: '../ngs.settings.smk'
+include: '../comp/comp.settings.smk'
 
 config_default = { 
     'star' : {

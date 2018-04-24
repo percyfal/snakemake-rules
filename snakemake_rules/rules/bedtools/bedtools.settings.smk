@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: '../ngs.settings'
+include: '../ngs.settings.smk'
 
 # Programs
 BEDTOOLS = "bedtools"

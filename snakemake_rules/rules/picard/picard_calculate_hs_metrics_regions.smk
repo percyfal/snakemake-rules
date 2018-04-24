@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "picard.settings"
+include: "picard.settings.smk"
 
 config_default = {'picard' :{'calculate_hs_metrics_regions' : _picard_config_rule_default.copy()}}
 config_default['picard']['calculate_hs_metrics_regions'].update(

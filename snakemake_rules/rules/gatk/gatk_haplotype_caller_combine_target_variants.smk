@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "gatk.settings"
+include: "gatk.settings.smk"
 include: "gatk_haplotype_caller_targets.rule"
 include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../gatk/gatk_combine_gvcfs_targets.rule"

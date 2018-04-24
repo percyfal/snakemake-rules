@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bedtools.settings"
+include: "bedtools.settings.smk"
 
 config_default = {'bedtools' :{'coverage' : _bedtools_config_rule_default.copy()}}
 

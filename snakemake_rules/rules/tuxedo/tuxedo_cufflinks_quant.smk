@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "tuxedo.settings"
+include: "tuxedo.settings.smk"
 
 rule tuxedo_cufflinks_quant:
     """Run cufflinks quantification"""

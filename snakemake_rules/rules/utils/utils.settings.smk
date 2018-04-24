@@ -1,2 +1,2 @@
 # -*- snakemake -*-
-include: "../ngs.settings"
+include: "../ngs.settings.smk"

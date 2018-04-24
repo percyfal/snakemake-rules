@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'malt.settings'
+include: 'malt.settings.smk'
 
 config_default = {'malt' :{'run' : _malt_config_rule_default.copy()}}
 config_default['malt']['run']['mode'] = "BlastX"

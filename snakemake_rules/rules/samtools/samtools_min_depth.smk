@@ -1,6 +1,6 @@
 # -*- snakemake -*-
-include: "samtools.settings"
-include: "../bedtools/bedtools.settings"
+include: "samtools.settings.smk"
+include: "../bedtools/bedtools.settings.smk"
 
 config_default = {'samtools' :{'min_depth' : _samtools_config_rule_default.copy()}}
 

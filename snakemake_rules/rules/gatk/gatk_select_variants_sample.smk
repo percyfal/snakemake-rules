@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: "gatk_select_variants.rule"
 
 config_default = {'gatk': {'select_variants_sample' : _gatk_config_rule_default.copy()}}

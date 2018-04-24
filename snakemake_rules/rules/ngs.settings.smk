@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 # Settings related to ngs programs
-include: "main.settings"
+include: "main.settings.smk"
 
 config_default = {
     'ngs.settings' : {

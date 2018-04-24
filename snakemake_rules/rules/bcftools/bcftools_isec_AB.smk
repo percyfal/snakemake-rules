@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bcftools.settings"
+include: "bcftools.settings.smk"
 
 config_default = {'bcftools' :{'isec_AB' : _bcftools_config_rule_default.copy()}}
 

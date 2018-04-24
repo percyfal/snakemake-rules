@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "jellyfish.settings"
+include: "jellyfish.settings.smk"
 include: "jellyfish_count.rule"
 
 config_default = {

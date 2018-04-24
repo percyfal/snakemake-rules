@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "utils.settings"
+include: "utils.settings.smk"
 include: "rulegraph.rule"
 
 rule rulegraph_png:

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "freebayes.settings"
+include: "freebayes.settings.smk"
 include: "../samtools/samtools_faidx.rule"
 include: "../htslib/htslib_bgzip.rule"
 

@@ -2,7 +2,7 @@
 # See https://groups.google.com/forum/#!topic/rna-star/tvajn49WTYk for
 # setting up RSEM with STAR alignments
 # Take into account different aligners
-include: "rsem.settings"
+include: "rsem.settings.smk"
 
 aligner = config['ngs.settings'].get('aligner', 'star')
 align_section = '' + aligner

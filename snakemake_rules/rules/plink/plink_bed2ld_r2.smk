@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "plink.settings"
+include: "plink.settings.smk"
 
 rule plink_bed2ld_r2:
     """calculate r-squared linked disequilibrium from binary ped file.

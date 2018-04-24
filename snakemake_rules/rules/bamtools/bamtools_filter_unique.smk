@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bamtools.settings"
+include: "bamtools.settings.smk"
 
 config_default = {'bamtools' :{'filter_unique' : _bamtools_config_rule_default.copy()}}
 

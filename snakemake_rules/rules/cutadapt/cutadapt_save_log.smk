@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "cutadapt.settings"
+include: "cutadapt.settings.smk"
 
 rule cutadapt_save_log:
     """Cutadapt: save log output by copying"""

@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'r.settings'
+include: 'r.settings.smk'
 
 config_default = {'r' :{'rmarkdown_revealjs' : _r_config_rule_default.copy()}}
 config_default['r']['rmarkdown_revealjs']['css'] = False

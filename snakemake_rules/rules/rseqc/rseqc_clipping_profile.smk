@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "rseqc.settings"
+include: "rseqc.settings.smk"
 
 config_default = {'rseqc' :{'clipping_profile' : _rseqc_config_rule_default.copy()}}
 

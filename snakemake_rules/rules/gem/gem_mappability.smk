@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "gem.settings"
+include: "gem.settings.smk"
 
 config_default = {'gem' :{'mappability' : _gem_config_rule_default.copy()}}
 config_default['gem']['mappability'].update({'options' : "-l 100 -T 7", "cmd": 'gem-mappability'})

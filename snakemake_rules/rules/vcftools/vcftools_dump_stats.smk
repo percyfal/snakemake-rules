@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "vcftools.settings"
+include: "vcftools.settings.smk"
 
 config_default = {'vcftools' :{'dump_stats' : _vcftools_config_rule_default.copy()}}
 

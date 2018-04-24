@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "annovar.settings"
+include: "annovar.settings.smk"
 
 config_default = {'annovar' :{'annotate_variation' : _annovar_config_rule_default.copy()}}
 

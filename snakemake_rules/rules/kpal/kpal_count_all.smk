@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "kpal.settings"
+include: "kpal.settings.smk"
 
 config_default = {'kpal' :{'count_all' : _kpal_config_rule_default.copy()}}
 config_default['kpal']['count_all'].update({'input' : []})

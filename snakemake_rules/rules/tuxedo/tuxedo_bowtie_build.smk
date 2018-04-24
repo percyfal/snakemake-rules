@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "tuxedo.settings"
+include: "tuxedo.settings.smk"
 
 rule tuxedo_bowtie_build:
     """Bowtie build index"""

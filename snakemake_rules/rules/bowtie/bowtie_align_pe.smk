@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bowtie.settings"
+include: "bowtie.settings.smk"
 
 config_default = {'bowtie' :{'align' : _bowtie_config_rule_default.copy()}}
 config_default['bowtie']['align'].update({'options': '--chunkmbs 200'})

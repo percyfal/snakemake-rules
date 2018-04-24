@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "plink.settings"
+include: "plink.settings.smk"
 
 rule plink_bed_blocks:
     """calculate linkage disequilibrium blocks(?). 

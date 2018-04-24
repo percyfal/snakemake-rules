@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "cutadapt.settings"
+include: "cutadapt.settings.smk"
 
 config_default = {'cutadapt' :{'paired_end' : _cutadapt_config_rule_default.copy()}}
 

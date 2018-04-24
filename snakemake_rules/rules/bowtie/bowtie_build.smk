@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "bowtie.settings"
+include: "bowtie.settings.smk"
 
 config_default = {'bowtie' :{'bowtie_build' : _bowtie_config_rule_default.copy()}}
 config_default['bowtie']['bowtie_build'].update({'cmd': 'bowtie-build'})

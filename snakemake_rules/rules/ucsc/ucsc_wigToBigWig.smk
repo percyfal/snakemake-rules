@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "ucsc.settings"
+include: "ucsc.settings.smk"
 include: "ucsc_fetchChromSizes.rule"
 
 config_default = {'ucsc' :{'wigToBigWig' : _ucsc_config_rule_default.copy()}}

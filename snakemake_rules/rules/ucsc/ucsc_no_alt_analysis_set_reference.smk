@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "ucsc.settings"
+include: "ucsc.settings.smk"
 
 rule ucsc_no_alt_analysis_set_reference:
     """Make a reference from original build file excluding patches and

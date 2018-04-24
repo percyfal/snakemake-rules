@@ -2,7 +2,7 @@
 import os
 from snakemake.utils import update_config
 
-include: "../main.settings"
+include: "../main.settings.smk"
 
 """
 Main settings for snakemake_rules.comp. Defines top-level configuration

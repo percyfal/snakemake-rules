@@ -2,7 +2,7 @@
 import re
 from csv import DictReader
 
-include: "ercc.settings"
+include: "ercc.settings.smk"
 
 config_default = {'ercc' :{'create_ref' : _ercc_config_rule_default.copy()}}
 config_default['ercc']['create_ref'].update(

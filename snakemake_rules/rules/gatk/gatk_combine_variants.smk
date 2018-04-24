@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'gatk.settings'
+include: 'gatk.settings.smk'
 include: 'gatk_variant_snp_JEXL_filtration.rule'
 include: 'gatk_variant_indel_JEXL_filtration.rule'
 

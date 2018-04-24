@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'r.settings'
+include: 'r.settings.smk'
 
 config_default = {'r' :{'rmarkdown' : _r_config_rule_default.copy()}}
 

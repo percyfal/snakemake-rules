@@ -9,7 +9,7 @@
 #                        positions closer than d will be merged as one single
 #                        position (default: 100)
 # in danpos v2.0.0
-include: "danpos.settings"
+include: "danpos.settings.smk"
 
 config_default = {
     'danpos': {

@@ -2,7 +2,7 @@
 # Miscallaneous tools for conversion between file formats
 from snakemake.utils import R
 
-include: 'utils.settings'
+include: 'utils.settings.smk'
 
 config_default = { 
     'bio.ngs.tools.conversion' : {

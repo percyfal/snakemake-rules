@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "qualimap.settings"
+include: "qualimap.settings.smk"
 
 config_default = {
     'qualimap' : {

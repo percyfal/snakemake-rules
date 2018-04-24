@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: 'mapdamage2.settings'
+include: 'mapdamage2.settings.smk'
 
 m = re.search("(?P<opt>-d|--folder)\s+(?P<folder>.*)", config["mapdamage2"]["options"])
 if m:

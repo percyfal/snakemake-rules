@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "seqtk.settings"
+include: "seqtk.settings.smk"
 
 config_default = {'seqtk' :{'seq' : _seqtk_config_rule_default.copy()}}
 

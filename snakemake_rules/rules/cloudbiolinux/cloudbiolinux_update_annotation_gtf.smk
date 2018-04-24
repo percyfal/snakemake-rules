@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "cloudbiolinux.settings"
+include: "cloudbiolinux.settings.smk"
 
 config_default = {
     'cloudbiolinux' : { 

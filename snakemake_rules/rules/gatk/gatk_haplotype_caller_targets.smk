@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "gatk.settings"
+include: "gatk.settings.smk"
 include: "../pybedtools/pybedtools_make_bed_targets.rule"
 include: "../samtools/samtools_faidx.rule"
 include: '../picard/picard_build_bam_index.rule'
