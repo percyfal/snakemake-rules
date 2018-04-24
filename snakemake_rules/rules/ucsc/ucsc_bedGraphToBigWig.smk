@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "ucsc.settings.smk"
-include: "ucsc_fetchChromSizes.rule"
+include: "ucsc_fetchChromSizes.smk"
 
 config_default = {'ucsc': {'bedGraphToBigWig' : _ucsc_config_rule_default.copy()}}
 config_default['ucsc']['bedGraphToBigWig'].update({'cmd' : 'bedGraphToBigWig'})

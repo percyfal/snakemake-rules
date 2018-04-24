@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: 'gatk.settings.smk'
-include: 'gatk_select_indel_variants.rule'
+include: 'gatk_select_indel_variants.smk'
 
 config_default = {'gatk' :{'variant_indel_JEXL_filtration' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['variant_indel_JEXL_filtration'].update(

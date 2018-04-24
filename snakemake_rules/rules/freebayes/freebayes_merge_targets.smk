@@ -1,9 +1,9 @@
 # -*- snakemake -*-
 include: "freebayes.settings.smk"
-include: "freebayes_targets.rule"
-include: "../bcftools/bcftools_index.rule"
-include: "../pybedtools/pybedtools_make_bed_targets.rule"
-include: "../htslib/htslib_bgzip.rule"
+include: "freebayes_targets.smk"
+include: "../bcftools/bcftools_index.smk"
+include: "../pybedtools/pybedtools_make_bed_targets.smk"
+include: "../htslib/htslib_bgzip.smk"
 
 config_default = {
     'freebayes' : {

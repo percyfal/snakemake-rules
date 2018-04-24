@@ -1,8 +1,8 @@
 # -*- snakemake -*-
 include: 'gatk.settings.smk'
-include: join(os.pardir, "samtools", "samtools_faidx.rule")
-include: join(os.pardir, "picard", "picard_create_sequence_dictionary.rule")
-include: join(os.pardir, "picard", "picard_build_bam_index.rule")
+include: join(os.pardir, "samtools", "samtools_faidx.smk")
+include: join(os.pardir, "picard", "picard_create_sequence_dictionary.smk")
+include: join(os.pardir, "picard", "picard_build_bam_index.smk")
 
 config_default = {'gatk' : {'unified_genotyper' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['unified_genotyper'].update(

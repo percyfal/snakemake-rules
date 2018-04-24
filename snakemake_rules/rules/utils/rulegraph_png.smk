@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "utils.settings.smk"
-include: "rulegraph.rule"
+include: "rulegraph.smk"
 
 rule rulegraph_png:
     """Convert rulegraph to png"""

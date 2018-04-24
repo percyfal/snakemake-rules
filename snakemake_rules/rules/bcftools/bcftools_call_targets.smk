@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "bcftools.settings.smk"
-include: "../pybedtools/pybedtools_make_bed_targets.rule"
+include: "../pybedtools/pybedtools_make_bed_targets.smk"
 
 config_default = {'bcftools' :{'call_targets' : _bcftools_config_rule_default.copy()}}
 config_default['bcftools']['call_targets'].update(

@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "macs2.settings.smk"
-include: "macs2_callpeak_treatment_only_bam_pe.rule"
+include: "macs2_callpeak_treatment_only_bam_pe.smk"
 
 config_default = {'macs2' :{'xls_to_bed' : _macs2_config_rule_default.copy()}}
 

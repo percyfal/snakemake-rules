@@ -1,8 +1,8 @@
 # -*- snakemake -*-
 include: "gatk.settings.smk"
-include: "../pybedtools/pybedtools_make_bed_windows.rule"
-include: "../htslib/htslib_bgzip.rule"
-include: "../samtools/samtools_tabix_vcf.rule"
+include: "../pybedtools/pybedtools_make_bed_windows.smk"
+include: "../htslib/htslib_bgzip.smk"
+include: "../samtools/samtools_tabix_vcf.smk"
 
 config_default = {'gatk' :{'combine_target_variants': _gatk_config_rule_default.copy()}}
 config_default['gatk']['combine_target_variants'].update({'options' : "--genotypemergeoption UNSORTED"})

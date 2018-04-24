@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: 'gatk.settings.smk'
-include: "gatk_select_variants.rule"
-include: "gatk_unified_genotyper.rule"
+include: "gatk_select_variants.smk"
+include: "gatk_unified_genotyper.smk"
 
 config_default = {'gatk' :{'select_variants_region' : _gatk_config_rule_default.copy()}}
 

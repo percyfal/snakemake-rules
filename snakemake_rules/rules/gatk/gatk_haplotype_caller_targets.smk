@@ -1,8 +1,8 @@
 # -*- snakemake -*-
 include: "gatk.settings.smk"
-include: "../pybedtools/pybedtools_make_bed_targets.rule"
-include: "../samtools/samtools_faidx.rule"
-include: '../picard/picard_build_bam_index.rule'
+include: "../pybedtools/pybedtools_make_bed_targets.smk"
+include: "../samtools/samtools_faidx.smk"
+include: '../picard/picard_build_bam_index.smk'
 
 config_default = {'gatk': {'haplotype_caller_targets' : _gatk_config_rule_default.copy()}}
 

@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "picard.settings.smk"
-include: "picard_sort_sam.rule"
+include: "picard_sort_sam.smk"
 
 def _picard_merge_sam_input_fn(wildcards):
     """Function to find input files for picard merge.

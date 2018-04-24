@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: 'angsd.settings.smk'
-include: 'angsd_dosaf.rule'
+include: 'angsd_dosaf.smk'
 
 config_default = {'angsd' :{'realsfs' : _angsd_config_rule_default.copy()}}
 

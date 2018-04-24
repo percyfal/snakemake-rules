@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "utils.settings.smk"
-include: "dag.rule"
+include: "dag.smk"
 
 rule dag_png:
     """Convert dag to png"""

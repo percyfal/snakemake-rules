@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: "bwa.settings.smk"
-include: "bwa_index.rule"
-include: "bwa_aln.rule"
+include: "bwa_index.smk"
+include: "bwa_aln.smk"
 
 config_default = {'bwa' :{'samse' : _bwa_config_rule_default.copy()}}
 

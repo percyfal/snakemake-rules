@@ -12,7 +12,7 @@ RULES = ['rseqc_clipping_profile',
 
 for rule in RULES:
     if not rule in workflow._rules:
-        include: rule + ".rule"
+        include: rule + ".smk"
 
 rule rseqc_qc_8:
     """Run 8 RSeQC commands on a bam file"""

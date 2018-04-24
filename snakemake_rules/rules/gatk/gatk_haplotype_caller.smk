@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: 'gatk.settings.smk'
-include: '../picard/picard_build_bam_index.rule'
+include: '../picard/picard_build_bam_index.smk'
 
 config_default = {'gatk': {'haplotype_caller' : _gatk_config_rule_default.copy()}}
 

@@ -1,8 +1,8 @@
 # -*- snakemake -*-
 include: "gatk.settings.smk"
-include: "../pybedtools/pybedtools_make_bed_targets.rule"
-include: "../htslib/htslib_bgzip.rule"
-include: "../samtools/samtools_tabix_vcf.rule"
+include: "../pybedtools/pybedtools_make_bed_targets.smk"
+include: "../htslib/htslib_bgzip.smk"
+include: "../samtools/samtools_tabix_vcf.smk"
 
 config_default = {'gatk' :{'combine_gvcfs_targets': _gatk_config_rule_default.copy()}}
 

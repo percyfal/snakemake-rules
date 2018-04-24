@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: 'gatk.settings.smk'
-include: '../picard/picard_create_sequence_dictionary.rule'
+include: '../picard/picard_create_sequence_dictionary.smk'
 
 config_default = {'gatk': {'fasta_alternate_reference_maker' : _gatk_config_rule_default.copy()}}
 

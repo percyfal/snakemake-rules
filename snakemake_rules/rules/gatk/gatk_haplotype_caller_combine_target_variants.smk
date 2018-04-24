@@ -1,9 +1,9 @@
 # -*- snakemake -*-
 include: "gatk.settings.smk"
-include: "gatk_haplotype_caller_targets.rule"
-include: "../pybedtools/pybedtools_make_bed_targets.rule"
-include: "../gatk/gatk_combine_gvcfs_targets.rule"
-include: "../gatk/gatk_combine_variants_targets.rule"
+include: "gatk_haplotype_caller_targets.smk"
+include: "../pybedtools/pybedtools_make_bed_targets.smk"
+include: "../gatk/gatk_combine_gvcfs_targets.smk"
+include: "../gatk/gatk_combine_variants_targets.smk"
 
 rule gatk_haplotype_caller_combine_target_variants:
     wildcard_constraints:

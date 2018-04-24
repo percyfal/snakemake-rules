@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: 'gatk.settings.smk'
-include: 'gatk_realigner_target_creator.rule'
+include: 'gatk_realigner_target_creator.smk'
 
 config_default = {'gatk' : {'indel_realigner' : _gatk_config_rule_default.copy()}}
 config_default['gatk']['indel_realigner'].update({'options' : " ".join(["-L {target}".format(target=config['gatk']['target_regions']) if not config['gatk']['target_regions'] == "" else ""])})

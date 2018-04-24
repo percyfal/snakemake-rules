@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "freebayes.settings.smk"
-include: "../htslib/htslib_bgzip.rule"
+include: "../htslib/htslib_bgzip.smk"
 
 config_default = {
     'freebayes' : {

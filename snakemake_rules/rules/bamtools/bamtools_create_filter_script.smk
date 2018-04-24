@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "bamtools.settings.smk"
-include: "bamtools_filter.rule"
+include: "bamtools_filter.smk"
 
 import json
 

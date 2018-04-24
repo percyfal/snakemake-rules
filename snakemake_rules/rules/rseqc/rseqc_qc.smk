@@ -33,7 +33,7 @@ for rule in RULES.keys():
     if not RULES[rule][0]:
         continue
     if not rule in workflow._rules:
-        include: rule + ".rule"
+        include: rule + ".smk"
 
         
 rule rseqc_qc:

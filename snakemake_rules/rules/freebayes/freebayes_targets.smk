@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: "freebayes.settings.smk"
-include: "../samtools/samtools_faidx.rule"
-include: "../htslib/htslib_bgzip.rule"
+include: "../samtools/samtools_faidx.smk"
+include: "../htslib/htslib_bgzip.smk"
 
 config_default = {'freebayes' : {'freebayes_targets' : _freebayes_config_rule_default.copy()}}
 config_default['freebayes']['freebayes_targets']['options'] = config['freebayes']['options']
@@ -11,10 +11,10 @@ update_config(config_default, config)
 config = config_default
 
 if config['freebayes']['freebayes_targets']['make_windows']:
-    include: "../pybedtools/pybedtools_make_bed_windows.rule"
+    include: "../pybedtools/pybedtools_make_bed_windows.smk"
     npartitions = config['pybedtools']['make_bed_windows']['partitions']
 else:
-    include: "../pybedtools/pybedtools_make_bed_targets.rule"
+    include: "../pybedtools/pybedtools_make_bed_targets.smk"
     npartitions = config['pybedtools']['make_bed_targets']['partitions']
 
 rule freebayes_targets:

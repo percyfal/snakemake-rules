@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "bcftools.settings.smk"
-include: "../htslib/htslib_bgzip.rule"
+include: "../htslib/htslib_bgzip.smk"
 
 config_default = {'bcftools' :{'stats' : _bcftools_config_rule_default.copy()}}
 

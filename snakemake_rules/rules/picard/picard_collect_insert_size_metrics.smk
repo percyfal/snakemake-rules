@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "picard.settings.smk"
-include: "picard_build_bam_index.rule"
+include: "picard_build_bam_index.smk"
 
 config_default = {'picard' :{'collect_insert_size_metrics' : _picard_config_rule_default.copy()}}
 config_default['picard']['collect_insert_size_metrics'].update({'targets' : []})

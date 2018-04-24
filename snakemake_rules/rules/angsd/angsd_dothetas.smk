@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: 'angsd.settings.smk'
-include: 'angsd_realsfs.rule'
+include: 'angsd_realsfs.smk'
 
 config_default = {'angsd' :{'dothetas' : _angsd_config_rule_default.copy()}}
 config_default['angsd']['dothetas'].update(

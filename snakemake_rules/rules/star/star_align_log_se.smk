@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "star.settings.smk"
-include: "star_align_se.rule"
+include: "star_align_se.smk"
 
 
 rule star_align_log:

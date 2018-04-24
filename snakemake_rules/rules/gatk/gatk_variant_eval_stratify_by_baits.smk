@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: 'gatk.settings.smk'
-include: "gatk_variant_eval.rule"
+include: "gatk_variant_eval.smk"
 
 rule gatk_variant_eval_stratify_by_baits:
     """Run GATK VariantEval on a region and stratify results by baits

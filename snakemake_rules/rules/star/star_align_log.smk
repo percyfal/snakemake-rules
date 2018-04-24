@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "star.settings.smk"
-include: "star_align_pe.rule"
+include: "star_align_pe.smk"
 
 rule star_align_log:
     input: bam = "{prefix}.Aligned.out.bam"

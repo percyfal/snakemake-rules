@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: 'angsd.settings.smk'
-include: 'angsd_dothetas.rule'
-include: 'angsd_thetastat_makebed.rule'
+include: 'angsd_dothetas.smk'
+include: 'angsd_thetastat_makebed.smk'
 
 config_default = {'angsd' :{'thetastat_dostat' : _angsd_config_rule_default.copy()}}
 

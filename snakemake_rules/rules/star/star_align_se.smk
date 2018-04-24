@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "star.settings.smk"
-include: "star_index.rule"
+include: "star_index.smk"
 
 config_default = { 
     'star' : {

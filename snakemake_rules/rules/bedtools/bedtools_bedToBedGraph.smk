@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "bedtools.settings.smk"
-include: join(os.pardir, "ucsc", "ucsc_fetchChromSizes.rule")
+include: join(os.pardir, "ucsc", "ucsc_fetchChromSizes.smk")
 
 config_default = {'bedtools' :{'genomecov' : _bedtools_config_rule_default.copy()}}
 

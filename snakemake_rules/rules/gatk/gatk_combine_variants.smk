@@ -1,7 +1,7 @@
 # -*- snakemake -*-
 include: 'gatk.settings.smk'
-include: 'gatk_variant_snp_JEXL_filtration.rule'
-include: 'gatk_variant_indel_JEXL_filtration.rule'
+include: 'gatk_variant_snp_JEXL_filtration.smk'
+include: 'gatk_variant_indel_JEXL_filtration.smk'
 
 config_default = {'gatk': {'combine_variants': _gatk_config_rule_default.copy()}}
 

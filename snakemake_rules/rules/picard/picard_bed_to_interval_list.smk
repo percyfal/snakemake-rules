@@ -1,6 +1,6 @@
 # -*- snakemake -*-
 include: "picard.settings.smk"
-include: "picard_create_sequence_dictionary.rule"
+include: "picard_create_sequence_dictionary.smk"
 
 config_default = {'picard' :{'bed_to_interval_list' : _picard_config_rule_default.copy()}}
 

@@ -15,7 +15,7 @@ config = config_default
 
 for rule in config['picard']['qcrules']:
     if not rule in workflow._rules:
-        include: rule + ".rule"
+        include: rule + ".smk"
 
 rule picard_do_qc:
     """Run picard metrics commands on a bam file"""
