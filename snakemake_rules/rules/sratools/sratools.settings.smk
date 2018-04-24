@@ -1,8 +1,7 @@
 # -*- snakemake -*-
 import re
 
-include: '../settings.rules'
-include: '../../../settings.rules'
+include: '../ngs.settings.smk'
 
 config_default = {
     'settings' : {

@@ -5,7 +5,7 @@
 #  
 # http://centipede.uchicago.edu/
 #
-include: '../settings.rules'
+include: '../ngs.settings.smk'
 
 config_default = {
     'bio.ngs.motif.centipede' : {

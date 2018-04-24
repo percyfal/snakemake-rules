@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: '../settings.rules'
+include: '../ngs.settings.smk'
 
 RNASEQC_JAR_PROGRAM = "RNA-SeQC.jar"
 

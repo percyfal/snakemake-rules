@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "../settings.rules"
+include: "../ngs.settings.smk"
 
 TRIMMOMATIC_JAR_PROGRAM = "trimmomatic.jar"
 

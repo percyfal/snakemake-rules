@@ -1,5 +1,5 @@
 # -*- snakemake -*-
-include: "../settings.rules"
+include: "../ngs.settings.smk"
 
 config_default = {
     'bio.ngs.qc.trim_galore' : {

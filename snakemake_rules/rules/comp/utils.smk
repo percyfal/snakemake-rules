@@ -1,5 +1,5 @@
 # -*- snakemake -*- 
-include: "settings.rules"
+include: "settings.smk"
 
 rule comp_utils_link:
     """Link source to target from srcpath to tgtpath"""
