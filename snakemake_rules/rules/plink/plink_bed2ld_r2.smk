@@ -1,0 +1,16 @@
+# -*- snakemake -*-
+include: "plink.settings.smk"
+
+rule plink_bed2ld_r2:
+    """calculate r-squared linked disequilibrium from binary ped file.
+    """
+    params: cmd = config['plink']['cmd'],
+            options = config['plink']['options'],
+            runtime = config['plink']['runtime']
+    input: "{prefix}.bed"
+    output: "{prefix}.r2.ld"
+    threads: config['plink']['threads']
+    shell: "{params.cmd} {params.options} --bfile {wildcards.prefix} --r2 --out {wildcards.prefix}.r2"
+
+
+
