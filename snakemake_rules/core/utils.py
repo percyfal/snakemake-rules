@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 import re
 import csv
 import ast
 import subprocess as sp
 import psutil
 import math
+import contextlib
 from snakemake import available_cpu_count
 
 BYTE = 1024
@@ -140,3 +142,19 @@ def available_mem(cores, mem, fmtstring=True):
         return "{}{}".format(mem, prefix)
     else:
         return mem
+
+
+# context manager for cd
+@contextlib.contextmanager
+def cd(path, logger):
+    CWD = os.getcwd()
+    logger.info("Changing directory from {} to {}".format(CWD, path))
+
+    os.chdir(path)
+    try:
+        yield
+    except:
+        logger.warning('Exception caught: ', sys.exc_info()[0])
+    finally:
+        logger.info("Changing directory back to {}".format(CWD))
+        os.chdir(CWD)

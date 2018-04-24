@@ -8,7 +8,7 @@ from os.path import join, basename, dirname
 import re
 import shutil
 import glob
-from snakemake_rules.core.utils import get_samples, python2_path, available_mem
+from snakemake_rules.core.utils import get_samples, python2_path, available_mem, cd
 from snakemake.utils import update_config
 from snakemake.exceptions import RuleException
 from snakemake.logging import logger
