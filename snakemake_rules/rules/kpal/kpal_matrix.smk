@@ -1,0 +1,21 @@
+# -*- snakemake -*-
+include: "kpal.settings.smk"
+
+config_default = {'kpal' :{'matrix' : _kpal_config_rule_default.copy()}}
+config_default['kpal']['matrix'].update({'options' : "-m -S"})
+
+update_config(config_default, config)
+config = config_default
+
+rule kpal_matrix:
+    """kpal: generate matrix."""
+    params: cmd = config['kpal']['cmd'],
+            options = config['kpal']['matrix']['options'],
+            runtime = config['kpal']['matrix']['runtime']
+    wildcard_constraints: kmer = "[0-9]+"
+    input: kmer = "{prefix}.k{kmer}"
+    output: res = "{prefix}.k{kmer}.mat"
+    threads: config['kpal']['matrix']['threads']
+    conda: "env.yaml"
+    shell:
+        "{params.cmd} matrix {params.options} {input.kmer} {output.res}"
