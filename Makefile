@@ -114,9 +114,16 @@ release: clean ## package and upload a release
 	python setup.py sdist upload
 	python setup.py bdist_wheel upload
 
-conda: clean ## package and upload a conda release
-	conda build conda
-	anaconda upload $(shell conda build conda --output)
+current=$(shell git rev-parse --abbrev-ref HEAD)
+CONDA_OPTIONS?=
+CONDA_REPO?=percyfal
+conda: ## package and upload a conda release
+	git checkout -b conda
+	git merge $(current)
+	$(MAKE) clean
+	conda build $(CONDA_OPTIONS) --user $(CONDA_REPO) -m conda/build_config.yaml conda
+	git checkout $(current)
+	git branch -d conda
 
 id:=$(shell docker images | grep -v REPOSITORY | head -1 | awk '{print $$3}')
 DOCKERUSER:=percyfal
