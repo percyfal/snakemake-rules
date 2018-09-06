@@ -1,10 +1,7 @@
 #!/usr/bin/env python
-import os
 import re
 import sys
-import yaml
 from textwrap import dedent
-import tarfile
 
 # e.g., "========   addCols   ===================================="
 re_header = re.compile(r'^=+\s+(?P<program>\w+)\s+=+$')
@@ -14,6 +11,7 @@ re_summary = re.compile(r'^(?P<program>\w.*?) - (?P<description>.*)$')
 
 # e.g., \s+xmlToSql in.xml in.dtd in.stats outDir
 re_usage = re.compile(r'^\s+(?P<program>\w+?)\s+(?P<args>.*)$')
+
 
 def parse_footer(fn):
     """
@@ -53,11 +51,9 @@ def parse_footer(fn):
             usage = False
         if line.startswith("usage:"):
             usage = True
-            
+
     if block:
         yield block
-
-
 
 rule_template = open('template.rule').read()
 

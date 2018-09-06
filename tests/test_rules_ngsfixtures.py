@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-from os.path import basename, realpath, join
+from os.path import basename, realpath
 import logging
-import yaml
 import pytest
-import subprocess as sp
 from snakemake_rules.core import ruleinfo
 from helpers import utils
 from helpers.fixture import set_inputmap, set_output
@@ -21,11 +19,17 @@ try:
     has_ngsfixtures = True
     from pytest_ngsfixtures import factories
 except ImportError as e:
-    print("\n\n   pytest-ngsfixtures not installed; install with 'conda install -c percyfal pytest-ngsfixtures'\n\n")
+    print(("\n\n   pytest-ngsfixtures not installed; ",
+           "install with 'conda install -c percyfal pytest-ngsfixtures'\n\n"))
 
 THREADS = pytest.config.getoption("--ngs-threads", "1")
-applications = [pytest.config.getoption("--application")] if pytest.config.getoption("--application") else pytest.rules.__all__
-rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
+applications = pytest.rules.__all__
+if pytest.config.getoption("--application"):
+    applications = [pytest.config.getoption("--application")]
+rule = None
+if pytest.config.getoption("--rule"):
+    rule = pytest.config.getoption("--rule")
+
 
 def create_testrules(applications, blacklist):
     """Generate list of test rules.
@@ -43,18 +47,19 @@ def create_testrules(applications, blacklist):
         if x in blacklist:
             continue
         for y in getattr(pytest.rules, x):
-            if not rule is None:
+            if rule is not None:
                 if not re.sub(".rule", "", basename(y)) == rule:
                     continue
             else:
                 if re.sub(".rule", "", basename(y)) in blacklist:
                     continue
-            testrules.append((x,realpath(y)))
+            testrules.append((x, realpath(y)))
     return testrules
 
 
 blacklist_list = []
 testrules = create_testrules(applications, blacklist_list)
+
 
 ##############################
 # data fixture
@@ -90,11 +95,12 @@ def data(request, tmpdir_factory):
         fixture = factories.safe_mktemp(tmpdir_factory, fixture_dir)
     if request.config.option.ngs_show_fixture:
         logger.info("fixture directory: {}".format(str(fixture)))
-        
     return app, rule, output, fixture
 
 
-@pytest.mark.parametrize("data", sorted(testrules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(testrules)], indirect=["data"])
+@pytest.mark.parametrize("data", sorted(testrules),
+                         ids=["{}/{}".format(x[0], basename(x[1]))
+                              for x in sorted(testrules)], indirect=["data"])
 def test_list(data):
     app, rule, output, fixture = data
     output, err = utils.snakemake_list(fixture, "", snakefile=rule)
@@ -119,11 +125,19 @@ blacklist_slow = [
 ]
 testrules = create_testrules(applications, blacklist_slow)
 
-@pytest.mark.skipif(not has_ngsfixtures, reason="pytest-ngsfixtures not installed; will not run the workflow tests. Install with 'conda install -c percyfal pytest-ngsfixtures'")
+
+@pytest.mark.skipif(not has_ngsfixtures,
+                    reason=("pytest-ngsfixtures not installed; ",
+                            "will not run the workflow tests. ",
+                            "Install with 'conda install -c percyfal pytest-ngsfixtures'"))
 @pytest.mark.slow
-@pytest.mark.parametrize("data", sorted(testrules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(testrules)], indirect=["data"])
+@pytest.mark.parametrize("data", sorted(testrules),
+                         ids=["{}/{}".format(x[0], basename(x[1]))
+                              for x in sorted(testrules)], indirect=["data"])
 def test_run(data, ref, scaffolds):
     app, rule, targets, fixture = data
     if targets is None or len(targets) == 0:
-        pytest.skip("Unable to parse target for rule {}".format(basename(rule)))
-    output, err = utils.snakemake_run(fixture, "", snakefile=rule, targets=targets)
+        pytest.skip("Unable to parse target for rule {}".format(
+            basename(rule)))
+    output, err = utils.snakemake_run(fixture, "", snakefile=rule,
+                                      targets=targets)

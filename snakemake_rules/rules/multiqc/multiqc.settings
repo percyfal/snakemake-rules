@@ -4,7 +4,7 @@ include: "../ngs.settings"
 config_default = {
     'multiqc' : {
         'cmd' : "multiqc",
-        'options' : "",
+        'options' : "-f",
         'runtime' : '00:60:00',
         'inputs' : [],
         'threads' : 1,

@@ -5,7 +5,7 @@ include: "../pybedtools/pybedtools_make_bed_targets.rule"
 config_default = {'bcftools' :{'call_targets' : _bcftools_config_rule_default.copy()}}
 config_default['bcftools']['call_targets'].update(
     {
-        'options' : '-vmO z',
+        'options' : '-vm',
         'runtime' : '100:00:00',
         'mpileup_options' : "-ug",
     })
@@ -35,5 +35,5 @@ rule bcftools_call_targets:
     output: vcf = "{prefix}.bcftools.{targets}.vcf.gz"
     threads: config['bcftools']['call_targets']['threads']
     conda: "env.yaml"
-    shell: "samtools mpileup {params.mpileup_options} -f {input.ref} -b {input.fofn} -l {input.targets} | {params.cmd} call {params.options} -o {output.vcf}"
+    shell: "samtools mpileup {params.mpileup_options} -f {input.ref} -b {input.fofn} -l {input.targets} | {params.cmd} call {params.options} -O z -o {output.vcf}"
 

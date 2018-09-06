@@ -26,6 +26,7 @@ ROOT = dirname(realpath(__file__))
 
 package_data = []
 
+
 def package_path(path, filters=()):
     if not os.path.exists(path):
         raise RuntimeError("packaging non-existent path: %s" % path)
@@ -39,7 +40,7 @@ def package_path(path, filters=()):
                     package_data.append(join(path, f))
 
 rule_suffixes = ('.rules', '.rule', '.settings')
-                    
+
 package_path(join(ROOT, 'snakemake_rules'), rule_suffixes)
 package_path(join(ROOT, 'tests', 'examples', 'Snakefile'))
 package_path(join(ROOT, 'tests', 'examples', 'Snakefile_regions'))

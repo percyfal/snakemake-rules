@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-import os
-import re
-from os.path import basename, realpath
 import pytest
-from snakemake_rules.core.ruleinfo import parse_rule, regex_target_list, get_targets
+from snakemake_rules.core.ruleinfo import parse_rule, get_targets
+
+
+pytestmark = pytest.mark.skipif(
+    pytest.config.getoption("--application") is not False,
+    reason="application passed; skipping ruleinfo tests"
+)
 
 
 @pytest.fixture(scope="function")
@@ -18,6 +21,7 @@ rule foo:
     p = p.join("rule1.rule")
     p.write(rule)
     return p
+
 
 def test_parse_rule1(rule1):
     d = parse_rule(str(rule1))
@@ -41,8 +45,10 @@ rule foo:
 
 def test_parse_rule2(rule2):
     d = parse_rule(str(rule2))
-    assert d['input'] == {'bar': '"{prefix}.bar"', 'foo': '"{prefix}.foo"', '_list': []}
-    assert d['output'] == {'foobar': '"{prefix}.foobar"', 'barfoo': '"{prefix}.barfoo"', '_list': []}
+    assert d['input'] == {'bar': '"{prefix}.bar"',
+                          'foo': '"{prefix}.foo"', '_list': []}
+    assert d['output'] == {'foobar': '"{prefix}.foobar"',
+                           'barfoo': '"{prefix}.barfoo"', '_list': []}
 
 
 @pytest.fixture(scope="function")
@@ -60,9 +66,9 @@ rule foo:
 
 def test_parse_rule3(rule3):
     d = parse_rule(str(rule3))
-    assert d['input'] == {'bar': '"{prefix}.bar"', 'foo': '"{prefix}.foo"', '_list': []}
+    assert d['input'] == {'bar': '"{prefix}.bar"',
+                          'foo': '"{prefix}.foo"', '_list': []}
     assert d['output'] == {'_list': []}
-
 
 
 @pytest.fixture(scope="function")
@@ -78,11 +84,11 @@ rule foo:
     p.write(rule)
     return p
 
+
 def test_parse_rule4(rule4):
     d = parse_rule(str(rule4))
     assert d['input'] == {'foo': '"{prefix}{ext}"', '_list': []}
     assert d['output'] == {'bar': '"{prefix}(.foo|.bar)"', '_list': []}
-
 
 
 @pytest.fixture(scope="function")
@@ -103,8 +109,10 @@ rule foo:
 
 def test_parse_rule5(rule5):
     d = parse_rule(str(rule5))
-    assert d['input'] == {'foo': '"{prefix}{ext}"', 'foobar': '"{prefix}.foobar"', '_list': []}
-    assert d['output'] == {'bar': '"{prefix}(.foo|.bar)"', 'foo': '"{prefix}.foo"',
+    assert d['input'] == {'foo': '"{prefix}{ext}"',
+                          'foobar': '"{prefix}.foobar"', '_list': []}
+    assert d['output'] == {'bar': '"{prefix}(.foo|.bar)"',
+                           'foo': '"{prefix}.foo"',
                            'barfoo': '"{prefix}.barfoo"', '_list': []}
 
 
@@ -129,10 +137,12 @@ rule foo:
 
 def test_parse_rule6(rule6):
     d = parse_rule(str(rule6))
-    assert d['input'] ==  {'foo': '"{prefix}{ext}"', 'foobar': '"{prefix}.foobar"', '_list': []}
+    assert d['input'] == {'foo': '"{prefix}{ext}"',
+                          'foobar': '"{prefix}.foobar"', '_list': []}
     assert d['output'] == {'bar': '"{prefix}{ext}"', 'foo': '"{prefix}.foo"',
                            'barfoo': '"{prefix}.barfoo"', '_list': []}
-    assert d['wildcard_constraints'] == {'ext': '(.foo|.bar)', 'prefix': '(foobar|barfoo)'}
+    assert d['wildcard_constraints'] == {'ext': '(.foo|.bar)',
+                                         'prefix': '(foobar|barfoo)'}
 
 
 @pytest.fixture(scope="function")
@@ -158,8 +168,10 @@ rule foo:
 
 def test_parse_rule7(rule7):
     d = parse_rule(str(rule7))
-    assert d['input'] ==  {'foo': '"{prefix}{ext}"', 'foobar': '"{prefix}.foobar"', '_list': [],
-                           'ref': 'config[\'foo\'][\'ref\']', 'fai': 'config[\'foo\'][\'ref\']+".fai"'}
+    assert d['input'] == {'foo': '"{prefix}{ext}"',
+                          'foobar': '"{prefix}.foobar"', '_list': [],
+                          'ref': 'config[\'foo\'][\'ref\']',
+                          'fai': 'config[\'foo\'][\'ref\']+".fai"'}
 
 
 @pytest.fixture(scope="function")
@@ -178,8 +190,8 @@ rule foo:
 
 def test_parse_rule8(rule8):
     d = parse_rule(str(rule8))
-    assert d['input'] ==  {'_list': ['"{prefix}.bar"', 'config[\'foo\'][\'bar\']']}
-
+    assert d['input'] == {'_list': ['"{prefix}.bar"',
+                                    'config[\'foo\'][\'bar\']']}
 
 
 def test_get_targets():

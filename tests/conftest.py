@@ -26,10 +26,13 @@ sys.path.insert(0, join(TESTDIR, os.pardir))
 
 # Autogenerate all application directories
 blacklist = ['__pycache__', 'bio', 'comp']
-applications = {x:join(RULEDIR, x) for x in os.listdir(RULEDIR) if isdir(join(RULEDIR, x)) and not x in blacklist}
-rules = {k: [join(RULEDIR, k, x) for x in os.listdir(v) if x.endswith(".rule")] for k,v in applications.items() }
+applications = {x: join(RULEDIR, x) for x in os.listdir(RULEDIR)
+                if isdir(join(RULEDIR, x)) and x not in blacklist}
+rules = {k: [join(RULEDIR, k, x) for x in os.listdir(v)
+             if x.endswith(".rule")] for k, v in applications.items()}
 with open(os.path.join(TESTDIR, "rules2target.yaml")) as fh:
     rules2targets = yaml.load(fh)
+
 
 def make_output(rule, prefix="s1"):
     """Generate output file for rule. Assume target is based on prefix
@@ -48,7 +51,9 @@ def make_output(rule, prefix="s1"):
         output = m.group("input")
     else:
         output = m.group("output")
-    m = re.search("\"[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})+(?P<ext>[_\/\.a-zA-Z0-9 ]+)\"", output)
+    m = re.search(
+        "\"[ ]*(?P<prefix>\{[a-zA-Z_0-9]+\})+(?P<ext>[_\/\.a-zA-Z0-9 ]+)\"",
+        output)
     # Regular extension; use first one
     if m:
         return "{prefix}{ext}".format(prefix=prefix, ext=m.group("ext"))
@@ -67,31 +72,33 @@ def make_output(rule, prefix="s1"):
 def pytest_addoption(parser):
     group = parser.getgroup("snakemake_rules", "snakemake rule library")
     group.addoption("--slow", action="store_true",
-                     help="run slow tests", dest="slow")
+                    help="run slow tests", dest="slow")
     group.addoption("--slow-only", action="store_true",
-                     help="run slow tests only", dest="slow_only")
+                    help="run slow tests only", dest="slow_only")
     group.addoption("-V", "--show-workflow-output", action="store_true",
-                     help="show workflow output",
-                     dest="show_workflow_output")
+                    help="show workflow output",
+                    dest="show_workflow_output")
     group.addoption("-P", "--python2-conda", action="store",
-                     default="py2.7",
-                     help="name of python2 conda environment [default: py2.7]",
-                     dest="python2_conda")
+                    default="py2.7",
+                    help="name of python2 conda environment [default: py2.7]",
+                    dest="python2_conda")
     group.addoption("-A", "--application", action="store",
-                     default=False,
-                     help="application to test",
-                     dest="application")
+                    default=False,
+                    help="application to test",
+                    dest="application")
     group.addoption("-R", "--rule", action="store",
-                     default=False,
-                     help="run a specific rule",
-                     dest="rule")
+                    default=False,
+                    help="run a specific rule",
+                    dest="rule")
 
 
 def pytest_runtest_setup(item):
     """Skip tests if they are marked as slow and --slow is not given"""
-    if getattr(item.obj, 'slow', None) and not (item.config.getvalue('slow') or item.config.getvalue('slow_only')):
+    if getattr(item.obj, 'slow', None) and not\
+       (item.config.getvalue('slow') or item.config.getvalue('slow_only')):
         pytest.skip('slow tests not requested')
-    if not getattr(item.obj, 'slow', None) and item.config.getvalue('slow_only'):
+    if not getattr(item.obj, 'slow', None) and\
+       item.config.getvalue('slow_only'):
         pytest.skip('run only slow tests')
 
 
@@ -99,14 +106,19 @@ def pytest_report_header(config):
     try:
         output = sp.check_output(['conda', 'env', 'list', '--json'])
         envs = ast.literal_eval(output.decode("utf-8"))
-        py2 = [x for x  in envs['envs'] if re.search("{}{}$".format(os.sep, config.getoption("--python2-conda")), x)][0]
+        regex = re.compile("{}{}$".format(
+            os.sep,
+            config.getoption("--python2-conda")))
+        py2 = [x for x in envs['envs'] if regex.search(x)][0]
         py2bin = join(py2, "bin")
         os.environ["PATH"] = ":".join([os.environ["PATH"], py2bin])
         py2str = "python2: {}".format(py2bin)
 
     except:
-        py2str = "WARNING: No conda python2 environment found! Workflow tests depending on python2 programs will fail!"
+        py2str = ("WARNING: No conda python2 environment found! ",
+                  "Workflow tests depending on python2 programs will fail!")
     return "\n".join([py2str])
+
 
 # Add namespace with test files and director
 def pytest_namespace():
@@ -114,11 +126,11 @@ def pytest_namespace():
         'testdir': TESTDIR,
         'ruledir': RULEDIR,
         'snakefile': join(TESTDIR, "Snakefile"),
-        'snakefile_regions' : join(TESTDIR, "Snakefile_regions"),
-        'config' : join(TESTDIR, "config.yaml"),
-        'config_regions' : join(TESTDIR, "config_regions.yaml"),
-        'rules' : rules,
-        'make_output' : make_output,
+        'snakefile_regions': join(TESTDIR, "Snakefile_regions"),
+        'config': join(TESTDIR, "config.yaml"),
+        'config_regions': join(TESTDIR, "config_regions.yaml"),
+        'rules': rules,
+        'make_output': make_output,
     }
 
 ##################################################
@@ -130,31 +142,30 @@ for f in os.listdir(abspath(join(dirname(__file__), "data"))):
 
 copyfiles = ['s1.revealjs.Rmd']
 skipfiles = ['Snakefile']
-    
+
 d.update({
-    "s1.bam" : d['s1.rg.sort.bam'],
-    "s1.bai" : d['s1.rg.sort.bai'],
-    "s1.fofn" : d['bamfiles.fofn'],
-    "s1.bam.fofn" : d['bamfiles.fofn'],
-    "s1.bdg" : d['s1.rg.sort.bedGraph'],
-    "s1.bedGraph" : d['s1.rg.sort.bedGraph'],
-    "s1.bed" : d['ref.bed'],
-    "s1.dict" : d['ref.dict'],
-    "s1.gtf" : d['ref-transcripts.gtf'],
-    "s1.genePred" : d['ref-transcripts.genePred'],
-    "s1.fasta" : d['ref.fa'],
-    "s1.fa" : d['ref.fa'],
-    "s1.fastq.gz" : d['s1_1.fastq.gz'],
-    "s1.fofn" : d['bamfiles.fofn'],
-    "s1.g.vcf.fofn" : d['s1.vcf.fofn'],
-    "s1.interval_list" : d['ref.interval_list'],
-    "s1.sam" : d['s1.rg.sort.sam'],
-    "s1.sort.bam" : d['s1.rg.sort.bam'],
-    "s1.sort.bai" : d['s1.rg.sort.bai'],
-    "s1.sort.bam.bai" : d['s1.rg.sort.bai'],
-    "s1.vcf" : d['s1.rg.sort.vcf'],
-    "s1.vcf.gz" : d['s1.rg.sort.g.vcf.gz'],
-    "s1.wig" : d['s1.rg.sort.wig'],
+    "s1.bam": d['s1.rg.sort.bam'],
+    "s1.bai": d['s1.rg.sort.bai'],
+    "s1.bam.fofn": d['bamfiles.fofn'],
+    "s1.bdg": d['s1.rg.sort.bedGraph'],
+    "s1.bedGraph": d['s1.rg.sort.bedGraph'],
+    "s1.bed": d['ref.bed'],
+    "s1.dict": d['ref.dict'],
+    "s1.gtf": d['ref-transcripts.gtf'],
+    "s1.genePred": d['ref-transcripts.genePred'],
+    "s1.fasta": d['ref.fa'],
+    "s1.fa": d['ref.fa'],
+    "s1.fastq.gz": d['s1_1.fastq.gz'],
+    "s1.fofn": d['bamfiles.fofn'],
+    "s1.g.vcf.fofn": d['s1.vcf.fofn'],
+    "s1.interval_list": d['ref.interval_list'],
+    "s1.sam": d['s1.rg.sort.sam'],
+    "s1.sort.bam": d['s1.rg.sort.bam'],
+    "s1.sort.bai": d['s1.rg.sort.bai'],
+    "s1.sort.bam.bai": d['s1.rg.sort.bai'],
+    "s1.vcf": d['s1.rg.sort.vcf'],
+    "s1.vcf.gz": d['s1.rg.sort.g.vcf.gz'],
+    "s1.wig": d['s1.rg.sort.wig'],
 })
 
 
@@ -180,6 +191,7 @@ def data(tmpdir_factory):
             p.join(k).mksymlinkto(v)
     return p
 
+
 ##############################
 # Snakefile data
 ##############################
@@ -187,13 +199,13 @@ def data(tmpdir_factory):
 def snakefile_data(tmpdir_factory):
     """Setup input data for snakefiles"""
     p = tmpdir_factory.mktemp('snakefile_data')
-    
+
     data = abspath(join(dirname(__file__), "data"))
     p.join("sampleinfo.csv").mksymlinkto(join(data, "sampleinfo.csv"))
     p.join("ref.fa").mksymlinkto(join(data, "ref.fa"))
     p.join("s1_1.fastq.gz").mksymlinkto(join(data, "s1_1.fastq.gz"))
     p.join("s1_2.fastq.gz").mksymlinkto(join(data, "s1_2.fastq.gz"))
-    
+
     path = abspath(join(dirname(__file__), "examples"))
     config = join(path, "config.yaml")
     snakefile = join(path, "Snakefile")

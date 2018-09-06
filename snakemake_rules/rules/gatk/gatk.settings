@@ -9,6 +9,7 @@ BASE_RECALIBRATOR = "BaseRecalibrator"
 CLIP_READS = "ClipReads"
 COMBINE_GVCFS = "CombineGVCFs"
 COMBINE_VARIANTS = 'CombineVariants'
+FASTA_ALTERNATE_REFERENCE_MAKER = 'FastaAlternateReferenceMaker'
 GENOTYPE_GVCFS = "GenotypeGVCFs"
 HAPLOTYPE_CALLER = 'HaplotypeCaller'
 INDEL_REALIGNER = "IndelRealigner"
@@ -20,6 +21,7 @@ UNIFIED_GENOTYPER = "UnifiedGenotyper"
 VARIANT_FILTRATION = "VariantFiltration"
 VARIANT_EVAL = "VariantEval"
 VARIANT_RECALIBRATOR = "VariantRecalibrator"
+VARIANTS_TO_TABLE = "VariantsToTable"
 
 config_default = { 
     'gatk' : {

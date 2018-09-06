@@ -2,7 +2,6 @@
 include: "samtools.settings"
 
 config_default = {'samtools' :{'sort' : _samtools_config_rule_default.copy()}}
-config_default['samtools']['sort'].update({'options' : '-T /tmp/aln.sorted'})
 
 update_config(config_default, config)
 config = config_default
@@ -17,4 +16,4 @@ rule samtools_sort:
     output: "{prefix}.sort.bam"
     threads: config['samtools']['sort']['threads']
     conda: "env.yaml"
-    shell: "{params.cmd} sort {params.options} -o {output} {input}"
+    shell: "{params.cmd} sort {params.options} -T /tmp/$(basename {wildcards.prefix}).sorted -o {output} {input}"

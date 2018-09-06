@@ -17,7 +17,7 @@ rule bwa_mem:
            index = expand("{index}{ext}", index=config['bwa']['index'], ext=config['bwa']['index_ext'])
     output: bam = "{prefix}.bam"
     log: log = "{prefix}.log"
-    threads: config['bwa']['threads']
+    threads: config['bwa']['mem']['threads']
     conda: "env.yaml"
     shell:
         "bwa mem -t {threads} {params.options} {params.index} " + \

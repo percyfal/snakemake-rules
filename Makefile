@@ -72,16 +72,16 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
-GH_PAGES_SOURCES = docs docs/Makefile pytest_ngsfixtures
+GH_PAGES_SOURCES = docs docs/Makefile snakemake_rules
 GH_PAGES_DOCS = *.html *.inv *.js _*
 gh-pages: ## generate Sphinx HTML documentation, including API docs, for gh-pages
 	python setup.py version 2>/dev/null | grep Version | sed "s/Version://" > .version
 	git checkout gh-pages
-	rm -f docs/pytest_ngsfixtures.rst
+	rm -f docs/snakemake_rules.rst
 	rm -f docs/modules.rst
 	git checkout master $(GH_PAGES_SOURCES)
 	git reset HEAD
-	sphinx-apidoc -o docs/ pytest_ngsfixtures
+	sphinx-apidoc -o docs/ snakemake_rules
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	rsync -av docs/_build/html/* ./
@@ -92,11 +92,11 @@ gh-pages: ## generate Sphinx HTML documentation, including API docs, for gh-page
 gh-pages-dev: ## generate Sphinx HTML documentation, including API docs, for gh-pages-dev
 	python setup.py version 2>/dev/null | grep Version | sed "s/Version://" > .version
 	git checkout gh-pages
-	rm -f docs/pytest_ngsfixtures.rst
+	rm -f docs/snakemake_rules.rst
 	rm -f docs/modules.rst
 	git checkout develop $(GH_PAGES_SOURCES)
 	git reset HEAD
-	sphinx-apidoc -o docs/ pytest_ngsfixtures
+	sphinx-apidoc -o docs/ snakemake_rules
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	rsync -av docs/_build/html/* ./
@@ -114,9 +114,16 @@ release: clean ## package and upload a release
 	python setup.py sdist upload
 	python setup.py bdist_wheel upload
 
-conda: clean ## package and upload a conda release
-	conda build conda
-	anaconda upload $(shell conda build conda --output)
+current=$(shell git rev-parse --abbrev-ref HEAD)
+CONDA_OPTIONS?=
+CONDA_REPO?=percyfal
+conda: ## package and upload a conda release
+	git checkout -b conda
+	git merge $(current)
+	$(MAKE) clean
+	conda build $(CONDA_OPTIONS) --user $(CONDA_REPO) -m conda/build_config.yaml conda
+	git checkout $(current)
+	git branch -d conda
 
 id:=$(shell docker images | grep -v REPOSITORY | head -1 | awk '{print $$3}')
 DOCKERUSER:=percyfal

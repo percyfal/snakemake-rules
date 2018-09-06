@@ -42,6 +42,9 @@ gatk:
   gatk_variant_indel_JEXL_filtration:
     output: ['medium.haplotype_caller.filteredINDEL.vcf.gz']
     ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
+  gatk_variants_to_table:
+    output: ['medium.haplotype_caller.vcf.gz.table.gz']
+    ft: ['config', '.vcf.gz', '.vcf.gz.tbi']
 
 macs2:
   macs2_callpeak_treatment_only_bam_pe:
@@ -66,6 +69,10 @@ picard:
 
 qualimap:
   qualimap_bamqc:
+    ft: ['.bam']
+    output: ['PUR.HG00731.tiny.sort.bam.qualimap/genome_results.txt']
+  qualimap_bamqc_se:
+    ft: ['.bamse']
     output: ['PUR.HG00731.tiny.sort.bam.qualimap/genome_results.txt']
 
 rsem:
@@ -75,6 +82,14 @@ rsem:
 rseqc:
   rseqc_clipping_profile:
     output: ['PUR.HG00731.tiny.sort_rseqc/clippingprofile_PE.clipping_profile.xls']
+
+sga:
+  sga_preprocess:
+    ft: ['_1.fastq.gz']
+    output: ['CHS.preprocess.fastq.gz']
+  sga_preprocess_pe:
+    ft: ['_1.fastq.gz', '_2.fastq.gz']
+    output: ['CHS_2.preprocess.fastq.gz']
 
 star:
   star_index:

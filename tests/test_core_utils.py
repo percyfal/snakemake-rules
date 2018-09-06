@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
-import re
-from os.path import basename, realpath
 import pytest
 from snakemake_rules.core import utils
 from snakemake.logging import logger
@@ -24,7 +21,8 @@ s3,pu1,fastq3
 @pytest.fixture(scope="function", autouse=False,
                 params=[None, "sampleinfo", "wrong sampleinfo", "no include"])
 def config(request, sampleinfo):
-    config = {'samples': ['s1', 's2'], 'ignore_samples': ['s3'], 'settings': {}}
+    config = {'samples': ['s1', 's2'],
+              'ignore_samples': ['s3'], 'settings': {}}
     if request.param in ["sampleinfo", "no include"]:
         config['settings']['sampleinfo'] = str(sampleinfo)
     if request.param == "wrong sampleinfo":
@@ -34,6 +32,8 @@ def config(request, sampleinfo):
     return config, request.param
 
 
+@pytest.mark.skipif(pytest.config.getoption("--application") is not False,
+                    reason="application passed; skipping core utils tests")
 def test_config(config):
     conf, param = config
     utils.get_samples(conf, logger)
@@ -46,3 +46,13 @@ def test_config(config):
         assert len(conf['samples']) == 2
     else:
         assert conf['settings']['sampleinfo'] == 'foo.csv'
+
+
+def test_mem_info():
+    utils.mem_per_core()
+    utils.mem_per_core("M")
+
+
+def test_available_mem():
+    assert isinstance(utils.available_mem(4, "100g"), str)
+    assert isinstance(utils.available_mem(4, "100g", False), int)

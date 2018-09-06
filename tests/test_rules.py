@@ -1,9 +1,8 @@
 # Copyright (C) 2016 by Per Unneberg
 import re
 import os
-from os.path import abspath, dirname, join, basename
+from os.path import join, basename
 import logging
-import shutil
 import subprocess as sp
 import pytest
 from helpers import utils
@@ -11,8 +10,12 @@ from helpers import utils
 logger = logging.getLogger(__name__)
 
 stderr = None if pytest.config.getoption("--show-workflow-output") else sp.STDOUT
-applications = [pytest.config.getoption("--application")] if pytest.config.getoption("--application") else pytest.rules.__all__
-rule =  pytest.config.getoption("--rule") if pytest.config.getoption("--rule") else None
+applications = pytest.rules.__all__
+if pytest.config.getoption("--application"):
+    applications = [pytest.config.getoption("--application")]
+rule = None
+if pytest.config.getoption("--rule"):
+    rule = pytest.config.getoption("--rule")
 THREADS = pytest.config.getoption("--ngs-threads", "1")
 
 
@@ -29,16 +32,18 @@ blacklist = [
 rules = []
 for x in applications:
     for y in getattr(pytest.rules, x):
-        if not rule is None:
-            if not rule in y:
+        if rule is not None:
+            if rule not in y:
                 continue
         else:
             if re.sub(".rule", "", basename(y)) in blacklist:
                 continue
-        rules.append((x,y))
+        rules.append((x, y))
 
 
-@pytest.mark.parametrize("x", sorted(rules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(rules)])
+@pytest.mark.parametrize("x", sorted(rules),
+                         ids=["{}/{}".format(x[0], basename(x[1]))
+                              for x in sorted(rules)])
 def test_snakemake_list(x):
     app, rule = x
     name = re.sub(".rule$", "", basename(rule))
@@ -76,13 +81,13 @@ blacklist_slow = [
 slow_rules = []
 for x in applications:
     for y in getattr(pytest.rules, x):
-        if not rule is None:
-            if not rule in y:
+        if rule is not None:
+            if rule not in y:
                 continue
         else:
             if re.sub(".rule", "", basename(y)) in blacklist_slow:
                 continue
-        slow_rules.append((x,y))
+        slow_rules.append((x, y))
 
 
 # Helper function to make output executable
@@ -91,16 +96,23 @@ def make_executable(path):
     mode |= (mode & 0o444) >> 2    # copy R bits to X
     os.chmod(path, mode)
 
-@pytest.mark.skipif(not applications, reason="application '{}' in blacklist".format(pytest.config.getoption("--application")))
+
+@pytest.mark.skipif(not applications,
+                    reason="application '{}' in blacklist".format(
+                        pytest.config.getoption("--application")))
 @pytest.mark.slow
-@pytest.mark.parametrize("x", sorted(slow_rules), ids=["{}/{}".format(x[0], basename(x[1])) for x in sorted(slow_rules)])
+@pytest.mark.parametrize("x", sorted(slow_rules),
+                         ids=["{}/{}".format(x[0], basename(x[1]))
+                              for x in sorted(slow_rules)])
 def test_snakemake_run(x, data):
     app, rule = x
     target = pytest.make_output(rule)
     if target is None:
-        pytest.skip("Unable to parse target for rule {}".format(basename(rule)))
-    args = ['snakemake', '-f', '-s', rule, '-j', str(THREADS), '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
+        pytest.skip("Unable to parse target for rule {}".format(
+            basename(rule)))
+    args = ['snakemake', '-f', '-s', rule, '-j', str(THREADS),
+            '-d', str(data), '--configfile', join(str(data), 'config.yaml')]
     if not target == "config":
         args = args + [target]
     utils.save_command(join(str(data), "command.sh"), args)
-    output = sp.check_output(args, stderr=stderr)
+    sp.check_output(args, stderr=stderr)

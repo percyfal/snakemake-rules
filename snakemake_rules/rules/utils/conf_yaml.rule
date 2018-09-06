@@ -8,3 +8,6 @@ rule conf_yaml:
     run:
         with open (output.yaml,"w") as fh:
             fh.write(yaml.dump(config, default_flow_style=False))
+
+
+localrules: conf_yaml

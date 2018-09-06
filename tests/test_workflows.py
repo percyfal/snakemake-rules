@@ -1,21 +1,23 @@
 # Copyright (C) 2016 by Per Unneberg
-import re
-import os
-from os.path import abspath, dirname, join, basename
+from os.path import join
 import logging
-import shutil
 import subprocess as sp
 import pytest
 from helpers import utils
 
 logger = logging.getLogger(__name__)
 
-stderr = None if pytest.config.getoption("--show-workflow-output") else sp.STDOUT
+stderr = sp.STDOUT
+if pytest.config.getoption("--show-workflow-output"):
+    stderr = None
 THREADS = pytest.config.getoption("--ngs-threads", "1")
-skip_workflow = any([pytest.config.getoption("--application"), pytest.config.getoption("--rule")])
+skip_workflow = any([pytest.config.getoption("--application"),
+                     pytest.config.getoption("--rule")])
 
-    
-@pytest.mark.skipif(skip_workflow, reason="skipping workflow since --application or --rule passed")
+
+@pytest.mark.skipif(
+    skip_workflow,
+    reason="skipping workflow since --application or --rule passed")
 def test_workflow1(snakefile_data):
     wd = str(snakefile_data)
     snakefile = join(wd, 'Snakefile1')
@@ -26,7 +28,9 @@ def test_workflow1(snakefile_data):
     output = sp.check_output(args, stderr=stderr)
 
 
-@pytest.mark.skipif(skip_workflow, reason="skipping workflow since --application or --rule passed")    
+@pytest.mark.skipif(
+    skip_workflow,
+    reason="skipping workflow since --application or --rule passed")
 def test_workflow2(snakefile_data):
     wd = str(snakefile_data)
     snakefile = join(wd, 'Snakefile2')
@@ -35,8 +39,9 @@ def test_workflow2(snakefile_data):
             wd, '--configfile', config]
     utils.save_command(join(str(wd), "command.sh"), args)
     output = sp.check_output(args, stderr=stderr)
-    
-# loop different 
+
+
+# loop different
 def test_samples_include(snakefile_data):
     wd = str(snakefile_data)
     snakefile = join(wd, 'Snakefile1')
