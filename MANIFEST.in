@@ -1,2 +1,9 @@
+include LICENSE
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
 include versioneer.py
-include snakemake_rules/_version.py
+recursive-include snakemake_rules *.py
+recursive-include snakemake_rules *.smk

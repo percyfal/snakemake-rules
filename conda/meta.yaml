@@ -24,6 +24,8 @@ requirements:
     - snakemake
     - pyyaml
     - pytest >=3.0
+    - pytest-runner
+    - psutil
 
 test:
   requires:
@@ -33,6 +35,8 @@ test:
     # tests
     - coverage
     - pytest >=3.0
+    - pytest-runner
+    - psutil
     - pytest-cov
 
     # workflows

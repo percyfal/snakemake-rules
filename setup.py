@@ -39,7 +39,8 @@ def package_path(path, filters=()):
                 if not filters or f.endswith(filters):
                     package_data.append(join(path, f))
 
-rule_suffixes = ('.rules', '.rule', '.settings')
+
+rule_suffixes = ('.smk')
 
 package_path(join(ROOT, 'snakemake_rules'), rule_suffixes)
 package_path(join(ROOT, 'tests', 'examples', 'Snakefile'))
