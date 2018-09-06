@@ -1,0 +1,8 @@
+0.2.1 (Sep 5 2018)
+=========================
+
+Version 0.2.1 release
+
+New features:
+
+- add build config to do specific python conda builds
