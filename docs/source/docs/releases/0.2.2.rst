@@ -1,0 +1,6 @@
+0.2.2 (Sep 5 2018)
+=========================
+
+Version 0.2.2 hotfix release
+
+- mistakenly pushed from old master
