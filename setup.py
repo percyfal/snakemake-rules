@@ -8,6 +8,7 @@ from __future__ import print_function
 
 # stdlib
 import os
+import sys
 from setuptools import setup
 from os.path import realpath, dirname, relpath, join
 
@@ -51,8 +52,15 @@ package_path(join(ROOT, 'tests', 'data'))
 
 scripts = ["scripts/syncrules.py"]
 
-REQUIRES = [
-    'snakemake>=3.9.0',
+setup_requires = []
+if {'pytest', 'test'}.intersection(sys.argv):
+    setup_requires.append('pytest-runner')
+
+install_requires = [
+    'snakemake>=5.0.0',
+]
+
+test_requires = [
     'pytest',
     'pytest-runner',
     'psutil',
@@ -76,7 +84,7 @@ setup(
         'snakemake_rules.core',
     ],
     package_data={'snakemake_rules': package_data},
-    install_requires=REQUIRES,
-    setup_requires=['pytest-runner'],
-    tests_require=["pytest"],
+    install_requires=install_requires,
+    setup_requires=setup_requires,
+    tests_require=test_requires,
 )

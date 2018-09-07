@@ -14,18 +14,11 @@ requirements:
   build:
     - python >=3.3
     - setuptools
-    - snakemake >=3.4.2
-    - pytest >=3.0
-    - pytest-runner
-    - psutil
+    - snakemake >=5.0.0
 
   run:
     - python >=3.3
-    - snakemake
-    - pyyaml
-    - pytest >=3.0
-    - pytest-runner
-    - psutil
+    - snakemake >=5.0.0
 
 test:
   requires:
@@ -51,4 +44,4 @@ test:
 about:
   home: https://github.com/percyfal/snakemake-rules.git
   license: MIT License
-  summary: 'Library of snakemake rules. The rules can be used as-is without installing snakemakelib itself.'
+  summary: 'Library of snakemake rules.'
