@@ -8,7 +8,7 @@ SRC_DIR=$RECIPE_DIR/..
 
 pushd $SRC_DIR
 
-$PYTHON setup.py install --record=record.txt
+$PYTHON setup.py install  --single-version-externally-managed --record=record.txt
 
 # Add more build steps here, if they are necessary.
 
